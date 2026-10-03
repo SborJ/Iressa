@@ -55,8 +55,11 @@ body {
 }
 #legend  { top: 14px; left: 266px; width: 210px; }
 #tally   { bottom: 14px; left: 14px; width: 282px; }
-#chart   { bottom: 14px; right: 14px; width: min(540px, calc(100vw - 330px)); }
-#chart.collapsed { width: auto; min-width: 250px; padding: 9px 12px; }
+#chart   { bottom: 14px; left: 310px; right: 346px; width: auto; transform: none; }
+#chart.collapsed {
+  left: 50%; right: auto; width: auto; min-width: 250px;
+  padding: 9px 12px; transform: translateX(-50%);
+}
 
 #scale {
   position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
@@ -190,8 +193,7 @@ table.data td { text-align: right; padding: 2px 5px; color: var(--text-secondary
 
 @media (max-width: 1400px) { #legend { display: none; } }
 @media (max-width: 1100px) {
-  #chart { width: calc(100vw - 28px); left: 14px; right: 14px; }
-  #chart.collapsed { width: auto; left: auto; min-width: 250px; }
+  #chart { display: none; }
   #tally { display: none; }
 }
 </style>
