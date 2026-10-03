@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+from dataclasses import replace
 import csv
 import os
 import json
@@ -18,6 +19,7 @@ os.environ.setdefault("MPLCONFIGDIR", str(CACHE_ROOT / "matplotlib"))
 
 from cancer_sim.experiments import ExperimentConfig  # noqa: E402
 from cancer_sim.cancers import DEFAULT_CANCER, available_cancers  # noqa: E402
+from cancer_sim.narration import describe_exposures  # noqa: E402
 from cancer_sim.rl_env import CancerTreatmentEnv, RLConfig  # noqa: E402
 
 
@@ -42,6 +44,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--live", action="store_true", help="emit JSON progress for the local UI")
     parser.add_argument("--progress-interval", type=int, default=16)
     parser.add_argument("--rollout-steps", type=int, default=2048)
+    parser.add_argument("--ent-coef", type=float, default=0.01, help="exploration bonus; 0 lets the policy lock onto one action early")
+    parser.add_argument("--n-envs", type=int, default=1, help="practice tumours simulated in parallel processes")
+    parser.add_argument("--no-reward-norm", action="store_true", help="train on raw rewards (default: running reward normalisation)")
     return parser.parse_args()
 
 
@@ -54,7 +59,8 @@ def main() -> int:
             width=args.width,
             height=args.height,
             depth=args.depth,
-            vasculature="grid",
+            # the branching vessel tree in 3D, as the live viewer and the recordings use
+            vasculature="tree" if args.depth > 1 else "grid",
             cells=args.cells,
             mutation_scale=args.mutation_scale,
             steps=max(1, round(args.days / args.dt_days)),
@@ -63,7 +69,9 @@ def main() -> int:
         horizon_days=args.days,
         decision_interval_days=args.dt_days,
         randomize=args.randomize,
-        eci_min=args.eci_min if args.eci_min is not None else (0.0 if args.live else 0.05),
+        # In 3D an untreated tumour passes the controllability cut-off within days,
+        # which would end every practice run early; training runs the full episode.
+        eci_min=args.eci_min if args.eci_min is not None else (0.0 if (args.live or args.depth > 1) else 0.05),
         stop_on_progression=not args.live,
     )
     if args.smoke:
@@ -86,21 +94,73 @@ def main() -> int:
     check_env(env, warn=True)
     from stable_baselines3.common.callbacks import BaseCallback
 
+    from collections import Counter
+
+    cancer_model = env.model
+
     class LiveProgress(BaseCallback):
+        """Per-step samples for the live panel, and one summary per finished
+        episode: the learning curve (is the policy getting better?) and what the
+        policy mostly did in that episode (is it still exploring, or settled?)."""
+
         def __init__(self):
             super().__init__()
             self.episode_reward = 0.0
             self.episode = 0
             self.latest_episode_reward = None
+            self.actions: Counter = Counter()
+            self.switches = 0
+            self.last_action: int | None = None
+            self.days = 0
+
+        def _init_callback(self) -> None:
+            n = self.training_env.num_envs
+            self.rewards = [0.0] * n
+            self.counters = [Counter() for _ in range(n)]
+            self.switch_counts = [0] * n
+            self.previous = [None] * n
+            self.day_counts = [0] * n
 
         def _on_step(self) -> bool:
-            self.episode_reward += float(self.locals["rewards"][0])
-            if bool(self.locals["dones"][0]):
-                self.episode += 1
-                self.latest_episode_reward = self.episode_reward
-                self.episode_reward = 0.0
-            if self.num_timesteps % args.progress_interval == 0 or self.num_timesteps == 1:
-                info = self.locals["infos"][0]
+            actions = [int(a) for a in self.locals["actions"]]
+            # report the raw reward even when PPO trains on a normalised one
+            raw = self.training_env.get_original_reward() if hasattr(self.training_env, "get_original_reward") else self.locals["rewards"]
+            infos = self.locals["infos"]
+            for i, action in enumerate(actions):
+                self.rewards[i] += float(raw[i])
+                self.counters[i][action] += 1
+                self.day_counts[i] += 1
+                if self.previous[i] is not None and action != self.previous[i]:
+                    self.switch_counts[i] += 1
+                self.previous[i] = action
+                if bool(self.locals["dones"][i]):
+                    self.episode += 1
+                    self.latest_episode_reward = self.rewards[i]
+                    top, top_n = self.counters[i].most_common(1)[0]
+                    info = infos[i]
+                    emit_progress({
+                        "type": "episode",
+                        "episode": self.episode,
+                        "steps": self.num_timesteps,
+                        "reward": round(self.rewards[i], 3),
+                        "days": self.day_counts[i],
+                        "final_burden": info["burden"],
+                        "initial_burden": info["initial_burden"],
+                        "resistant_fraction": round(info["resistant_fraction"], 4),
+                        "eci": round(info["eci"], 4),
+                        "distinct_actions": len(self.counters[i]),
+                        "switches": self.switch_counts[i],
+                        "main_action": describe_exposures(cancer_model, env.action_table[top].exposures),
+                        "main_action_share": round(top_n / max(1, self.day_counts[i]), 3),
+                    })
+                    self.rewards[i] = 0.0
+                    self.counters[i] = Counter()
+                    self.switch_counts[i] = 0
+                    self.previous[i] = None
+                    self.day_counts[i] = 0
+            action = actions[0]
+            info = infos[0]
+            if self.num_timesteps % args.progress_interval < len(actions) or self.num_timesteps <= len(actions):
                 emit_progress({
                     "type": "progress",
                     "steps": self.num_timesteps,
@@ -110,7 +170,8 @@ def main() -> int:
                     "burden": info["burden"],
                     "eci": info["eci"],
                     "resistant_fraction": info["resistant_fraction"],
-                    "action": int(self.locals["actions"][0]),
+                    "action": action,
+                    "action_label": describe_exposures(cancer_model, env.action_table[action].exposures),
                 })
             return True
 
@@ -118,10 +179,31 @@ def main() -> int:
         if args.live:
             print("RL_PROGRESS " + json.dumps(payload), flush=True)
 
-    model = PPO("MlpPolicy", env, verbose=0 if args.live else 1, seed=args.seed,
-                n_steps=args.rollout_steps, batch_size=min(64, args.rollout_steps))
+    # The daily burden penalty piles up to large, noisy episode totals (hundreds on
+    # a 3D tumour). A running normalisation of the reward keeps PPO's value
+    # targets in a sane range; observations are already in [0, 1] and are left as
+    # they are, so the saved policy needs no extra statistics to run.
+    from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv, VecNormalize
+    n_envs = max(1, args.n_envs)
+    if n_envs == 1:
+        train_env = DummyVecEnv([lambda: env])
+    else:
+        # each worker draws its own episode seeds from a distinct base seed
+        def make(rank: int):
+            def _init():
+                worker = CancerTreatmentEnv(replace(env_config, experiment=replace(env_config.experiment, seed=args.seed + 1000 * rank)))
+                return worker
+            return _init
+        train_env = SubprocVecEnv([make(rank) for rank in range(n_envs)])
+    if not args.no_reward_norm:
+        train_env = VecNormalize(train_env, norm_obs=False, norm_reward=True, clip_reward=10.0)
+    per_env = max(64, args.rollout_steps // n_envs)
+    model = PPO("MlpPolicy", train_env, verbose=0 if args.live else 1, seed=args.seed,
+                n_steps=per_env, batch_size=min(64 * n_envs, per_env * n_envs), ent_coef=args.ent_coef)
     model.learn(total_timesteps=args.total_timesteps, callback=LiveProgress())
-    model_path = args.output_dir / f"{args.model_name}.zip"
+    # the live simulator looks for outputs/rl/ppo_<cancer>.zip, so a policy trained in the panel becomes its AI
+    name = args.model_name if (args.model_name != "ppo_iressa" or not args.live) else f"ppo_{args.cancer}"
+    model_path = args.output_dir / f"{name}.zip"
     model.save(model_path)
     print(f"Saved PPO policy to {model_path}")
     if args.live:

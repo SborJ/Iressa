@@ -1,11 +1,11 @@
 import { defineConfig } from 'vite';
 import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
 import type { IncomingMessage, ServerResponse } from 'node:http';
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 /**
- * Which Python runs the trainer.
+ * Which Python runs the REINFORCE trainer.
  *
  * Spawning a bare `python3` picks up whatever interpreter is first on PATH,
  * which is usually a system one with none of this project's dependencies: the
@@ -37,172 +37,108 @@ function explainTrainerFailure(stderr: string): string {
 }
 
 
-type Point = { steps: number; total: number; episode: number; episode_reward: number | null; burden: number; eci: number; resistant_fraction: number; action: number };
-type Training = { state: 'idle' | 'running' | 'completed' | 'stopped' | 'failed'; points: Point[]; message: string; checkpoint?: string; evaluation?: unknown; config?: { days: number; timesteps: number } };
+/**
+ * The AI add-on: a REINFORCE agent learning a treatment pattern in under a minute
+ * (scripts/train_reinforce.py), streamed to the viewer.
+ *
+ * POST /api/ai/start {cancer, seconds} starts a session, GET /api/ai/status reports
+ * it, POST /api/ai/stop ends it. The status keeps the learning curve, the
+ * agent's preferences after each update and the practice runs it recorded for
+ * the 3D world, newest last.
+ */
+type AiStatus = {
+  state: 'idle' | 'running' | 'completed' | 'stopped' | 'failed';
+  message: string;
+  cancer?: string;
+  seconds?: number;
+  startedAt?: number;
+  start?: unknown;
+  updates: unknown[];
+  showcases: unknown[];
+  evaluation?: unknown;
+};
+const AI_CANCERS = ['lung_egfr', 'breast_er_her2neg'];
 
-function trainingApi() {
+function aiApi() {
   let child: ChildProcessWithoutNullStreams | undefined;
-  let run: Training = { state: 'idle', points: [], message: '' };
-  const statusPath = resolve('outputs/rl/ui_status.json');
-  try {
-    const saved = JSON.parse(readFileSync(statusPath, 'utf8')) as Training;
-    if (saved.state === 'completed') run = saved;
-  } catch { /* No completed run has been saved yet. */ }
+  let status: AiStatus = { state: 'idle', message: '', updates: [], showcases: [] };
   let pending = '';
   const send = (res: ServerResponse, code: number, body: unknown) => {
     res.writeHead(code, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
     res.end(JSON.stringify(body));
   };
   const handler = (req: IncomingMessage, res: ServerResponse, next: () => void) => {
-    if (!req.url?.startsWith('/api/rl/')) return next();
-    if (req.method === 'GET' && req.url === '/api/rl/status') return send(res, 200, run);
-    if (req.method === 'POST' && req.url === '/api/rl/stop') {
-      if (child && run.state === 'running') {
-        run.state = 'stopped';
-        run.message = 'Training stopped';
+    if (!req.url?.startsWith('/api/ai/')) return next();
+    if (req.method === 'GET' && req.url === '/api/ai/status') return send(res, 200, status);
+    if (req.method === 'POST' && req.url === '/api/ai/stop') {
+      if (child && status.state === 'running') {
+        status.state = 'stopped';
+        status.message = 'Training stopped';
         child.kill('SIGTERM');
       }
-      return send(res, 200, run);
+      return send(res, 200, status);
     }
-    if (req.method !== 'POST' || req.url !== '/api/rl/start') return send(res, 404, { error: 'Not found' });
-    if (child) return send(res, 409, { error: 'Wait for the current trainer to exit' });
-    let body = '';
-    req.on('data', (chunk: Buffer) => {
-      body += chunk.toString();
-      if (body.length > 4096) req.destroy();
-    });
-    req.on('end', () => {
-      try {
-        const input = JSON.parse(body) as Record<string, unknown>;
-        const number = (key: string, min: number, max: number) => {
-          const value = input[key];
-          if (typeof value !== 'number' || !Number.isFinite(value) || value < min || value > max) {
-            throw new Error(`${key} must be between ${min} and ${max}`);
-          }
-          return value;
-        };
-        const days = number('days', 2, 240);
-        const total = number('timesteps', 32, 20000);
-        if (!Number.isInteger(total)) throw new Error('timesteps must be an integer');
-        run = { state: 'running', points: [], message: 'Starting Python trainer', config: { days, timesteps: total } };
-        rmSync(statusPath, { force: true });
-        pending = '';
-        child = spawn(pythonExecutable(), ['-u', 'scripts/train_ppo.py', '--live', '--days', String(days),
-          '--total-timesteps', String(total), '--rollout-steps', String(Math.min(64, total)), '--progress-interval', '8',
-          '--width', '14', '--height', '10', '--depth', '8', '--cells', '100', '--output-dir', 'outputs/rl'],
-        { cwd: process.cwd(), env: { ...process.env, OPENBLAS_NUM_THREADS: '1', OMP_NUM_THREADS: '1' } });
-        const processForRun = child;
-        processForRun.stdout.on('data', (chunk: Buffer) => {
-          if (child !== processForRun) return;
-          pending += chunk.toString();
-          const lines = pending.split('\n');
-          pending = lines.pop() ?? '';
-          for (const line of lines) {
-            if (!line.startsWith('RL_PROGRESS ')) continue;
-            try {
-              const event = JSON.parse(line.slice(12));
-              if (event.type === 'progress') {
-                run.points.push(event as Point);
-                if (run.points.length > 500) run.points.shift();
-                run.message = `Training: ${event.steps} / ${event.total} steps`;
-              } else if (event.type === 'stage') {
-                run.message = 'Testing PPO against fixed schedules on held-out seeds';
-              } else if (event.type === 'evaluation') {
-                run.evaluation = event.result;
-                run.message = 'Preparing PPO experiment view';
-              } else if (event.type === 'complete') {
-                run.checkpoint = event.checkpoint;
-              }
-            } catch { /* Ignore malformed progress lines; the process exit reports failure. */ }
-          }
-        });
-        let error = '';
-        processForRun.stderr.on('data', (chunk: Buffer) => { error = (error + chunk.toString()).slice(-2000); });
-        processForRun.on('error', (cause) => {
-          if (child !== processForRun) return;
-          run.state = 'failed'; run.message = cause.message; child = undefined;
-        });
-        processForRun.on('close', (code) => {
-          if (child !== processForRun) return;
-          if (run.state === 'running') {
-            run.state = code === 0 ? 'completed' : 'failed';
-            run.message = code === 0
-              ? 'Training complete'
-              : (explainTrainerFailure(error) || `Trainer exited with code ${code}`);
-            if (run.state === 'completed') {
-              mkdirSync(resolve('outputs/rl'), { recursive: true });
-              writeFileSync(statusPath, JSON.stringify(run));
-            }
-          }
-          child = undefined;
-        });
-        return send(res, 202, run);
-      } catch (cause) {
-        return send(res, 400, { error: cause instanceof Error ? cause.message : String(cause) });
-      }
-    });
-  };
-  return {
-    name: 'local-ppo-training',
-    configureServer(server: { middlewares: { use: typeof handler }; httpServer?: { on: (event: string, fn: () => void) => void } }) {
-      server.middlewares.use(handler);
-      server.httpServer?.on('close', () => child?.kill('SIGTERM'));
-    },
-  };
-}
-
-/**
- * The live two-way simulator (scripts/serve_live.py), started on demand.
- *
- * POST /api/live/start {policy?: string} spawns the Python WebSocket server once
- * (on port 8788) and answers with its address; GET /api/live/status reports it.
- * The same Python as the trainer, for the same reason.
- */
-function liveApi() {
-  let child: ChildProcessWithoutNullStreams | undefined;
-  let state: { state: 'idle' | 'starting' | 'running' | 'failed'; url: string; message: string; policy?: string } =
-    { state: 'idle', url: 'ws://localhost:8788', message: '' };
-  const send = (res: ServerResponse, code: number, body: unknown) => {
-    res.writeHead(code, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
-    res.end(JSON.stringify(body));
-  };
-  const handler = (req: IncomingMessage, res: ServerResponse, next: () => void) => {
-    if (!req.url?.startsWith('/api/live/')) return next();
-    if (req.method === 'GET' && req.url === '/api/live/status') return send(res, 200, state);
-    if (req.method !== 'POST' || req.url !== '/api/live/start') return send(res, 404, { error: 'Not found' });
+    if (req.method !== 'POST' || req.url !== '/api/ai/start') return send(res, 404, { error: 'Not found' });
+    if (child) return send(res, 409, { error: 'The agent is still training' });
     let body = '';
     req.on('data', (chunk: Buffer) => { body += chunk.toString(); if (body.length > 4096) req.destroy(); });
     req.on('end', () => {
-      let policy: string | undefined;
-      try {
-        const input = body ? JSON.parse(body) as { policy?: unknown } : {};
-        if (typeof input.policy === 'string' && /^[\w./-]+\.zip$/.test(input.policy) && !input.policy.includes('..')) policy = input.policy;
-      } catch { /* no options */ }
-      if (child && (state.state === 'running' || state.state === 'starting')) {
-        if (policy && policy !== state.policy) return send(res, 409, { ...state, error: `The live server is already running${state.policy ? ` with ${state.policy}` : ''}` });
-        return send(res, 200, state);
-      }
-      const args = ['-u', 'scripts/serve_live.py', '--port', '8788'];
-      if (policy && existsSync(resolve(process.cwd(), policy))) args.push('--policy', policy);
-      state = { state: 'starting', url: 'ws://localhost:8788', message: 'Starting the live simulator', policy };
-      const proc = spawn(pythonExecutable(), args, { cwd: process.cwd(), env: { ...process.env, OPENBLAS_NUM_THREADS: '1', OMP_NUM_THREADS: '1' } });
+      let input: Record<string, unknown> = {};
+      try { input = body ? JSON.parse(body) as Record<string, unknown> : {}; } catch { return send(res, 400, { error: 'Invalid JSON' }); }
+      const cancer = typeof input.cancer === 'string' && AI_CANCERS.includes(input.cancer) ? input.cancer : 'lung_egfr';
+      const seconds = typeof input.seconds === 'number' && Number.isFinite(input.seconds) ? Math.min(120, Math.max(5, input.seconds)) : 45;
+      status = { state: 'running', message: 'Waking the agent', cancer, seconds, startedAt: Date.now(), updates: [], showcases: [] };
+      pending = '';
+      const proc = spawn(pythonExecutable(),
+        ['-u', 'scripts/train_reinforce.py', '--live', '--cancer', cancer, '--seconds', String(seconds), '--output-dir', 'outputs/rl'],
+        { cwd: process.cwd(), env: { ...process.env, OPENBLAS_NUM_THREADS: '1', OMP_NUM_THREADS: '1' } });
       child = proc;
-      let error = '';
       proc.stdout.on('data', (chunk: Buffer) => {
-        if (child === proc && chunk.toString().includes('live simulator on')) state = { ...state, state: 'running', message: 'Live simulator running' };
+        if (child !== proc) return;
+        pending += chunk.toString();
+        const lines = pending.split('\n');
+        pending = lines.pop() ?? '';
+        for (const line of lines) {
+          if (!line.startsWith('RL_PROGRESS ')) continue;
+          try {
+            const event = JSON.parse(line.slice(12)) as { type: string; [key: string]: unknown };
+            if (event.type === 'start') {
+              status.start = event;
+              status.message = 'Practising';
+            } else if (event.type === 'update') {
+              status.updates.push(event);
+              if (status.updates.length > 400) status.updates.shift();
+              status.message = `Practising · ${event.episodes} runs · update ${event.update}`;
+            } else if (event.type === 'showcase') {
+              status.showcases.push(event);
+              if (status.showcases.length > 50) status.showcases.shift();
+            } else if (event.type === 'stage') {
+              status.message = 'Testing the learned pattern on tumours it never saw';
+            } else if (event.type === 'evaluation') {
+              status.evaluation = event.result;
+            }
+          } catch { /* a malformed line; the exit code reports real failures */ }
+        }
       });
+      let error = '';
       proc.stderr.on('data', (chunk: Buffer) => { error = (error + chunk.toString()).slice(-2000); });
-      proc.on('error', (cause) => { if (child === proc) { state = { ...state, state: 'failed', message: cause.message }; child = undefined; } });
+      proc.on('error', (cause) => {
+        if (child !== proc) return;
+        status.state = 'failed'; status.message = cause.message; child = undefined;
+      });
       proc.on('close', (code) => {
         if (child !== proc) return;
-        state = { ...state, state: code === 0 ? 'idle' : 'failed', message: code === 0 ? '' : (explainTrainerFailure(error) || `Live server exited with code ${code}`) };
+        if (status.state === 'running') {
+          status.state = code === 0 ? 'completed' : 'failed';
+          status.message = code === 0 ? 'Learned' : (explainTrainerFailure(error) || `Trainer exited with code ${code}`);
+        }
         child = undefined;
       });
-      return send(res, 202, state);
+      return send(res, 202, status);
     });
   };
   return {
-    name: 'local-live-simulator',
+    name: 'reinforce-ai',
     configureServer(server: { middlewares: { use: typeof handler }; httpServer?: { on: (event: string, fn: () => void) => void } }) {
       server.middlewares.use(handler);
       server.httpServer?.on('close', () => child?.kill('SIGTERM'));
@@ -211,7 +147,7 @@ function liveApi() {
 }
 
 export default defineConfig({
-  plugins: [trainingApi(), liveApi()],
+  plugins: [aiApi()],
   server: { port: 5173, open: false },
   build: { target: 'es2022', sourcemap: true },
   // rules.json / visuals.json are fetched at runtime from the project root so they

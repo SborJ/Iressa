@@ -88,6 +88,19 @@ class LiveSessionTest(unittest.TestCase):
         self.assertEqual(session.advance()["reading"], None)
 
 
+class PolicyLibraryTest(unittest.TestCase):
+    def test_policies_are_matched_to_the_session_s_action_set(self) -> None:
+        import tempfile
+        from pathlib import Path
+        from cancer_sim.live import PolicyLibrary
+        empty = PolicyLibrary(root=Path(tempfile.mkdtemp()))
+        session = small_session()
+        policy, name, reason = empty.for_session(session.env)
+        self.assertIsNone(policy)
+        self.assertIn("no trained policy", reason)
+        self.assertEqual(empty.candidates("breast_er_her2neg")[0].name, "ppo_breast_er_her2neg.zip")
+
+
 class LiveProtocolTest(unittest.TestCase):
     def test_websocket_round_trip(self) -> None:
         import asyncio
@@ -101,7 +114,9 @@ class LiveProtocolTest(unittest.TestCase):
         import serve_live
 
         async def run() -> dict:
-            server_task = asyncio.create_task(serve_live.serve("127.0.0.1", 8799, None, None))
+            import tempfile
+            empty = Path(tempfile.mkdtemp())   # no trained policies: the AI switch must be refused
+            server_task = asyncio.create_task(serve_live.serve("127.0.0.1", 8799, None, None, policy_root=empty))
             await asyncio.sleep(0.3)
             try:
                 async with websockets.connect("ws://127.0.0.1:8799", max_size=None) as ws:

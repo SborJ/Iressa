@@ -17,7 +17,6 @@ import {
   evidenceLevel, readingAfter, readingAt,
   type CloneReading, type MetricsRow, type RunMetrics, type RunProvenance,
 } from './runMetrics.js';
-import { RLTraining } from './rlTraining.js';
 
 /** Jargon, explained where it is used rather than in a glossary nobody opens. */
 const GLOSSARY: Record<string, string> = {
@@ -97,7 +96,6 @@ export interface PanelHandlers {
   onCopyState(): void;
   onExportFrame(): void;
   onExportParameters(): void;
-  onLoadPpoRun(url: string): void;
 }
 
 /**
@@ -151,7 +149,6 @@ export class Panel {
   private livingSpark = new Sparkline();
   private highlighted = -1;
   private lastView = '';
-  private rlTraining?: RLTraining;
 
   constructor(
     private root: HTMLElement,
@@ -304,9 +301,8 @@ export class Panel {
     this.controller.body.append(this.controllerBody, this.controllerNow);
     this.controller.node.hidden = true;
 
-    this.rlTraining = new RLTraining(handlers.onLoadPpoRun);
     this.root.append(
-      this.rlTraining.node, this.makeup.node, this.graph.node, this.deaths.node, this.chemistry.node,
+      this.makeup.node, this.graph.node, this.deaths.node, this.chemistry.node,
       this.controller.node, this.evidence.node, this.setup.node, this.about.node,
     );
 
@@ -330,7 +326,6 @@ export class Panel {
   }
 
   dispose(): void {
-    this.rlTraining?.dispose();
   }
 
   /* ---- resistance graph (section 62): the clone tree with live abundance and the control metrics ---- */

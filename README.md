@@ -85,30 +85,33 @@ bar (or with `?cancer=<id>`):
 The physics knows only clones, transitions, drugs and exposures; each cancer is
 one file in `cancer_sim/cancers/`. Recorded runs carry per-day evolutionary-control
 readings (`metrics.json`) that the viewer shows in its Resistance graph,
-Parameters & evidence and Controller panels and in the **treatment pattern**
-strip above the timeline (one row per drug, one cell per day, with each change
-narrated on hover); `?run=<folder>` opens another recording of the chosen
-cancer, such as a policy-driven one.
+Parameters & evidence and Controller panels; `?run=<folder>` opens another
+recording of the chosen cancer, such as a policy-driven one.
 
-### Live mode: set the treatment yourself, or let the policy
+### AI agent: a REINFORCE agent learning on the world view
 
-The **Recording / Live** switch in the top bar runs the calibrated Python engine
-live behind the 3D view. A treatment console appears under the view controls:
-one slider per drug, the model's preset combinations, and, when a trained
-policy is available, **Let the AI decide**. Changes apply from the next
-simulated day; a card narrates what happened each day ("switched the endocrine
-drug from endocrine suppression to fulvestrant 100%, kept palbociclib"), and
-the resistance graph and pattern strip update as the days arrive. Play, Pause,
-Step and the speed slider work as for a recording; the engine computes one day
-at a time as the viewer reaches it.
+The simulator works exactly as before until you press **AI agent** in the top
+bar. Then a panel offers a training budget (15–60 s) and **Start learning**: a
+lightweight REINFORCE agent (`cancer_sim/reinforce.py`, numpy only) practises
+on hundreds of simulated tumours of the cancer on screen, choosing one of a few
+regimens (`reinforce_actions` in the model file) every 10 days. Its policy is a
+linear softmax over scale-free features - tumour size relative to the start,
+the resistant share and each resistant clone's share, time, and the previous
+regimen - so its weights can be read.
 
-The dev server starts `scripts/serve_live.py` on demand. It needs a Python with
-this project's dependencies: a `.venv` in the repository, or `IRESSA_PYTHON`
-pointing at one (the same rule as PPO training). The server can also be run by
-hand (`python3 scripts/serve_live.py --policy outputs/rl_breast/ppo_breast.zip`).
-Session options go in the address: `?source=live&cancer=breast_er_her2neg&size=32&cells=600&days=120&seed=7&randomize=1&auto=1`.
-A live session is a research simulation of the model's represented drugs; it is
-not treatment advice. Every Python entry point takes the model:
+While it learns, the 3D world plays its latest practice run (recorded on a 3D
+tumour after each update), and the panel draws its "brain" (weights from what it
+looks at to what it chooses), what it now prefers, and the learning curve. At
+the end it plays the learned pattern on a tumour it never practised on, narrates
+it, and ranks it against the model's fixed strategies and every regimen held
+constant on held-out seeds.
+
+The dev server runs `scripts/train_reinforce.py` (behind `/api/ai/*`). It needs a
+Python with numpy: a `.venv` in the repository, or `IRESSA_PYTHON` pointing at
+one. From a terminal: `python3 scripts/train_reinforce.py --cancer lung_egfr --seconds 45`
+writes `outputs/rl/reinforce_<cancer>.json`. A learned pattern is what keeps this
+model's simulated tumour controlled with its represented drugs; it is not
+treatment advice. Every Python entry point takes the model:
 `ExperimentConfig(cancer=...)`, and `--cancer` on `scripts/export_iressa_run.py`,
 `scripts/train_ppo.py` and `scripts/evaluate_policy.py`; `scripts/run_breast_experiment.py`
 runs the evolutionary-therapy comparison and `scripts/run_ablations.py` the ablations. The breast model, its

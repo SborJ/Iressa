@@ -35,26 +35,34 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from cancer_sim.live import LiveRequest, LiveSession, load_policy  # noqa: E402
+from cancer_sim.live import LiveRequest, LiveSession, PolicyLibrary  # noqa: E402
 
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--host", default="127.0.0.1")
     p.add_argument("--port", type=int, default=8788)
-    p.add_argument("--policy", type=Path, default=None, help="Stable-Baselines3 PPO .zip offered as the session's AI")
+    p.add_argument("--policy", type=Path, default=None,
+                   help="an extra PPO .zip to try when outputs/rl/ppo_<cancer>.zip does not exist")
     p.add_argument("--policy-name", default=None)
     return p.parse_args()
 
 
-async def serve(host: str, port: int, policy_path: Path | None, policy_name: str | None) -> None:
+async def serve(host: str, port: int, policy_path: Path | None, policy_name: str | None, policy_root: Path = ROOT) -> None:
     try:
         import websockets
     except ImportError:  # pragma: no cover
         sys.exit("the live server needs `pip install websockets`")
 
-    policy, default_name = load_policy(policy_path)
-    name = policy_name or default_name
+    library = PolicyLibrary(root=policy_root, explicit=policy_path)
+
+    def build(request: LiveRequest) -> LiveSession:
+        session = LiveSession(request)
+        policy, found, reason = library.for_session(session.env)
+        session.policy = policy
+        session.policy_name = (policy_name or found) if policy else ""
+        session.no_policy_reason = reason
+        return session
 
     async def handler(ws):
         session: LiveSession | None = None
@@ -76,8 +84,8 @@ async def serve(host: str, port: int, policy_path: Path | None, policy_name: str
                 if kind == "start":
                     request = LiveRequest.from_json(msg)
                     # building a 3D session takes a moment; keep the event loop free
-                    session = await loop.run_in_executor(None, lambda: LiveSession(request, policy=policy, policy_name=name))
-                    if msg.get("auto") and policy is not None:
+                    session = await loop.run_in_executor(None, lambda: build(request))
+                    if msg.get("auto") and session.policy is not None:
                         session.set_auto(True)
                     await send_session_start(session)
                 elif session is None:
@@ -98,8 +106,8 @@ async def serve(host: str, port: int, policy_path: Path | None, policy_name: str
                 elif kind == "reset":
                     request = session.request
                     keep = (dict(session.exposures), session.auto)
-                    session = await loop.run_in_executor(None, lambda: LiveSession(request, policy=policy, policy_name=name))
-                    session.exposures, session.auto = keep
+                    session = await loop.run_in_executor(None, lambda: build(request))
+                    session.exposures, session.auto = keep[0], keep[1] and session.policy is not None
                     await send_session_start(session)
                 else:
                     await send_json({"type": "error", "message": f"unknown message type {kind!r}"})
@@ -107,7 +115,7 @@ async def serve(host: str, port: int, policy_path: Path | None, policy_name: str
                 await send_json({"type": "error", "message": str(exc)})
 
     async with websockets.serve(handler, host, port, max_size=None):
-        print(f"iressa live simulator on ws://{host}:{port}" + (f" with policy {name}" if policy else ""), flush=True)
+        print(f"iressa live simulator on ws://{host}:{port} (policies: outputs/rl/ppo_<cancer>.zip)", flush=True)
         await asyncio.Future()
 
 

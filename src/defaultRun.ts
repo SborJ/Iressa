@@ -38,28 +38,12 @@ export function defaultRun(q: URLSearchParams): string {
 /** The lung demo, for callers that only know one run. */
 export const DEFAULT_RUN = `/runs/${DEFAULT_CANCER.run}`;
 
-export type SourceKind = 'local' | 'socket' | 'file' | 'live';
+export type SourceKind = 'local' | 'socket' | 'file';
 
 export function sourceKind(q: URLSearchParams): SourceKind {
   const kind = q.get('source');
-  if (kind === 'local' || kind === 'socket' || kind === 'file' || kind === 'live') return kind;
+  if (kind === 'local' || kind === 'socket' || kind === 'file') return kind;
   return 'file';
-}
-
-/** The live simulator's WebSocket address: ?live=ws://host:port, else the dev server's default. */
-export function liveUrl(q: URLSearchParams): string {
-  const explicit = q.get('live');
-  if (explicit && /^wss?:\/\//.test(explicit)) return explicit;
-  return `ws://${location.hostname}:8788`;
-}
-
-/** The same page as a live session on the given cancer, or back to its recording. */
-export function liveModeUrl(live: boolean, q = new URLSearchParams(location.search)): string {
-  const next = new URLSearchParams(q);
-  for (const key of ['rules', 'events', 'keyframes', 'run']) next.delete(key);
-  if (live) next.set('source', 'live');
-  else next.delete('source');
-  return `${location.pathname}?${next.toString()}`;
 }
 
 /** True when the viewer should fall back to the default run's files. */
@@ -87,7 +71,7 @@ export function keyframesUrl(q: URLSearchParams): string | null {
 export function cancerUrl(id: string, q = new URLSearchParams(location.search)): string {
   const next = new URLSearchParams(q);
   for (const key of ['rules', 'events', 'keyframes', 'run']) next.delete(key);
-  if (next.get('source') !== 'live') next.delete('source');   // a live session stays live on the other cancer
+  next.delete('source');
   next.set('cancer', id);
   return `${location.pathname}?${next.toString()}`;
 }

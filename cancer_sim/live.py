@@ -93,6 +93,7 @@ class LiveSession:
     info: dict = field(init=False)
     day: int = 0
     ticks_per_day: int = field(init=False)
+    no_policy_reason: str | None = None
     _last_exposures: dict[str, float] | None = field(default=None, init=False)
     _finished: bool = field(default=False, init=False)
 
@@ -181,6 +182,7 @@ class LiveSession:
             "drugs": [{"id": d.id, "label": d.label, "exposure": d.exposure, "mechanism": d.mechanism} for d in self.model.drugs],
             "presets": self.presets(),
             "policy": self.policy_name or None,
+            "no_policy_reason": None if self.policy else self.no_policy_reason,
             "auto": self.auto,
             "exposures": dict(self.exposures),
             "days": self.env.max_steps,
@@ -317,3 +319,59 @@ def load_policy(path: str | Path | None) -> tuple[PolicyFn | None, str]:
     from stable_baselines3 import PPO
     from cancer_sim.rl_eval import ppo_policy
     return ppo_policy(PPO.load(str(path))), f"PPO ({Path(path).stem})"
+
+
+class PolicyLibrary:
+    """Finds the trained policy for a session's cancer and loads it once.
+
+    Looks for ``outputs/rl/ppo_<cancer>.zip`` (what the training panel writes),
+    then the older fixed paths, then an explicit ``--policy``. A file that has
+    changed on disk is reloaded, so a policy trained while the server runs
+    becomes the AI of the next session. A policy whose action or observation
+    space does not match the session (another cancer's) is skipped.
+    """
+
+    def __init__(self, root: Path = ROOT, explicit: Path | None = None) -> None:
+        self.root = root
+        self.explicit = explicit
+        self._cache: dict[Path, tuple[float, Any]] = {}
+
+    def candidates(self, cancer: str) -> list[Path]:
+        paths = [self.root / "outputs" / "rl" / f"ppo_{cancer}.zip"]
+        if cancer == "breast_er_her2neg":
+            paths.append(self.root / "outputs" / "rl_breast" / "ppo_breast.zip")
+        if cancer == "lung_egfr":
+            paths.append(self.root / "outputs" / "rl" / "ppo_iressa.zip")
+        if self.explicit:
+            paths.append(Path(self.explicit))
+        return paths
+
+    def _load(self, path: Path):
+        mtime = path.stat().st_mtime
+        cached = self._cache.get(path)
+        if cached and cached[0] == mtime:
+            return cached[1]
+        from stable_baselines3 import PPO
+        model = PPO.load(str(path), device="cpu")
+        self._cache[path] = (mtime, model)
+        return model
+
+    def for_session(self, env: CancerTreatmentEnv) -> tuple[PolicyFn | None, str, str | None]:
+        """(policy, display name, why none) for this session's environment."""
+        from cancer_sim.rl_eval import ppo_policy
+        skipped = []
+        for path in self.candidates(env.model.id):
+            if not path.exists():
+                continue
+            try:
+                model = self._load(path)
+            except Exception as exc:  # a corrupt or incompatible file must not stop the session
+                skipped.append(f"{path.name}: {exc}")
+                continue
+            actions = getattr(model.action_space, "n", None)
+            shape = tuple(getattr(model.observation_space, "shape", ()) or ())
+            if actions != len(env.action_table) or shape != (len(env.observation_names),):
+                skipped.append(f"{path.name} was trained for another action set")
+                continue
+            return ppo_policy(model), f"PPO ({path.stem})", None
+        return None, "", "; ".join(skipped) or "no trained policy for this cancer yet"

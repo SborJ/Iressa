@@ -24,10 +24,10 @@ async function fetchJson(url: string): Promise<unknown> {
  * viewed: it writes its own rules.json next to its events, and the viewer is
  * aimed at that one.
  */
-export async function loadData(rulesOverride?: unknown): Promise<LoadedData> {
+export async function loadData(): Promise<LoadedData> {
   const q = new URLSearchParams(location.search);
   const [rulesRaw, rulesSchema, visualsRaw, visualsSchema] = await Promise.all([
-    rulesOverride !== undefined ? Promise.resolve(rulesOverride) : fetchJson(rulesUrl(q)),
+    fetchJson(rulesUrl(q)),
     fetchJson('/schema/rules.schema.json'),
     fetchJson(q.get('visuals') ?? '/visuals.json'),
     fetchJson('/schema/visuals.schema.json'),

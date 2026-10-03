@@ -855,5 +855,29 @@
       ]
     ],
     "note": "Spec section 41: discrete exposure levels per agent. The mask allows at most one endocrine agent (aromatase inhibition or one SERD) at a time, which removes experimentally meaningless combinations; 5 x (1 + 3 x 4) = 65 actions."
-  }
+  },
+  "reinforce_actions": [
+    {},
+    {
+      "endocrine": 1.0,
+      "palbociclib": 1.0
+    },
+    {
+      "endocrine": 1.0,
+      "palbociclib": 0.5
+    },
+    {
+      "fulvestrant": 1.0,
+      "palbociclib": 1.0
+    },
+    {
+      "elacestrant": 1.0,
+      "palbociclib": 1.0
+    },
+    {
+      "elacestrant": 1.0,
+      "palbociclib": 0.5
+    }
+  ],
+  "reinforce_actions_note": "The regimens the fast REINFORCE trainer chooses between, every few days (cancer_sim/reinforce.py)."
 }

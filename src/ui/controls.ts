@@ -46,6 +46,7 @@ export class Controls {
     private visuals: Visuals,
     rules: ResolvedRules,
     private handlers: ControlHandlers,
+    initial: Partial<ControlState> = {},
   ) {
     this.state = {
       playing: true,
@@ -55,6 +56,7 @@ export class Controls {
       cutMode: 'octant',
       cutFraction: 0,
       presentation: false,
+      ...initial,
     };
 
     /* ---- imaging, in the top bar ---- */

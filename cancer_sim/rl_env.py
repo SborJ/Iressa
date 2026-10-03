@@ -198,6 +198,12 @@ class CancerTreatmentEnv(_gym_base()):
         if self.config.randomize:
             apply_domain(self.model, self._runner.automata, self.theta)
         self._runner.schedule = self._schedule
+        placed = self._runner.automata.living_cell_count()
+        if placed < 0.5 * experiment.cells:
+            raise ValueError(
+                f"the {experiment.width}x{experiment.height}x{experiment.depth} lattice holds only {placed} of the "
+                f"{experiment.cells} requested cells (vessels fill the rest); use a larger lattice or fewer cells"
+            )
         self._previous_eci = None
         self._last_eci_delta = 0.0
         self._toxic_days = 0
