@@ -56,6 +56,7 @@ body {
 #legend  { top: 14px; left: 266px; width: 210px; }
 #tally   { bottom: 14px; left: 14px; width: 282px; }
 #chart   { bottom: 14px; right: 14px; width: min(540px, calc(100vw - 330px)); }
+#chart.collapsed { width: auto; min-width: 250px; padding: 9px 12px; }
 
 #scale {
   position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
@@ -136,7 +137,10 @@ textarea.cmd {
 
 /* ---- chart ---- */
 .chart-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+#chart.collapsed .chart-head { margin-bottom: 0; }
 .chart-head h2 { margin: 0; }
+.chart-actions { gap: 4px; }
+.chart-actions button { min-width: 48px; }
 #chart svg { display: block; width: 100%; height: 150px; overflow: visible; }
 .axis text { fill: var(--text-muted); font-size: 10px; font-family: var(--mono); }
 .axis line, .axis path { stroke: var(--border); }
@@ -187,6 +191,7 @@ table.data td { text-align: right; padding: 2px 5px; color: var(--text-secondary
 @media (max-width: 1400px) { #legend { display: none; } }
 @media (max-width: 1100px) {
   #chart { width: calc(100vw - 28px); left: 14px; right: 14px; }
+  #chart.collapsed { width: auto; left: auto; min-width: 250px; }
   #tally { display: none; }
 }
 </style>

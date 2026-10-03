@@ -23,8 +23,11 @@ export class CauseChart {
   private tableWrap = el('div', { class: 'table-wrap' });
   private legend = el('div', { class: 'chart-legend' });
   private toggle = el('button', { class: 'toggle', type: 'button' });
+  private collapse = el('button', { class: 'toggle', type: 'button' });
+  private content = el('div', { class: 'chart-content' });
   private svgRoot = svg('svg') as SVGSVGElement;
   private tip = el('div');
+  private collapsed = true;
   private showTable = false;
   private width = 520;
   private height = 150;
@@ -49,6 +52,11 @@ export class CauseChart {
       this.tableWrap.hidden = !this.showTable;
       this.render();
     });
+    this.collapse.textContent = 'Expand';
+    this.collapse.addEventListener('click', () => {
+      this.collapsed = !this.collapsed;
+      this.syncCollapsed();
+    });
 
     this.tip.style.cssText =
       'position:absolute;pointer-events:none;display:none;z-index:5;background:var(--surface-2);' +
@@ -58,15 +66,15 @@ export class CauseChart {
     this.plot.append(this.svgRoot, this.tip);
     this.tableWrap.hidden = true;
 
+    this.content.append(this.plot, this.tableWrap, this.legend);
     this.root.replaceChildren(
       el('div', { class: 'chart-head' }, [
         el('h2', { text: 'Deaths by cause over time' }),
-        this.toggle,
+        el('div', { class: 'btnrow chart-actions' }, [this.toggle, this.collapse]),
       ]),
-      this.plot,
-      this.tableWrap,
-      this.legend,
+      this.content,
     );
+    this.syncCollapsed();
 
     this.renderLegend();
     this.svgRoot.addEventListener('pointermove', (ev) => this.onMove(ev));
@@ -117,6 +125,14 @@ export class CauseChart {
   update(stats: CauseStats): void {
     this.latest = stats;
     this.render();
+  }
+
+  private syncCollapsed(): void {
+    this.root.classList.toggle('collapsed', this.collapsed);
+    this.content.hidden = this.collapsed;
+    this.toggle.hidden = this.collapsed;
+    this.collapse.textContent = this.collapsed ? 'Expand' : 'Hide';
+    if (!this.collapsed) this.render();
   }
 
   private xOf(tick: number, innerW: number): number {
