@@ -1,0 +1,27 @@
+{
+  "frozen_at": "2026-10-03T14:19:31+00:00",
+  "note": "Phase 1 validated engine. Any change to these files requires re-running the validation suite and updating this manifest deliberately.",
+  "files": {
+    "cancer_sim/automata.py": "7c90f4c8163d334ee5706f9fbe070b13f18bab158df0bb05e3d69729aa3f626c",
+    "cancer_sim/fields.py": "4a6361a10cccfddf2164a34373bc71f2446c5d28ddb7c6a23b722a8220e86cd9",
+    "cancer_sim/world.py": "72a1e6de7046a07fb7b4fdc913d861c81d75e7348c997bfd4c8fd6b5320b6f2c",
+    "cancer_sim/world_seed.py": "c2cbeae48ceee722b0e4588bbb21b8bf0ee054aae0a8376979b542e1bde0ea4b",
+    "cancer_sim/simulation.py": "a0cd9387e151f62909a53cafbaa2f30a6fd45bab35da481879baeda19c53ee73",
+    "cancer_sim/experiments.py": "82a0fc426cfd0c217d80f32475092599f4ee7aef3d4644266b2f4fcf4f242505",
+    "cancer_sim/vasculature.py": "99fe84e61ea9a30c2caf9b509924895edd7edb5a3cb0f48c7de77e4db229df73",
+    "cancer_sim/calibration/clones.py": "c3c89ada6089c822afa79f1ec3eabbe7831d27fc817d0ca88e09fe5996029fe6",
+    "cancer_sim/calibration/targets.py": "3a98aa0ff3e0328ef1d301afbf647356a92b01ced86e63d008c9b02a9065b198",
+    "cancer_sim/calibration/pipeline.py": "898e838d64cc198a58efab50701f44d52e9383ae0923b99f043f2867ddee8df0",
+    "cancer_sim/calibration/validation.py": "009eb7720541eddb201cd17157393157ed49df4a7d3ce6987ff0b25f040609d0",
+    "cancer_sim/calibration/ingest/gdsc.py": "c8e3cbe2774e841d03f8998702f7dc3f69bf9bc499a0796966f9bc2be48e61bf",
+    "cancer_sim/calibration/ingest/passports.py": "e67cd1850fc165415378a9ec46db1ac8e3d61c1f6f92dc54edca877f3bbd6a59",
+    "cancer_sim/calibration/ingest/civic.py": "985d64a1e5c88bc2c7712415ac7389f88c9df572f532c66a55b30c95f05608f5",
+    "cancer_sim/calibration/ingest/cbioportal.py": "d4ba94e075b3128afeacd03517b359a96febd680bd322d95e2a931af87507120",
+    "data/curated/egfr_resistance_seed.json": "85236ef1aea6c2ad9aa7f04d2f6f1d95ffbaa322f1024963a1c2a9052a3982de",
+    "data/config/physics_calibration.json": "a7e081ffae518f21b081e0f859171d50afcb77c9d0e575bb614a5be9c6b48240",
+    "data/processed/calibrated_clone_parameters.json": "9f3dc3c90d7d0974ef04fd3a58f2f7854db0f12e7fc5c25f94dc8e3f84120315",
+    "data/processed/resistance_graph.json": "753279aa516bdbb8f473ffbeb01a035ab9e349d3d8cb7712ec134b17b7d47aa2",
+    "data/processed/physics_calibration.json": "b6c4579d8dadd624abf161bfc8cccdf70ebb1454286666e6453c038b3ce4bd90",
+    "data/raw/cell_model_passports_mutations.csv": "743df2a5e1260531128c14e977c42e79fe3298a14fef9f78ee3b1706a1e580c2"
+  }
+}
