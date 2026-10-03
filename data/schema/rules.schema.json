@@ -505,6 +505,10 @@
                 }
               }
             }
+          },
+          "provenance": {
+            "type": "object",
+            "description": "Where the numbers came from (measured / literature_derived / inferred / assumed). Written by an external simulation; not read by the viewer."
           }
         }
       }
@@ -575,6 +579,10 @@
                 }
               }
             }
+          },
+          "provenance": {
+            "type": "object",
+            "description": "Where the numbers came from (measured / literature_derived / inferred / assumed). Written by an external simulation; not read by the viewer."
           }
         }
       }
@@ -780,8 +788,65 @@
           "maximum": 1,
           "default": 1,
           "description": "Fraction of the plasma concentration that reaches a lumen voxel."
+        },
+        "segments": {
+          "type": "array",
+          "description": "Explicit vessel segments supplied by an external simulation (voxel coordinates). When present the viewer rasterises these instead of growing a tree.",
+          "items": {
+            "type": "object",
+            "required": [
+              "ax",
+              "ay",
+              "az",
+              "bx",
+              "by",
+              "bz",
+              "ra",
+              "rb",
+              "depth",
+              "parent"
+            ],
+            "properties": {
+              "ax": {
+                "type": "number"
+              },
+              "ay": {
+                "type": "number"
+              },
+              "az": {
+                "type": "number"
+              },
+              "bx": {
+                "type": "number"
+              },
+              "by": {
+                "type": "number"
+              },
+              "bz": {
+                "type": "number"
+              },
+              "ra": {
+                "type": "number"
+              },
+              "rb": {
+                "type": "number"
+              },
+              "depth": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "parent": {
+                "type": "integer",
+                "minimum": -1
+              }
+            }
+          }
         }
       }
+    },
+    "provenance": {
+      "type": "object",
+      "description": "Where the numbers came from (measured / literature_derived / inferred / assumed). Written by an external simulation; not read by the viewer."
     }
   }
 }

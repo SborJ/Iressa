@@ -47,7 +47,10 @@ async function makeSource(data: Awaited<ReturnType<typeof loadData>>): Promise<S
   const kind = q.get('source') ?? 'local';
 
   if (kind === 'socket') {
-    const url = q.get('url') ?? `ws://${location.hostname}:8787`;
+    // The Vite dev server returns 403 for query strings containing a ws:// URL, so the
+    // stream address may also be given as ?host=…&port=… and is assembled here.
+    let url = q.get('url') ?? `ws://${q.get('host') ?? location.hostname}:${q.get('port') ?? '8787'}`;
+    if (!/^wss?:\/\//.test(url)) url = `ws://${url}`;
     const source = new SocketSource(data.rules, url);
     await source.connect();
     return source;

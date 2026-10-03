@@ -1,6 +1,6 @@
 import type { Grid } from './grid.js';
 import { mulberry32 } from './rng.js';
-import type { RulesFile } from './rules.js';
+import type { RulesFile, VasculatureSpec } from './rules.js';
 
 /**
  * A vascular tree, grown from rules.json.
@@ -76,6 +76,15 @@ function rotateAbout(
 export function growVasculature(rules: RulesFile, grid: Grid): Vasculature | undefined {
   const spec = rules.vasculature;
   if (!spec) return undefined;
+
+  /* A run produced by an external simulation (the Python engine) carries the
+     network it perfused as explicit segments. Rasterising those with the same
+     stamp below guarantees the tubes drawn are the voxels that were perfused,
+     whatever random generator grew them. */
+  if (spec.segments && spec.segments.length) {
+    const segments: VesselSegment[] = spec.segments.map((s) => ({ ...s }));
+    return rasterise(segments, spec, grid);
+  }
 
   const murray = spec.murrayExponent ?? 3;
   const rng = mulberry32((rules.seed ^ 0x5bf03635) >>> 0);
@@ -206,7 +215,11 @@ export function growVasculature(rules: RulesFile, grid: Grid): Vasculature | und
     segments[i].rb = childRadius.get(i) ?? segments[i].ra * 0.8;
   }
 
-  /* Rasterise: lumen, then a wall shell around it. */
+  return rasterise(segments, spec, grid);
+}
+
+/** Rasterise segments: walls (2) first, lumen (1) second, so lumen wins where they meet. */
+function rasterise(segments: VesselSegment[], spec: VasculatureSpec, grid: Grid): Vasculature {
   const mask = new Uint8Array(grid.count);
   const stamp = (x: number, y: number, z: number, r: number, value: number) => {
     const r2 = r * r;

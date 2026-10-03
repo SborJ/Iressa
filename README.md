@@ -13,10 +13,26 @@ streaming the same records. Nothing downstream changes when that happens.
 ```
 npm install
 npm run dev          # http://localhost:5173
-npm test             # 53 tests
+npm test             # viewer tests
 npm run sim          # the stand-in simulator, headless, with a cause breakdown
 npm run record       # write run.events + run.keyframes for replay
 ```
+
+## The calibrated Python engine
+
+`cancer_sim/` is the validated EGFR-resistance engine (GDSC/Cell Model Passports/CIViC-calibrated
+clones, oxygen and drug fields, division, mutation on division, treatment schedules). It writes
+runs in this viewer's format:
+
+```
+pip install -r requirements.txt
+python3 scripts/export_iressa_run.py --name demo48 --schedule gefitinib-osimertinib --size 48 --days 60
+npm run dev   # then open the URL the exporter prints
+python3 -m pytest -q          # engine, calibration and export tests
+```
+
+See `docs/validation/VIEWER_INTEGRATION.md` (how the two halves connect) and
+`docs/validation/VALIDATION_REPORT.md` (what was audited and fixed in the engine).
 
 ## What you see
 

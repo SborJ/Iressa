@@ -101,6 +101,12 @@ export interface VasculatureSpec {
   wallThicknessVoxels: number;
   oxygenSupply?: number;
   drugSupplyFraction?: number;
+  /** Explicit network from an external simulation; when present, growth is skipped. */
+  segments?: {
+    ax: number; ay: number; az: number;
+    bx: number; by: number; bz: number;
+    ra: number; rb: number; depth: number; parent: number;
+  }[];
 }
 
 export interface RulesFile {
