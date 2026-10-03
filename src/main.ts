@@ -1,3 +1,7 @@
+import { mountAccount } from './auth/accountMenu.js';
+import { authService } from './auth/authService.js';
+import type { AuthUser } from './auth/authTypes.js';
+import { AuthView } from './auth/authView.js';
 import { loadData, describeLoadError } from './data.js';
 import { Viewer } from './render/viewer.js';
 import { FileSource } from './source/fileSource.js';
@@ -97,7 +101,7 @@ function shortDescription(text: string): string {
   return first.length > 2 ? first.charAt(0).toLowerCase() + first.slice(1) : text;
 }
 
-async function start(): Promise<void> {
+async function startSimulator(): Promise<void> {
   const data = await loadData();
   const { rules, visuals } = data;
   let source = await makeSource(data);
@@ -308,4 +312,73 @@ async function start(): Promise<void> {
   ]);
 }
 
-start().catch(showError);
+/* ── access ────────────────────────────────────────────────────────────────
+   The simulator is only constructed once a session exists: nothing of it
+   (no WebGL context, no data fetch) runs for a signed-out visitor, and the
+   page shows the auth screen rather than flashing the scene first.
+
+   This gate is the experience, not the security boundary: the static assets
+   are still served to anyone. Data that must be private lives in Supabase
+   behind row level security. */
+
+let simulatorStarted = false;
+let leaving = false;
+
+/**
+ * Leaves the simulator for the sign-in screen. The renderer has no teardown
+ * path, so a fresh page load is the one way to guarantee the running
+ * simulation, its GPU context and its in-memory state are all gone.
+ */
+function leaveSimulator(): void {
+  if (leaving) return;
+  leaving = true;
+  window.location.replace(authService.signedOutUrl());
+}
+
+async function enterSimulator(view: AuthView, user: AuthUser): Promise<void> {
+  if (simulatorStarted) return;
+  simulatorStarted = true;
+  authService.clearAuthParams();
+  view.hide();
+  mountAccount(document.getElementById('account')!, user, async () => {
+    await authService.signOut();
+    leaveSimulator();
+  });
+  // Visible before the viewer is built: it sizes itself from the canvas.
+  document.body.dataset.auth = 'in';
+  await startSimulator();
+}
+
+async function bootstrap(): Promise<void> {
+  const view: AuthView = new AuthView(document.getElementById('auth')!, authService, {
+    onAuthenticated: (user) => void enterSimulator(view, user).catch(showError),
+  });
+  if (authService.configProblem) {
+    view.showConfigProblem(authService.configProblem);
+    return;
+  }
+  view.showLoading();
+
+  authService.subscribeToAuthChanges((change, user) => {
+    if (change === 'signed-out' && simulatorStarted) leaveSimulator();
+    else if (change === 'password-recovery' && !simulatorStarted) view.show('recovery');
+    else if (change === 'signed-in' && user && !simulatorStarted && view.acceptsExternalSignIn()) {
+      // Signed in from another tab, or confirmed the email elsewhere.
+      void enterSimulator(view, user).catch(showError);
+    }
+  });
+
+  const user = await authService.getSession();
+  if (user && authService.isRecovery()) {
+    view.show('recovery');
+    return;
+  }
+  if (user) {
+    await enterSimulator(view, user);
+    return;
+  }
+  view.showInitial(authService.intent);
+  authService.clearAuthParams();
+}
+
+bootstrap().catch(showError);

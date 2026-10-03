@@ -11,9 +11,11 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "sim": "tsx scripts/run-sim.ts",
-    "record": "tsx scripts/record-run.ts"
+    "record": "tsx scripts/record-run.ts",
+    "setup:orcid": "node scripts/setup-orcid-provider.mjs"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.117.2",
     "ajv": "^8.17.1",
     "motion": "^14.0.0",
     "three": "^0.170.0"
