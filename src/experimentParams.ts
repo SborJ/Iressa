@@ -1,4 +1,5 @@
-import type { RulesFile } from './sim/rules.js';
+import { approxMgPerDose, DOSE_LIMITS, maxSafeAmount } from './doseLimits.js';
+import type { DrugSpec, RulesFile } from './sim/rules.js';
 
 export type ExperimentSchedule =
   | 'none'
@@ -69,13 +70,54 @@ export function applyLocalExperimentOverrides(raw: RulesFile, params: Experiment
   if (rules.vasculature) rules.vasculature.oxygenSupply = params.oxygenSupply;
   rules.treatment = {
     ...(rules.treatment ?? {}),
-    schedule: localTreatmentSchedule(params, rules),
+    schedule: capToHumanMaximum(localTreatmentSchedule(params, rules), rules),
   };
   return rules;
 }
 
 export function oxygenPreset(mode: OxygenMode): Pick<ExperimentParams, 'oxygenSupply' | 'oxygenUptake'> {
   return OXYGEN_PRESETS[mode];
+}
+
+type Schedule = NonNullable<RulesFile['treatment']>['schedule'];
+
+/**
+ * Every dose held at or below the most of that drug people have been given
+ * (doseLimits.ts). The requested dose is a single number shared by both drugs
+ * of a switch, and each drug has its own ceiling, so the cap is per entry.
+ */
+export function capToHumanMaximum(schedule: Schedule, rules: RulesFile): Schedule {
+  return (schedule ?? []).map((s) => {
+    const drug = rules.drugs?.find((d) => d.id === s.drug);
+    if (!drug) return s;
+    return { ...s, amount: Math.min(s.amount, maxSafeAmount(rules, drug, s.everyHours)) };
+  });
+}
+
+export interface DoseReport {
+  drug: DrugSpec;
+  everyHours: number;
+  requested: number;
+  applied: number;
+  /** Roughly what `applied` is in mg per dose, when the drug's limits are known. */
+  mg?: number;
+  capped: boolean;
+}
+
+/** What each drug of the experiment will actually be given, for the panel to state. */
+export function doseReport(params: ExperimentParams, rules: RulesFile): DoseReport[] {
+  const out: DoseReport[] = [];
+  for (const s of localTreatmentSchedule(params, rules) ?? []) {
+    const drug = rules.drugs?.find((d) => d.id === s.drug);
+    if (!drug || out.some((r) => r.drug.id === drug.id)) continue;
+    const applied = Math.min(s.amount, maxSafeAmount(rules, drug, s.everyHours));
+    out.push({
+      drug, everyHours: s.everyHours, requested: s.amount, applied,
+      mg: DOSE_LIMITS[drug.name] ? approxMgPerDose(rules, drug, applied) : undefined,
+      capped: applied < s.amount - 1e-9,
+    });
+  }
+  return out;
 }
 
 function localTreatmentSchedule(params: ExperimentParams, rules: RulesFile): NonNullable<RulesFile['treatment']>['schedule'] {

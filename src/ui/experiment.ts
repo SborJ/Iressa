@@ -1,4 +1,6 @@
+import { DOSE_LIMITS } from '../doseLimits.js';
 import {
+  doseReport,
   experimentParamsFromQuery,
   MAX_DAYS,
   oxygenPreset,
@@ -54,6 +56,7 @@ export class ExperimentPanel {
   private supply: Slider;
   private uptake: Slider;
   private scheduleNote = el('p', { class: 'note' });
+  private doseNote = el('p', { class: 'note' });
   private oxygenNote = el('p', { class: 'note' });
   private switchWrap: HTMLElement;
   private dirty = false;
@@ -152,6 +155,7 @@ export class ExperimentPanel {
 
     this.node = el('div', {}, [
       el('div', { class: 'grid2' }, [this.days.node, this.dose.node]),
+      this.doseNote,
       el('div', { style: 'margin-top:var(--s4)' }, [this.scheduleChoice.node]),
       this.scheduleNote,
       el('div', { style: 'margin-top:var(--s3)' }, [this.switchWrap]),
@@ -219,6 +223,32 @@ export class ExperimentPanel {
     this.switchWrap.hidden = this.params.schedule !== 'gefitinib-osimertinib';
     const noDrug = this.params.schedule === 'none' || this.params.dose <= 0;
     this.dose.node.classList.toggle('dim', noDrug && this.params.schedule !== 'none');
+    this.syncDoseNote(noDrug);
+  }
+
+  /**
+   * The dose in milligrams, and whether it was held back.
+   *
+   * Each drug is capped at the most people have been given (doseLimits.ts), so
+   * the number typed is a request; this says what each drug actually gets.
+   */
+  private syncDoseNote(noDrug: boolean): void {
+    const reports = noDrug ? [] : doseReport(this.params, this.rules.raw);
+    const every = (h: number) => (h === 24 ? '/day' : h % 24 === 0 ? ` every ${h / 24} days` : ` every ${h} h`);
+    const parts = reports.map((r) => {
+      const name = r.drug.displayName ?? r.drug.name;
+      const mg = r.mg !== undefined ? ` ≈ ${Math.round(r.mg / 10) * 10} mg${every(r.everyHours)}` : '';
+      return r.capped
+        ? `${name} held at ${r.applied.toFixed(2)}${mg} — the most people have been given.`
+        : `${name}${mg}.`;
+    });
+    this.doseNote.textContent = parts.join(' ');
+    this.doseNote.hidden = parts.length === 0;
+    this.doseNote.classList.toggle('warn', reports.some((r) => r.capped));
+    this.doseNote.title = reports
+      .map((r) => DOSE_LIMITS[r.drug.name]?.basis)
+      .filter(Boolean)
+      .join('\n\n');
   }
 
   private syncRun(): void {
