@@ -1,17 +1,20 @@
 import { loadData, describeLoadError } from './data.js';
 import { Viewer } from './render/viewer.js';
 import { FileSource } from './source/fileSource.js';
-import { eventsUrl, keyframesUrl, sourceKind } from './defaultRun.js';
+import { eventsUrl, keyframesUrl, rulesUrl, sourceKind } from './defaultRun.js';
 import { LocalSimSource } from './source/localSim.js';
 import { SocketSource } from './source/socketSource.js';
 import type { SimulationSource } from './source/types.js';
-import { Controls } from './ui/controls.js';
+import { Card, ScaleBar } from './ui/card.js';
 import { CauseChart } from './ui/causeChart.js';
-import { CauseTally } from './ui/causeTally.js';
-import { HoverCard } from './ui/hoverCard.js';
-import { Legend } from './ui/legend.js';
-import { ScaleBar } from './ui/scaleBar.js';
-import { StatusPanel } from './ui/statusPanel.js';
+import { Controls } from './ui/controls.js';
+import { copyText, downloadText, FrameCapture } from './ui/exporters.js';
+import { Headline, StageTags } from './ui/headline.js';
+import { History } from './ui/history.js';
+import { Narrative } from './ui/narrative.js';
+import { Panel } from './ui/panel.js';
+import { bindShortcuts } from './ui/shortcuts.js';
+import { Timeline } from './ui/timeline.js';
 import { CauseStats } from './world/causeStats.js';
 import { World } from './world/world.js';
 
@@ -72,6 +75,27 @@ async function makeSource(data: Awaited<ReturnType<typeof loadData>>): Promise<S
   return new LocalSimSource(data.rules);
 }
 
+/**
+ * How far back the default view sits, as a multiple of the renderer's own
+ * framing distance. Above 1 the specimen has room around it and reads as a
+ * sample rather than as a wall of cells.
+ */
+const STAND_OFF = 1.35;
+
+/** Frames the tumour, then stands back so it is not filling the frame. */
+function frameWithRoom(viewer: Viewer): void {
+  viewer.frameTumour();
+  const target = viewer.controls.target;
+  viewer.camera.position.sub(target).multiplyScalar(STAND_OFF).add(target);
+  viewer.controls.update();
+}
+
+/** The first clause of a view's own description, for the stage label. */
+function shortDescription(text: string): string {
+  const first = (text.split(/[:.]/)[0] ?? '').trim();
+  return first.length > 2 ? first.charAt(0).toLowerCase() + first.slice(1) : text;
+}
+
 async function start(): Promise<void> {
   const data = await loadData();
   const { rules, visuals } = data;
@@ -82,12 +106,17 @@ async function start(): Promise<void> {
   const canvas = document.getElementById('scene') as HTMLCanvasElement;
   const viewer = new Viewer(canvas, world, visuals, rules);
 
-  const status = new StatusPanel(document.getElementById('status')!, rules, visuals, source.kind);
-  const tally = new CauseTally(document.getElementById('tally')!, rules, visuals);
-  const chart = new CauseChart(document.getElementById('chart')!, rules, visuals);
-  const hover = new HoverCard(document.getElementById('hover')!, rules, visuals);
-  const legend = new Legend(document.getElementById('legend')!, rules, visuals);
-  const scaleBar = new ScaleBar(document.getElementById('scale')!, rules.raw.grid.voxelMicrons);
+  const q = new URLSearchParams(location.search);
+  const sourceLabel = rulesUrl(q).split('/').pop() ?? 'rules.json';
+  const history = new History(rules);
+  const narrative = new Narrative(rules);
+  const capture = new FrameCapture();
+
+  const panelRoot = document.getElementById('panel')!;
+  const headline = new Headline(document.getElementById('headline')!);
+  const stageTags = new StageTags(document.getElementById('stagetop')!);
+  const card = new Card(document.getElementById('card')!, rules, visuals, narrative);
+  const scaleBar = new ScaleBar(document.getElementById('scalebar')!, rules.raw.grid.voxelMicrons);
 
   const subscribe = (s: SimulationSource) =>
     s.onPacket((packet) => {
@@ -96,37 +125,94 @@ async function start(): Promise<void> {
     });
   let unsubscribe = subscribe(source);
 
-  const controls = new Controls(document.getElementById('controls')!, visuals, {
+  const resetRun = () => {
+    unsubscribe();
+    source.reset?.();
+    world.clear();
+    world.tick = 0;
+    stats.reset();
+    history.reset();
+    viewer.displayTick = 0;
+    unsubscribe = subscribe(source);
+    source.pump(1);
+    viewer.markDirty();
+  };
+
+  /* The imaging switch belongs in the top bar, because it changes what the
+     whole screen is; everything that shapes the view sits under the hero. */
+  const controlsHost = document.createElement('div');
+  const controls = new Controls(controlsHost, visuals, {
     onChange: (state, changed) => {
-      if (changed === 'view' || changed === 'init') {
-        viewer.applyView(state.view);
-        legend.update(state.view);
-      }
+      if (changed === 'view' || changed === 'init') viewer.applyView(state.view);
       if (changed === 'colorBy' || changed === 'view') viewer.setColorBy(state.colorBy);
       if (changed === 'cutMode' || changed === 'cutFraction' || changed === 'init') {
         viewer.setCut(state.cutMode, state.cutFraction);
       }
+      if (changed === 'cutMode') frameWithRoom(viewer);
+      if (changed === 'playing') timeline.setPlaying(state.playing);
       viewer.presentation = state.presentation;
     },
     onStep: () => source.pump(1),
-    onFrame: () => viewer.frameTumour(),
-    onReset: () => {
-      unsubscribe();
-      source.reset?.();
-      world.clear();
-      world.tick = 0;
-      stats.reset();
-      viewer.displayTick = 0;
-      unsubscribe = subscribe(source);
-      source.pump(1);
-      viewer.markDirty();
-    },
+    onFrame: () => frameWithRoom(viewer),
+    onReset: () => resetRun(),
   });
+  document.getElementById('viewswitch')!.replaceWith(controls.viewSwitch);
+  controls.viewSwitch.id = 'viewswitch';
+
+  const chartHost = document.createElement('div');
+  chartHost.id = 'chart';
+  const chart = new CauseChart(chartHost, rules, visuals);
+
+  const panel = new Panel(panelRoot, rules, visuals, narrative, {
+    onHighlightCause: (causeId) => {
+      chart.setHighlight(causeId);
+      panel.setHighlight(causeId);
+    },
+    onCopyState: () => {
+      const st = controls.state;
+      void copyText(
+        JSON.stringify(
+          {
+            tick: world.tick,
+            day: (world.tick * rules.hoursPerTick) / 24,
+            seed: rules.raw.seed,
+            rules: sourceLabel,
+            source: source.kind,
+            view: st.view,
+            colorBy: st.colorBy,
+            cut: { mode: st.cutMode, fraction: st.cutFraction },
+            camera: {
+              position: viewer.camera.position.toArray(),
+              target: viewer.controls.target.toArray(),
+            },
+            counts: history.latest && {
+              living: history.latest.living,
+              dying: history.latest.dying,
+              byClone: Object.fromEntries(history.latest.byClone),
+            },
+          },
+          null,
+          2,
+        ),
+      );
+    },
+    onExportFrame: () => capture.request(),
+    onExportParameters: () =>
+      downloadText(`iressa-parameters-${rules.raw.seed}.json`, JSON.stringify(rules.raw, null, 2)),
+  });
+  // Controls under the hero; the chart inside the question it answers.
+  panelRoot.insertBefore(controlsHost, panelRoot.children[1] ?? null);
+  panel.appendChart(chartHost);
+
+  const timeline = new Timeline(document.getElementById('timeline')!, rules, narrative, {
+    onTogglePlay: () => controls.togglePlay(),
+  });
+  timeline.setPlaying(controls.state.playing);
+
   viewer.applyView(controls.state.view);
   viewer.setColorBy(controls.state.colorBy);
   viewer.setCut(controls.state.cutMode, controls.state.cutFraction);
-  legend.update(controls.state.view);
-
+  bindShortcuts(controls, { onFrame: () => frameWithRoom(viewer), onReset: () => resetRun() });
 
   /* --- hover: pick on the next frame, not on every pointer event --- */
   let pointer: { x: number; y: number } | undefined;
@@ -135,7 +221,7 @@ async function start(): Promise<void> {
   });
   canvas.addEventListener('pointerleave', () => {
     pointer = undefined;
-    hover.hide();
+    card.hide();
   });
 
   /* --- the loop --- */
@@ -162,9 +248,12 @@ async function start(): Promise<void> {
       // Never let the debt grow without bound when the simulation cannot keep up.
       if (tickDebt > controls.state.ticksPerSecond) tickDebt = 0;
     }
-    if (source.done) controls.setPlaying(false);
+    if (source.done) {
+      controls.setPlaying(false);
+      timeline.setPlaying(false);
+    }
     if (!framed && world.count > 0) {
-      viewer.frameTumour();
+      frameWithRoom(viewer);
       framed = true;
     }
 
@@ -177,15 +266,28 @@ async function start(): Promise<void> {
       nextPick = now + PICK_INTERVAL_MS;
       const node = viewer.pick(pointer.x, pointer.y);
       const slot = node >= 0 ? world.slotForNode(node) : -1;
-      if (slot >= 0) hover.show(pointer.x, pointer.y, world, slot, source.probe?.(node) ?? []);
-      else hover.hide();
+      if (slot >= 0) card.show(pointer.x, pointer.y, world, slot, source.probe?.(node) ?? [], source);
+      else card.hide();
     }
+
+    // The drawing buffer is only valid inside the frame that produced it.
+    capture.take(canvas, `day${((world.tick * rules.hoursPerTick) / 24).toFixed(1)}-${controls.state.view}`);
 
     if (now >= nextUiUpdate) {
       nextUiUpdate = now + 200;
-      status.update(world, source, frameStats);
-      tally.update(stats);
+      const counts = history.record(world, source);
+      const story = narrative.read(counts, history, world.tick);
+      headline.update(story);
       scaleBar.update(viewer.worldPerPixel());
+      panel.update(source, history, stats, frameStats, controls.state.view, story);
+      timeline.update(world.tick, history);
+      const view = visuals.view(controls.state.view);
+      stageTags.update({
+        viewLabel: view.label,
+        description: shortDescription(view.description ?? ''),
+        cutMode: controls.state.cutMode,
+        colorBy: controls.state.colorBy,
+      });
     }
     if (now >= nextChartUpdate) {
       nextChartUpdate = now + 500;

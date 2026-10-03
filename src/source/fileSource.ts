@@ -49,6 +49,20 @@ export class FileSource implements SimulationSource {
     return () => this.listeners.delete(cb);
   }
 
+  /**
+   * Rewind to the start of the recording.
+   *
+   * A recorded run is the one source that can genuinely be replayed from the
+   * beginning: a live stream cannot be rewound, and the stand-in simulator
+   * re-seeds instead. Without this, restarting clears the view while the file
+   * carries on from wherever it had reached.
+   */
+  reset(): void {
+    this.cursor = 0;
+    this.keyframeCursor = 0;
+    this.current = 0;
+  }
+
   /** Emits one packet per distinct tick present in the file. */
   pump(n: number): void {
     for (let k = 0; k < n; k++) {
