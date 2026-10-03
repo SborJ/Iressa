@@ -1,5 +1,6 @@
 import { loadRules, RulesError, type ResolvedRules } from './sim/rules.js';
 import { loadVisuals, VisualsError, type Visuals } from './render/visuals.js';
+import { rulesUrl } from './defaultRun.js';
 
 export interface LoadedData {
   rules: ResolvedRules;
@@ -24,7 +25,7 @@ async function fetchJson(url: string): Promise<unknown> {
 export async function loadData(): Promise<LoadedData> {
   const q = new URLSearchParams(location.search);
   const [rulesRaw, rulesSchema, visualsRaw, visualsSchema] = await Promise.all([
-    fetchJson(q.get('rules') ?? '/rules.json'),
+    fetchJson(rulesUrl(q)),
     fetchJson('/schema/rules.schema.json'),
     fetchJson(q.get('visuals') ?? '/visuals.json'),
     fetchJson('/schema/visuals.schema.json'),

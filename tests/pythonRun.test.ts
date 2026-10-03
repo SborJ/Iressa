@@ -8,10 +8,10 @@ import { World } from '../src/world/world.js';
 
 /**
  * A run written by the Python engine (scripts/export_iressa_run.py) must replay through this
- * viewer's own FileSource and World to exactly its final keyframe. Skipped when no run has been
- * exported (data/runs is not committed).
+ * viewer's own FileSource and World to exactly its final keyframe. Uses the committed default run
+ * (data/runs/demo48); set IRESSA_RUN to check another exported run.
  */
-const RUN = join(process.cwd(), 'data', 'runs', process.env.IRESSA_RUN ?? 'smoke');
+const RUN = join(process.cwd(), 'data', 'runs', process.env.IRESSA_RUN ?? 'demo48');
 const present = existsSync(join(RUN, 'run.events')) && existsSync(join(RUN, 'run.keyframes'));
 
 function splitKeyframes(bytes: Uint8Array): Uint8Array[] {

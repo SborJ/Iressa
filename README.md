@@ -12,7 +12,8 @@ streaming the same records. Nothing downstream changes when that happens.
 
 ```
 npm install
-npm run dev          # http://localhost:5173
+npm run dev          # http://localhost:5173 opens the calibrated engine's demo run (data/runs/demo48)
+                     # add ?source=local for the TypeScript stand-in simulator
 npm test             # viewer tests
 npm run sim          # the stand-in simulator, headless, with a cause breakdown
 npm run record       # write run.events + run.keyframes for replay

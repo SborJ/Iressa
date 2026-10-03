@@ -1,0 +1,56 @@
+{
+  "name": "demo48",
+  "schedule": "gefitinib-osimertinib",
+  "config": {
+    "seed": 7,
+    "width": 48,
+    "height": 48,
+    "cells": 1500,
+    "steps": 240,
+    "dt": 0.25,
+    "dose": 0.9,
+    "switch_time": 20.0,
+    "mutation_scale": 50.0,
+    "clone_weights": [
+      92.0,
+      8.0,
+      0.0,
+      0.0
+    ],
+    "c797s_growth_scale": 1.0,
+    "met_growth_scale": 1.0,
+    "c797s_fitness_cost": null,
+    "met_fitness_cost": null,
+    "vessel_concentration_scale": 1.0,
+    "vessel_spacing_um": 150.0,
+    "necrotic_clearance_rate": 0.25,
+    "drug_solver": "quasi_steady",
+    "oxygen_mm_vmax": 0.04,
+    "depth": 48,
+    "vasculature": "tree",
+    "cell_size_um": 20.0,
+    "vasculature_trunks": 10,
+    "vasculature_max_depth": 6
+  },
+  "ticks_per_step": 12,
+  "tick_minutes": 30.0,
+  "events": 628336,
+  "event_counts": {
+    "divide": 68753,
+    "mutate": 41,
+    "death": 50155,
+    "removed": 47794,
+    "state": 461593
+  },
+  "keyframes": 61,
+  "final_burden": 20098,
+  "final_clones": {
+    "EGFR": 0,
+    "T790M": 104,
+    "C797S": 19218,
+    "MET_AMP": 776
+  },
+  "viewer_url": "/?source=file&rules=/runs/demo48/rules.json&events=/runs/demo48/run.events&keyframes=/runs/demo48/run.keyframes",
+  "engine": "cancer_sim (validated 2D rules extended to 3D; see docs/validation)",
+  "disclaimer": "Educational/research simulation on an in-vitro growth timescale; not a clinical prediction."
+}

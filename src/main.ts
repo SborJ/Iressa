@@ -1,6 +1,7 @@
 import { loadData, describeLoadError } from './data.js';
 import { Viewer } from './render/viewer.js';
 import { FileSource } from './source/fileSource.js';
+import { eventsUrl, keyframesUrl, sourceKind } from './defaultRun.js';
 import { LocalSimSource } from './source/localSim.js';
 import { SocketSource } from './source/socketSource.js';
 import type { SimulationSource } from './source/types.js';
@@ -35,16 +36,16 @@ function showError(err: unknown): void {
 }
 
 /**
- * The source is chosen by query string, which is how the stand-in simulator is
- * swapped for the real one:
+ * The source is chosen by query string:
  *
- *   (default)                             the stand-in simulator
- *   ?source=socket&url=ws://host:port     the same records, streamed
- *   ?source=file&events=/run.events       a recorded run
+ *   (default)                             the calibrated Python engine's demo run (src/defaultRun.ts)
+ *   ?source=local                         the TypeScript stand-in simulator
+ *   ?source=socket&host=…&port=…          the same records, streamed
+ *   ?source=file&rules=…&events=…&keyframes=…   any recorded run
  */
 async function makeSource(data: Awaited<ReturnType<typeof loadData>>): Promise<SimulationSource> {
   const q = new URLSearchParams(location.search);
-  const kind = q.get('source') ?? 'local';
+  const kind = sourceKind(q);
 
   if (kind === 'socket') {
     // The Vite dev server returns 403 for query strings containing a ws:// URL, so the
@@ -56,12 +57,12 @@ async function makeSource(data: Awaited<ReturnType<typeof loadData>>): Promise<S
     return source;
   }
   if (kind === 'file') {
-    const eventsUrl = q.get('events') ?? '/run.events';
-    const res = await fetch(eventsUrl);
-    if (!res.ok) throw new Error(`cannot load ${eventsUrl} (${res.status})`);
+    const evUrl = eventsUrl(q);
+    const res = await fetch(evUrl);
+    if (!res.ok) throw new Error(`cannot load ${evUrl} (${res.status})`);
     const events = new Uint8Array(await res.arrayBuffer());
     const keyframes: Uint8Array[] = [];
-    const kfUrl = q.get('keyframes');
+    const kfUrl = keyframesUrl(q);
     if (kfUrl) {
       const kr = await fetch(kfUrl);
       if (kr.ok) keyframes.push(new Uint8Array(await kr.arrayBuffer()));

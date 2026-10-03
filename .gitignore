@@ -8,8 +8,13 @@ run.keyframes
 __pycache__/
 screenshots/
 
-# exported Python runs for the viewer (regenerate with scripts/export_iressa_run.py)
-data/runs/
+# exported Python runs for the viewer (regenerate with scripts/export_iressa_run.py);
+# the default demo run the viewer opens with is committed
+data/runs/*
+!data/runs/demo48/
+!data/runs/demo48/run.events
+!data/runs/demo48/run.keyframes
+.vite/
 
 # Python engine scratch and experiment outputs
 .tmp/
