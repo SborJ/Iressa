@@ -1,10 +1,11 @@
-import { loadData, describeLoadError } from './data.js';
+import { loadData, describeLoadError, makeExperimentRules } from './data.js';
 import { Viewer } from './render/viewer.js';
 import { FileSource } from './source/fileSource.js';
 import { eventsUrl, keyframesUrl, sourceKind } from './defaultRun.js';
 import { LocalSimSource } from './source/localSim.js';
 import { SocketSource } from './source/socketSource.js';
 import type { SimulationSource } from './source/types.js';
+import type { ExperimentParams } from './experimentParams.js';
 import { Controls } from './ui/controls.js';
 import { CauseChart } from './ui/causeChart.js';
 import { CauseTally } from './ui/causeTally.js';
@@ -76,15 +77,19 @@ async function start(): Promise<void> {
   const data = await loadData();
   const { rules, visuals } = data;
   let source = await makeSource(data);
+  let activeRules = rules;
 
   const world = new World(rules);
-  const stats = new CauseStats(rules);
+  let stats = new CauseStats(rules);
   const canvas = document.getElementById('scene') as HTMLCanvasElement;
   const viewer = new Viewer(canvas, world, visuals, rules);
 
-  const status = new StatusPanel(document.getElementById('status')!, rules, visuals, source.kind);
-  const tally = new CauseTally(document.getElementById('tally')!, rules, visuals);
-  const chart = new CauseChart(document.getElementById('chart')!, rules, visuals);
+  const statusRoot = document.getElementById('status')!;
+  const tallyRoot = document.getElementById('tally')!;
+  const chartRoot = document.getElementById('chart')!;
+  let status = new StatusPanel(statusRoot, rules, visuals, source.kind);
+  let tally = new CauseTally(tallyRoot, rules, visuals);
+  let chart = new CauseChart(chartRoot, rules, visuals);
   const hover = new HoverCard(document.getElementById('hover')!, rules, visuals);
   const legend = new Legend(document.getElementById('legend')!, rules, visuals);
   const scaleBar = new ScaleBar(document.getElementById('scale')!, rules.raw.grid.voxelMicrons);
@@ -95,6 +100,37 @@ async function start(): Promise<void> {
       stats.ingest(packet, world);
     });
   let unsubscribe = subscribe(source);
+  let tickDebt = 0;
+  let framed = false;
+
+  const resetWorld = () => {
+    world.clear();
+    world.tick = 0;
+    stats.reset();
+    viewer.displayTick = 0;
+    tickDebt = 0;
+    framed = false;
+    hover.hide();
+    viewer.markDirty();
+  };
+
+  const rebuildPanels = () => {
+    status = new StatusPanel(statusRoot, activeRules, visuals, source.kind);
+    tally = new CauseTally(tallyRoot, activeRules, visuals);
+    chart = new CauseChart(chartRoot, activeRules, visuals);
+  };
+
+  const startLocalExperiment = (params: ExperimentParams) => {
+    unsubscribe();
+    activeRules = makeExperimentRules(data, params);
+    source = new LocalSimSource(activeRules);
+    stats = new CauseStats(activeRules);
+    rebuildPanels();
+    resetWorld();
+    unsubscribe = subscribe(source);
+    source.pump(1);
+    controls.setPlaying(true);
+  };
 
   const controls = new Controls(document.getElementById('controls')!, visuals, {
     onChange: (state, changed) => {
@@ -113,14 +149,11 @@ async function start(): Promise<void> {
     onReset: () => {
       unsubscribe();
       source.reset?.();
-      world.clear();
-      world.tick = 0;
-      stats.reset();
-      viewer.displayTick = 0;
+      resetWorld();
       unsubscribe = subscribe(source);
       source.pump(1);
-      viewer.markDirty();
     },
+    onRunExperiment: startLocalExperiment,
   });
   viewer.applyView(controls.state.view);
   viewer.setColorBy(controls.state.colorBy);
@@ -140,13 +173,11 @@ async function start(): Promise<void> {
 
   /* --- the loop --- */
   let last = performance.now();
-  let tickDebt = 0;
   let nextUiUpdate = 0;
   let nextChartUpdate = 0;
   let nextPick = 0;
 
   source.pump(1);
-  let framed = false;
 
   const frame = (now: number) => {
     const dt = Math.min(0.1, (now - last) / 1000);

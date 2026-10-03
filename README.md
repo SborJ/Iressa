@@ -36,7 +36,9 @@ See `docs/validation/VIEWER_INTEGRATION.md` (how the two halves connect),
 `docs/validation/VALIDATION_REPORT.md` (what was audited and fixed in the engine) and
 `docs/python-engine.md` (the engine's command reference). The planned treatment
 optimization layer is documented in `docs/rl-treatment-design.md`; PPO is the
-first baseline policy, not a clinical recommendation system.
+first baseline policy, not a clinical recommendation system. Runnable RL is not
+implemented yet; the current app has fixed/adaptive schedules and experiment
+controls, with PPO kept as the next design target.
 
 ## What you see
 

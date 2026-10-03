@@ -2,10 +2,7 @@ import type { ColorBy, CutMode } from '../render/viewer.js';
 import type { Visuals } from '../render/visuals.js';
 import {
   experimentParamsFromQuery,
-  isLocalSource,
-  localExperimentUrl,
   oxygenPreset,
-  pythonExportCommand,
   type ExperimentParams,
   type ExperimentSchedule,
   type OxygenMode,
@@ -28,6 +25,7 @@ export interface ControlHandlers {
   onStep(): void;
   onReset(): void;
   onFrame(): void;
+  onRunExperiment(params: ExperimentParams): void;
 }
 
 const SPEEDS = [1, 2, 4, 8, 16, 32, 64];
@@ -42,7 +40,6 @@ export class Controls {
   private cutButtons = new Map<CutMode, HTMLButtonElement>();
   private oxygenButtons = new Map<OxygenMode, HTMLButtonElement>();
   private presentBtn = el('button', { type: 'button', text: 'Presentation' });
-  private commandText = el('textarea', { class: 'cmd', readonly: 'true', rows: '4' }) as HTMLTextAreaElement;
 
   constructor(
     private root: HTMLElement,
@@ -257,19 +254,9 @@ export class Controls {
       this.syncExperiment();
     });
 
-    const applyBtn = el('button', { type: 'button', text: 'Run local' });
+    const applyBtn = el('button', { type: 'button', text: 'Run experiment' });
     applyBtn.addEventListener('click', () => {
-      location.href = localExperimentUrl(this.state.experiment);
-    });
-
-    const copyBtn = el('button', { type: 'button', text: 'Copy command' });
-    copyBtn.addEventListener('click', async () => {
-      this.commandText.select();
-      try {
-        await navigator.clipboard.writeText(this.commandText.value);
-      } catch {
-        document.execCommand('copy');
-      }
+      this.handlers.onRunExperiment({ ...this.state.experiment });
     });
 
     supplyLabel.textContent = this.state.experiment.oxygenSupply.toFixed(2);
@@ -294,8 +281,7 @@ export class Controls {
       ]),
       el('p', { class: 'note oxygen-note', text: '' }),
       el('p', { class: 'note run-note', text: '' }),
-      el('div', { class: 'btnrow' }, [applyBtn, copyBtn]),
-      this.commandText,
+      el('div', { class: 'btnrow' }, [applyBtn]),
     ]);
   }
 
@@ -345,11 +331,9 @@ export class Controls {
       oxygenNote.textContent = oxygenExperimentHelp(this.state.experiment.oxygenMode);
     }
     if (note) {
-      note.textContent = isLocalSource()
-        ? 'Run local reloads the browser simulator with these controls.'
-        : 'Recorded runs need export first; use the command below, then open the printed URL.';
+      note.textContent =
+        'Runs a fresh browser experiment immediately. PPO/RL training is planned separately and is not active here yet.';
     }
-    this.commandText.value = pythonExportCommand(this.state.experiment);
   }
 
   setPlaying(playing: boolean): void {

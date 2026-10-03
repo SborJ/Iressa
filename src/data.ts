@@ -5,6 +5,7 @@ import { applyLocalExperimentOverrides, experimentParamsFromQuery } from './expe
 
 export interface LoadedData {
   rules: ResolvedRules;
+  rulesSchema: object;
   visuals: Visuals;
 }
 
@@ -36,7 +37,11 @@ export async function loadData(): Promise<LoadedData> {
     : rulesRaw;
   const rules = loadRules(experimentRules, rulesSchema as object);
   const visuals = loadVisuals(visualsRaw, visualsSchema as object, rules);
-  return { rules, visuals };
+  return { rules, rulesSchema: rulesSchema as object, visuals };
+}
+
+export function makeExperimentRules(data: LoadedData, params = experimentParamsFromQuery()): ResolvedRules {
+  return loadRules(applyLocalExperimentOverrides(data.rules.raw, params), data.rulesSchema);
 }
 
 export function describeLoadError(err: unknown): { title: string; note: string; problems: string[] } {

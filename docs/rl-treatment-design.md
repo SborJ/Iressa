@@ -1,5 +1,9 @@
 # Reinforcement Learning Treatment Design
 
+Status: design only. The simulator has fixed/adaptive treatment schedules and
+viewer controls, but it does not yet include a runnable Gymnasium environment,
+PPO training script, policy checkpoint, or RL-driven simulation source.
+
 This project is not a clinical treatment optimizer. The RL layer is an experimental
 research scaffold for comparing simulated treatment policies inside the calibrated
 EGFR-resistance engine.
