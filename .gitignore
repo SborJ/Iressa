@@ -25,3 +25,7 @@ __pycache__/
 # from simulator-integration
 *.py[cod]
 .mypy_cache/
+
+# Python virtual environment for the simulator and the RL stack
+.venv/
+venv/

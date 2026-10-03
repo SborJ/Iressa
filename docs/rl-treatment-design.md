@@ -27,10 +27,20 @@ The baseline algorithm should be PPO because it is stable, well supported, and
 works with continuous or discrete action spaces. PPO is not the scientific claim;
 it is the first reproducible learning baseline.
 
-Run a dependency-free smoke test:
+Install the dependencies first - importing `cancer_sim` needs numpy, so even
+the smoke test is not dependency-free:
 
 ```bash
-python3 scripts/train_ppo.py --smoke --days 10 --smoke-steps 5
+python3 -m venv .venv && .venv/bin/pip install -r requirements-rl.txt
+```
+
+The dev server runs the trainer with `.venv` when one is present, and with
+`IRESSA_PYTHON` if that is set.
+
+Run the smoke test:
+
+```bash
+.venv/bin/python scripts/train_ppo.py --smoke --days 10 --smoke-steps 5
 ```
 
 The smoke test writes both a CSV and a PNG trace:

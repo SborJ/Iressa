@@ -14,10 +14,31 @@ import { el } from './dom.js';
 import { Choice, NumberField } from './fields.js';
 import { Slider } from './slider.js';
 
-const PPO_TRAIN =
-  'python3 scripts/train_ppo.py --days 120 --total-timesteps 50000 --output-dir outputs/rl';
-const PPO_EVALUATE =
-  'python3 scripts/evaluate_policy.py --days 120 --seeds 1001,1002,1003 --output-dir outputs/rl_eval';
+/**
+ * The Python side, in the order it has to be run.
+ *
+ * The evaluation needs the policy the training step writes: without --policy it
+ * compares the fixed schedules to each other and prints a table that looks
+ * complete, with the PPO row - the one the whole exercise exists to produce -
+ * quietly missing.
+ */
+const PPO_STEPS: { label: string; command: string }[] = [
+  {
+    label: 'Install',
+    command: 'python3 -m venv .venv && .venv/bin/pip install -r requirements-rl.txt',
+  },
+  {
+    label: 'Train',
+    command:
+      'python3 scripts/train_ppo.py --days 120 --total-timesteps 50000 --output-dir outputs/rl',
+  },
+  {
+    label: 'Compare',
+    command:
+      'python3 scripts/evaluate_policy.py --days 120 --seeds 1001,1002,1003 ' +
+      '--policy outputs/rl/ppo_iressa.zip --output-dir outputs/rl_eval',
+  },
+];
 
 const SCHEDULE_HELP: Record<ExperimentSchedule, string> = {
   'none': 'No drug at all — the tumour grows against oxygen alone.',
@@ -178,8 +199,11 @@ export class ExperimentPanel {
 
   /** The Python side, reachable without leaving the viewer. */
   private rlSection(): HTMLElement {
-    const cmd = (text: string) => {
-      const b = el('button', { class: 'cmd', type: 'button', text, title: 'Click to copy' });
+    const cmd = (label: string, text: string) => {
+      const b = el('button', { class: 'cmd', type: 'button', title: 'Click to copy' }, [
+        el('span', { class: 'cmd-step', text: label }),
+        document.createTextNode(text),
+      ]);
       b.addEventListener('click', async () => {
         if (await copyText(text)) {
           b.classList.add('copied');
@@ -192,11 +216,12 @@ export class ExperimentPanel {
       el('div', { class: 'muted', style: 'margin-bottom:var(--s2)', text: 'Learned schedules' }),
       el('p', { class: 'note' }, [
         document.createTextNode(
-          'The viewer runs fixed and adaptive schedules. A policy that works out its own schedule is trained in Python against the same simulator — copy a command to run it.',
+          'Training above runs inside this page. For a longer run, do it from a terminal: ' +
+            'these train a policy against the same simulator and then compare it with the fixed ' +
+            'schedules on seeds it never saw. Run them in order.',
         ),
       ]),
-      cmd(PPO_TRAIN),
-      cmd(PPO_EVALUATE),
+      ...PPO_STEPS.map((s) => cmd(s.label, s.command)),
     ]);
   }
 

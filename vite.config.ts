@@ -1,8 +1,41 @@
 import { defineConfig } from 'vite';
 import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
 import type { IncomingMessage, ServerResponse } from 'node:http';
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+
+/**
+ * Which Python runs the trainer.
+ *
+ * Spawning a bare `python3` picks up whatever interpreter is first on PATH,
+ * which is usually a system one with none of this project's dependencies: the
+ * trainer then dies on `import numpy` before it reaches any of its own code.
+ * A virtual environment in the project is preferred when there is one, and
+ * IRESSA_PYTHON overrides both.
+ */
+function pythonExecutable(): string {
+  const override = process.env.IRESSA_PYTHON;
+  if (override) return override;
+  for (const candidate of ['.venv/bin/python', '.venv/Scripts/python.exe', 'venv/bin/python']) {
+    const full = resolve(process.cwd(), candidate);
+    if (existsSync(full)) return full;
+  }
+  return 'python3';
+}
+
+/** Turn a missing-dependency traceback into something actionable. */
+function explainTrainerFailure(stderr: string): string {
+  const missing = /ModuleNotFoundError: No module named '([^']+)'/.exec(stderr);
+  if (missing) {
+    return (
+      `The Python trainer is missing ${missing[1]}. Install the dependencies, then try again:\n` +
+      '  python3 -m venv .venv && .venv/bin/pip install -r requirements-rl.txt\n' +
+      '(or set IRESSA_PYTHON to an interpreter that already has them).'
+    );
+  }
+  return stderr.trim();
+}
+
 
 type Point = { steps: number; total: number; episode: number; episode_reward: number | null; burden: number; eci: number; resistant_fraction: number; action: number };
 type Training = { state: 'idle' | 'running' | 'completed' | 'stopped' | 'failed'; points: Point[]; message: string; checkpoint?: string; evaluation?: unknown; config?: { days: number; timesteps: number } };
@@ -54,7 +87,7 @@ function trainingApi() {
         run = { state: 'running', points: [], message: 'Starting Python trainer', config: { days, timesteps: total } };
         rmSync(statusPath, { force: true });
         pending = '';
-        child = spawn('python3', ['-u', 'scripts/train_ppo.py', '--live', '--days', String(days),
+        child = spawn(pythonExecutable(), ['-u', 'scripts/train_ppo.py', '--live', '--days', String(days),
           '--total-timesteps', String(total), '--rollout-steps', String(Math.min(64, total)), '--progress-interval', '8',
           '--width', '14', '--height', '10', '--depth', '8', '--cells', '100', '--output-dir', 'outputs/rl'],
         { cwd: process.cwd(), env: { ...process.env, OPENBLAS_NUM_THREADS: '1', OMP_NUM_THREADS: '1' } });
@@ -93,7 +126,9 @@ function trainingApi() {
           if (child !== processForRun) return;
           if (run.state === 'running') {
             run.state = code === 0 ? 'completed' : 'failed';
-            run.message = code === 0 ? 'Training complete' : (error.trim() || `Trainer exited with code ${code}`);
+            run.message = code === 0
+              ? 'Training complete'
+              : (explainTrainerFailure(error) || `Trainer exited with code ${code}`);
             if (run.state === 'completed') {
               mkdirSync(resolve('outputs/rl'), { recursive: true });
               writeFileSync(statusPath, JSON.stringify(run));
