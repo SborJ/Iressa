@@ -1,27 +1,32 @@
-import { loadData, describeLoadError, makeExperimentRules } from './data.js';
+import { loadData, describeLoadError } from './data.js';
 import { Viewer } from './render/viewer.js';
 import { FileSource } from './source/fileSource.js';
-import { eventsUrl, keyframesUrl, sourceKind } from './defaultRun.js';
+import { eventsUrl, keyframesUrl, rulesUrl, sourceKind } from './defaultRun.js';
 import { LocalSimSource } from './source/localSim.js';
 import { SocketSource } from './source/socketSource.js';
 import type { SimulationSource } from './source/types.js';
-import type { ExperimentParams } from './experimentParams.js';
-import { Controls } from './ui/controls.js';
+import { applyLocalExperimentOverrides, type ExperimentParams } from './experimentParams.js';
+import { resolveRules } from './sim/rules.js';
+import { Card, ScaleBar } from './ui/card.js';
 import { CauseChart } from './ui/causeChart.js';
-import { CauseTally } from './ui/causeTally.js';
-import { HoverCard } from './ui/hoverCard.js';
-import { Legend } from './ui/legend.js';
-import { ScaleBar } from './ui/scaleBar.js';
-import { StatusPanel } from './ui/statusPanel.js';
+import { Controls } from './ui/controls.js';
+import { copyText, downloadText, FrameCapture } from './ui/exporters.js';
+import { Headline, StageTags } from './ui/headline.js';
+import { History } from './ui/history.js';
+import { Narrative } from './ui/narrative.js';
+import { Panel } from './ui/panel.js';
+import { enter } from './ui/motion.js';
+import { bindShortcuts } from './ui/shortcuts.js';
+import { Timeline } from './ui/timeline.js';
 import { CauseStats } from './world/causeStats.js';
 import { World } from './world/world.js';
 
 /** How long one frame may spend advancing the simulation. */
-const TICK_BUDGET_MS = 24;
-/** Fast-forwarding runs in short chunks so the tab remains interactive. */
-const FAST_FORWARD_BUDGET_MS = 32;
+const TICK_BUDGET_MS = 10;
 /** Picking costs a GPU readback, so it runs well below the frame rate. */
 const PICK_INTERVAL_MS = 60;
+/** How long a frame may spend skipping ahead, so the page stays responsive. */
+const SKIP_BUDGET_MS = 24;
 
 function showError(err: unknown): void {
   const { title, note, problems } = describeLoadError(err);
@@ -75,26 +80,48 @@ async function makeSource(data: Awaited<ReturnType<typeof loadData>>): Promise<S
   return new LocalSimSource(data.rules);
 }
 
+/**
+ * How far back the default view sits, as a multiple of the renderer's own
+ * framing distance. Above 1 the specimen has room around it and reads as a
+ * sample rather than as a wall of cells.
+ */
+const STAND_OFF = 1.35;
+
+/** Frames the tumour, then stands back so it is not filling the frame. */
+function frameWithRoom(viewer: Viewer): void {
+  viewer.frameTumour();
+  const target = viewer.controls.target;
+  viewer.camera.position.sub(target).multiplyScalar(STAND_OFF).add(target);
+  viewer.controls.update();
+}
+
+/** The first clause of a view's own description, for the stage label. */
+function shortDescription(text: string): string {
+  const first = (text.split(/[:.]/)[0] ?? '').trim();
+  return first.length > 2 ? first.charAt(0).toLowerCase() + first.slice(1) : text;
+}
+
 async function start(): Promise<void> {
   const data = await loadData();
   const { rules, visuals } = data;
   let source = await makeSource(data);
-  let activeRules = rules;
 
+  let framed = false;
   const world = new World(rules);
+  let activeRules = rules;
   let stats = new CauseStats(rules);
   const canvas = document.getElementById('scene') as HTMLCanvasElement;
   const viewer = new Viewer(canvas, world, visuals, rules);
 
-  const statusRoot = document.getElementById('status')!;
-  const tallyRoot = document.getElementById('tally')!;
-  const chartRoot = document.getElementById('chart')!;
-  let status = new StatusPanel(statusRoot, rules, visuals, source.kind);
-  let tally = new CauseTally(tallyRoot, rules, visuals);
-  let chart = new CauseChart(chartRoot, rules, visuals);
-  const hover = new HoverCard(document.getElementById('hover')!, rules, visuals);
-  const legend = new Legend(document.getElementById('legend')!, rules, visuals);
-  const scaleBar = new ScaleBar(document.getElementById('scale')!, rules.raw.grid.voxelMicrons);
+  const q = new URLSearchParams(location.search);
+  const sourceLabel = rulesUrl(q).split('/').pop() ?? 'rules.json';
+  const history = new History(rules);
+  const capture = new FrameCapture();
+
+  const panelRoot = document.getElementById('panel')!;
+  const headlineRoot = document.getElementById('headline')!;
+  const scaleBar = new ScaleBar(document.getElementById('scalebar')!, rules.raw.grid.voxelMicrons);
+  const stageTags = new StageTags(document.getElementById('stagetop')!);
 
   const subscribe = (s: SimulationSource) =>
     s.onPacket((packet) => {
@@ -102,92 +129,166 @@ async function start(): Promise<void> {
       stats.ingest(packet, world);
     });
   let unsubscribe = subscribe(source);
-  let tickDebt = 0;
-  let framed = false;
-  let fastForwardRun = 0;
 
   const resetWorld = () => {
     world.clear();
     world.tick = 0;
-    stats.reset();
+    history.reset();
     viewer.displayTick = 0;
-    tickDebt = 0;
-    framed = false;
-    fastForwardRun++;
-    hover.hide();
     viewer.markDirty();
+    framed = false;
   };
 
-  const rebuildPanels = () => {
-    status = new StatusPanel(statusRoot, activeRules, visuals, source.kind);
-    tally = new CauseTally(tallyRoot, activeRules, visuals);
-    chart = new CauseChart(chartRoot, activeRules, visuals);
-  };
-
-  const startLocalExperiment = (params: ExperimentParams) => {
+  const resetRun = () => {
     unsubscribe();
-    activeRules = makeExperimentRules(data, params);
+    source.reset?.();
+    resetWorld();
+    stats.reset();
+    unsubscribe = subscribe(source);
+    source.pump(1);
+  };
+
+  /* Everything below is rebuilt when an experiment replaces the rules: each of
+     these reads the schedule, the clone table or the cause table at
+     construction, and a panel still describing the previous run would be
+     quietly wrong rather than visibly broken. */
+  let narrative = new Narrative(activeRules);
+  const headline = new Headline(headlineRoot);
+  let card = new Card(document.getElementById('card')!, activeRules, visuals, narrative);
+  let chartHost = document.createElement('div');
+  let chart: CauseChart;
+  let panel: Panel;
+  let timeline: Timeline;
+
+  const controlsHost = document.createElement('div');
+
+  const startExperiment = (params: ExperimentParams) => {
+    unsubscribe();
+    activeRules = resolveRules(applyLocalExperimentOverrides(data.rules.raw, params));
     source = new LocalSimSource(activeRules);
     stats = new CauseStats(activeRules);
-    rebuildPanels();
     resetWorld();
+    buildPanels();
     unsubscribe = subscribe(source);
     source.pump(1);
     controls.setPlaying(true);
+    timeline.setPlaying(true);
   };
 
-  const fastForwardTicks = (ticks: number) => {
-    const run = ++fastForwardRun;
+  function buildPanels(): void {
+    const openFolds = panel?.foldState() ?? {};
+    narrative = new Narrative(activeRules);
+    card = new Card(document.getElementById('card')!, activeRules, visuals, narrative);
+
+    panelRoot.replaceChildren();
+    chartHost = document.createElement('div');
+    chartHost.id = 'chart';
+    chart = new CauseChart(chartHost, activeRules, visuals);
+
+    panel = new Panel(panelRoot, activeRules, visuals, narrative, {
+      onHighlightCause: (causeId) => {
+        chart.setHighlight(causeId);
+        panel.setHighlight(causeId);
+      },
+      onRunExperiment: startExperiment,
+      onCopyState: () => {
+        const st = controls.state;
+        void copyText(
+          JSON.stringify(
+            {
+              tick: world.tick,
+              day: (world.tick * activeRules.hoursPerTick) / 24,
+              seed: activeRules.raw.seed,
+              rules: sourceLabel,
+              source: source.kind,
+              view: st.view,
+              colorBy: st.colorBy,
+              cut: { mode: st.cutMode, fraction: st.cutFraction },
+              camera: {
+                position: viewer.camera.position.toArray(),
+                target: viewer.controls.target.toArray(),
+              },
+              counts: history.latest && {
+                living: history.latest.living,
+                dying: history.latest.dying,
+                byClone: Object.fromEntries(history.latest.byClone),
+              },
+            },
+            null,
+            2,
+          ),
+        );
+      },
+      onExportFrame: () => capture.request(),
+      onExportParameters: () =>
+        downloadText(
+          `iressa-parameters-${activeRules.raw.seed}.json`,
+          JSON.stringify(activeRules.raw, null, 2),
+        ),
+    }, openFolds);
+    panelRoot.insertBefore(controlsHost, panelRoot.children[1] ?? null);
+    panel.appendChart(chartHost);
+
+    const timelineRoot = document.getElementById('timeline')!;
+    timelineRoot.replaceChildren();
+    timeline = new Timeline(timelineRoot, activeRules, narrative, {
+      onTogglePlay: () => controls.togglePlay(),
+    });
+    timeline.setPlaying(controls.state.playing);
+  }
+
+  /**
+   * Run ahead without drawing every frame of it.
+   *
+   * Spread across animation frames on a time budget: pumping a whole simulated
+   * day in one go would freeze the page for as long as it took.
+   */
+  let skipRun = 0;
+  const skipAhead = (ticks: number) => {
+    const run = ++skipRun;
     let remaining = Math.max(0, ticks);
     controls.setPlaying(false);
+    timeline.setPlaying(false);
     tickDebt = 0;
 
-    const pumpChunk = () => {
-      const deadline = performance.now() + FAST_FORWARD_BUDGET_MS;
+    const chunk = () => {
+      const deadline = performance.now() + SKIP_BUDGET_MS;
       while (remaining > 0 && !source.done && performance.now() < deadline) {
         source.pump(1);
         remaining--;
       }
       viewer.markDirty();
-      status.update(world, source);
-      tally.update(stats);
-      chart.update(stats);
-      if (remaining > 0 && !source.done && run === fastForwardRun) {
-        requestAnimationFrame(pumpChunk);
-      }
+      viewer.displayTick = world.tick;
+      if (remaining > 0 && !source.done && run === skipRun) requestAnimationFrame(chunk);
     };
-    requestAnimationFrame(pumpChunk);
+    requestAnimationFrame(chunk);
   };
 
-  const controls = new Controls(document.getElementById('controls')!, visuals, {
+  const controls = new Controls(controlsHost, visuals, rules, {
     onChange: (state, changed) => {
-      if (changed === 'view' || changed === 'init') {
-        viewer.applyView(state.view);
-        legend.update(state.view);
-      }
+      if (changed === 'view' || changed === 'init') viewer.applyView(state.view);
       if (changed === 'colorBy' || changed === 'view') viewer.setColorBy(state.colorBy);
       if (changed === 'cutMode' || changed === 'cutFraction' || changed === 'init') {
         viewer.setCut(state.cutMode, state.cutFraction);
       }
+      if (changed === 'cutMode') frameWithRoom(viewer);
+      if (changed === 'playing') timeline.setPlaying(state.playing);
       viewer.presentation = state.presentation;
     },
     onStep: () => source.pump(1),
-    onFrame: () => viewer.frameTumour(),
-    onReset: () => {
-      unsubscribe();
-      source.reset?.();
-      resetWorld();
-      unsubscribe = subscribe(source);
-      source.pump(1);
-    },
-    onRunExperiment: startLocalExperiment,
-    onFastForwardDay: () => fastForwardTicks(activeRules.ticksPerDay),
+    onFrame: () => frameWithRoom(viewer),
+    onReset: () => resetRun(),
+    onSkipDay: () => skipAhead(activeRules.ticksPerDay),
   });
+  document.getElementById('viewswitch')!.replaceWith(controls.viewSwitch);
+  controls.viewSwitch.id = 'viewswitch';
+
+  buildPanels();
+
   viewer.applyView(controls.state.view);
   viewer.setColorBy(controls.state.colorBy);
   viewer.setCut(controls.state.cutMode, controls.state.cutFraction);
-  legend.update(controls.state.view);
-
+  bindShortcuts(controls, { onFrame: () => frameWithRoom(viewer), onReset: () => resetRun() });
 
   /* --- hover: pick on the next frame, not on every pointer event --- */
   let pointer: { x: number; y: number } | undefined;
@@ -196,11 +297,12 @@ async function start(): Promise<void> {
   });
   canvas.addEventListener('pointerleave', () => {
     pointer = undefined;
-    hover.hide();
+    card.hide();
   });
 
   /* --- the loop --- */
   let last = performance.now();
+  let tickDebt = 0;
   let nextUiUpdate = 0;
   let nextChartUpdate = 0;
   let nextPick = 0;
@@ -221,9 +323,12 @@ async function start(): Promise<void> {
       // Never let the debt grow without bound when the simulation cannot keep up.
       if (tickDebt > controls.state.ticksPerSecond) tickDebt = 0;
     }
-    if (source.done) controls.setPlaying(false);
+    if (source.done) {
+      controls.setPlaying(false);
+      timeline.setPlaying(false);
+    }
     if (!framed && world.count > 0) {
-      viewer.frameTumour();
+      frameWithRoom(viewer);
       framed = true;
     }
 
@@ -236,15 +341,28 @@ async function start(): Promise<void> {
       nextPick = now + PICK_INTERVAL_MS;
       const node = viewer.pick(pointer.x, pointer.y);
       const slot = node >= 0 ? world.slotForNode(node) : -1;
-      if (slot >= 0) hover.show(pointer.x, pointer.y, world, slot, source.probe?.(node) ?? []);
-      else hover.hide();
+      if (slot >= 0) card.show(pointer.x, pointer.y, world, slot, source.probe?.(node) ?? [], source);
+      else card.hide();
     }
+
+    // The drawing buffer is only valid inside the frame that produced it.
+    capture.take(canvas, `day${((world.tick * activeRules.hoursPerTick) / 24).toFixed(1)}-${controls.state.view}`);
 
     if (now >= nextUiUpdate) {
       nextUiUpdate = now + 200;
-      status.update(world, source, frameStats);
-      tally.update(stats);
+      const counts = history.record(world, source);
+      const story = narrative.read(counts, history, world.tick);
+      headline.update(story);
       scaleBar.update(viewer.worldPerPixel());
+      panel.update(source, history, stats, frameStats, controls.state.view, story);
+      timeline.update(world.tick, history);
+      const view = visuals.view(controls.state.view);
+      stageTags.update({
+        viewLabel: view.label,
+        description: shortDescription(view.description ?? ''),
+        cutMode: controls.state.cutMode,
+        colorBy: controls.state.colorBy,
+      });
     }
     if (now >= nextChartUpdate) {
       nextChartUpdate = now + 500;
@@ -254,6 +372,14 @@ async function start(): Promise<void> {
     requestAnimationFrame(frame);
   };
   requestAnimationFrame(frame);
+
+  // One arrival, once. Nothing else on this screen moves unless asked to.
+  enter([
+    document.getElementById('topbar')!,
+    document.querySelector('#panel .hero')!,
+    document.getElementById('stagetop')!,
+    document.getElementById('timeline')!,
+  ]);
 }
 
 start().catch(showError);

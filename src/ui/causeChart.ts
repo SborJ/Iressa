@@ -1,10 +1,57 @@
 import type { Visuals } from '../render/visuals.js';
 import type { ResolvedRules } from '../sim/rules.js';
 import type { CauseStats } from '../world/causeStats.js';
-import { chip, el, niceMax, svg } from './dom.js';
+import { count, el, niceMax, svg } from './dom.js';
 import { causeName } from './labels.js';
 
-const PAD = { top: 10, right: 8, bottom: 18, left: 36 };
+const PAD = { top: 12, right: 10, bottom: 22, left: 32 };
+const HEIGHT = 124;
+
+/**
+ * A smooth path through the points that never overshoots them.
+ *
+ * Catmull-Rom would be shorter but it can bulge below zero between two small
+ * values, which would draw deaths that did not happen. The monotone condition
+ * is what makes a smoothed count honest.
+ */
+function monotonePath(pts: [number, number][]): string {
+  const n = pts.length;
+  if (n < 2) return '';
+  if (n === 2) return `M${pts[0][0]},${pts[0][1]}L${pts[1][0]},${pts[1][1]}`;
+
+  const dx: number[] = [];
+  const dy: number[] = [];
+  const slope: number[] = [];
+  for (let i = 0; i < n - 1; i++) {
+    dx.push(pts[i + 1][0] - pts[i][0]);
+    dy.push(pts[i + 1][1] - pts[i][1]);
+    slope.push(dx[i] === 0 ? 0 : dy[i] / dx[i]);
+  }
+  const m: number[] = [slope[0]];
+  for (let i = 1; i < n - 1; i++) {
+    if (slope[i - 1] * slope[i] <= 0) m.push(0);
+    else {
+      const w1 = 2 * dx[i] + dx[i - 1];
+      const w2 = dx[i] + 2 * dx[i - 1];
+      m.push((w1 + w2) / (w1 / slope[i - 1] + w2 / slope[i]));
+    }
+  }
+  m.push(slope[n - 2]);
+
+  let d = `M${pts[0][0].toFixed(1)},${pts[0][1].toFixed(1)}`;
+  for (let i = 0; i < n - 1; i++) {
+    const h = dx[i] / 3;
+    d += `C${(pts[i][0] + h).toFixed(1)},${(pts[i][1] + m[i] * h).toFixed(1)}`;
+    d += ` ${(pts[i + 1][0] - h).toFixed(1)},${(pts[i + 1][1] - m[i + 1] * h).toFixed(1)}`;
+    d += ` ${pts[i + 1][0].toFixed(1)},${pts[i + 1][1].toFixed(1)}`;
+  }
+  return d;
+}
+
+/** Reverses a path's points for the closing edge of a filled band. */
+function reversePoints(pts: [number, number][]): [number, number][] {
+  return [...pts].reverse();
+}
 
 interface Marker {
   hours: number;
@@ -12,29 +59,27 @@ interface Marker {
 }
 
 /**
- * Deaths by cause over time: a stacked area, one band per cause, coloured by
- * cause from visuals.json and ordered by the cause table in rules.json.
+ * Deaths by cause over the run.
  *
- * The treatment markers are read from rules.json too, so the chart shows when
- * dosing started and when each radiation fraction landed without being told.
+ * A stacked series, one band per cause, coloured and ordered by the cause table
+ * in rules.json. The treatment markers come from the schedule in the same file,
+ * so the chart shows when dosing began without being told. Bands are labelled
+ * at their right-hand end where there is room, which is more direct than a
+ * legend and costs no ink.
  */
 export class CauseChart {
   private plot = el('div');
   private tableWrap = el('div', { class: 'table-wrap' });
-  private legend = el('div', { class: 'chart-legend' });
-  private toggle = el('button', { class: 'toggle', type: 'button' });
-  private collapse = el('button', { class: 'toggle', type: 'button' });
-  private content = el('div', { class: 'chart-content' });
+  private toggle = el('button', { class: 'linkish', type: 'button' });
   private svgRoot = svg('svg') as SVGSVGElement;
-  private tip = el('div');
-  private collapsed = true;
   private showTable = false;
-  private width = 520;
-  private height = 150;
+  private width = 640;
   private causeIds: number[];
   private markers: Marker[];
   private latest: CauseStats | undefined;
   private hoverBucket = -1;
+  private highlighted = -1;
+  private readout = el('div', { class: 'muted', style: 'min-height:16px;font-size:11.5px' });
 
   constructor(
     private root: HTMLElement,
@@ -44,6 +89,8 @@ export class CauseChart {
     this.causeIds = rules.raw.causes.filter((c) => c.kind === 'death').map((c) => c.id);
     this.markers = this.readMarkers();
 
+    this.toggle.className = 'btn ghost';
+    this.toggle.style.cssText = 'padding:3px 8px;font-size:11.5px';
     this.toggle.textContent = 'Table';
     this.toggle.addEventListener('click', () => {
       this.showTable = !this.showTable;
@@ -52,35 +99,23 @@ export class CauseChart {
       this.tableWrap.hidden = !this.showTable;
       this.render();
     });
-    this.collapse.textContent = 'Expand';
-    this.collapse.addEventListener('click', () => {
-      this.collapsed = !this.collapsed;
-      this.syncCollapsed();
-    });
-
-    this.tip.style.cssText =
-      'position:absolute;pointer-events:none;display:none;z-index:5;background:var(--surface-2);' +
-      'border:1px solid var(--border);border-radius:6px;padding:7px 9px;font-size:11px;min-width:150px';
-
-    this.plot.style.position = 'relative';
-    this.plot.append(this.svgRoot, this.tip);
     this.tableWrap.hidden = true;
 
-    this.content.append(this.plot, this.tableWrap, this.legend);
-    this.root.replaceChildren(
-      el('div', { class: 'chart-head' }, [
-        el('h2', { text: 'Deaths by cause over time' }),
-        el('div', { class: 'btnrow chart-actions' }, [this.toggle, this.collapse]),
+    this.root.append(
+      el('div', { style: 'display:flex;align-items:baseline;gap:10px;margin:14px 0 4px' }, [
+        el('span', { class: 'muted', style: 'flex:1', text: 'Over the whole run' }),
+        this.toggle,
       ]),
-      this.content,
+      this.readout,
+      this.plot,
+      this.tableWrap,
     );
-    this.syncCollapsed();
+    this.plot.append(this.svgRoot);
 
-    this.renderLegend();
     this.svgRoot.addEventListener('pointermove', (ev) => this.onMove(ev));
     this.svgRoot.addEventListener('pointerleave', () => {
       this.hoverBucket = -1;
-      this.tip.style.display = 'none';
+      this.readout.textContent = '';
       this.render();
     });
 
@@ -101,38 +136,20 @@ export class CauseChart {
     }
     const rad = this.rules.raw.treatment?.radiation ?? [];
     if (rad.length) {
-      out.push({
-        hours: rad[0].hour,
-        label: rad.length > 1 ? `radiation ×${rad.length}` : 'radiation',
-      });
+      out.push({ hours: rad[0].hour, label: rad.length > 1 ? `radiation ×${rad.length}` : 'radiation' });
     }
     return out;
   }
 
-  private renderLegend(): void {
-    const frag = document.createDocumentFragment();
-    for (const id of this.causeIds) {
-      frag.append(
-        el('div', { class: 'legend-row' }, [
-          chip(this.visuals.causeCss(id)),
-          el('span', { class: 'name', text: causeName(this.rules, id) }),
-        ]),
-      );
-    }
-    this.legend.replaceChildren(frag);
+  setHighlight(causeId: number): void {
+    if (causeId === this.highlighted) return;
+    this.highlighted = causeId;
+    this.render();
   }
 
   update(stats: CauseStats): void {
     this.latest = stats;
     this.render();
-  }
-
-  private syncCollapsed(): void {
-    this.root.classList.toggle('collapsed', this.collapsed);
-    this.content.hidden = this.collapsed;
-    this.toggle.hidden = this.collapsed;
-    this.collapse.textContent = this.collapsed ? 'Expand' : 'Hide';
-    if (!this.collapsed) this.render();
   }
 
   private xOf(tick: number, innerW: number): number {
@@ -146,10 +163,9 @@ export class CauseChart {
       this.renderTable(this.latest);
       return;
     }
-    const stats = this.latest;
-    const buckets = stats.buckets;
-    const innerW = Math.max(60, this.width - PAD.left - PAD.right);
-    const innerH = this.height - PAD.top - PAD.bottom;
+    const buckets = this.latest.buckets;
+    const innerW = Math.max(80, this.width - PAD.left - PAD.right);
+    const innerH = HEIGHT - PAD.top - PAD.bottom;
 
     let peak = 0;
     for (const b of buckets) {
@@ -161,15 +177,18 @@ export class CauseChart {
     const yOf = (v: number) => PAD.top + innerH - (v / yMax) * innerH;
 
     this.svgRoot.setAttribute('width', String(this.width));
-    this.svgRoot.setAttribute('height', String(this.height));
+    this.svgRoot.setAttribute('height', String(HEIGHT));
     this.svgRoot.replaceChildren();
 
-    /* --- recessive grid and axes --- */
+    /* ---- axes: ticks outside, no gridlines ---- */
     const axis = svg('g', { class: 'axis' });
-    for (let k = 0; k <= 2; k++) {
-      const v = (yMax / 2) * k;
+    axis.append(svg('line', { x1: PAD.left, x2: PAD.left, y1: PAD.top, y2: PAD.top + innerH }));
+    axis.append(svg('line', {
+      x1: PAD.left, x2: PAD.left + innerW, y1: PAD.top + innerH, y2: PAD.top + innerH,
+    }));
+    for (const v of [0, yMax / 2, yMax]) {
       const y = yOf(v);
-      axis.append(svg('line', { class: 'gridline', x1: PAD.left, x2: PAD.left + innerW, y1: y, y2: y }));
+      axis.append(svg('line', { x1: PAD.left - 3, x2: PAD.left, y1: y, y2: y }));
       const t = svg('text', { x: PAD.left - 6, y: y + 3, 'text-anchor': 'end' });
       t.textContent = v >= 1000 ? `${Math.round(v / 1000)}k` : String(Math.round(v));
       axis.append(t);
@@ -178,42 +197,92 @@ export class CauseChart {
     const dayStep = totalDays <= 20 ? 5 : totalDays <= 70 ? 10 : 30;
     for (let d = 0; d <= totalDays; d += dayStep) {
       const x = this.xOf((d * 24) / this.rules.hoursPerTick, innerW);
-      const t = svg('text', { x, y: this.height - 5, 'text-anchor': 'middle' });
+      axis.append(svg('line', { x1: x, x2: x, y1: PAD.top + innerH, y2: PAD.top + innerH + 3 }));
+      const t = svg('text', {
+        x, y: HEIGHT - 7,
+        'text-anchor': d === 0 ? 'start' : 'middle',
+      });
       t.textContent = d === 0 ? 'day 0' : String(d);
       axis.append(t);
     }
     this.svgRoot.append(axis);
 
-    /* --- stacked bands, drawn top of stack downwards --- */
+    /* ---- stacked bands ---- */
     if (buckets.length > 1) {
       const cum = new Float64Array(buckets.length);
-      const points: string[][] = [];
+      const points: [number, number][][] = [];
       for (const id of this.causeIds) {
-        const upper: string[] = [];
+        const upper: [number, number][] = [];
         for (let i = 0; i < buckets.length; i++) {
           cum[i] += buckets[i].deaths[id];
-          upper.push(`${this.xOf(buckets[i].tick, innerW).toFixed(1)},${yOf(cum[i]).toFixed(1)}`);
+          upper.push([this.xOf(buckets[i].tick, innerW), yOf(cum[i])]);
         }
         points.push(upper);
       }
-      const baseline = buckets.map(
-        (b) => `${this.xOf(b.tick, innerW).toFixed(1)},${yOf(0).toFixed(1)}`,
-      );
+      const baseline: [number, number][] = buckets.map((b) => [this.xOf(b.tick, innerW), yOf(0)]);
+
       for (let s = this.causeIds.length - 1; s >= 0; s--) {
-        const upper = points[s];
+        const id = this.causeIds[s];
         const lower = s === 0 ? baseline : points[s - 1];
-        const d = `M${upper.join('L')}L${[...lower].reverse().join('L')}Z`;
+        const d =
+          `${monotonePath(points[s])} ` +
+          `L${lower[lower.length - 1][0].toFixed(1)},${lower[lower.length - 1][1].toFixed(1)} ` +
+          `${monotonePath(reversePoints(lower)).replace(/^M/, 'L')} Z`;
+        const dimmed = this.highlighted >= 0 && this.highlighted !== id;
         this.svgRoot.append(
-          svg('path', { d, fill: this.visuals.causeCss(this.causeIds[s]), 'fill-opacity': 0.92 }),
+          svg('path', {
+            d,
+            fill: this.visuals.causeCss(id),
+            'fill-opacity': dimmed ? 0.1 : 0.9,
+            style: 'transition: fill-opacity 220ms cubic-bezier(0.22,0.61,0.36,1)',
+          }),
         );
       }
-      // A 2px surface-coloured edge separates adjacent bands.
+      // A hairline of the panel surface separates adjacent bands.
       for (let s = 0; s < this.causeIds.length; s++) {
-        this.svgRoot.append(svg('path', { class: 'band-edge', d: `M${points[s].join('L')}` }));
+        this.svgRoot.append(
+          svg('path', {
+            d: monotonePath(points[s]),
+            fill: 'none',
+            stroke: 'var(--surface)',
+            'stroke-width': 1.25,
+            'stroke-linecap': 'round',
+          }),
+        );
       }
+
+      /* ---- direct labels at the right-hand end ---- */
+      /* No direct labels at this width - the list above the chart already names
+         every band, and a label here would cover the data it points at. */
+      const unusedLabels = true;
+      void unusedLabels;
+      /*
+      const lastIndex = buckets.length - 1;
+      const dataX = this.xOf(buckets[lastIndex].tick, innerW);
+      const atEdge = dataX > PAD.left + innerW - 4;
+      const labelX = (atEdge ? PAD.left + innerW : dataX) + 5;
+      const placed: number[] = [];
+      for (let s = this.causeIds.length - 1; s >= 0; s--) {
+        const id = this.causeIds[s];
+        const top = Number(points[s][lastIndex].split(',')[1]);
+        const bottom = s === 0 ? yOf(0) : Number(points[s - 1][lastIndex].split(',')[1]);
+        if (bottom - top < 9) continue;
+        const y = (top + bottom) / 2 + 3;
+        if (placed.some((p) => Math.abs(p - y) < 10)) continue;
+        placed.push(y);
+        const label = svg('text', {
+          class: 'series-label',
+          x: labelX,
+          y,
+          fill: this.highlighted >= 0 && this.highlighted !== id ? 'var(--ink-2)' : this.visuals.causeCss(id),
+        });
+        label.textContent = causeName(this.rules, id);
+        this.svgRoot.append(label);
+      }
+      */
     }
 
-    /* --- treatment markers, straight out of rules.json --- */
+    /* ---- treatment markers, from the schedule in rules.json ---- */
     for (const m of this.markers) {
       const x = this.xOf(m.hours / this.rules.hoursPerTick, innerW);
       if (x > PAD.left + innerW) continue;
@@ -223,22 +292,19 @@ export class CauseChart {
       this.svgRoot.append(t);
     }
 
-    /* --- crosshair --- */
     if (this.hoverBucket >= 0 && this.hoverBucket < buckets.length) {
       const x = this.xOf(buckets[this.hoverBucket].tick, innerW);
-      this.svgRoot.append(
-        svg('line', { class: 'crosshair', x1: x, x2: x, y1: PAD.top, y2: PAD.top + innerH }),
-      );
+      this.svgRoot.append(svg('line', { class: 'crosshair', x1: x, x2: x, y1: PAD.top, y2: PAD.top + innerH }));
     }
   }
 
+  /** The per-bucket read-out goes in the header, not in a card over the data. */
   private onMove(ev: PointerEvent): void {
     const stats = this.latest;
     if (!stats || !stats.buckets.length || this.showTable) return;
     const rect = this.svgRoot.getBoundingClientRect();
-    const innerW = Math.max(60, this.width - PAD.left - PAD.right);
-    const frac = (ev.clientX - rect.left - PAD.left) / innerW;
-    const tick = frac * this.rules.maxTicks;
+    const innerW = Math.max(80, this.width - PAD.left - PAD.right);
+    const tick = ((ev.clientX - rect.left - PAD.left) / innerW) * this.rules.maxTicks;
 
     let best = 0;
     let bestD = Infinity;
@@ -250,39 +316,18 @@ export class CauseChart {
       }
     }
     this.hoverBucket = best;
-    this.render();
-
     const b = stats.buckets[best];
     const rows = this.causeIds
       .map((id) => ({ id, n: b.deaths[id] }))
       .filter((r) => r.n > 0)
       .sort((a, c) => c.n - a.n);
     const total = rows.reduce((a, r) => a + r.n, 0);
-
-    const frag = document.createDocumentFragment();
-    frag.append(
-      el('div', {
-        style: 'color:var(--text-muted);margin-bottom:4px',
-        text: `day ${(b.hours / 24).toFixed(1)} · ${total.toLocaleString()} deaths`,
-      }),
-    );
-    if (!rows.length) {
-      frag.append(el('div', { class: 'empty', text: 'none' }));
-    }
-    for (const r of rows) {
-      const row = el('div', { style: 'display:flex;align-items:center;gap:6px' }, [
-        chip(this.visuals.causeCss(r.id)),
-        el('span', { style: 'flex:1;color:var(--text-secondary)', text: causeName(this.rules, r.id) }),
-        el('span', { style: 'font-family:var(--mono)', text: r.n.toLocaleString() }),
-      ]);
-      frag.append(row);
-    }
-    this.tip.replaceChildren(frag);
-    this.tip.style.display = 'block';
-    const tipW = this.tip.offsetWidth;
-    const x = this.xOf(b.tick, innerW);
-    this.tip.style.left = `${Math.max(0, Math.min(this.width - tipW, x + 10))}px`;
-    this.tip.style.top = `${PAD.top}px`;
+    this.readout.textContent = rows.length
+      ? `day ${(b.hours / 24).toFixed(1)} · ${count(total)} deaths · ${rows
+          .map((r) => `${causeName(this.rules, r.id)} ${count(r.n)}`)
+          .join(' · ')}`
+      : `day ${(b.hours / 24).toFixed(1)} · no deaths`;
+    this.render();
   }
 
   /** The table view, so the chart is never the only way to read the numbers. */
@@ -308,12 +353,13 @@ export class CauseChart {
       const tr = el('tr', {}, [el('td', { text: String(day) })]);
       for (const id of this.causeIds) {
         total += row[id];
-        tr.append(el('td', { text: row[id] ? row[id].toLocaleString() : '—' }));
+        tr.append(el('td', { text: row[id] ? count(row[id]) : '—' }));
       }
-      tr.append(el('td', { text: total.toLocaleString() }));
+      tr.append(el('td', { text: count(total) }));
       body.append(tr);
     }
-    const table = el('table', { class: 'data' }, [el('thead', {}, [head]), body]);
-    this.tableWrap.replaceChildren(table);
+    this.tableWrap.replaceChildren(
+      el('table', { class: 'data' }, [el('thead', {}, [head]), body]),
+    );
   }
 }

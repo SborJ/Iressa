@@ -80,9 +80,12 @@ function localTreatmentSchedule(params: ExperimentParams, rules: RulesFile): Non
     if (switchDoses > 0) {
       schedule.push({ drug: gefitinib.id, startHour: 0, everyHours: 24, doses: switchDoses, amount: params.dose });
     }
-    if (osimertinib && switchDoses < totalDoses) {
+    if (switchDoses < totalDoses) {
+      // With no second drug there is nothing to switch to, so the first one
+      // carries on. Stopping at the switch day instead would quietly drop the
+      // rest of a run the caller asked to be treated.
       schedule.push({
-        drug: osimertinib.id,
+        drug: (osimertinib ?? gefitinib).id,
         startHour: switchDoses * 24,
         everyHours: 24,
         doses: totalDoses - switchDoses,
@@ -101,9 +104,13 @@ function localTreatmentSchedule(params: ExperimentParams, rules: RulesFile): Non
 }
 
 function numberParam(q: URLSearchParams, name: string, fallback: number, min: number, max: number): number {
-  const raw = Number(q.get(name));
-  if (!Number.isFinite(raw)) return fallback;
-  return Math.max(min, Math.min(max, raw));
+  const raw = q.get(name);
+  // Number(null) is 0, not NaN, so an absent parameter has to be rejected
+  // before the conversion - otherwise every default collapses to `min`.
+  if (raw === null || raw.trim() === '') return fallback;
+  const value = Number(raw);
+  if (!Number.isFinite(value)) return fallback;
+  return Math.max(min, Math.min(max, value));
 }
 
 function parseSchedule(value: string | null): ExperimentSchedule | undefined {
