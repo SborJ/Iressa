@@ -26,9 +26,10 @@ export interface ControlHandlers {
   onReset(): void;
   onFrame(): void;
   onRunExperiment(params: ExperimentParams): void;
+  onFastForwardDay(): void;
 }
 
-const SPEEDS = [1, 2, 4, 8, 16, 32, 64];
+const SPEEDS = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512];
 
 export class Controls {
   readonly state: ControlState;
@@ -71,6 +72,12 @@ export class Controls {
     });
     const resetBtn = el('button', { type: 'button', text: 'Reset' });
     resetBtn.addEventListener('click', () => this.handlers.onReset());
+    const skipDayBtn = el('button', {
+      type: 'button',
+      text: 'Skip day',
+      title: 'Fast-forward one simulated day without refreshing the page.',
+    });
+    skipDayBtn.addEventListener('click', () => this.handlers.onFastForwardDay());
 
     const speed = el('input', {
       type: 'range', min: '0', max: String(SPEEDS.length - 1), step: '1',
@@ -157,7 +164,7 @@ export class Controls {
       el('div', { class: 'ctl' }, [el('label', { text: 'Colour by' }), colorRow]),
       el('div', { class: 'rule' }),
       el('div', { class: 'ctl' }, [
-        el('div', { class: 'btnrow' }, [this.playBtn, stepBtn, resetBtn]),
+        el('div', { class: 'btnrow wrap' }, [this.playBtn, stepBtn, skipDayBtn, resetBtn]),
       ]),
       el('div', { class: 'ctl' }, [
         el('label', {}, [document.createTextNode('Speed'), this.speedLabel]), speed,

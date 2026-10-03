@@ -17,7 +17,9 @@ import { CauseStats } from './world/causeStats.js';
 import { World } from './world/world.js';
 
 /** How long one frame may spend advancing the simulation. */
-const TICK_BUDGET_MS = 10;
+const TICK_BUDGET_MS = 24;
+/** Fast-forwarding runs in short chunks so the tab remains interactive. */
+const FAST_FORWARD_BUDGET_MS = 32;
 /** Picking costs a GPU readback, so it runs well below the frame rate. */
 const PICK_INTERVAL_MS = 60;
 
@@ -102,6 +104,7 @@ async function start(): Promise<void> {
   let unsubscribe = subscribe(source);
   let tickDebt = 0;
   let framed = false;
+  let fastForwardRun = 0;
 
   const resetWorld = () => {
     world.clear();
@@ -110,6 +113,7 @@ async function start(): Promise<void> {
     viewer.displayTick = 0;
     tickDebt = 0;
     framed = false;
+    fastForwardRun++;
     hover.hide();
     viewer.markDirty();
   };
@@ -130,6 +134,29 @@ async function start(): Promise<void> {
     unsubscribe = subscribe(source);
     source.pump(1);
     controls.setPlaying(true);
+  };
+
+  const fastForwardTicks = (ticks: number) => {
+    const run = ++fastForwardRun;
+    let remaining = Math.max(0, ticks);
+    controls.setPlaying(false);
+    tickDebt = 0;
+
+    const pumpChunk = () => {
+      const deadline = performance.now() + FAST_FORWARD_BUDGET_MS;
+      while (remaining > 0 && !source.done && performance.now() < deadline) {
+        source.pump(1);
+        remaining--;
+      }
+      viewer.markDirty();
+      status.update(world, source);
+      tally.update(stats);
+      chart.update(stats);
+      if (remaining > 0 && !source.done && run === fastForwardRun) {
+        requestAnimationFrame(pumpChunk);
+      }
+    };
+    requestAnimationFrame(pumpChunk);
   };
 
   const controls = new Controls(document.getElementById('controls')!, visuals, {
@@ -154,6 +181,7 @@ async function start(): Promise<void> {
       source.pump(1);
     },
     onRunExperiment: startLocalExperiment,
+    onFastForwardDay: () => fastForwardTicks(activeRules.ticksPerDay),
   });
   viewer.applyView(controls.state.view);
   viewer.setColorBy(controls.state.colorBy);
