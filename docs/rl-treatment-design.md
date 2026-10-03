@@ -37,6 +37,13 @@ pip install -r requirements-rl.txt
 python3 scripts/train_ppo.py --days 120 --dt-days 1 --total-timesteps 10000
 ```
 
+Evaluate fixed baselines, and optionally a saved PPO checkpoint:
+
+```bash
+python3 scripts/evaluate_policy.py --days 120 --seeds 1001,1002,1003
+python3 scripts/evaluate_policy.py --policy outputs/rl/ppo_iressa.zip --days 120 --seeds 1001,1002,1003
+```
+
 ## Environment
 
 One RL episode is one tumor simulation run.

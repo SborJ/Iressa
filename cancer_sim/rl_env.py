@@ -132,6 +132,7 @@ class CancerTreatmentEnv(_gym_base()):
         self._cumulative_dose = {drug: 0.0 for drug in DRUGS}
         self._last_drug = "none"
         self._days_since_switch = 0.0
+        self.last_observation = np.zeros(len(OBSERVATION_NAMES), dtype=np.float32)
 
     def reset(
         self,
@@ -160,7 +161,8 @@ class CancerTreatmentEnv(_gym_base()):
         self._cumulative_dose = {drug: 0.0 for drug in DRUGS}
         self._last_drug = "none"
         self._days_since_switch = 0.0
-        return self._observation(), self._info()
+        self.last_observation = self._observation()
+        return self.last_observation, self._info()
 
     def step(self, action: int) -> tuple[np.ndarray, float, bool, bool, dict[str, Any]]:
         if self._runner is None:
@@ -190,7 +192,8 @@ class CancerTreatmentEnv(_gym_base()):
         truncated = self._step_index >= self.max_steps
         info = self._info()
         info["reward_components"] = components
-        return self._observation(), reward, terminated, truncated, info
+        self.last_observation = self._observation()
+        return self.last_observation, reward, terminated, truncated, info
 
     @property
     def max_steps(self) -> int:

@@ -43,6 +43,7 @@ clinical recommendation system.
 python3 scripts/train_ppo.py --smoke
 pip install -r requirements-rl.txt
 python3 scripts/train_ppo.py --days 120 --dt-days 1 --total-timesteps 10000
+python3 scripts/evaluate_policy.py --days 120 --seeds 1001,1002,1003
 ```
 
 ## What you see
