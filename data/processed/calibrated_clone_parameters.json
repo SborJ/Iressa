@@ -1,0 +1,410 @@
+[
+  {
+    "clone_id": "EGFR",
+    "label": "EGFR-mutant",
+    "alterations": {
+      "value": [
+        "EGFR_exon19del_or_L858R"
+      ],
+      "unit": "list",
+      "status": "literature_derived",
+      "source": "curated EGFR resistance graph",
+      "n_records": 1,
+      "min": null,
+      "max": null
+    },
+    "growth_rate_per_day": {
+      "value": 0.2742422079366747,
+      "unit": "1/day",
+      "status": "measured",
+      "source": "Cell Model Passports growth_rate_latest.csv",
+      "n_records": 5,
+      "min": 0.17328679513998632,
+      "max": 0.38383784802581183
+    },
+    "fitness_cost": {
+      "value": 0.0,
+      "unit": "fraction",
+      "status": "not_applied",
+      "source": "measured clone-specific growth_rate_per_day is used directly",
+      "n_records": 0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "max_drug_death_rate_per_day": {
+      "value": 0.46209812037329684,
+      "unit": "1/day",
+      "status": "inferred",
+      "source": "derived from IC50 definition: GDSC2 fitted dose-response: IC50 is the concentration giving 50% relative viability after 72 h of exposure (Yang W et al. NAR 2013 (GDSC); Iorio F et al. Cell 2016; Vis DJ et al. Pharmacogenomics 2016 (IC50 fitting); GDSC_Fitted_Data_Description.pdf release 8.5)",
+      "n_records": 0,
+      "min": 0.46209812037329684,
+      "max": 0.46209812037329684
+    },
+    "hill_coefficient": {
+      "value": 1.2,
+      "unit": "dimensionless",
+      "status": "assumed",
+      "source": "curated simulator seed; GDSC sigmoid slopes are not exported per curve",
+      "n_records": 0,
+      "min": null,
+      "max": null
+    },
+    "drug_response": {
+      "gefitinib": {
+        "value": 247.32846696996984,
+        "unit": "nM",
+        "status": "measured",
+        "source": "normalized drug_response.csv",
+        "n_records": 5,
+        "min": 64.84574391871514,
+        "max": 4124.331722518641
+      },
+      "osimertinib": {
+        "value": 73.93743620997114,
+        "unit": "nM",
+        "status": "measured",
+        "source": "normalized drug_response.csv",
+        "n_records": 5,
+        "min": 27.578356463468786,
+        "max": 1341.3411880308588
+      },
+      "capmatinib": {
+        "value": 8000.0,
+        "unit": "nM",
+        "status": "assumed",
+        "source": "curated simulator seed fallback",
+        "n_records": 0,
+        "min": 8000.0,
+        "max": 8000.0
+      }
+    },
+    "allowed_transitions": [
+      "T790M",
+      "MET_AMP"
+    ],
+    "sensitivity_evidence": [
+      "CIViC 11241: EGFR L858R OR EGFR Exon 19 Deletion SENSITIVITYRESPONSE gefitinib",
+      "CIViC 275: EGFR L858R SENSITIVITYRESPONSE gefitinib|erlotinib",
+      "CIViC 2621: EGFR L858R SENSITIVITYRESPONSE gefitinib",
+      "CIViC 4759: EGFR L858R OR EGFR Exon 19 Deletion SENSITIVITYRESPONSE erlotinib|gefitinib",
+      "CIViC 229: EGFR L858R SENSITIVITYRESPONSE gefitinib|erlotinib"
+    ],
+    "resistance_evidence": [],
+    "transition_evidence": [],
+    "evidence_notes": [
+      "CIViC 11241: EGFR L858R OR EGFR Exon 19 Deletion SENSITIVITYRESPONSE gefitinib",
+      "CIViC 275: EGFR L858R SENSITIVITYRESPONSE gefitinib|erlotinib",
+      "CIViC 2621: EGFR L858R SENSITIVITYRESPONSE gefitinib",
+      "CIViC 4759: EGFR L858R OR EGFR Exon 19 Deletion SENSITIVITYRESPONSE erlotinib|gefitinib",
+      "CIViC 229: EGFR L858R SENSITIVITYRESPONSE gefitinib|erlotinib"
+    ]
+  },
+  {
+    "clone_id": "T790M",
+    "label": "EGFR + T790M",
+    "alterations": {
+      "value": [
+        "EGFR_exon19del_or_L858R",
+        "EGFR_T790M"
+      ],
+      "unit": "list",
+      "status": "literature_derived",
+      "source": "curated EGFR resistance graph",
+      "n_records": 2,
+      "min": null,
+      "max": null
+    },
+    "growth_rate_per_day": {
+      "value": 0.4073342882820442,
+      "unit": "1/day",
+      "status": "measured",
+      "source": "Cell Model Passports growth_rate_latest.csv",
+      "n_records": 1,
+      "min": 0.4073342882820442,
+      "max": 0.4073342882820442
+    },
+    "fitness_cost": {
+      "value": 0.0,
+      "unit": "fraction",
+      "status": "not_applied",
+      "source": "measured clone-specific growth_rate_per_day is used directly",
+      "n_records": 0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "max_drug_death_rate_per_day": {
+      "value": 0.46209812037329684,
+      "unit": "1/day",
+      "status": "inferred",
+      "source": "derived from IC50 definition: GDSC2 fitted dose-response: IC50 is the concentration giving 50% relative viability after 72 h of exposure (Yang W et al. NAR 2013 (GDSC); Iorio F et al. Cell 2016; Vis DJ et al. Pharmacogenomics 2016 (IC50 fitting); GDSC_Fitted_Data_Description.pdf release 8.5)",
+      "n_records": 0,
+      "min": 0.46209812037329684,
+      "max": 0.46209812037329684
+    },
+    "hill_coefficient": {
+      "value": 1.2,
+      "unit": "dimensionless",
+      "status": "assumed",
+      "source": "curated simulator seed; GDSC sigmoid slopes are not exported per curve",
+      "n_records": 0,
+      "min": null,
+      "max": null
+    },
+    "drug_response": {
+      "gefitinib": {
+        "value": 13643.715326962285,
+        "unit": "nM",
+        "status": "measured",
+        "source": "normalized drug_response.csv",
+        "n_records": 1,
+        "min": 13643.715326962285,
+        "max": 13643.715326962285
+      },
+      "osimertinib": {
+        "value": 37.92578709404305,
+        "unit": "nM",
+        "status": "measured",
+        "source": "normalized drug_response.csv",
+        "n_records": 1,
+        "min": 37.92578709404305,
+        "max": 37.92578709404305
+      },
+      "capmatinib": {
+        "value": 8000.0,
+        "unit": "nM",
+        "status": "assumed",
+        "source": "curated simulator seed fallback",
+        "n_records": 0,
+        "min": 8000.0,
+        "max": 8000.0
+      }
+    },
+    "allowed_transitions": [
+      "C797S",
+      "MET_AMP"
+    ],
+    "sensitivity_evidence": [
+      "CIViC 1592: EGFR T790M SENSITIVITYRESPONSE osimertinib",
+      "CIViC 1867: EGFR T790M SENSITIVITYRESPONSE osimertinib",
+      "CIViC 11598: EGFR T790M AND EGFR Exon 19 Deletion SENSITIVITYRESPONSE osimertinib",
+      "CIViC 11599: EGFR L858R AND EGFR T790M SENSITIVITYRESPONSE osimertinib",
+      "CIViC 965: EGFR T790M SENSITIVITYRESPONSE osimertinib"
+    ],
+    "resistance_evidence": [
+      "CIViC 239: EGFR T790M RESISTANCE gefitinib",
+      "CIViC 1391: EGFR T790M RESISTANCE gefitinib|erlotinib",
+      "CIViC 1667: EGFR T790M RESISTANCE gefitinib|erlotinib",
+      "CIViC 2159: EGFR T790M RESISTANCE gefitinib",
+      "CIViC 2158: EGFR T790M RESISTANCE gefitinib|erlotinib"
+    ],
+    "transition_evidence": [
+      "CIViC 239: EGFR T790M RESISTANCE gefitinib",
+      "CIViC 1391: EGFR T790M RESISTANCE gefitinib|erlotinib",
+      "CIViC 1667: EGFR T790M RESISTANCE gefitinib|erlotinib",
+      "CIViC 2159: EGFR T790M RESISTANCE gefitinib",
+      "CIViC 2158: EGFR T790M RESISTANCE gefitinib|erlotinib"
+    ],
+    "evidence_notes": [
+      "CIViC 1592: EGFR T790M SENSITIVITYRESPONSE osimertinib",
+      "CIViC 1867: EGFR T790M SENSITIVITYRESPONSE osimertinib",
+      "CIViC 11598: EGFR T790M AND EGFR Exon 19 Deletion SENSITIVITYRESPONSE osimertinib",
+      "CIViC 11599: EGFR L858R AND EGFR T790M SENSITIVITYRESPONSE osimertinib",
+      "CIViC 965: EGFR T790M SENSITIVITYRESPONSE osimertinib"
+    ]
+  },
+  {
+    "clone_id": "C797S",
+    "label": "EGFR + T790M + C797S",
+    "alterations": {
+      "value": [
+        "EGFR_exon19del_or_L858R",
+        "EGFR_T790M",
+        "EGFR_C797S"
+      ],
+      "unit": "list",
+      "status": "literature_derived",
+      "source": "curated EGFR resistance graph",
+      "n_records": 3,
+      "min": null,
+      "max": null
+    },
+    "growth_rate_per_day": {
+      "value": 0.4073342882820442,
+      "unit": "1/day",
+      "status": "inferred",
+      "source": "inherited from parent clone T790M (measured, n=1); the assumed fitness_cost is applied once by the simulator",
+      "n_records": 1,
+      "min": 0.4073342882820442,
+      "max": 0.4073342882820442
+    },
+    "fitness_cost": {
+      "value": 0.18,
+      "unit": "fraction",
+      "status": "assumed",
+      "source": "curated simulator seed",
+      "n_records": 1,
+      "min": 0.18,
+      "max": 0.18
+    },
+    "max_drug_death_rate_per_day": {
+      "value": 0.46209812037329684,
+      "unit": "1/day",
+      "status": "inferred",
+      "source": "derived from IC50 definition: GDSC2 fitted dose-response: IC50 is the concentration giving 50% relative viability after 72 h of exposure (Yang W et al. NAR 2013 (GDSC); Iorio F et al. Cell 2016; Vis DJ et al. Pharmacogenomics 2016 (IC50 fitting); GDSC_Fitted_Data_Description.pdf release 8.5)",
+      "n_records": 0,
+      "min": 0.46209812037329684,
+      "max": 0.46209812037329684
+    },
+    "hill_coefficient": {
+      "value": 1.2,
+      "unit": "dimensionless",
+      "status": "assumed",
+      "source": "curated simulator seed; GDSC sigmoid slopes are not exported per curve",
+      "n_records": 0,
+      "min": null,
+      "max": null
+    },
+    "drug_response": {
+      "gefitinib": {
+        "value": 17000.0,
+        "unit": "nM",
+        "status": "assumed",
+        "source": "curated simulator seed fallback",
+        "n_records": 0,
+        "min": 17000.0,
+        "max": 17000.0
+      },
+      "osimertinib": {
+        "value": 9200.0,
+        "unit": "nM",
+        "status": "assumed",
+        "source": "curated simulator seed fallback",
+        "n_records": 0,
+        "min": 9200.0,
+        "max": 9200.0
+      },
+      "capmatinib": {
+        "value": 8000.0,
+        "unit": "nM",
+        "status": "assumed",
+        "source": "curated simulator seed fallback",
+        "n_records": 0,
+        "min": 8000.0,
+        "max": 8000.0
+      }
+    },
+    "allowed_transitions": [],
+    "sensitivity_evidence": [],
+    "resistance_evidence": [
+      "CIViC 1396: EGFR T790M AND EGFR Exon 19 Deletion AND EGFR C797S RESISTANCE osimertinib",
+      "CIViC 964: EGFR C797S RESISTANCE osimertinib"
+    ],
+    "transition_evidence": [
+      "CIViC 1396: EGFR T790M AND EGFR Exon 19 Deletion AND EGFR C797S RESISTANCE osimertinib",
+      "CIViC 964: EGFR C797S RESISTANCE osimertinib"
+    ],
+    "evidence_notes": [
+      "CIViC 1396: EGFR T790M AND EGFR Exon 19 Deletion AND EGFR C797S RESISTANCE osimertinib",
+      "CIViC 964: EGFR C797S RESISTANCE osimertinib",
+      "CIViC 1396: EGFR T790M AND EGFR Exon 19 Deletion AND EGFR C797S RESISTANCE osimertinib",
+      "CIViC 964: EGFR C797S RESISTANCE osimertinib"
+    ]
+  },
+  {
+    "clone_id": "MET_AMP",
+    "label": "EGFR + MET amplification",
+    "alterations": {
+      "value": [
+        "EGFR_exon19del_or_L858R",
+        "MET_amplification"
+      ],
+      "unit": "list",
+      "status": "literature_derived",
+      "source": "curated EGFR resistance graph",
+      "n_records": 2,
+      "min": null,
+      "max": null
+    },
+    "growth_rate_per_day": {
+      "value": 0.2742422079366747,
+      "unit": "1/day",
+      "status": "inferred",
+      "source": "inherited from parent clone EGFR (measured, n=5); the assumed fitness_cost is applied once by the simulator",
+      "n_records": 5,
+      "min": 0.17328679513998632,
+      "max": 0.38383784802581183
+    },
+    "fitness_cost": {
+      "value": 0.06,
+      "unit": "fraction",
+      "status": "assumed",
+      "source": "curated simulator seed",
+      "n_records": 1,
+      "min": 0.06,
+      "max": 0.06
+    },
+    "max_drug_death_rate_per_day": {
+      "value": 0.46209812037329684,
+      "unit": "1/day",
+      "status": "inferred",
+      "source": "derived from IC50 definition: GDSC2 fitted dose-response: IC50 is the concentration giving 50% relative viability after 72 h of exposure (Yang W et al. NAR 2013 (GDSC); Iorio F et al. Cell 2016; Vis DJ et al. Pharmacogenomics 2016 (IC50 fitting); GDSC_Fitted_Data_Description.pdf release 8.5)",
+      "n_records": 0,
+      "min": 0.46209812037329684,
+      "max": 0.46209812037329684
+    },
+    "hill_coefficient": {
+      "value": 1.2,
+      "unit": "dimensionless",
+      "status": "assumed",
+      "source": "curated simulator seed; GDSC sigmoid slopes are not exported per curve",
+      "n_records": 0,
+      "min": null,
+      "max": null
+    },
+    "drug_response": {
+      "gefitinib": {
+        "value": 4500.0,
+        "unit": "nM",
+        "status": "assumed",
+        "source": "curated simulator seed fallback",
+        "n_records": 0,
+        "min": 4500.0,
+        "max": 4500.0
+      },
+      "osimertinib": {
+        "value": 2200.0,
+        "unit": "nM",
+        "status": "assumed",
+        "source": "curated simulator seed fallback",
+        "n_records": 0,
+        "min": 2200.0,
+        "max": 2200.0
+      },
+      "capmatinib": {
+        "value": 80.0,
+        "unit": "nM",
+        "status": "assumed",
+        "source": "curated simulator seed fallback",
+        "n_records": 0,
+        "min": 80.0,
+        "max": 80.0
+      }
+    },
+    "allowed_transitions": [],
+    "sensitivity_evidence": [],
+    "resistance_evidence": [
+      "CIViC 1392: MET Amplification RESISTANCE gefitinib|erlotinib",
+      "CIViC 733: MET Amplification RESISTANCE gefitinib"
+    ],
+    "transition_evidence": [
+      "CIViC 1392: MET Amplification RESISTANCE gefitinib|erlotinib",
+      "CIViC 733: MET Amplification RESISTANCE gefitinib"
+    ],
+    "evidence_notes": [
+      "CIViC 1392: MET Amplification RESISTANCE gefitinib|erlotinib",
+      "CIViC 733: MET Amplification RESISTANCE gefitinib",
+      "CIViC 1392: MET Amplification RESISTANCE gefitinib|erlotinib",
+      "CIViC 733: MET Amplification RESISTANCE gefitinib"
+    ]
+  }
+]

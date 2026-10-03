@@ -1,0 +1,54 @@
+{
+  "cell_model_passports": {
+    "version": "manual-or-api-current",
+    "target_dir": "data/raw/cell_model_passports/manual-or-api-current",
+    "license_note": "Respect Cell Model Passports/Sanger download terms. Record exact download page or API endpoint used.",
+    "resources": [
+      {
+        "name": "cell_model_passports_mutations",
+        "url": "",
+        "output": "cell_model_passports_mutations.csv",
+        "note": "Place mutation/CNA export here, then copy or symlink to data/raw/cell_model_passports_mutations.csv."
+      }
+    ]
+  },
+  "gdsc": {
+    "version": "GDSC2-current",
+    "target_dir": "data/raw/gdsc/GDSC2-current",
+    "license_note": "Respect GDSC/Sanger download terms. Prefer GDSC2 fitted dose-response export when available.",
+    "resources": [
+      {
+        "name": "gdsc_drug_response",
+        "url": "https://cog.sanger.ac.uk/cancerrxgene/GDSC_release8.5/GDSC2_fitted_dose_response_27Oct23.csv",
+        "output": "gdsc_drug_response.csv",
+        "note": "Place GDSC2 fitted response export here, then copy or symlink to data/raw/gdsc_drug_response.csv."
+      }
+    ]
+  },
+  "civic": {
+    "version": "accepted-evidence-current",
+    "target_dir": "data/raw/civic/accepted-evidence-current",
+    "license_note": "Respect CIViC data/API terms. Store GraphQL query and accepted evidence export.",
+    "resources": [
+      {
+        "name": "civic_evidence",
+        "url": "",
+        "output": "civic_evidence.csv",
+        "note": "Export accepted evidence for EGFR/MET profiles and relevant therapies."
+      }
+    ]
+  },
+  "cbioportal": {
+    "version": "msk-luad-current",
+    "target_dir": "data/raw/cbioportal/msk-luad-current",
+    "license_note": "Respect cBioPortal study-specific data-use terms.",
+    "resources": [
+      {
+        "name": "cbioportal_alterations",
+        "url": "",
+        "output": "cbioportal_alterations.csv",
+        "note": "Export lung adenocarcinoma/MSK EGFR and MET mutation/CNA context."
+      }
+    ]
+  }
+}

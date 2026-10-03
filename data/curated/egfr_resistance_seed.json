@@ -1,0 +1,172 @@
+{
+  "metadata": {
+    "scope": "EGFR-mutant lung cancer resistance simulator seed data",
+    "notes": [
+      "IC50 values are simulator seed values in nM, chosen to encode qualitative sensitivity/resistance patterns until raw public exports are supplied.",
+      "Use data/raw public exports to replace or refine these values for analysis-grade work.",
+      "Do not use this dataset for clinical decision making.",
+      "growth_rate values for clones without matched models are legacy placeholders; the calibration pipeline inherits the parent clone's measured growth and applies the assumed fitness_cost once (see growth_inheritance)."
+    ],
+    "source_families": [
+      "Cell Model Passports / GDSC for cell model drug response",
+      "CIViC for mutation-drug evidence",
+      "cBioPortal / MSK-IMPACT for tumor alteration frequencies"
+    ]
+  },
+  "clones": [
+    {
+      "id": "EGFR",
+      "label": "EGFR-mutant",
+      "alterations": [
+        "EGFR_exon19del_or_L858R"
+      ],
+      "growth_rate": 0.036,
+      "fitness_cost": 0.0,
+      "drug_sensitivities": {
+        "gefitinib": "sensitive",
+        "osimertinib": "sensitive",
+        "capmatinib": "resistant"
+      },
+      "ic50_nm": {
+        "gefitinib": 35,
+        "osimertinib": 18,
+        "capmatinib": 8000
+      },
+      "allowed_next_resistance_transitions": [
+        "T790M",
+        "MET_AMP"
+      ],
+      "initial_fraction_hint": 0.94
+    },
+    {
+      "id": "T790M",
+      "label": "EGFR + T790M",
+      "alterations": [
+        "EGFR_exon19del_or_L858R",
+        "EGFR_T790M"
+      ],
+      "growth_rate": 0.032,
+      "fitness_cost": 0.11,
+      "drug_sensitivities": {
+        "gefitinib": "resistant",
+        "osimertinib": "sensitive",
+        "capmatinib": "resistant"
+      },
+      "ic50_nm": {
+        "gefitinib": 13600,
+        "osimertinib": 38,
+        "capmatinib": 8000
+      },
+      "allowed_next_resistance_transitions": [
+        "C797S",
+        "MET_AMP"
+      ],
+      "initial_fraction_hint": 0.05
+    },
+    {
+      "id": "C797S",
+      "label": "EGFR + T790M + C797S",
+      "alterations": [
+        "EGFR_exon19del_or_L858R",
+        "EGFR_T790M",
+        "EGFR_C797S"
+      ],
+      "growth_rate": 0.029,
+      "fitness_cost": 0.18,
+      "drug_sensitivities": {
+        "gefitinib": "resistant",
+        "osimertinib": "resistant",
+        "capmatinib": "resistant"
+      },
+      "ic50_nm": {
+        "gefitinib": 17000,
+        "osimertinib": 9200,
+        "capmatinib": 8000
+      },
+      "allowed_next_resistance_transitions": [],
+      "initial_fraction_hint": 0.005
+    },
+    {
+      "id": "MET_AMP",
+      "label": "EGFR + MET amplification",
+      "alterations": [
+        "EGFR_exon19del_or_L858R",
+        "MET_amplification"
+      ],
+      "growth_rate": 0.034,
+      "fitness_cost": 0.06,
+      "drug_sensitivities": {
+        "gefitinib": "partially_resistant",
+        "osimertinib": "partially_resistant",
+        "capmatinib": "sensitive"
+      },
+      "ic50_nm": {
+        "gefitinib": 4500,
+        "osimertinib": 2200,
+        "capmatinib": 80
+      },
+      "allowed_next_resistance_transitions": [],
+      "initial_fraction_hint": 0.005
+    }
+  ],
+  "resistance_evidence": [
+    {
+      "parent_clone": "EGFR",
+      "child_clone": "T790M",
+      "alteration": "EGFR_T790M",
+      "relationship": "acquired resistance to first-generation EGFR inhibitors",
+      "evidence_source": "CIViC predictive/therapeutic evidence family",
+      "simulation_probability": 2e-05
+    },
+    {
+      "parent_clone": "T790M",
+      "child_clone": "C797S",
+      "alteration": "EGFR_C797S",
+      "relationship": "acquired resistance to osimertinib",
+      "evidence_source": "CIViC predictive/therapeutic evidence family",
+      "simulation_probability": 1e-05
+    },
+    {
+      "parent_clone": "EGFR",
+      "child_clone": "MET_AMP",
+      "alteration": "MET_amplification",
+      "relationship": "bypass resistance mechanism",
+      "evidence_source": "CIViC and cBioPortal alteration evidence families",
+      "simulation_probability": 1e-05
+    },
+    {
+      "parent_clone": "T790M",
+      "child_clone": "MET_AMP",
+      "alteration": "MET_amplification",
+      "relationship": "bypass resistance mechanism after EGFR inhibitor exposure",
+      "evidence_source": "CIViC and cBioPortal alteration evidence families",
+      "simulation_probability": 1e-05
+    }
+  ],
+  "model_exclusions": [
+    {
+      "model_id": "SIDM00745",
+      "model_name": "NCI-H1650",
+      "reason": "homozygous PTEN loss confers intrinsic EGFR-TKI resistance despite the EGFR exon 19 deletion; not representative of an EGFR-inhibitor-sensitive clone",
+      "evidence": "Sos ML et al., Cancer Res 2009;69(8):3256-61, PMID 19351834 (H1650 erlotinib resistance via PTEN loss / AKT); consistent with GDSC2: gefitinib IC50 16.5 uM, AUC 0.93; erlotinib IC50 3.2 uM",
+      "status": "literature_derived"
+    }
+  ],
+  "drug_response_assay": {
+    "name": "GDSC2 fitted dose-response: IC50 is the concentration giving 50% relative viability after 72 h of exposure",
+    "duration_days": 3.0,
+    "relative_viability_at_ic50": 0.5,
+    "source": "Yang W et al. NAR 2013 (GDSC); Iorio F et al. Cell 2016; Vis DJ et al. Pharmacogenomics 2016 (IC50 fitting); GDSC_Fitted_Data_Description.pdf release 8.5",
+    "status": "literature_derived",
+    "derivation": "The simulator models drug effect as added death. For a clone at C = IC50 the Hill effect is 0.5, so relative viability after T days is exp(-k_max * 0.5 * T). Setting this to 0.5 at T = 3 days gives k_max = ln(2) / 1.5 = 0.462 per day, independent of growth rate. This assumes a purely cytotoxic effect; cytostatic effects are not modelled."
+  },
+  "growth_inheritance": {
+    "C797S": "T790M",
+    "MET_AMP": "EGFR"
+  },
+  "hill_coefficient": {
+    "value": 1.2,
+    "status": "assumed",
+    "source": "curated simulator seed; GDSC sigmoid slopes are not exported per curve"
+  }
+}

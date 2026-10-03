@@ -1,0 +1,3370 @@
+{
+  "EGFR T790M::gefitinib": {
+    "data": {
+      "evidenceItems": {
+        "nodes": [
+          {
+            "id": 239,
+            "name": "EID239",
+            "description": "In non-small cell lung cancer, the appearance of T790M mutation leads to resistance to gefitinib.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "RESISTANCE",
+            "status": "ACCEPTED",
+            "link": "/evidence/239",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 34,
+              "name": "EGFR T790M"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              }
+            ],
+            "source": {
+              "citation": "Kobayashi et al., 2005",
+              "citationId": "15728811",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/15728811",
+              "link": "/sources/168"
+            }
+          },
+          {
+            "id": 1391,
+            "name": "EID1391",
+            "description": "155 patients with lung adenocarcinomas underwent rebiopsy and genotyping (EGFR, AKT1, BRAF, ERBB2, KRAS, MEK1, NRAS, PIK3CA and FISH for MET and HER2) after the development of acquired resistance to EGFR inhibitors (gefitinib or erlotinib). 98 patients were found to have developed EGFR T790M mutations.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "RESISTANCE",
+            "status": "ACCEPTED",
+            "link": "/evidence/1391",
+            "disease": {
+              "name": "Lung Adenocarcinoma",
+              "displayName": "Lung Adenocarcinoma"
+            },
+            "molecularProfile": {
+              "id": 34,
+              "name": "EGFR T790M"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              },
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Yu et al., 2013",
+              "citationId": "23470965",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/23470965",
+              "link": "/sources/943"
+            }
+          },
+          {
+            "id": 1667,
+            "name": "EID1667",
+            "description": "48 tumor samples from 41 patients with EGFR mutant lung adenocarcinoma that were resistant to tyrosine kinase inhibition by gefitinib (n=1) or erlotinib (n=40) underwent next generation sequencing (NGS failed in 5 samples leading to a remaining 43 specimens from 39 patients). The prevalence of various mutations post-treatment was analyzed. 79%, or 31 out of the 39 patients, had the T790M EGFR mutation present, indicating its importance in the development of resistance.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "RESISTANCE",
+            "status": "ACCEPTED",
+            "link": "/evidence/1667",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 34,
+              "name": "EGFR T790M"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              },
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Belchis et al., 2016",
+              "citationId": "27304188",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/27304188",
+              "link": "/sources/1128"
+            }
+          },
+          {
+            "id": 2159,
+            "name": "EID2159",
+            "description": "In a study of 14 patients with progressive non-small cell lung cancer during gefitinib treatment, comparison of DNA sequences from the original diagnostic biopsy specimen and the post-treatment biopsy specimen demonstrated that 7 patients acquired a new EGFR-T790M mutation. In addition, 52 pre-treatment tumours were examined with a sensitive real-time PCR assay and found no evidence of low frequency T790M mutation prior to gefitinib treatment.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "RESISTANCE",
+            "status": "ACCEPTED",
+            "link": "/evidence/2159",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 34,
+              "name": "EGFR T790M"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              }
+            ],
+            "source": {
+              "citation": "Kosaka et al., 2006",
+              "citationId": "17020982",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/17020982",
+              "link": "/sources/1524"
+            }
+          },
+          {
+            "id": 2158,
+            "name": "EID2158",
+            "description": "In a study of 6 patients with progressive non-small cell lung cancer during gefitinib or erlotinib therapy, comparison of DNA sequences from the original diagnostic biopsy specimen and a post-treatment biopsy specimen demonstrated that 3 patients acquired a new EGFR-T790M mutation. Analysis of EGFR sequence from 155 NSCLC samples prior to treatment with an EGFR inhibitor showed no T790M mutations, suggesting that T790M is associated with progression on gefitinib or erlotinib. In vitro experiments showed that the addition of T790M drastically reduced sensitivity to gefitinib or erlotinib in cells containing the sensitizing EGFR mutation L858R.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "C",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "RESISTANCE",
+            "status": "ACCEPTED",
+            "link": "/evidence/2158",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 34,
+              "name": "EGFR T790M"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              },
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Pao et al., 2005",
+              "citationId": "15737014",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/15737014",
+              "link": "/sources/1520"
+            }
+          },
+          {
+            "id": 642,
+            "name": "EID642",
+            "description": "Lung cancers can accumulate activating mutations in oncogenes such as EGFR. The common L858R EGFR mutation has been shown previously to be sensitive to small molecular tyrosine kinase inhibitors (ie. erlotinib). In response, tumors may accumulate an additional 'gatekeeper' mutation in EGFR, T790M. Authors show that T790M retain low affinity for gefitinib and that introduction of T790M in the presence of L858R mutant increases the ATP affinity of L858R and activates wild-type EGFR, thus showing that increased ATP affinity is the primary mode of resistance in tumors with T790M, though irreversible ATP inhibitors (ie. HKI-272) are able to overcome this resistance via covalent bonding.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "D",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "RESISTANCE",
+            "status": "ACCEPTED",
+            "link": "/evidence/642",
+            "disease": {
+              "name": "Lung Cancer",
+              "displayName": "Lung Cancer"
+            },
+            "molecularProfile": {
+              "id": 34,
+              "name": "EGFR T790M"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              },
+              {
+                "id": 90,
+                "name": "Multikinase Inhibitor AEE788"
+              }
+            ],
+            "source": {
+              "citation": "Yun et al., 2008",
+              "citationId": "18227510",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/18227510",
+              "link": "/sources/405"
+            }
+          },
+          {
+            "id": 3810,
+            "name": "EID3810",
+            "description": "Experimental - EGFR T790M mutation has been associated with resistance to first generation EGFR tyrosine kinase inhibitors, including erlotinib and gefitinib. In an in vitro study, Ba/F3 cells stably expressing EGFR T790M demonstrated resistance to gefitinib and erlotinib and the tool construct AEE788. These cells had very high IC50 nmol/L values for all three inhibitors in comparison to other constructs (Gefitinib>2000, Erlotinib>2000, AEE788>2000), indicating resitance to all three inhibitors.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "D",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "RESISTANCE",
+            "status": "ACCEPTED",
+            "link": "/evidence/3810",
+            "disease": {
+              "name": "Cancer",
+              "displayName": "Cancer"
+            },
+            "molecularProfile": {
+              "id": 34,
+              "name": "EGFR T790M"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              },
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              },
+              {
+                "id": 90,
+                "name": "Multikinase Inhibitor AEE788"
+              }
+            ],
+            "source": {
+              "citation": "Kancha et al., 2009",
+              "citationId": "19147750",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/19147750",
+              "link": "/sources/1528"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "EGFR T790M::erlotinib": {
+    "data": {
+      "evidenceItems": {
+        "nodes": [
+          {
+            "id": 238,
+            "name": "EID238",
+            "description": "The T790M mutation in EGFR has been shown to confer resistance to the tyrosine kinase inhibitor erlotinib, and patients harboring this mutation that are placed on the drug are likely to relapse.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "A",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "RESISTANCE",
+            "status": "ACCEPTED",
+            "link": "/evidence/238",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 34,
+              "name": "EGFR T790M"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Denis et al., 2015",
+              "citationId": "25668228",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/25668228",
+              "link": "/sources/167"
+            }
+          },
+          {
+            "id": 1391,
+            "name": "EID1391",
+            "description": "155 patients with lung adenocarcinomas underwent rebiopsy and genotyping (EGFR, AKT1, BRAF, ERBB2, KRAS, MEK1, NRAS, PIK3CA and FISH for MET and HER2) after the development of acquired resistance to EGFR inhibitors (gefitinib or erlotinib). 98 patients were found to have developed EGFR T790M mutations.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "RESISTANCE",
+            "status": "ACCEPTED",
+            "link": "/evidence/1391",
+            "disease": {
+              "name": "Lung Adenocarcinoma",
+              "displayName": "Lung Adenocarcinoma"
+            },
+            "molecularProfile": {
+              "id": 34,
+              "name": "EGFR T790M"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              },
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Yu et al., 2013",
+              "citationId": "23470965",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/23470965",
+              "link": "/sources/943"
+            }
+          },
+          {
+            "id": 1667,
+            "name": "EID1667",
+            "description": "48 tumor samples from 41 patients with EGFR mutant lung adenocarcinoma that were resistant to tyrosine kinase inhibition by gefitinib (n=1) or erlotinib (n=40) underwent next generation sequencing (NGS failed in 5 samples leading to a remaining 43 specimens from 39 patients). The prevalence of various mutations post-treatment was analyzed. 79%, or 31 out of the 39 patients, had the T790M EGFR mutation present, indicating its importance in the development of resistance.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "RESISTANCE",
+            "status": "ACCEPTED",
+            "link": "/evidence/1667",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 34,
+              "name": "EGFR T790M"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              },
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Belchis et al., 2016",
+              "citationId": "27304188",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/27304188",
+              "link": "/sources/1128"
+            }
+          },
+          {
+            "id": 2158,
+            "name": "EID2158",
+            "description": "In a study of 6 patients with progressive non-small cell lung cancer during gefitinib or erlotinib therapy, comparison of DNA sequences from the original diagnostic biopsy specimen and a post-treatment biopsy specimen demonstrated that 3 patients acquired a new EGFR-T790M mutation. Analysis of EGFR sequence from 155 NSCLC samples prior to treatment with an EGFR inhibitor showed no T790M mutations, suggesting that T790M is associated with progression on gefitinib or erlotinib. In vitro experiments showed that the addition of T790M drastically reduced sensitivity to gefitinib or erlotinib in cells containing the sensitizing EGFR mutation L858R.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "C",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "RESISTANCE",
+            "status": "ACCEPTED",
+            "link": "/evidence/2158",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 34,
+              "name": "EGFR T790M"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              },
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Pao et al., 2005",
+              "citationId": "15737014",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/15737014",
+              "link": "/sources/1520"
+            }
+          },
+          {
+            "id": 277,
+            "name": "EID277",
+            "description": "In an NSCLC patient initially with L858R mutation, pemetrexed and cisplatin combination treatment was followed by erlotinib treatment. A slow progression developed which was found to be positive for L858R as well as T790M mutation which confers resistance to tyrosine kinase inhibitors. Due to slow tumor growth erlotinib was continued despite T790M, with re-addition of premetrexed, and this reduced tumor size and resulted in stable disease.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "C",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/277",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 34,
+              "name": "EGFR T790M"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              },
+              {
+                "id": 156,
+                "name": "Pemetrexed"
+              }
+            ],
+            "source": {
+              "citation": "Li et al., 2014",
+              "citationId": "24636847",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/24636847",
+              "link": "/sources/183"
+            }
+          },
+          {
+            "id": 3810,
+            "name": "EID3810",
+            "description": "Experimental - EGFR T790M mutation has been associated with resistance to first generation EGFR tyrosine kinase inhibitors, including erlotinib and gefitinib. In an in vitro study, Ba/F3 cells stably expressing EGFR T790M demonstrated resistance to gefitinib and erlotinib and the tool construct AEE788. These cells had very high IC50 nmol/L values for all three inhibitors in comparison to other constructs (Gefitinib>2000, Erlotinib>2000, AEE788>2000), indicating resitance to all three inhibitors.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "D",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "RESISTANCE",
+            "status": "ACCEPTED",
+            "link": "/evidence/3810",
+            "disease": {
+              "name": "Cancer",
+              "displayName": "Cancer"
+            },
+            "molecularProfile": {
+              "id": 34,
+              "name": "EGFR T790M"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              },
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              },
+              {
+                "id": 90,
+                "name": "Multikinase Inhibitor AEE788"
+              }
+            ],
+            "source": {
+              "citation": "Kancha et al., 2009",
+              "citationId": "19147750",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/19147750",
+              "link": "/sources/1528"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "EGFR T790M::osimertinib": {
+    "data": {
+      "evidenceItems": {
+        "nodes": [
+          {
+            "id": 1592,
+            "name": "EID1592",
+            "description": "Osimertinib has been approved for the treatment of EGFR T790M mutant NSCLC.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "A",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/1592",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 34,
+              "name": "EGFR T790M"
+            },
+            "therapies": [
+              {
+                "id": 187,
+                "name": "Osimertinib"
+              }
+            ],
+            "source": {
+              "citation": "Greig, 2016",
+              "citationId": "26729184",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/26729184",
+              "link": "/sources/1053"
+            }
+          },
+          {
+            "id": 1867,
+            "name": "EID1867",
+            "description": "Randomized, international, open-label, phase 3 trial (NCT02151981) in 419 patients with T790M-positive advanced NSCLC and disease progression after first-line EGFR-TKI therapy. Patients were randomized, in a 2:1 ratio, to oral osimertinib or chemotherapy (pemetrexed plus either carboplatin or cisplatin every 3 weeks for up to six cycles, maintenance pemetrexed was allowed). Primary end point was PFS, which was significantly longer with osimertinib than with chemotherapy (10.1 months vs. 4.4 months; HR 0.30; 95% CI: 0.23 to 0.41; P<0.001). Objective response rate was significantly better with osimertinib (71%; 95% CI, 65 to 76) than with chemotherapy (31%; 95% CI, 24 to 40) (odds ratio for objective response, 5.39; 95% CI, 3.47 to 8.48; P<0.001).",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "A",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/1867",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 34,
+              "name": "EGFR T790M"
+            },
+            "therapies": [
+              {
+                "id": 187,
+                "name": "Osimertinib"
+              }
+            ],
+            "source": {
+              "citation": "Mok et al., 2017",
+              "citationId": "27959700",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/27959700",
+              "link": "/sources/1286"
+            }
+          },
+          {
+            "id": 11598,
+            "name": "EID11598",
+            "description": "This phase 3 trial (NCT02151981) involved 419 patients with EGFR T790M mutant NSCLC who progressed after first-line EGFR inhibitor therapy (gefitinib, erlotinib, or afatinib) and were either treated with the third-generation EGFR inhibitor osimertinib or platinum therapy plus pemetrexed.  The objective response rate was 71% (95% CI: 65 to 76) with osimertinib compared to 31% (95% CI: 24 to 40) with platinum/pemetrexed. The median progression free survival (PFS) for osimertinib was 10.1 months compared to 4.4 months with platinum/pemetrexed. In patients with CNS metastases, osimertinib demonstrated a longer median duration of PFS (8.5 months vs. 4.2 months) as well.  Of note, the osimertinib-treated EGFR T790M patients had other co-occuring EGFR mutations including 68% with exon 19 deletions, 30% with L858R, 1% with a G719X mutation, and 1 patient each with S768I and an exon 20 insertion.  Osimertinib treatment of patients with exon 19 deletion plus T790M resulted in a hazard ration of 0.34  (95% CI: 0.24-0.46) and L858R plus T790M resulted in a hazard ratio of 0.46 (95% CI: 0.30-0.71).  The study concludes that osimertinib exhibited significantly greater efficacy in patients with EGFR T790M mutant advanced NSCLC, even in those with CNS metastases, whose disease had progressed during first-line EGFR inhibitor therapy, independent of co-occuring EGFR mutation.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "A",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/11598",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 4659,
+              "name": "EGFR T790M AND EGFR Exon 19 Deletion"
+            },
+            "therapies": [
+              {
+                "id": 187,
+                "name": "Osimertinib"
+              }
+            ],
+            "source": {
+              "citation": "Mok et al., 2017",
+              "citationId": "27959700",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/27959700",
+              "link": "/sources/1286"
+            }
+          },
+          {
+            "id": 11599,
+            "name": "EID11599",
+            "description": "This phase 3 trial (NCT02151981) involved 419 patients with EGFR T790M mutant NSCLC who progressed after first-line EGFR inhibitor therapy (gefitinib, erlotinib, or afatinib) and were either treated with the third-generation EGFR inhibitor osimertinib or platinum therapy plus pemetrexed.  The objective response rate was 71% (95% CI: 65 to 76) with osimertinib compared to 31% (95% CI: 24 to 40) with platinum/pemetrexed. The median progression free survival (PFS) for osimertinib was 10.1 months compared to 4.4 months with platinum/pemetrexed. In patients with CNS metastases, osimertinib demonstrated a longer median duration of PFS (8.5 months vs. 4.2 months) as well.  Of note, the osimertinib-treated EGFR T790M patients had other co-occuring EGFR mutations including 68% with exon 19 deletions, 30% with L858R, 1% with a G719X mutation, and 1 patient each with S768I and an exon 20 insertion.  Osimertinib treatment of patients with exon 19 deletion plus T790M resulted in a hazard ratio of 0.34  (95% CI: 0.24-0.46) and L858R plus T790M resulted in a hazard ratio of 0.46 (95% CI: 0.30-0.71).  The study concludes that osimertinib exhibited significantly greater efficacy in patients with EGFR T790M mutant advanced NSCLC, even in those with CNS metastases, whose disease had progressed during first-line EGFR inhibitor therapy, independent of co-occuring EGFR mutation.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "A",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/11599",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 4660,
+              "name": "EGFR L858R AND EGFR T790M"
+            },
+            "therapies": [
+              {
+                "id": 187,
+                "name": "Osimertinib"
+              }
+            ],
+            "source": {
+              "citation": "Mok et al., 2017",
+              "citationId": "27959700",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/27959700",
+              "link": "/sources/1286"
+            }
+          },
+          {
+            "id": 965,
+            "name": "EID965",
+            "description": "This phase I/II trial (NCT01802632) involved 253 non-small cell lung cancer patients with activating EGFR mutations, who had progressed on first generation tyrosine kinase inhibitor treatment, and were subsequently treated with Osimertinib (AZD9291). The overall objective tumor response rate was 51%. Among 127 patients with EGFR T790M who could be evaluated for response, the response rate was 61% (95% CI, 52 to 70). In contrast, among 61 patients without EGFR T790M, the response rate was 21% (95% CI, 12 to 34). The median progression-free survival was 9.6 months in EGFR T790M-positive patients and 2.8 months in EGFR T790M-negative patients.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/965",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 34,
+              "name": "EGFR T790M"
+            },
+            "therapies": [
+              {
+                "id": 187,
+                "name": "Osimertinib"
+              }
+            ],
+            "source": {
+              "citation": "J\u00e4nne et al., 2015",
+              "citationId": "25923549",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/25923549",
+              "link": "/sources/667"
+            }
+          },
+          {
+            "id": 966,
+            "name": "EID966",
+            "description": "This study summarized 9 EGFR-mutant patients from two clinical trials involving rociletinib (NCT01526928) and subsequent osimertinib (NCT01802632). 8 were T790M-positive prior to treatment with osimertinib. 6 transitioned directly from rociletinib to osimertinib. 3 patients achieved PR and 4 achieved SD. The median PFS was 208 days (95% CI, 41-208 days). Among 6 patients who transitioned directly from rociletinib to osimertinib all derived clinical benefit from osimertinib with either prolonged SD or PR.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/966",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 34,
+              "name": "EGFR T790M"
+            },
+            "therapies": [
+              {
+                "id": 187,
+                "name": "Osimertinib"
+              }
+            ],
+            "source": {
+              "citation": "Sequist et al., 2016",
+              "citationId": "26720284",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/26720284",
+              "link": "/sources/668"
+            }
+          },
+          {
+            "id": 12946,
+            "name": "EID12946",
+            "description": "A 53-year-old Chinese man, a lifelong non-smoker, presented with chest tightness and pain. CT imaging revealed multiple small nodules in the right lower lobe of the lung. A biopsy confirmed stage IV lung adenocarcinoma with an EGFR exon 19 deletion. First-line treatment with Erlotinib (150 mg daily) resulted in a partial response, with regression of the tumors. After 28 months, disease progression was observed, characterized by enlargement of the primary tumor and the development of new bone metastases. Repeat biopsy confirmed the persistence of the EGFR exon 19 deletion along with the acquisition of a T790M mutation. The patient was subsequently treated with second-line Osimertinib (80 mg daily), achieving another partial response that lasted 15.4 months.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "C",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/12946",
+            "disease": {
+              "name": "Lung Adenocarcinoma",
+              "displayName": "Lung Adenocarcinoma"
+            },
+            "molecularProfile": {
+              "id": 5927,
+              "name": "EGFR T790M AND EGFR Exon 19 del"
+            },
+            "therapies": [
+              {
+                "id": 187,
+                "name": "Osimertinib"
+              }
+            ],
+            "source": {
+              "citation": "Xiang et al., 2023",
+              "citationId": "38074875",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/38074875",
+              "link": "/sources/4847"
+            }
+          },
+          {
+            "id": 2157,
+            "name": "EID2157",
+            "description": "In a lung adenocarcinoma patient harboring an EGFR E746_A750 mutation and an acquired EGFR T790M co-mutation, EGFR T790M was associated with sensitivity to osimertinib monotherapy. Prior to the development of the EGFR T790M mutation, the patient was treated with gefitinib and achieved a partial response, but subsequently tumor progression occurred; however, osimertinib treatment resulted a favorable tumor response with the extinguishment of the EGFR T790M mutation. In a stage IV lung adenocarcinoma patient harboring an EGFR L858R mutation and an acquired EGFR T790M co-mutation, EGFR T790M was associated with sensitivity to osimertinib monotherapy. Prior to the development of the EGFR T790M mutation, the patient was treated with erlotinib, followed by gefitinib for 12 months and achieved stable disease, but subsequently metastasis occurred; the EGFR T790M was then identified and subsequent 10 month treatment with osimertinib monotherapy resulted in a 45% disease regression.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "C",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/2157",
+            "disease": {
+              "name": "Lung Adenocarcinoma",
+              "displayName": "Lung Adenocarcinoma"
+            },
+            "molecularProfile": {
+              "id": 34,
+              "name": "EGFR T790M"
+            },
+            "therapies": [
+              {
+                "id": 187,
+                "name": "Osimertinib"
+              }
+            ],
+            "source": {
+              "citation": "Planchard et al., 2015",
+              "citationId": "26269204",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/26269204",
+              "link": "/sources/1516"
+            }
+          },
+          {
+            "id": 6006,
+            "name": "EID6006",
+            "description": "Patients with recurrent pancreatic adenocarcinoma was treated with gemcitabine + nab-paclitaxel, FOLFIRINOX and docetaxel + irinotecan. After failure of these treatment, a tumor specimen from the pancreaticoduodenectomy was analysed, which revealed an activating mutation in exon 19 (L747_P753>S) of EGFR. Mutations were also detected in CDKN2A, TP53, and amplifications of PRKCI and TERC. He began erlotinib at 150mg daily. CT imaging  revealed a partial response by RECIST at 8, 24 and 32 weeks after starting erlotinib. At 40 weeks CT imaging revealed unequivocal disease progression. After disease progression to erlotinib, a repeat liver biopsy revealed an EGFR T790M mutation. He began treatment with osimertinib at 80mg daily. After 8 weeks of this treatment CT imaging revealed unequivocal disease progression.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "C",
+            "evidenceDirection": "DOES_NOT_SUPPORT",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/6006",
+            "disease": {
+              "name": "Pancreatic Adenocarcinoma",
+              "displayName": "Pancreatic Adenocarcinoma"
+            },
+            "molecularProfile": {
+              "id": 34,
+              "name": "EGFR T790M"
+            },
+            "therapies": [
+              {
+                "id": 187,
+                "name": "Osimertinib"
+              }
+            ],
+            "source": {
+              "citation": "Cecchini et al., 2017",
+              "citationId": "28874593",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/28874593",
+              "link": "/sources/2359"
+            }
+          },
+          {
+            "id": 1396,
+            "name": "EID1396",
+            "description": "Case report of a patient with stage IV lung adenocarcinoma and a 15\u2013base pair deletion in EGFR exon 19. Partial response with erlotinib was achieved for 15 months after initial chemotherapy. After further progression, rebiopsy additionally identified the EGFR T790M mutation and the patient received several cycles of chemotherapy and targeted therapy including afatinib, cetuximab, erlotinib, AZD9291. She was treated with AZD9291 for 9 months until disease progression. Repeat biopsy detected EGFRC797S mutation additionally to both aforementioned EGFR aberrations. In addition, PTEN Y27C and CTNNB1 S37F mutations were present in all 3 samples, and a TSC2 N486I was seen in the third biopsy sample only",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "C",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "RESISTANCE",
+            "status": "ACCEPTED",
+            "link": "/evidence/1396",
+            "disease": {
+              "name": "Lung Adenocarcinoma",
+              "displayName": "Lung Adenocarcinoma"
+            },
+            "molecularProfile": {
+              "id": 5513,
+              "name": "EGFR T790M AND EGFR Exon 19 Deletion AND EGFR C797S"
+            },
+            "therapies": [
+              {
+                "id": 187,
+                "name": "Osimertinib"
+              }
+            ],
+            "source": {
+              "citation": "Yu et al., 2015",
+              "citationId": "26181354",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/26181354",
+              "link": "/sources/946"
+            }
+          },
+          {
+            "id": 1397,
+            "name": "EID1397",
+            "description": "Case report of a patient with stage IV lung adenocarcinoma and a 15\u2013base pair deletion in EGFR exon 19. Partial response with erlotinib was achieved for 15 months after initial chemotherapy. After further progression, rebiopsy additionally identified the EGFR T790M mutation and the patient received several cycles of chemotherapy and targeted therapy including afatinib, cetuximab, erlotinib, AZD9291. She was treated with AZD9291 for 9 months until disease progression.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "C",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/1397",
+            "disease": {
+              "name": "Lung Adenocarcinoma",
+              "displayName": "Lung Adenocarcinoma"
+            },
+            "molecularProfile": {
+              "id": 4659,
+              "name": "EGFR T790M AND EGFR Exon 19 Deletion"
+            },
+            "therapies": [
+              {
+                "id": 187,
+                "name": "Osimertinib"
+              }
+            ],
+            "source": {
+              "citation": "Yu et al., 2015",
+              "citationId": "26181354",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/26181354",
+              "link": "/sources/946"
+            }
+          },
+          {
+            "id": 963,
+            "name": "EID963",
+            "description": "Cell line, xenograft, and transgenic models were used to establish Osimertinib as an inhibitor of both EGFR mutation sensitizing (L858M, del exon 19) and T790M resistance mutants. Preclinically, the drug inhibits signaling pathways and cellular growth in both EGFRm(+) and EGFRm(+)/T790M(+) mutant cell lines in vitro, with lower activity against wild-type EGFR lines. Sustained tumor regression was observed in EGFR-mutant tumor xenograft and transgenic models. Treatment of 2 patients with advanced EGFRm(+) T790M(+) NSCLC was reported as proof of principle.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "D",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/963",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 34,
+              "name": "EGFR T790M"
+            },
+            "therapies": [
+              {
+                "id": 187,
+                "name": "Osimertinib"
+              }
+            ],
+            "source": {
+              "citation": "Cross et al., 2014",
+              "citationId": "24893891",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/24893891",
+              "link": "/sources/665"
+            }
+          },
+          {
+            "id": 967,
+            "name": "EID967",
+            "description": "For cells harboring EGFR T790M mutation, osimertinib and rociletinib showed potent inhibition compared to erlotinib or afatinib. This study performed drug response assays using five human NSCLC cell lines, two of which contained T790M mutations (PC-9ER, H1975). In order to directly compare the sensitivity of multiple EGFR mutations to EGFR-TKIs the authors also generated multiple EGFR transduced Ba/F3 stable cell lines and evaluated sensitivity to EGFR-TKIs by MTS assay.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "D",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/967",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 34,
+              "name": "EGFR T790M"
+            },
+            "therapies": [
+              {
+                "id": 187,
+                "name": "Osimertinib"
+              },
+              {
+                "id": 91,
+                "name": "Rociletinib"
+              }
+            ],
+            "source": {
+              "citation": "Hirano et al., 2015",
+              "citationId": "26515464",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/26515464",
+              "link": "/sources/669"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "EGFR T790M::capmatinib": {
+    "data": {
+      "evidenceItems": {
+        "nodes": []
+      }
+    }
+  },
+  "EGFR C797S::gefitinib": {
+    "data": {
+      "evidenceItems": {
+        "nodes": []
+      }
+    }
+  },
+  "EGFR C797S::erlotinib": {
+    "data": {
+      "evidenceItems": {
+        "nodes": []
+      }
+    }
+  },
+  "EGFR C797S::osimertinib": {
+    "data": {
+      "evidenceItems": {
+        "nodes": [
+          {
+            "id": 964,
+            "name": "EID964",
+            "description": "An EGFR resistance mutation, C797S, was discovered by deep sequencing of cell-free plasma DNA (cfDNA) from patients with advanced lung cancer whose tumors had developed resistance to osimertinib. Expression of this mutant EGFR construct in a cell line rendered it resistant to osimertinib. ddPCR on serial cfDNA specimens collected from 15 osimertinib-treated subjects (all positive for T790M before treatment) revealed 6 cases with acquired C797S mutation.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "RESISTANCE",
+            "status": "ACCEPTED",
+            "link": "/evidence/964",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 411,
+              "name": "EGFR C797S"
+            },
+            "therapies": [
+              {
+                "id": 187,
+                "name": "Osimertinib"
+              }
+            ],
+            "source": {
+              "citation": "Thress et al., 2015",
+              "citationId": "25939061",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/25939061",
+              "link": "/sources/666"
+            }
+          },
+          {
+            "id": 1396,
+            "name": "EID1396",
+            "description": "Case report of a patient with stage IV lung adenocarcinoma and a 15\u2013base pair deletion in EGFR exon 19. Partial response with erlotinib was achieved for 15 months after initial chemotherapy. After further progression, rebiopsy additionally identified the EGFR T790M mutation and the patient received several cycles of chemotherapy and targeted therapy including afatinib, cetuximab, erlotinib, AZD9291. She was treated with AZD9291 for 9 months until disease progression. Repeat biopsy detected EGFRC797S mutation additionally to both aforementioned EGFR aberrations. In addition, PTEN Y27C and CTNNB1 S37F mutations were present in all 3 samples, and a TSC2 N486I was seen in the third biopsy sample only",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "C",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "RESISTANCE",
+            "status": "ACCEPTED",
+            "link": "/evidence/1396",
+            "disease": {
+              "name": "Lung Adenocarcinoma",
+              "displayName": "Lung Adenocarcinoma"
+            },
+            "molecularProfile": {
+              "id": 5513,
+              "name": "EGFR T790M AND EGFR Exon 19 Deletion AND EGFR C797S"
+            },
+            "therapies": [
+              {
+                "id": 187,
+                "name": "Osimertinib"
+              }
+            ],
+            "source": {
+              "citation": "Yu et al., 2015",
+              "citationId": "26181354",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/26181354",
+              "link": "/sources/946"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "EGFR C797S::capmatinib": {
+    "data": {
+      "evidenceItems": {
+        "nodes": []
+      }
+    }
+  },
+  "MET Amplification::gefitinib": {
+    "data": {
+      "evidenceItems": {
+        "nodes": [
+          {
+            "id": 1392,
+            "name": "EID1392",
+            "description": "155 patients with lung adenocarcinomas underwent rebiopsy and genotyping (EGFR, AKT1, BRAF, ERBB2, KRAS, MEK1, NRAS, PIK3CA and FISH for MET and HER2) after the development of acquired resistance to EGFR inhibitors (gefitinib or erlotinib). MET amplification was seen in 4 of 75 patients tested (no baseline samples available). One patient had small cell transformation and MET amplification, two patients had EGFR T790M mutation and MET amplification.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "C",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "RESISTANCE",
+            "status": "ACCEPTED",
+            "link": "/evidence/1392",
+            "disease": {
+              "name": "Lung Adenocarcinoma",
+              "displayName": "Lung Adenocarcinoma"
+            },
+            "molecularProfile": {
+              "id": 266,
+              "name": "MET Amplification"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              },
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Yu et al., 2013",
+              "citationId": "23470965",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/23470965",
+              "link": "/sources/943"
+            }
+          },
+          {
+            "id": 733,
+            "name": "EID733",
+            "description": "In this study a gefitinib-sensitive cell-line (HCC827), acquired gefitinib resistance (HCC827 GR) by a focal amplification of MET.  Resistance was conferred by the MET amplification driving ERBB3 (HER3)-dependent activation of PI3K.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "D",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "RESISTANCE",
+            "status": "ACCEPTED",
+            "link": "/evidence/733",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 266,
+              "name": "MET Amplification"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              }
+            ],
+            "source": {
+              "citation": "Engelman et al., 2007",
+              "citationId": "17463250",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/17463250",
+              "link": "/sources/481"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "MET Amplification::erlotinib": {
+    "data": {
+      "evidenceItems": {
+        "nodes": [
+          {
+            "id": 1392,
+            "name": "EID1392",
+            "description": "155 patients with lung adenocarcinomas underwent rebiopsy and genotyping (EGFR, AKT1, BRAF, ERBB2, KRAS, MEK1, NRAS, PIK3CA and FISH for MET and HER2) after the development of acquired resistance to EGFR inhibitors (gefitinib or erlotinib). MET amplification was seen in 4 of 75 patients tested (no baseline samples available). One patient had small cell transformation and MET amplification, two patients had EGFR T790M mutation and MET amplification.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "C",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "RESISTANCE",
+            "status": "ACCEPTED",
+            "link": "/evidence/1392",
+            "disease": {
+              "name": "Lung Adenocarcinoma",
+              "displayName": "Lung Adenocarcinoma"
+            },
+            "molecularProfile": {
+              "id": 266,
+              "name": "MET Amplification"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              },
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Yu et al., 2013",
+              "citationId": "23470965",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/23470965",
+              "link": "/sources/943"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "MET Amplification::osimertinib": {
+    "data": {
+      "evidenceItems": {
+        "nodes": []
+      }
+    }
+  },
+  "MET Amplification::capmatinib": {
+    "data": {
+      "evidenceItems": {
+        "nodes": []
+      }
+    }
+  },
+  "EGFR L858R::gefitinib": {
+    "data": {
+      "evidenceItems": {
+        "nodes": [
+          {
+            "id": 11241,
+            "name": "EID11241",
+            "description": "In this phase-IV, open-label, single-arm study, 106 patients with NSCLC and EGFR mutations including exon 19 deletion and exon 21 L858R point mutations were administered 250 mg daily doses of gefitinib with the primary endpoint being objective response rate (ORR). The objective response rate was 69.8% (95% CI: 60.5 \u2013 77.7), with a median progression-free survival of 9.7 months (95% CI: 8.5 \u2013 11.0), and a median overall survival of 19.2 months (95% CI:17.0 \u2013 not calculable).",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "A",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/11241",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 4432,
+              "name": "EGFR L858R OR EGFR Exon 19 Deletion"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              }
+            ],
+            "source": {
+              "citation": "Douillard et al., 2014",
+              "citationId": "24263064",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/24263064",
+              "link": "/sources/4620"
+            }
+          },
+          {
+            "id": 275,
+            "name": "EID275",
+            "description": "In NSCLC patients treated with EGFR tyrosine kinase inhibitors, the presence of L858R mutation is prognostic for better progression free survival.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/275",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 33,
+              "name": "EGFR L858R"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              },
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Fukihara et al., 2014",
+              "citationId": "24457318",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/24457318",
+              "link": "/sources/182"
+            }
+          },
+          {
+            "id": 2621,
+            "name": "EID2621",
+            "description": "In a phase 3 clinical trial of non-small cell lung cancer (NSCLC) patients, a subset of patients with EGFR mutations (n=44) treated with gefitinib were associated with improved progression free survival (HR: 0.16, 95% CI: 0.05-0.49, P=0.001), and a higher objective response rate (ORR: 42.1% vs 21.1%, p=0.04) compared to patients treated with docetaxel. Of the 44 patients, 22 had an exon 19 deletion, 16 had an L858R mutation, one patient had an exon 20 T790M mutation, two had an exon G719A mutation and four had other mutations.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/2621",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 33,
+              "name": "EGFR L858R"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              }
+            ],
+            "source": {
+              "citation": "Douillard et al., 2010",
+              "citationId": "20038723",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/20038723",
+              "link": "/sources/1501"
+            }
+          },
+          {
+            "id": 4759,
+            "name": "EID4759",
+            "description": "In a study of 1261 non-small cell lung cancer patients, 49.8% of the analyzed tumors had EGFR mutations including deletions in exon 19 (n=258), L858R (n=260), T790M (n=6) and insertions or duplications in exon 20 (n=25). Patients with EGFR deletions in exon 19 or L858R mutations were associated with an improved response to erlotinib or gefitinib with partial or complete response (74.1% vs. 16.5%, P<0.001) when compared to wildtype EGFR patients. Additionally, tumors with EGFR mutations in L858R or deletions in exon 19 were associated with increased overall survival (19.6mo vs. 10.4mo) compared to wildtype (all patients were treated with either erlotinib or gefitinib). From 61 patients with uncommon EGFR mutations of unknown clinical significance, 47.5% were responders in contrast to the 74.1% responders in the exon 19 deletion/L858R group.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/4759",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 4432,
+              "name": "EGFR L858R OR EGFR Exon 19 Deletion"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              },
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              }
+            ],
+            "source": {
+              "citation": "Wu et al., 2011",
+              "citationId": "21531810",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/21531810",
+              "link": "/sources/1503"
+            }
+          },
+          {
+            "id": 229,
+            "name": "EID229",
+            "description": "There is no statistical difference in progression free survival between lung cancer patients treated with gefitinib or erlotinib with EGFR L858R mutations (N=72/242; univariate: P=0.283; multivariate: P=0.250) compared to patients with Exon 19 mutations (N=170).",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/229",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 33,
+              "name": "EGFR L858R"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              },
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Lim et al., 2014",
+              "citationId": "24736073",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/24736073",
+              "link": "/sources/162"
+            }
+          },
+          {
+            "id": 1665,
+            "name": "EID1665",
+            "description": "90 NSCLC patients with stage IIIB/IV chemotherapy-resistant tumors were treated with gefitinib, and the L858R EGFR mutation was associated with longer time to treatment failure than those with wild-type EGFR (median 9.1 versus 2.1). In multivariate analysis, L858R mutations plus adenocarcinoma was a significant predictive factor for time to treatment failure (HR = 0.1030; P = .0004).",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/1665",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 33,
+              "name": "EGFR L858R"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              }
+            ],
+            "source": {
+              "citation": "Yang et al., 2008",
+              "citationId": "18509184",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/18509184",
+              "link": "/sources/1127"
+            }
+          },
+          {
+            "id": 2634,
+            "name": "EID2634",
+            "description": "In a phase 3 clinical trial of Korean, never-smoker, lung adenocarcinoma patients, a subset of patients with EGFR mutations (n=42) treated with gefitinib were associated with improved overall response rate compared to gemcitabine plus cisplatin treatment (84.6%, 22/26, vs. 37.5%, 6/16, P=0.002). By contrast, in EGFR mutation negative cases, the response rate was much lower (25.9%, 7/27). The frequency of mutation in exon 19 deletion and L858R was 64.3% (27/42) and 36.4% (16/42), respectively. Exon 19 and L858R mutations were mutually exclusive in this cohort.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/2634",
+            "disease": {
+              "name": "Lung Adenocarcinoma",
+              "displayName": "Lung Adenocarcinoma"
+            },
+            "molecularProfile": {
+              "id": 33,
+              "name": "EGFR L858R"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              }
+            ],
+            "source": {
+              "citation": "Han et al., 2012",
+              "citationId": "22370314",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/22370314",
+              "link": "/sources/1513"
+            }
+          },
+          {
+            "id": 6183,
+            "name": "EID6183",
+            "description": "In a Japanese Phase III clinical trial, noninferiority of Gefitinib as compared to Erlotinib was assessed in 561 postoperative recurrent or stage IIIb/VI patients who had undergone prior chemotherapy treatment but no tyrosine kinase inhibitor therapy. In a subset of patients with sole EGFR L858R, there was an insignificant difference between the objective response and disease control rates for patients treated with erlotinib (N=67) and gefitinib (N=78). Progression free survival was also not significantly different and did not meet the noninferiority endpoint with Gefitinib and Erlotinib arms at 8.1 and 8.5 months, respectively (HR, 0.938; 95% CI, 0.675 to 1.304; P = .704).",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/6183",
+            "disease": {
+              "name": "Lung Adenocarcinoma",
+              "displayName": "Lung Adenocarcinoma"
+            },
+            "molecularProfile": {
+              "id": 33,
+              "name": "EGFR L858R"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              }
+            ],
+            "source": {
+              "citation": "Urata et al., 2016",
+              "citationId": "27022112",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/27022112",
+              "link": "/sources/2478"
+            }
+          },
+          {
+            "id": 2156,
+            "name": "EID2156",
+            "description": "A phase 2 study of 120 stage IIIB-IV lung adenocarcinoma patients reported improved progression free survival in patients with EGFR mutation (defined as exon 19 deletion or exon 21 mutation) when treated (n=13) with gefitinib and pemetrexed/platinum combination therapy (HR: 0.20, 95% CI: 0.05-0.75, P=0.017) as compared to treatment (n=18) with pemtrexed/platinum alone.  In the subgroup of patients without EGFR mutation (defined as all patients without the specific EGFR exon 19 deletion or L858R mutation) a difference in median PFS was not seen between the chemotherapy versus chemotherapy with gefitinib treatment groups.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "C",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/2156",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 4432,
+              "name": "EGFR L858R OR EGFR Exon 19 Deletion"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              }
+            ],
+            "source": {
+              "citation": "Yu et al., 2014",
+              "citationId": "24755888",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/24755888",
+              "link": "/sources/1514"
+            }
+          },
+          {
+            "id": 2624,
+            "name": "EID2624",
+            "description": "Mutational profiling was performed on EGFR exons 18-24 from a group of 10 retrospectively chosen patients who had shown partial response or clinical improvement in response to gefitinib. Of 7 tumors with EGFR mutations, 1 was L858R. The patient was a female former smoker who had lung adenocarcinoma histology, and demonstrated response for 5 months, with overall survival 8 months.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "C",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/2624",
+            "disease": {
+              "name": "Lung Adenocarcinoma",
+              "displayName": "Lung Adenocarcinoma"
+            },
+            "molecularProfile": {
+              "id": 33,
+              "name": "EGFR L858R"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              }
+            ],
+            "source": {
+              "citation": "Pao et al., 2004",
+              "citationId": "15329413",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/15329413",
+              "link": "/sources/1509"
+            }
+          },
+          {
+            "id": 276,
+            "name": "EID276",
+            "description": "Gefinitib has been shown to be effective in treating cell lines with L858R missense mutations.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "D",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/276",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 33,
+              "name": "EGFR L858R"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              }
+            ],
+            "source": {
+              "citation": "Paez et al., 2004",
+              "citationId": "15118125",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/15118125",
+              "link": "/sources/181"
+            }
+          },
+          {
+            "id": 3811,
+            "name": "EID3811",
+            "description": "EGFR L858R was expressed in Ba/F3 cells which do not contain endogenous EGFR, and conferred growth factor independance to the cells. Cells were plated and treated with 1st generation EGFR inhibitors Gefitinib, Erlotinib, or the the tool compound AEE788, and IC50 values were measured. L858R EGFR cells had very low IC50 nmol/L values for all three inhibitors in comparison to other constructs (Gefitinib=12, Erlotinib=6, AEE788=6), indicating sensitivity to all three constructs.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "D",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/3811",
+            "disease": {
+              "name": "Cancer",
+              "displayName": "Cancer"
+            },
+            "molecularProfile": {
+              "id": 33,
+              "name": "EGFR L858R"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              },
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              },
+              {
+                "id": 90,
+                "name": "Multikinase Inhibitor AEE788"
+              }
+            ],
+            "source": {
+              "citation": "Kancha et al., 2009",
+              "citationId": "19147750",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/19147750",
+              "link": "/sources/1528"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "EGFR L858R::erlotinib": {
+    "data": {
+      "evidenceItems": {
+        "nodes": [
+          {
+            "id": 2994,
+            "name": "EID2994",
+            "description": "On May 14, 2013, the U.S. Food and Drug Administration approved erlotinib (Tarceva) for the first-line treatment of patients with metastatic non-small cell lung cancer (NSCLC) whose tumors have epidermal growth factor receptor (EGFR) exon 19 deletions or exon 21 (L858R) substitution mutations.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "A",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/2994",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 33,
+              "name": "EGFR L858R"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Khozin et al., 2014",
+              "citationId": "24868098",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/24868098",
+              "link": "/sources/1724"
+            }
+          },
+          {
+            "id": 11240,
+            "name": "EID11240",
+            "description": "In this phase 3, randomized, double-blind, placebo-controlled trial, 449 patients stage IV NSCLC with EGFR exon 19 deletions or exon 21 (L858R) mutations. Patients were randomly assigned in a 1:1 ratio to receive oral erlotinib (150 mg/day) plus either intravenous ramucirumab (10 mg/kg) or matching placebo once every 2 weeks. The primary endpoint was investigator-assessed progression-free survival. The median duration of follow-up was 20.7 months (IQR: 15.8\u201327.2), and the progression-free survival was found to be significantly longer in the ramucirumab plus erlotinib group 19.4 months (95% CI: 15.4 \u2013 21.6) than in the placebo plus erlotinib group at 12.4 months (11.0 \u2013 13.5), with a hazard ratio of 0.59 (95% CI: 0.46 \u2013 0\u00b776; p < 0\u00b70001). Lastly, grade 3/4 adverse events were reported in 159 of 221 patients in the ramucirumab plus erlotinib group versus 121 of 225 in the placebo plus erlotinib group, and one death was recorded in the ramucirumab plus erlotinib group.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "A",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/11240",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 4432,
+              "name": "EGFR L858R OR EGFR Exon 19 Deletion"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              },
+              {
+                "id": 616,
+                "name": "Ramucirumab"
+              }
+            ],
+            "source": {
+              "citation": "Nakagawa et al., 2019",
+              "citationId": "31591063",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/31591063",
+              "link": "/sources/4619"
+            }
+          },
+          {
+            "id": 275,
+            "name": "EID275",
+            "description": "In NSCLC patients treated with EGFR tyrosine kinase inhibitors, the presence of L858R mutation is prognostic for better progression free survival.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/275",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 33,
+              "name": "EGFR L858R"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              },
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Fukihara et al., 2014",
+              "citationId": "24457318",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/24457318",
+              "link": "/sources/182"
+            }
+          },
+          {
+            "id": 3791,
+            "name": "EID3791",
+            "description": "The phase 3 (EURTAC) study consisted of of 173 non-small cell lung cancer patients who had not had prior chemotherapy for metastatic disease (although adjuvant or neoadjuvant chemotherapy was permitted) and included 160 patients with lung adenocarcinoma subtype. The patients had EGFR mutations (exon 19 deletions or L858R), and improved progression-free survival was reported in the erlotinib treated cohort as compared to the cohort that was treated with standard chemotherapy (9.7mo vs. 5.2mo, HR:0.37, 95%CI:0.25-0.54, P<0.0001, univariate analysis; HR:0.35, 95%CI:0.23-0.52, P<0.0001, multivariate analysis).",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/3791",
+            "disease": {
+              "name": "Lung Adenocarcinoma",
+              "displayName": "Lung Adenocarcinoma"
+            },
+            "molecularProfile": {
+              "id": 4432,
+              "name": "EGFR L858R OR EGFR Exon 19 Deletion"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Rosell et al., 2012",
+              "citationId": "22285168",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/22285168",
+              "link": "/sources/595"
+            }
+          },
+          {
+            "id": 4759,
+            "name": "EID4759",
+            "description": "In a study of 1261 non-small cell lung cancer patients, 49.8% of the analyzed tumors had EGFR mutations including deletions in exon 19 (n=258), L858R (n=260), T790M (n=6) and insertions or duplications in exon 20 (n=25). Patients with EGFR deletions in exon 19 or L858R mutations were associated with an improved response to erlotinib or gefitinib with partial or complete response (74.1% vs. 16.5%, P<0.001) when compared to wildtype EGFR patients. Additionally, tumors with EGFR mutations in L858R or deletions in exon 19 were associated with increased overall survival (19.6mo vs. 10.4mo) compared to wildtype (all patients were treated with either erlotinib or gefitinib). From 61 patients with uncommon EGFR mutations of unknown clinical significance, 47.5% were responders in contrast to the 74.1% responders in the exon 19 deletion/L858R group.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/4759",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 4432,
+              "name": "EGFR L858R OR EGFR Exon 19 Deletion"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              },
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              }
+            ],
+            "source": {
+              "citation": "Wu et al., 2011",
+              "citationId": "21531810",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/21531810",
+              "link": "/sources/1503"
+            }
+          },
+          {
+            "id": 229,
+            "name": "EID229",
+            "description": "There is no statistical difference in progression free survival between lung cancer patients treated with gefitinib or erlotinib with EGFR L858R mutations (N=72/242; univariate: P=0.283; multivariate: P=0.250) compared to patients with Exon 19 mutations (N=170).",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/229",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 33,
+              "name": "EGFR L858R"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              },
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Lim et al., 2014",
+              "citationId": "24736073",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/24736073",
+              "link": "/sources/162"
+            }
+          },
+          {
+            "id": 885,
+            "name": "EID885",
+            "description": "A randomized phase 3 trial (NCT00446225) involving 173 NSCLC patients with EGFR mutations (exon 19 deletion or L858R mutation in exon 21) with no history of chemotherapy for metastatic disease. Patients were randomly allocated (1:1) to receive either erlotinib or standard chemotherapy. The primary endpoint was progression-free survival (PFS). Median PFS was 9.7 months in the erlotinib group, compared with 5.2 months in the standard chemotherapy group.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/885",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 33,
+              "name": "EGFR L858R"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Rosell et al., 2012",
+              "citationId": "22285168",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/22285168",
+              "link": "/sources/595"
+            }
+          },
+          {
+            "id": 4290,
+            "name": "EID4290",
+            "description": "In a prospective study of 46 Caucasian, advanced lung adenocarcinoma patients harboring EGFR mutations, first-line erlotinib treatment was assessed. Average PFS and OS for these 46 patients was 11 months (95% CI: 9.7-12.3 months) and 23 months (95% CI: 21.3-28.6+ months), respectively. A PFS rate of 81% at three months met the primary endpoint of presumed superiority over chemotherapy. Clinical benefit (CR+PR+SD) rate was 81%. Fifteen patients harbored EGFR L858R mutations, which was the only mutation found in exon 21. The authors note similar response profiles for exon 19 (27/46) and exon 21 mutations (15/46) to the overall population.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/4290",
+            "disease": {
+              "name": "Lung Adenocarcinoma",
+              "displayName": "Lung Adenocarcinoma"
+            },
+            "molecularProfile": {
+              "id": 33,
+              "name": "EGFR L858R"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "De Gr\u00e8ve et al., 2016",
+              "citationId": "27032107",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/27032107",
+              "link": "/sources/2067"
+            }
+          },
+          {
+            "id": 2632,
+            "name": "EID2632",
+            "description": "In a phase II trial for bronchioloalveolar carcinoma (BAC, or in situ pulmonary adenocarcinoma), EGFR exons 18-24 were analyzed in 7 patients who had shown a partial response to erlotinib. Two patients had the del L858R mutation. One patient was a male former smoker who demonstrated response for 3 months with overall survival of 3.5 months, and the other patient was a female never smoker who had response for 6 months and overall survival of 17+ months as the patient was alive at study end.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "C",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/2632",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 33,
+              "name": "EGFR L858R"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Pao et al., 2004",
+              "citationId": "15329413",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/15329413",
+              "link": "/sources/1509"
+            }
+          },
+          {
+            "id": 3811,
+            "name": "EID3811",
+            "description": "EGFR L858R was expressed in Ba/F3 cells which do not contain endogenous EGFR, and conferred growth factor independance to the cells. Cells were plated and treated with 1st generation EGFR inhibitors Gefitinib, Erlotinib, or the the tool compound AEE788, and IC50 values were measured. L858R EGFR cells had very low IC50 nmol/L values for all three inhibitors in comparison to other constructs (Gefitinib=12, Erlotinib=6, AEE788=6), indicating sensitivity to all three constructs.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "D",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/3811",
+            "disease": {
+              "name": "Cancer",
+              "displayName": "Cancer"
+            },
+            "molecularProfile": {
+              "id": 33,
+              "name": "EGFR L858R"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              },
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              },
+              {
+                "id": 90,
+                "name": "Multikinase Inhibitor AEE788"
+              }
+            ],
+            "source": {
+              "citation": "Kancha et al., 2009",
+              "citationId": "19147750",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/19147750",
+              "link": "/sources/1528"
+            }
+          },
+          {
+            "id": 4265,
+            "name": "EID4265",
+            "description": "MCF-7 cells were transduced with YFP tagged EGFR with E746_A750delELREA mutation, or YFP EGFR wildtype, and stained for ectopic YFP EGFR and phospho-Akt as a readout for EGFR pathway activity. Increased p-Akt stain was seen with ectopic mutant EGFR over wildtype cells. Parallel erlotinib incubations of cells with wildtype EGFR induced recompartmentalization of ectopic EGFR protien only at high concentration (10uM). Addition of erlotinib to mutant EGFR cell incubations reduced p-Akt signal and induced recompartmentalization of ectopic EGFR protien at considerably lower concentration (100 nM) erlotinib.  These results indicate the EGFR L858R variant as a growth pathway driver targetable by erlotinib.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "D",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/4265",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 33,
+              "name": "EGFR L858R"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "de Gunst et al., 2007",
+              "citationId": "17877814",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/17877814",
+              "link": "/sources/1991"
+            }
+          },
+          {
+            "id": 4286,
+            "name": "EID4286",
+            "description": "In an in vitro study, Ba/F3 and NCI-H3255 cell lines expressing EGFR L858R demonstrated increased sensitivity to erlotinib treatment (IC50=0.006 and 0.068 \u00b5M). Sensitivity was determined by assessing cell proliferation, EGFR, AKT and ERK phosphorylation, levels of BIM (a marker of EGFR TKI-induced cell killing) and cell viability.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "D",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/4286",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 33,
+              "name": "EGFR L858R"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Yasuda et al., 2013",
+              "citationId": "24353160",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/24353160",
+              "link": "/sources/1230"
+            }
+          },
+          {
+            "id": 4295,
+            "name": "EID4295",
+            "description": "In an in vitro study, a Ba/F3 cell line expressing EGFR L858R demonstrated increased sensitivity to erlotinib treatment, compared to Ba/F3 cells expressing EGFR wild-type. Variant function was assessed by EGFR auto-phosphorylation. Sensitivity was assessed by cell viability assay using stable transfection of each variant and increasing concentrations of erlotinib (0\u201310 uM).",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "D",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/4295",
+            "disease": {
+              "name": "High Grade Glioma",
+              "displayName": "High Grade Glioma"
+            },
+            "molecularProfile": {
+              "id": 33,
+              "name": "EGFR L858R"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Lee et al., 2006",
+              "citationId": "17177598",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/17177598",
+              "link": "/sources/1608"
+            }
+          },
+          {
+            "id": 5922,
+            "name": "EID5922",
+            "description": "In an in vitro study performed after identification of the mutation in a malignant peritoneal mesothelioma patient, COS-7 cells expressing EGFR L858R demonstrated increased EGFR phosphotyrosine after EGF treatment over wildtype EGFR \n expressing cells. Cells expressing mutant EGFR also showed increased sensitivity to erlotinib treatment compared to cells expressing EGFR wild-type. Sensitivity was determined by assessing EGFR auto-phosphorylation.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "D",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/5922",
+            "disease": {
+              "name": "Cancer",
+              "displayName": "Cancer"
+            },
+            "molecularProfile": {
+              "id": 33,
+              "name": "EGFR L858R"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Foster et al., 2010",
+              "citationId": "20942962",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/20942962",
+              "link": "/sources/2081"
+            }
+          },
+          {
+            "id": 4284,
+            "name": "EID4284",
+            "description": "In an in vitro study using NCI-H1666 cells (wildtype EGFR) and NCI-H3255 cells (EGFR-L858R), inhibition of cell growth was used as an assay to determine sensitivity to reversible tyrosine kinase inhibitor drugs. Cells with an EGFR L858R mutation demonstrated an improved response to erlotinib (IC50: 40nM vs. 110nM) compared to EGFR wild type cells.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "D",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/4284",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 33,
+              "name": "EGFR L858R"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Li et al., 2008",
+              "citationId": "18408761",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/18408761",
+              "link": "/sources/1525"
+            }
+          },
+          {
+            "id": 4285,
+            "name": "EID4285",
+            "description": "In an in vitro study, a MCF-7 cell line expressing EGFR L858R mutation demonstrated sensitivity to erlotinib or dacomitinib (PF00299804) treatment, compared to MCF-7 cells expressing EGFR wild-type. Sensitivity was determined by assessing YFP signal-EGFR relocation.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "D",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/4285",
+            "disease": {
+              "name": "Cancer",
+              "displayName": "Cancer"
+            },
+            "molecularProfile": {
+              "id": 33,
+              "name": "EGFR L858R"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              },
+              {
+                "id": 44,
+                "name": "Dacomitinib"
+              }
+            ],
+            "source": {
+              "citation": "Harada et al., 2011",
+              "citationId": "21132006",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/21132006",
+              "link": "/sources/1993"
+            }
+          },
+          {
+            "id": 4291,
+            "name": "EID4291",
+            "description": "In an in vitro study, Ba/F3 cell line expressing EGFR L858R was associated with sensitivity to erlotinib treatment (IC50 26.9 \u00b1 12.4nM). EGFR L858R was used as a positive control for comparing sensitivity to erlotinib for EGFR-RAD51 fusion. Sensitivity was determined by assessing cell viability, AKT and ERK phosphorylation, and EGFR auto-phosphorylation.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "D",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/4291",
+            "disease": {
+              "name": "Lung Adenocarcinoma",
+              "displayName": "Lung Adenocarcinoma"
+            },
+            "molecularProfile": {
+              "id": 33,
+              "name": "EGFR L858R"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Konduri et al., 2016",
+              "citationId": "27102076",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/27102076",
+              "link": "/sources/2086"
+            }
+          },
+          {
+            "id": 4293,
+            "name": "EID4293",
+            "description": "In an in vitro study using NCI-H3255 cells (EGFR L858R mutation), inhibition of EGFR phosphorylation was used as an assay to determine sensitivity to EGFR tyrosine kinase inhibitors. NCI-H3255 cells demonstrated increased sensitivity to erlotinib (IC50: 8 and 11 nM) compared to EGFRwt NCI-H2073 cells (IC50: 108 nM; 95%CI 52-223 nM).",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "D",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/4293",
+            "disease": {
+              "name": "Lung Small Cell Carcinoma",
+              "displayName": "Lung Small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 33,
+              "name": "EGFR L858R"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Cross et al., 2014",
+              "citationId": "24893891",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/24893891",
+              "link": "/sources/665"
+            }
+          },
+          {
+            "id": 4287,
+            "name": "EID4287",
+            "description": "In an in vitro study, CHO and NCI-H3255 cells expressing EGFR L858R mutation were associated with sensitivity to erlotinib treatment. Sensitivity was determined by assessing cell density.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "D",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/4287",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 33,
+              "name": "EGFR L858R"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Ray et al., 2016",
+              "citationId": "27612423",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/27612423",
+              "link": "/sources/2070"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "EGFR L858R::osimertinib": {
+    "data": {
+      "evidenceItems": {
+        "nodes": [
+          {
+            "id": 11219,
+            "name": "EID11219",
+            "description": "In this phase 3, double-blind trial, 682 patients were randomly assigned 1:1 to either osimertinib (80 mg once daily) or placebo for 3 years following complete resection of EGFR mutation positive (exon 19 deletion or L858R) non-small cell lung cancer (NSCLC). At two years, 90% of the patients with stage II to IIIA disease in the osimertinib group (95% CI, 84 to 93) and 44% of those in the placebo group (95% CI, 37 to 51) were alive and disease-free (HR for disease recurrence or death, 0.17; 99.06% CI, 0.11 to 0.26; P < 0.001). Including all patients, 89% in the osimertinib group (95% CI, 85 to 92) and 52% of those in the placebo group (95% CI, 46 to 58) were alive and disease-free at two years (HR for disease recurrence or death, 0.20; 99.12% CI, 0.14 to 0.30; P < 0.001). In total, 29 patients died (9 in the osimertinib group and 20 in the placebo group), and grade 3 adverse events occurred in 20% of the osimertinib group versus 13% of the placebo group while 16% of the osimertinib group experienced serious adverse events versus 12% in the placebo group.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "A",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/11219",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 4432,
+              "name": "EGFR L858R OR EGFR Exon 19 Deletion"
+            },
+            "therapies": [
+              {
+                "id": 187,
+                "name": "Osimertinib"
+              }
+            ],
+            "source": {
+              "citation": "Wu et al., 2020",
+              "citationId": "32955177",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/32955177",
+              "link": "/sources/4600"
+            }
+          },
+          {
+            "id": 12015,
+            "name": "EID12015",
+            "description": "In this phase 3 clinical trial, 557 patients with NSCLC harbouring EGFR mutations (exon 19 deletion or L858R mutation) were randomly assigned to two groups and treated with either osimertinib with chemotherapy or osimertinib monotherapy. Significantly higher PFS was noted in the group treated with osimertinib and chemotherapy compared to osimertinib monotherapy, with a hazard ratio of 0.62 (95% CI; 0.49 - 0.79, p < 0.0001). After 24 months, 57% (95% CI; 50-63) and 41% (95% CI; 35-47) of the patients in the osimertinib and chemotherapy versus osimertinib monotherapy groups respectively, were alive and progression-free. An objective response was reported in 83% of the patients in the osimertinib-chemotherapy group, while an objective response was observed in 76% of the patients in the osimertinib monotherapy group. Grade \u2265 3 AEs were observed more frequently in the combination therapy group compared to the monotherapy group.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "A",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/12015",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 4432,
+              "name": "EGFR L858R OR EGFR Exon 19 Deletion"
+            },
+            "therapies": [
+              {
+                "id": 187,
+                "name": "Osimertinib"
+              },
+              {
+                "id": 199,
+                "name": "Chemotherapy"
+              }
+            ],
+            "source": {
+              "citation": "Planchard et al., 2023",
+              "citationId": "37937763",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/37937763",
+              "link": "/sources/4990"
+            }
+          },
+          {
+            "id": 11599,
+            "name": "EID11599",
+            "description": "This phase 3 trial (NCT02151981) involved 419 patients with EGFR T790M mutant NSCLC who progressed after first-line EGFR inhibitor therapy (gefitinib, erlotinib, or afatinib) and were either treated with the third-generation EGFR inhibitor osimertinib or platinum therapy plus pemetrexed.  The objective response rate was 71% (95% CI: 65 to 76) with osimertinib compared to 31% (95% CI: 24 to 40) with platinum/pemetrexed. The median progression free survival (PFS) for osimertinib was 10.1 months compared to 4.4 months with platinum/pemetrexed. In patients with CNS metastases, osimertinib demonstrated a longer median duration of PFS (8.5 months vs. 4.2 months) as well.  Of note, the osimertinib-treated EGFR T790M patients had other co-occuring EGFR mutations including 68% with exon 19 deletions, 30% with L858R, 1% with a G719X mutation, and 1 patient each with S768I and an exon 20 insertion.  Osimertinib treatment of patients with exon 19 deletion plus T790M resulted in a hazard ratio of 0.34  (95% CI: 0.24-0.46) and L858R plus T790M resulted in a hazard ratio of 0.46 (95% CI: 0.30-0.71).  The study concludes that osimertinib exhibited significantly greater efficacy in patients with EGFR T790M mutant advanced NSCLC, even in those with CNS metastases, whose disease had progressed during first-line EGFR inhibitor therapy, independent of co-occuring EGFR mutation.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "A",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/11599",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 4660,
+              "name": "EGFR L858R AND EGFR T790M"
+            },
+            "therapies": [
+              {
+                "id": 187,
+                "name": "Osimertinib"
+              }
+            ],
+            "source": {
+              "citation": "Mok et al., 2017",
+              "citationId": "27959700",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/27959700",
+              "link": "/sources/1286"
+            }
+          },
+          {
+            "id": 4294,
+            "name": "EID4294",
+            "description": "In an in vitro study using NCI-H3255 cells (EGFR L858R mutation), inhibition of EGFR phosphorylation was used as an assay to determine sensitivity to EGFR tyrosine kinase inhibitors. NCI-H3255 cells demonstrated increased sensitivity to AZD9291 (IC50: 60 and 49 nM) compared to EGFRwt NCI-H2073 cells (IC50: 1865 nM; 95%CI 872-3988 nM). In vivo experiments with NCI-H3255 xenograft models showed drastic tumour volume reduction upon treatment with 5mg/kg/day AZD9291.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "D",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/4294",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 33,
+              "name": "EGFR L858R"
+            },
+            "therapies": [
+              {
+                "id": 187,
+                "name": "Osimertinib"
+              }
+            ],
+            "source": {
+              "citation": "Cross et al., 2014",
+              "citationId": "24893891",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/24893891",
+              "link": "/sources/665"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "EGFR L858R::capmatinib": {
+    "data": {
+      "evidenceItems": {
+        "nodes": []
+      }
+    }
+  },
+  "EGFR Exon 19 Deletion::gefitinib": {
+    "data": {
+      "evidenceItems": {
+        "nodes": [
+          {
+            "id": 11241,
+            "name": "EID11241",
+            "description": "In this phase-IV, open-label, single-arm study, 106 patients with NSCLC and EGFR mutations including exon 19 deletion and exon 21 L858R point mutations were administered 250 mg daily doses of gefitinib with the primary endpoint being objective response rate (ORR). The objective response rate was 69.8% (95% CI: 60.5 \u2013 77.7), with a median progression-free survival of 9.7 months (95% CI: 8.5 \u2013 11.0), and a median overall survival of 19.2 months (95% CI:17.0 \u2013 not calculable).",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "A",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/11241",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 4432,
+              "name": "EGFR L858R OR EGFR Exon 19 Deletion"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              }
+            ],
+            "source": {
+              "citation": "Douillard et al., 2014",
+              "citationId": "24263064",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/24263064",
+              "link": "/sources/4620"
+            }
+          },
+          {
+            "id": 413,
+            "name": "EID413",
+            "description": "NSCLC patients with exon 19 deletions in EGFR had longer overall survival than patients with an L858R mutation when treated with gefitinib or erlotinib (38 versus 17 months; P = 0.04).",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/413",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 133,
+              "name": "EGFR Exon 19 Deletion"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              },
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Jackman et al., 2006",
+              "citationId": "16818686",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/16818686",
+              "link": "/sources/243"
+            }
+          },
+          {
+            "id": 4759,
+            "name": "EID4759",
+            "description": "In a study of 1261 non-small cell lung cancer patients, 49.8% of the analyzed tumors had EGFR mutations including deletions in exon 19 (n=258), L858R (n=260), T790M (n=6) and insertions or duplications in exon 20 (n=25). Patients with EGFR deletions in exon 19 or L858R mutations were associated with an improved response to erlotinib or gefitinib with partial or complete response (74.1% vs. 16.5%, P<0.001) when compared to wildtype EGFR patients. Additionally, tumors with EGFR mutations in L858R or deletions in exon 19 were associated with increased overall survival (19.6mo vs. 10.4mo) compared to wildtype (all patients were treated with either erlotinib or gefitinib). From 61 patients with uncommon EGFR mutations of unknown clinical significance, 47.5% were responders in contrast to the 74.1% responders in the exon 19 deletion/L858R group.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/4759",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 4432,
+              "name": "EGFR L858R OR EGFR Exon 19 Deletion"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              },
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              }
+            ],
+            "source": {
+              "citation": "Wu et al., 2011",
+              "citationId": "21531810",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/21531810",
+              "link": "/sources/1503"
+            }
+          },
+          {
+            "id": 1666,
+            "name": "EID1666",
+            "description": "90 NSCLC patients with stage IIIB/IV chemotherapy-resistant tumors were treated with gefitinib, and exon 19 deletion of EGFR was associated with longer time to treatment failure than those with wild-type EGFR (median 8.9 versus 2.1). In multivariate analysis, exon 19 deletion was a significant predictive factor for TTF (HR = 0.0320; P < .0001).",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/1666",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 133,
+              "name": "EGFR Exon 19 Deletion"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              }
+            ],
+            "source": {
+              "citation": "Yang et al., 2008",
+              "citationId": "18509184",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/18509184",
+              "link": "/sources/1127"
+            }
+          },
+          {
+            "id": 2519,
+            "name": "EID2519",
+            "description": "In a phase 3 clinical trial of Korean, never-smoker, lung adenocarcinoma patients, a subset of patients with EGFR mutations (n=42) treated with gefitinib were associated with improved overall response rate compared to gemcitabine plus cisplatin treatment (84.6%, 22/26, vs. 37.5%, 6/16, P=0.002). By contrast, in EGFR mutation negative cases, the response rate was much lower (25.9%, 7/27). The frequency of mutation in exon 19 deletion and L858R was 64.3% (27/42) and 36.4% (16/42), respectively. Exon 19 and L858R mutations were mutually exclusive in this cohort.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/2519",
+            "disease": {
+              "name": "Lung Adenocarcinoma",
+              "displayName": "Lung Adenocarcinoma"
+            },
+            "molecularProfile": {
+              "id": 133,
+              "name": "EGFR Exon 19 Deletion"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              }
+            ],
+            "source": {
+              "citation": "Han et al., 2012",
+              "citationId": "22370314",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/22370314",
+              "link": "/sources/1513"
+            }
+          },
+          {
+            "id": 6184,
+            "name": "EID6184",
+            "description": "A Japanese Phase III clinical study assessed the noninferiority of gefitinib in comparison to erlotinib in 561 patients with postoperative or recurrent stage IIIB/IV lung adenocarcinoma. Patients were pretreated with at least one chemotherapy regimen, but no tyrosine kinase inhibitors. In the subgroup of 156 patients with exon 19 deletions as their sole EGFR mutation, 83 and 78 were treated with erlotinib and gefitinib, respectively. Objective response (defined as complete + partial response) was approximately 65 percent for both erlotinib gefitinib and non significantly different  (p= .965). Disease control rate (defined as complete response + partial response + stable disease) was 91.6 and 83.3 percent for erlotinib and gefitinib, respectively (p=.113). The study was unable to demonstrate statistical noninferiority via the planned end point; however, the lack of statistically significant differences between erlotinib and gefitinib responses, and the milder adverse effects experienced by gefitinib treated patients, led the authors to conclude that gefitinib is a feasible alternative to erlotinib in treating patients with ex19del EGFR positive, advanced lung adenocarcinoma.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/6184",
+            "disease": {
+              "name": "Lung Adenocarcinoma",
+              "displayName": "Lung Adenocarcinoma"
+            },
+            "molecularProfile": {
+              "id": 133,
+              "name": "EGFR Exon 19 Deletion"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              }
+            ],
+            "source": {
+              "citation": "Urata et al., 2016",
+              "citationId": "27022112",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/27022112",
+              "link": "/sources/2478"
+            }
+          },
+          {
+            "id": 2156,
+            "name": "EID2156",
+            "description": "A phase 2 study of 120 stage IIIB-IV lung adenocarcinoma patients reported improved progression free survival in patients with EGFR mutation (defined as exon 19 deletion or exon 21 mutation) when treated (n=13) with gefitinib and pemetrexed/platinum combination therapy (HR: 0.20, 95% CI: 0.05-0.75, P=0.017) as compared to treatment (n=18) with pemtrexed/platinum alone.  In the subgroup of patients without EGFR mutation (defined as all patients without the specific EGFR exon 19 deletion or L858R mutation) a difference in median PFS was not seen between the chemotherapy versus chemotherapy with gefitinib treatment groups.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "C",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/2156",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 4432,
+              "name": "EGFR L858R OR EGFR Exon 19 Deletion"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              }
+            ],
+            "source": {
+              "citation": "Yu et al., 2014",
+              "citationId": "24755888",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/24755888",
+              "link": "/sources/1514"
+            }
+          },
+          {
+            "id": 273,
+            "name": "EID273",
+            "description": "Exon 19 deletion has been shown to be correlated with gefitinib response.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "D",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/273",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 133,
+              "name": "EGFR Exon 19 Deletion"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              }
+            ],
+            "source": {
+              "citation": "Ji et al., 2006",
+              "citationId": "16730237",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/16730237",
+              "link": "/sources/180"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "EGFR Exon 19 Deletion::erlotinib": {
+    "data": {
+      "evidenceItems": {
+        "nodes": [
+          {
+            "id": 2995,
+            "name": "EID2995",
+            "description": "On May 14, 2013, the U.S. Food and Drug Administration approved erlotinib (Tarceva) for the first-line treatment of patients with metastatic non-small cell lung cancer (NSCLC) whose tumors have epidermal growth factor receptor (EGFR) exon 19 deletions or exon 21 (L858R) substitution mutations.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "A",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/2995",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 133,
+              "name": "EGFR Exon 19 Deletion"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Khozin et al., 2014",
+              "citationId": "24868098",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/24868098",
+              "link": "/sources/1724"
+            }
+          },
+          {
+            "id": 11240,
+            "name": "EID11240",
+            "description": "In this phase 3, randomized, double-blind, placebo-controlled trial, 449 patients stage IV NSCLC with EGFR exon 19 deletions or exon 21 (L858R) mutations. Patients were randomly assigned in a 1:1 ratio to receive oral erlotinib (150 mg/day) plus either intravenous ramucirumab (10 mg/kg) or matching placebo once every 2 weeks. The primary endpoint was investigator-assessed progression-free survival. The median duration of follow-up was 20.7 months (IQR: 15.8\u201327.2), and the progression-free survival was found to be significantly longer in the ramucirumab plus erlotinib group 19.4 months (95% CI: 15.4 \u2013 21.6) than in the placebo plus erlotinib group at 12.4 months (11.0 \u2013 13.5), with a hazard ratio of 0.59 (95% CI: 0.46 \u2013 0\u00b776; p < 0\u00b70001). Lastly, grade 3/4 adverse events were reported in 159 of 221 patients in the ramucirumab plus erlotinib group versus 121 of 225 in the placebo plus erlotinib group, and one death was recorded in the ramucirumab plus erlotinib group.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "A",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/11240",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 4432,
+              "name": "EGFR L858R OR EGFR Exon 19 Deletion"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              },
+              {
+                "id": 616,
+                "name": "Ramucirumab"
+              }
+            ],
+            "source": {
+              "citation": "Nakagawa et al., 2019",
+              "citationId": "31591063",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/31591063",
+              "link": "/sources/4619"
+            }
+          },
+          {
+            "id": 413,
+            "name": "EID413",
+            "description": "NSCLC patients with exon 19 deletions in EGFR had longer overall survival than patients with an L858R mutation when treated with gefitinib or erlotinib (38 versus 17 months; P = 0.04).",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/413",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 133,
+              "name": "EGFR Exon 19 Deletion"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              },
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Jackman et al., 2006",
+              "citationId": "16818686",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/16818686",
+              "link": "/sources/243"
+            }
+          },
+          {
+            "id": 3791,
+            "name": "EID3791",
+            "description": "The phase 3 (EURTAC) study consisted of of 173 non-small cell lung cancer patients who had not had prior chemotherapy for metastatic disease (although adjuvant or neoadjuvant chemotherapy was permitted) and included 160 patients with lung adenocarcinoma subtype. The patients had EGFR mutations (exon 19 deletions or L858R), and improved progression-free survival was reported in the erlotinib treated cohort as compared to the cohort that was treated with standard chemotherapy (9.7mo vs. 5.2mo, HR:0.37, 95%CI:0.25-0.54, P<0.0001, univariate analysis; HR:0.35, 95%CI:0.23-0.52, P<0.0001, multivariate analysis).",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/3791",
+            "disease": {
+              "name": "Lung Adenocarcinoma",
+              "displayName": "Lung Adenocarcinoma"
+            },
+            "molecularProfile": {
+              "id": 4432,
+              "name": "EGFR L858R OR EGFR Exon 19 Deletion"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Rosell et al., 2012",
+              "citationId": "22285168",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/22285168",
+              "link": "/sources/595"
+            }
+          },
+          {
+            "id": 4759,
+            "name": "EID4759",
+            "description": "In a study of 1261 non-small cell lung cancer patients, 49.8% of the analyzed tumors had EGFR mutations including deletions in exon 19 (n=258), L858R (n=260), T790M (n=6) and insertions or duplications in exon 20 (n=25). Patients with EGFR deletions in exon 19 or L858R mutations were associated with an improved response to erlotinib or gefitinib with partial or complete response (74.1% vs. 16.5%, P<0.001) when compared to wildtype EGFR patients. Additionally, tumors with EGFR mutations in L858R or deletions in exon 19 were associated with increased overall survival (19.6mo vs. 10.4mo) compared to wildtype (all patients were treated with either erlotinib or gefitinib). From 61 patients with uncommon EGFR mutations of unknown clinical significance, 47.5% were responders in contrast to the 74.1% responders in the exon 19 deletion/L858R group.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/4759",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 4432,
+              "name": "EGFR L858R OR EGFR Exon 19 Deletion"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              },
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              }
+            ],
+            "source": {
+              "citation": "Wu et al., 2011",
+              "citationId": "21531810",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/21531810",
+              "link": "/sources/1503"
+            }
+          },
+          {
+            "id": 884,
+            "name": "EID884",
+            "description": "A randomized phase 3 trial involving 173 NSCLC patients with EGFR mutations (exon 19 deletion or L858R mutation in exon 21) with no history of chemotherapy for metastatic disease. Patients were randomly allocated (1:1) to receive either erlotinib or standard chemotherapy. The primary endpoint was progression-free survival (PFS). Median PFS was 9.7 months in the erlotinib group, compared with 5.2 months in the standard chemotherapy group.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/884",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 133,
+              "name": "EGFR Exon 19 Deletion"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Rosell et al., 2012",
+              "citationId": "22285168",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/22285168",
+              "link": "/sources/595"
+            }
+          },
+          {
+            "id": 4859,
+            "name": "EID4859",
+            "description": "Non-small cell cancer patients from two studies [The ARCHER 1009 (NCT01360554) and A7471028 (NCT00769067)] with exon 19 deletion and L858R EGFR (Exon 21) mutations were pooled to compare the efficacy of dacomitinib to erlotinib. 121 patients with any EGFR mutation were enrolled, 101 had activating mutations in exon 19 or 21. Median progression-free survival and median survival were better following dacomitinib treatment (14.6 and 26.6 months, N=53) than erlotinib (9.6 and 23.2, P = 0.146 and P = 0.265, N=48). In exon 19 mutated patients (N=32 and 36) PFS was better for dacomitinib treated patients (HR of 0.585 [95% CI 0.335\u20131.024], two-sided log-rank, P = 0.058) but did not reach significance.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/4859",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 133,
+              "name": "EGFR Exon 19 Deletion"
+            },
+            "therapies": [
+              {
+                "id": 44,
+                "name": "Dacomitinib"
+              },
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Ramalingam et al., 2016",
+              "citationId": "26768165",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/26768165",
+              "link": "/sources/2158"
+            }
+          },
+          {
+            "id": 4766,
+            "name": "EID4766",
+            "description": "In a stage IV lung adenocarcinoma patient harboring EGFR exon 19 deletion, EGFR exon 19 deletion was associated with sensitivity to erlotinib monotherapy. Prior to identification of the EGFR exon 19 deletion, the patient was underwent complex treatments with standard chemotherapy and experienced disease progression; upon identification of EGFR exon 19 deletion and treatment with erlotinib, the patient achieved a clinical response.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "C",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/4766",
+            "disease": {
+              "name": "Lung Adenocarcinoma",
+              "displayName": "Lung Adenocarcinoma"
+            },
+            "molecularProfile": {
+              "id": 133,
+              "name": "EGFR Exon 19 Deletion"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Kanemaru et al., 2016",
+              "citationId": "27566387",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/27566387",
+              "link": "/sources/1990"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "EGFR Exon 19 Deletion::osimertinib": {
+    "data": {
+      "evidenceItems": {
+        "nodes": [
+          {
+            "id": 11219,
+            "name": "EID11219",
+            "description": "In this phase 3, double-blind trial, 682 patients were randomly assigned 1:1 to either osimertinib (80 mg once daily) or placebo for 3 years following complete resection of EGFR mutation positive (exon 19 deletion or L858R) non-small cell lung cancer (NSCLC). At two years, 90% of the patients with stage II to IIIA disease in the osimertinib group (95% CI, 84 to 93) and 44% of those in the placebo group (95% CI, 37 to 51) were alive and disease-free (HR for disease recurrence or death, 0.17; 99.06% CI, 0.11 to 0.26; P < 0.001). Including all patients, 89% in the osimertinib group (95% CI, 85 to 92) and 52% of those in the placebo group (95% CI, 46 to 58) were alive and disease-free at two years (HR for disease recurrence or death, 0.20; 99.12% CI, 0.14 to 0.30; P < 0.001). In total, 29 patients died (9 in the osimertinib group and 20 in the placebo group), and grade 3 adverse events occurred in 20% of the osimertinib group versus 13% of the placebo group while 16% of the osimertinib group experienced serious adverse events versus 12% in the placebo group.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "A",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/11219",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 4432,
+              "name": "EGFR L858R OR EGFR Exon 19 Deletion"
+            },
+            "therapies": [
+              {
+                "id": 187,
+                "name": "Osimertinib"
+              }
+            ],
+            "source": {
+              "citation": "Wu et al., 2020",
+              "citationId": "32955177",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/32955177",
+              "link": "/sources/4600"
+            }
+          },
+          {
+            "id": 12015,
+            "name": "EID12015",
+            "description": "In this phase 3 clinical trial, 557 patients with NSCLC harbouring EGFR mutations (exon 19 deletion or L858R mutation) were randomly assigned to two groups and treated with either osimertinib with chemotherapy or osimertinib monotherapy. Significantly higher PFS was noted in the group treated with osimertinib and chemotherapy compared to osimertinib monotherapy, with a hazard ratio of 0.62 (95% CI; 0.49 - 0.79, p < 0.0001). After 24 months, 57% (95% CI; 50-63) and 41% (95% CI; 35-47) of the patients in the osimertinib and chemotherapy versus osimertinib monotherapy groups respectively, were alive and progression-free. An objective response was reported in 83% of the patients in the osimertinib-chemotherapy group, while an objective response was observed in 76% of the patients in the osimertinib monotherapy group. Grade \u2265 3 AEs were observed more frequently in the combination therapy group compared to the monotherapy group.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "A",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/12015",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 4432,
+              "name": "EGFR L858R OR EGFR Exon 19 Deletion"
+            },
+            "therapies": [
+              {
+                "id": 187,
+                "name": "Osimertinib"
+              },
+              {
+                "id": 199,
+                "name": "Chemotherapy"
+              }
+            ],
+            "source": {
+              "citation": "Planchard et al., 2023",
+              "citationId": "37937763",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/37937763",
+              "link": "/sources/4990"
+            }
+          },
+          {
+            "id": 11598,
+            "name": "EID11598",
+            "description": "This phase 3 trial (NCT02151981) involved 419 patients with EGFR T790M mutant NSCLC who progressed after first-line EGFR inhibitor therapy (gefitinib, erlotinib, or afatinib) and were either treated with the third-generation EGFR inhibitor osimertinib or platinum therapy plus pemetrexed.  The objective response rate was 71% (95% CI: 65 to 76) with osimertinib compared to 31% (95% CI: 24 to 40) with platinum/pemetrexed. The median progression free survival (PFS) for osimertinib was 10.1 months compared to 4.4 months with platinum/pemetrexed. In patients with CNS metastases, osimertinib demonstrated a longer median duration of PFS (8.5 months vs. 4.2 months) as well.  Of note, the osimertinib-treated EGFR T790M patients had other co-occuring EGFR mutations including 68% with exon 19 deletions, 30% with L858R, 1% with a G719X mutation, and 1 patient each with S768I and an exon 20 insertion.  Osimertinib treatment of patients with exon 19 deletion plus T790M resulted in a hazard ration of 0.34  (95% CI: 0.24-0.46) and L858R plus T790M resulted in a hazard ratio of 0.46 (95% CI: 0.30-0.71).  The study concludes that osimertinib exhibited significantly greater efficacy in patients with EGFR T790M mutant advanced NSCLC, even in those with CNS metastases, whose disease had progressed during first-line EGFR inhibitor therapy, independent of co-occuring EGFR mutation.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "A",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/11598",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 4659,
+              "name": "EGFR T790M AND EGFR Exon 19 Deletion"
+            },
+            "therapies": [
+              {
+                "id": 187,
+                "name": "Osimertinib"
+              }
+            ],
+            "source": {
+              "citation": "Mok et al., 2017",
+              "citationId": "27959700",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/27959700",
+              "link": "/sources/1286"
+            }
+          },
+          {
+            "id": 1396,
+            "name": "EID1396",
+            "description": "Case report of a patient with stage IV lung adenocarcinoma and a 15\u2013base pair deletion in EGFR exon 19. Partial response with erlotinib was achieved for 15 months after initial chemotherapy. After further progression, rebiopsy additionally identified the EGFR T790M mutation and the patient received several cycles of chemotherapy and targeted therapy including afatinib, cetuximab, erlotinib, AZD9291. She was treated with AZD9291 for 9 months until disease progression. Repeat biopsy detected EGFRC797S mutation additionally to both aforementioned EGFR aberrations. In addition, PTEN Y27C and CTNNB1 S37F mutations were present in all 3 samples, and a TSC2 N486I was seen in the third biopsy sample only",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "C",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "RESISTANCE",
+            "status": "ACCEPTED",
+            "link": "/evidence/1396",
+            "disease": {
+              "name": "Lung Adenocarcinoma",
+              "displayName": "Lung Adenocarcinoma"
+            },
+            "molecularProfile": {
+              "id": 5513,
+              "name": "EGFR T790M AND EGFR Exon 19 Deletion AND EGFR C797S"
+            },
+            "therapies": [
+              {
+                "id": 187,
+                "name": "Osimertinib"
+              }
+            ],
+            "source": {
+              "citation": "Yu et al., 2015",
+              "citationId": "26181354",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/26181354",
+              "link": "/sources/946"
+            }
+          },
+          {
+            "id": 1397,
+            "name": "EID1397",
+            "description": "Case report of a patient with stage IV lung adenocarcinoma and a 15\u2013base pair deletion in EGFR exon 19. Partial response with erlotinib was achieved for 15 months after initial chemotherapy. After further progression, rebiopsy additionally identified the EGFR T790M mutation and the patient received several cycles of chemotherapy and targeted therapy including afatinib, cetuximab, erlotinib, AZD9291. She was treated with AZD9291 for 9 months until disease progression.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "C",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/1397",
+            "disease": {
+              "name": "Lung Adenocarcinoma",
+              "displayName": "Lung Adenocarcinoma"
+            },
+            "molecularProfile": {
+              "id": 4659,
+              "name": "EGFR T790M AND EGFR Exon 19 Deletion"
+            },
+            "therapies": [
+              {
+                "id": 187,
+                "name": "Osimertinib"
+              }
+            ],
+            "source": {
+              "citation": "Yu et al., 2015",
+              "citationId": "26181354",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/26181354",
+              "link": "/sources/946"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "EGFR Exon 19 Deletion::capmatinib": {
+    "data": {
+      "evidenceItems": {
+        "nodes": []
+      }
+    }
+  },
+  "EGFR Mutation::gefitinib": {
+    "data": {
+      "evidenceItems": {
+        "nodes": [
+          {
+            "id": 1937,
+            "name": "EID1937",
+            "description": "This open label Phase 3 Trial performed across 36 centers in Japan (WJTOG3405) assessed patients with postoperative recurrent or stage IIIB/IV NSCLC and activating EGFR mutations (Exon 19 deletion and L858R).  88 patients were treated with EGFR inhibitor gefitinib, while 89 were treated with cisplatin/docetaxel. Progression free survival was significantly longer with gefitinib treatment with a median of 9.2 months vs. 6.3 with cisplatin/docetaxel (HR 0.48; 95% CI 0.336-0.710; p<0.0001). Difference in response to gefitinib between the two EGFR mutation types was not observed.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/1937",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 438,
+              "name": "EGFR Mutation"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              }
+            ],
+            "source": {
+              "citation": "Mitsudomi et al., 2010",
+              "citationId": "20022809",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/20022809",
+              "link": "/sources/1358"
+            }
+          },
+          {
+            "id": 2148,
+            "name": "EID2148",
+            "description": "In a phase 3 clinical trial of East Asian advanced pulmonary adenocarcinoma patients, a subset of patients with EGFR mutations (n=261) treated with gefitinib were associated with improved response (HR:0.48, 95% CI:0.36-0.64, P<0.001), compared to carboplatin plus paclitaxel treatment. The frequency of mutation in exon 19 deletion and L858R was 53.6% (140/261) and 42.5% (111/261), respectively.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/2148",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 438,
+              "name": "EGFR Mutation"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              }
+            ],
+            "source": {
+              "citation": "Mok et al., 2009",
+              "citationId": "19692680",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/19692680",
+              "link": "/sources/1502"
+            }
+          },
+          {
+            "id": 2053,
+            "name": "EID2053",
+            "description": "In a retrospective study, 166 non-small cell lung cancer (NSCLC) patients that tended to have selected characteristics known to be predictive for TKI sensitivity (i.e. women, never smokers, and patients with ADC) were treated with either gefitinib or erlotinib. EGFR mutations (n=42) were associated with improved objective response to drug treatment (71.4% vs. 20.1%, p<0.0001), improved but not significant overall survival (36.9 vs. 24.8 months, p=0.09), and longer median time to progression (not reached vs. 3.7 months, p<0.0001) when compared to wild-type EGFR. Through multivariate analyses, it was shown that EGFR mutations are independent predictive favorable factors of response to drug treatment (p<0.0001) and are significant predictors of longer time to progression (HR: 0.27, 95% CI: 0.14-0.52, p=0.0001)",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/2053",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 438,
+              "name": "EGFR Mutation"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              },
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Ludovini et al., 2011",
+              "citationId": "21258250",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/21258250",
+              "link": "/sources/1470"
+            }
+          },
+          {
+            "id": 2559,
+            "name": "EID2559",
+            "description": "Mutational profiling was performed on EGFR exons 18-24 from a group of 10 retrospectively chosen patients who had shown partial response or clinical imporvement in response to gefitinib, and in 8 patients who had not shown gefitinib response. 7 of 10 sensitive patients had mutations in EGFR, while none of the 8 gefitinib refractory patients showed EGFR mutation in these exons (p=0.004)",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/2559",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 438,
+              "name": "EGFR Mutation"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              }
+            ],
+            "source": {
+              "citation": "Pao et al., 2004",
+              "citationId": "15329413",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/15329413",
+              "link": "/sources/1509"
+            }
+          },
+          {
+            "id": 3016,
+            "name": "EID3016",
+            "description": "In a phase 3 clinical trial of non-small cell lung cancer (NSCLC) patients, a subset of patients with EGFR mutations (n=44) treated with gefitinib were associated with improved progression free survival (HR: 0.16, 95% CI: 0.05-0.49, P=0.001), and a higher objective response rate (ORR: 42.1% vs 21.1%, p=0.04) compared to patients treated with docetaxel. Of the 44 patients, 22 had an exon 19 deletion, 16 had an L858R mutation, one patient had an exon 20 T790M mutation, two had an exon G719A mutation and four had other mutations.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/3016",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 438,
+              "name": "EGFR Mutation"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              }
+            ],
+            "source": {
+              "citation": "Douillard et al., 2010",
+              "citationId": "20038723",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/20038723",
+              "link": "/sources/1501"
+            }
+          },
+          {
+            "id": 2939,
+            "name": "EID2939",
+            "description": "In a study of 52 patients with recurrent lung cancer, 27 individuals had EGFR mutation including 2 point mutations in exon 18 (G719A and G1719C), 23 deletions in exon 19, two insertions in exon 19 (I744KIPVAI), on mutation in exon 20 (S768I), and 16 point mutations in exon 21 (L858R and E709H). Patients were treated with the epidermal growth factor receptor tyrosine kinase inhibitor gefitinib, and tumors harboring an EGFR mutation had an increased frequency of partial response (PR) and a lower rate of progressive disease (PD) (PR:22, PD:2 vs. PR:2, PD:17; P<0.0001) compared to wildtype EGFR patients. Patients with KRAS mutations also had a longer overall survival compared to wildtype EGFR patients (HR:2.526, 95% CI:1.314-4.858, P=0.0055).",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/2939",
+            "disease": {
+              "name": "Lung Cancer",
+              "displayName": "Lung Cancer"
+            },
+            "molecularProfile": {
+              "id": 438,
+              "name": "EGFR Mutation"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              }
+            ],
+            "source": {
+              "citation": "Endoh et al., 2006",
+              "citationId": "17409929",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/17409929",
+              "link": "/sources/1416"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "EGFR Mutation::erlotinib": {
+    "data": {
+      "evidenceItems": {
+        "nodes": [
+          {
+            "id": 2053,
+            "name": "EID2053",
+            "description": "In a retrospective study, 166 non-small cell lung cancer (NSCLC) patients that tended to have selected characteristics known to be predictive for TKI sensitivity (i.e. women, never smokers, and patients with ADC) were treated with either gefitinib or erlotinib. EGFR mutations (n=42) were associated with improved objective response to drug treatment (71.4% vs. 20.1%, p<0.0001), improved but not significant overall survival (36.9 vs. 24.8 months, p=0.09), and longer median time to progression (not reached vs. 3.7 months, p<0.0001) when compared to wild-type EGFR. Through multivariate analyses, it was shown that EGFR mutations are independent predictive favorable factors of response to drug treatment (p<0.0001) and are significant predictors of longer time to progression (HR: 0.27, 95% CI: 0.14-0.52, p=0.0001)",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/2053",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 438,
+              "name": "EGFR Mutation"
+            },
+            "therapies": [
+              {
+                "id": 14,
+                "name": "Gefitinib"
+              },
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Ludovini et al., 2011",
+              "citationId": "21258250",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/21258250",
+              "link": "/sources/1470"
+            }
+          },
+          {
+            "id": 7024,
+            "name": "EID7024",
+            "description": "In this open-label, randomised, phase 3 trial at 22 centres in China, patients with stage IIIB or IV NSCLC who had exon 19 deletion or exon 21 L858R point mutation, and who had not received previous systemic anticancer therapy, were administered tyrosine kinase inhibitor erlotinib (83 patients) or gemcitabine plus carboplatin (82 patients). Median progression-free survival was found to be significantly longer with erlotinib than in patients on chemotherapy (13.1 [95% CI 10.58\u201316.53] vs 4.6 [4.21\u20135.42] months; hazard ratio 0.16, 95% CI 0.10\u20130.26; p<0.0001). Chemotherapy was also associated with more grade 3 or 4 toxic effects. Authors conclude that in patients with advanced EGFR mutant NSCLC, erlotinib offers an improved first line treatment option.",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/7024",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 438,
+              "name": "EGFR Mutation"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Zhou et al., 2011",
+              "citationId": "21783417",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/21783417",
+              "link": "/sources/2723"
+            }
+          },
+          {
+            "id": 3794,
+            "name": "EID3794",
+            "description": "In a phase II trial for Bronchioloalveolar carcinoma (BAC, or in situ pulmonary adenocarcinoma), EGFR exons 18-24 were analyzed in 7 patients who had shown a partial response to Erlotinib, and 10 patients who did not.  EGFR mutations were seen in 5/7 responders but not in any of the non-responders, which was a significant result (p=0.003).",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/3794",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 438,
+              "name": "EGFR Mutation"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Pao et al., 2004",
+              "citationId": "15329413",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/15329413",
+              "link": "/sources/1509"
+            }
+          },
+          {
+            "id": 3864,
+            "name": "EID3864",
+            "description": "In advanced-stage (IIIB or IV) non-small cell lung cancer patients treated with erlotinib, patients whose tumors harbored EGFR mutations (n=3) had a higher 12-week progression-free survival rate compared to wildtype EGFR patients (n=54; 100% vs. 25%, P=0.0064).",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "B",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/3864",
+            "disease": {
+              "name": "Lung Cancer",
+              "displayName": "Lung Cancer"
+            },
+            "molecularProfile": {
+              "id": 438,
+              "name": "EGFR Mutation"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Ramalingam et al., 2011",
+              "citationId": "22025157",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/22025157",
+              "link": "/sources/1547"
+            }
+          },
+          {
+            "id": 4201,
+            "name": "EID4201",
+            "description": "In the placebo-controlled Phase III study SATURN, using erlotinib maintenance therapy for patients with advanced NSCLC who were selected for response or stable disease after first line chemotherapy, EGFR mutation was assessed. In patients with EGFR mutation, erlotinib maintenance reduced progression and death significantly with median progression free survival (PFS) of 44.6 vs. 13 weeks over placebo. Erlotinib also significantly improved PFS in EGFR wildtype patients, but EGFR mutant tumors treated with erlotinib had significant better PFS than EGFR wildtype. Overall, in the intent to treat population erlotinib significantly improved PFS over placebo (HR, 0.71; 95% CI, 0.62 to 0.82; P<0.001).",
+            "evidenceType": "PREDICTIVE",
+            "evidenceLevel": "C",
+            "evidenceDirection": "SUPPORTS",
+            "significance": "SENSITIVITYRESPONSE",
+            "status": "ACCEPTED",
+            "link": "/evidence/4201",
+            "disease": {
+              "name": "Lung Non-small Cell Carcinoma",
+              "displayName": "Lung Non-small Cell Carcinoma"
+            },
+            "molecularProfile": {
+              "id": 438,
+              "name": "EGFR Mutation"
+            },
+            "therapies": [
+              {
+                "id": 15,
+                "name": "Erlotinib"
+              }
+            ],
+            "source": {
+              "citation": "Brugger et al., 2011",
+              "citationId": "21969500",
+              "sourceUrl": "http://www.ncbi.nlm.nih.gov/pubmed/21969500",
+              "link": "/sources/1938"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "EGFR Mutation::osimertinib": {
+    "data": {
+      "evidenceItems": {
+        "nodes": []
+      }
+    }
+  },
+  "EGFR Mutation::capmatinib": {
+    "data": {
+      "evidenceItems": {
+        "nodes": []
+      }
+    }
+  }
+}

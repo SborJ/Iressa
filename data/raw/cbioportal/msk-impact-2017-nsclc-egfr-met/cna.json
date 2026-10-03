@@ -1,0 +1,2507 @@
+[
+  {
+    "uniqueSampleKey": "UC0wMDAwMTEwLVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAwMTEwOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0000110-T01-IM3",
+    "patientId": "P-0000110",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAwMjA4LVQwMi1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAwMjA4Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0000208-T02-IM5",
+    "patientId": "P-0000208",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAwMzQ3LVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAwMzQ3Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0000347-T01-IM3",
+    "patientId": "P-0000347",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAwMzQ4LVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAwMzQ4Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0000348-T01-IM3",
+    "patientId": "P-0000348",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAwNDc3LVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAwNDc3Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0000477-T01-IM3",
+    "patientId": "P-0000477",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAwNTcxLVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAwNTcxOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0000571-T01-IM3",
+    "patientId": "P-0000571",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAwNjI4LVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAwNjI4Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0000628-T01-IM3",
+    "patientId": "P-0000628",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAwNjI4LVQwMi1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAwNjI4Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0000628-T02-IM5",
+    "patientId": "P-0000628",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAwNjQyLVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAwNjQyOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0000642-T01-IM3",
+    "patientId": "P-0000642",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAwOTAwLVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAwOTAwOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0000900-T01-IM3",
+    "patientId": "P-0000900",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAwOTEzLVQwMi1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAwOTEzOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0000913-T02-IM5",
+    "patientId": "P-0000913",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAwOTEzLVQwMy1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAwOTEzOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0000913-T03-IM5",
+    "patientId": "P-0000913",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAwOTI5LVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAwOTI5Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0000929-T01-IM3",
+    "patientId": "P-0000929",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAwOTg3LVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAwOTg3Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0000987-T01-IM3",
+    "patientId": "P-0000987",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAxMTIzLVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAxMTIzOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0001123-T01-IM3",
+    "patientId": "P-0001123",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAxMTMxLVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAxMTMxOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0001131-T01-IM3",
+    "patientId": "P-0001131",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAxMjI0LVQwMi1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAxMjI0Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0001224-T02-IM3",
+    "patientId": "P-0001224",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAxMzI4LVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAxMzI4Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0001328-T01-IM3",
+    "patientId": "P-0001328",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAxMzU3LVQwMi1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAxMzU3Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0001357-T02-IM5",
+    "patientId": "P-0001357",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAxNTA2LVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAxNTA2Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0001506-T01-IM3",
+    "patientId": "P-0001506",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAxNTI4LVQwMi1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAxNTI4Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0001528-T02-IM3",
+    "patientId": "P-0001528",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAxNTI4LVQwMy1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAxNTI4Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0001528-T03-IM5",
+    "patientId": "P-0001528",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAxNjEzLVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAxNjEzOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0001613-T01-IM3",
+    "patientId": "P-0001613",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAxNjEzLVQwMi1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAxNjEzOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0001613-T02-IM5",
+    "patientId": "P-0001613",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAxNjY1LVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAxNjY1Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0001665-T01-IM3",
+    "patientId": "P-0001665",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAxNzI2LVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAxNzI2Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0001726-T01-IM3",
+    "patientId": "P-0001726",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAxNzUwLVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAxNzUwOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0001750-T01-IM3",
+    "patientId": "P-0001750",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAxODAyLVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAxODAyOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0001802-T01-IM3",
+    "patientId": "P-0001802",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAxODE3LVQwMi1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAxODE3Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0001817-T02-IM5",
+    "patientId": "P-0001817",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAxODMyLVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAxODMyOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0001832-T01-IM3",
+    "patientId": "P-0001832",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAxOTI3LVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAxOTI3Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0001927-T01-IM3",
+    "patientId": "P-0001927",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAxOTMxLVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAxOTMxOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0001931-T01-IM3",
+    "patientId": "P-0001931",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAxOTcyLVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAxOTcyOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0001972-T01-IM3",
+    "patientId": "P-0001972",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAyMDQ2LVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAyMDQ2Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0002046-T01-IM3",
+    "patientId": "P-0002046",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAyMDkxLVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAyMDkxOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0002091-T01-IM3",
+    "patientId": "P-0002091",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAyMTI2LVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAyMTI2Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0002126-T01-IM3",
+    "patientId": "P-0002126",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAyMjE4LVQwMi1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAyMjE4Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0002218-T02-IM5",
+    "patientId": "P-0002218",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAyNDIzLVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAyNDIzOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0002423-T01-IM3",
+    "patientId": "P-0002423",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAyNDg5LVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAyNDg5Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0002489-T01-IM3",
+    "patientId": "P-0002489",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAyNTA2LVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAyNTA2Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0002506-T01-IM3",
+    "patientId": "P-0002506",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAyNTA2LVQwMi1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAyNTA2Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0002506-T02-IM5",
+    "patientId": "P-0002506",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAyNTIzLVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAyNTIzOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0002523-T01-IM3",
+    "patientId": "P-0002523",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAyNTI0LVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAyNTI0Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0002524-T01-IM3",
+    "patientId": "P-0002524",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAyNTM0LVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAyNTM0Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0002534-T01-IM3",
+    "patientId": "P-0002534",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAyNzgzLVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAyNzgzOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0002783-T01-IM3",
+    "patientId": "P-0002783",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAyODYxLVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAyODYxOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0002861-T01-IM3",
+    "patientId": "P-0002861",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAyODkwLVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAyODkwOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0002890-T01-IM3",
+    "patientId": "P-0002890",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAyOTA0LVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAyOTA0Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0002904-T01-IM3",
+    "patientId": "P-0002904",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAyOTE2LVQwMi1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAyOTE2Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0002916-T02-IM5",
+    "patientId": "P-0002916",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAzMTU2LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAzMTU2Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0003156-T01-IM5",
+    "patientId": "P-0003156",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAzMTY3LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAzMTY3Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0003167-T01-IM5",
+    "patientId": "P-0003167",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAzMjI5LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAzMjI5Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0003229-T01-IM5",
+    "patientId": "P-0003229",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAzMjcwLVQwMi1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAzMjcwOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0003270-T02-IM5",
+    "patientId": "P-0003270",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAzMzE3LVQwMi1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAzMzE3Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0003317-T02-IM5",
+    "patientId": "P-0003317",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAzNDI1LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAzNDI1Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0003425-T01-IM5",
+    "patientId": "P-0003425",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAzNDc5LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAzNDc5Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0003479-T01-IM5",
+    "patientId": "P-0003479",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAzNTUxLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAzNTUxOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0003551-T01-IM5",
+    "patientId": "P-0003551",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAzNjU0LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAzNjU0Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0003654-T01-IM5",
+    "patientId": "P-0003654",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAzODYzLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAzODYzOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0003863-T01-IM5",
+    "patientId": "P-0003863",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA0MTIzLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA0MTIzOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0004123-T01-IM5",
+    "patientId": "P-0004123",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA0MTI5LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA0MTI5Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0004129-T01-IM5",
+    "patientId": "P-0004129",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA0MTI5LVQwMi1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA0MTI5Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0004129-T02-IM5",
+    "patientId": "P-0004129",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA0MjYzLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA0MjYzOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0004263-T01-IM5",
+    "patientId": "P-0004263",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA0MzI4LVQwMi1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA0MzI4Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0004328-T02-IM5",
+    "patientId": "P-0004328",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA0NTE3LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA0NTE3Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0004517-T01-IM5",
+    "patientId": "P-0004517",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA0NjA3LVQwMi1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA0NjA3Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0004607-T02-IM5",
+    "patientId": "P-0004607",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA0NjkxLVQwMi1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA0NjkxOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0004691-T02-IM5",
+    "patientId": "P-0004691",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA0Njk1LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA0Njk1Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0004695-T01-IM5",
+    "patientId": "P-0004695",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA0NzQzLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA0NzQzOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0004743-T01-IM5",
+    "patientId": "P-0004743",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA0NzU5LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA0NzU5Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0004759-T01-IM5",
+    "patientId": "P-0004759",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA0OTI3LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA0OTI3Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0004927-T01-IM5",
+    "patientId": "P-0004927",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA1MDM0LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA1MDM0Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0005034-T01-IM5",
+    "patientId": "P-0005034",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA1MDYzLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA1MDYzOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0005063-T01-IM5",
+    "patientId": "P-0005063",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA1MTc4LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA1MTc4Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0005178-T01-IM5",
+    "patientId": "P-0005178",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA1MjY0LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA1MjY0Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0005264-T01-IM5",
+    "patientId": "P-0005264",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA1NTA0LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA1NTA0Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0005504-T01-IM5",
+    "patientId": "P-0005504",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA1NTUzLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA1NTUzOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0005553-T01-IM5",
+    "patientId": "P-0005553",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA1ODk1LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA1ODk1Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0005895-T01-IM5",
+    "patientId": "P-0005895",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA2MDAzLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA2MDAzOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0006003-T01-IM5",
+    "patientId": "P-0006003",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA2MTUxLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA2MTUxOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0006151-T01-IM5",
+    "patientId": "P-0006151",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA2MTcxLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA2MTcxOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0006171-T01-IM5",
+    "patientId": "P-0006171",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA2MjY4LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA2MjY4Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0006268-T01-IM5",
+    "patientId": "P-0006268",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA2MzIxLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA2MzIxOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0006321-T01-IM5",
+    "patientId": "P-0006321",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA2NzY4LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA2NzY4Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0006768-T01-IM5",
+    "patientId": "P-0006768",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA2OTk1LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA2OTk1Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0006995-T01-IM5",
+    "patientId": "P-0006995",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA3NTgyLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA3NTgyOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0007582-T01-IM5",
+    "patientId": "P-0007582",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA3NjYzLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA3NjYzOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0007663-T01-IM5",
+    "patientId": "P-0007663",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA3ODcwLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA3ODcwOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0007870-T01-IM5",
+    "patientId": "P-0007870",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA3ODk2LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA3ODk2Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0007896-T01-IM5",
+    "patientId": "P-0007896",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA3OTA0LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA3OTA0Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0007904-T01-IM5",
+    "patientId": "P-0007904",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA4MDU4LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA4MDU4Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0008058-T01-IM5",
+    "patientId": "P-0008058",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA4MTYwLVQwMi1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA4MTYwOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0008160-T02-IM5",
+    "patientId": "P-0008160",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA4NDI3LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA4NDI3Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0008427-T01-IM5",
+    "patientId": "P-0008427",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA4NTE0LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA4NTE0Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0008514-T01-IM5",
+    "patientId": "P-0008514",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA4NTc3LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA4NTc3Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0008577-T01-IM5",
+    "patientId": "P-0008577",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA4NTc3LVQwMi1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA4NTc3Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0008577-T02-IM5",
+    "patientId": "P-0008577",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA4NjAyLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA4NjAyOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0008602-T01-IM5",
+    "patientId": "P-0008602",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA4NzQ0LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA4NzQ0Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0008744-T01-IM5",
+    "patientId": "P-0008744",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA4NzQ0LVQwMi1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA4NzQ0Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0008744-T02-IM5",
+    "patientId": "P-0008744",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA4Nzk2LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA4Nzk2Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0008796-T01-IM5",
+    "patientId": "P-0008796",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA4ODQ5LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA4ODQ5Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0008849-T01-IM5",
+    "patientId": "P-0008849",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA4OTE3LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA4OTE3Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0008917-T01-IM5",
+    "patientId": "P-0008917",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA5MzQ2LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA5MzQ2Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0009346-T01-IM5",
+    "patientId": "P-0009346",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA5NDIzLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA5NDIzOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0009423-T01-IM5",
+    "patientId": "P-0009423",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA5NTM1LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA5NTM1Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0009535-T01-IM5",
+    "patientId": "P-0009535",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA5NjIzLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA5NjIzOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0009623-T01-IM5",
+    "patientId": "P-0009623",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA5NjU1LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA5NjU1Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0009655-T01-IM5",
+    "patientId": "P-0009655",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA5NzAyLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA5NzAyOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0009702-T01-IM5",
+    "patientId": "P-0009702",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA5NzY0LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA5NzY0Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0009764-T01-IM5",
+    "patientId": "P-0009764",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA5ODY0LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA5ODY0Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0009864-T01-IM5",
+    "patientId": "P-0009864",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA5OTIyLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA5OTIyOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0009922-T01-IM5",
+    "patientId": "P-0009922",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDEwMDUzLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDEwMDUzOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0010053-T01-IM5",
+    "patientId": "P-0010053",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDEwMzMzLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDEwMzMzOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0010333-T01-IM5",
+    "patientId": "P-0010333",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDEwNTYzLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDEwNTYzOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0010563-T01-IM5",
+    "patientId": "P-0010563",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDEwNTY2LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDEwNTY2Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0010566-T01-IM5",
+    "patientId": "P-0010566",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDEwNzUwLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDEwNzUwOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0010750-T01-IM5",
+    "patientId": "P-0010750",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDEwNzkzLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDEwNzkzOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0010793-T01-IM5",
+    "patientId": "P-0010793",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDExMDM4LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDExMDM4Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0011038-T01-IM5",
+    "patientId": "P-0011038",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDExMTQyLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDExMTQyOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0011142-T01-IM5",
+    "patientId": "P-0011142",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDExMjM3LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDExMjM3Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0011237-T01-IM5",
+    "patientId": "P-0011237",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDExMjkzLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDExMjkzOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0011293-T01-IM5",
+    "patientId": "P-0011293",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDExMzA4LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDExMzA4Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0011308-T01-IM5",
+    "patientId": "P-0011308",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDEyMDQzLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDEyMDQzOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0012043-T01-IM5",
+    "patientId": "P-0012043",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDEyMDc2LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDEyMDc2Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0012076-T01-IM5",
+    "patientId": "P-0012076",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDEyMDg4LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDEyMDg4Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0012088-T01-IM5",
+    "patientId": "P-0012088",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDEyMjUxLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDEyMjUxOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0012251-T01-IM5",
+    "patientId": "P-0012251",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDEyMzkzLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDEyMzkzOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0012393-T01-IM5",
+    "patientId": "P-0012393",
+    "entrezGeneId": 1956,
+    "gene": {
+      "entrezGeneId": 1956,
+      "hugoGeneSymbol": "EGFR",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAwODE5LVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAwODE5Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0000819-T01-IM3",
+    "patientId": "P-0000819",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAxMDM3LVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAxMDM3Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0001037-T01-IM3",
+    "patientId": "P-0001037",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAxMDg5LVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAxMDg5Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0001089-T01-IM3",
+    "patientId": "P-0001089",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAxMzU3LVQwMi1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAxMzU3Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0001357-T02-IM5",
+    "patientId": "P-0001357",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAxMzc1LVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAxMzc1Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0001375-T01-IM3",
+    "patientId": "P-0001375",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAxNzA3LVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAxNzA3Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0001707-T01-IM3",
+    "patientId": "P-0001707",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAxNzUwLVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAxNzUwOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0001750-T01-IM3",
+    "patientId": "P-0001750",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAxODMzLVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAxODMzOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0001833-T01-IM3",
+    "patientId": "P-0001833",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAyMTgzLVQwMS1JTTM6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAyMTgzOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0002183-T01-IM3",
+    "patientId": "P-0002183",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAyNTA2LVQwMi1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAyNTA2Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0002506-T02-IM5",
+    "patientId": "P-0002506",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAzMTE5LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAzMTE5Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0003119-T01-IM5",
+    "patientId": "P-0003119",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAzMTI5LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAzMTI5Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0003129-T01-IM5",
+    "patientId": "P-0003129",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAzMjc4LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAzMjc4Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0003278-T01-IM5",
+    "patientId": "P-0003278",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDAzNjY2LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDAzNjY2Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0003666-T01-IM5",
+    "patientId": "P-0003666",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA0MDY1LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA0MDY1Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0004065-T01-IM5",
+    "patientId": "P-0004065",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA0MDkxLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA0MDkxOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0004091-T01-IM5",
+    "patientId": "P-0004091",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA0NjE1LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA0NjE1Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0004615-T01-IM5",
+    "patientId": "P-0004615",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA0NjkxLVQwMi1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA0NjkxOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0004691-T02-IM5",
+    "patientId": "P-0004691",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA0ODY5LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA0ODY5Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0004869-T01-IM5",
+    "patientId": "P-0004869",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA0ODc4LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA0ODc4Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0004878-T01-IM5",
+    "patientId": "P-0004878",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA1MzIwLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA1MzIwOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0005320-T01-IM5",
+    "patientId": "P-0005320",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA1NDkyLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA1NDkyOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0005492-T01-IM5",
+    "patientId": "P-0005492",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA2MzIxLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA2MzIxOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0006321-T01-IM5",
+    "patientId": "P-0006321",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA2ODk2LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA2ODk2Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0006896-T01-IM5",
+    "patientId": "P-0006896",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA3MzI4LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA3MzI4Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0007328-T01-IM5",
+    "patientId": "P-0007328",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA3NTgyLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA3NTgyOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0007582-T01-IM5",
+    "patientId": "P-0007582",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA3NjYzLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA3NjYzOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0007663-T01-IM5",
+    "patientId": "P-0007663",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA3NzA1LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA3NzA1Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0007705-T01-IM5",
+    "patientId": "P-0007705",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA3OTI0LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA3OTI0Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0007924-T01-IM5",
+    "patientId": "P-0007924",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA4MTAxLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA4MTAxOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0008101-T01-IM5",
+    "patientId": "P-0008101",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA4MTMxLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA4MTMxOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0008131-T01-IM5",
+    "patientId": "P-0008131",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA4NTE0LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA4NTE0Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0008514-T01-IM5",
+    "patientId": "P-0008514",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA5MjIzLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA5MjIzOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0009223-T01-IM5",
+    "patientId": "P-0009223",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA5MzUwLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA5MzUwOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0009350-T01-IM5",
+    "patientId": "P-0009350",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA5NjE0LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA5NjE0Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0009614-T01-IM5",
+    "patientId": "P-0009614",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA5Njg0LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA5Njg0Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0009684-T01-IM5",
+    "patientId": "P-0009684",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDA5NzE0LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDA5NzE0Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0009714-T01-IM5",
+    "patientId": "P-0009714",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDEwMzM3LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDEwMzM3Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0010337-T01-IM5",
+    "patientId": "P-0010337",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDEwODYzLVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDEwODYzOm1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0010863-T01-IM5",
+    "patientId": "P-0010863",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  },
+  {
+    "uniqueSampleKey": "UC0wMDExMzc4LVQwMS1JTTU6bXNrX2ltcGFjdF8yMDE3",
+    "uniquePatientKey": "UC0wMDExMzc4Om1za19pbXBhY3RfMjAxNw",
+    "molecularProfileId": "msk_impact_2017_cna",
+    "sampleId": "P-0011378-T01-IM5",
+    "patientId": "P-0011378",
+    "entrezGeneId": 4233,
+    "gene": {
+      "entrezGeneId": 4233,
+      "hugoGeneSymbol": "MET",
+      "type": "protein-coding"
+    },
+    "studyId": "msk_impact_2017",
+    "alteration": 2
+  }
+]
