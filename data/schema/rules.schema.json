@@ -5,58 +5,192 @@
   "description": "Every rate, threshold and probability the simulator uses. Changing a number here changes the behaviour with no code edits.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["version", "seed", "time", "grid", "seeding", "oxygen", "clones", "causes", "states"],
+  "required": [
+    "version",
+    "seed",
+    "time",
+    "grid",
+    "seeding",
+    "oxygen",
+    "clones",
+    "causes",
+    "states"
+  ],
   "properties": {
-    "$schema": { "type": "string" },
-    "version": { "const": 1 },
-    "seed": { "type": "integer", "minimum": 0, "description": "PRNG seed. Same seed + same rules => identical event stream." },
+    "$schema": {
+      "type": "string"
+    },
+    "version": {
+      "const": 1
+    },
+    "seed": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "PRNG seed. Same seed + same rules => identical event stream."
+    },
     "time": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["tickMinutes"],
+      "required": [
+        "tickMinutes"
+      ],
       "properties": {
-        "tickMinutes": { "type": "number", "exclusiveMinimum": 0, "description": "Simulated minutes per tick." },
-        "maxTicks": { "type": "integer", "minimum": 1 },
-        "keyframeEveryTicks": { "type": "integer", "minimum": 1 }
+        "tickMinutes": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "Simulated minutes per tick."
+        },
+        "maxTicks": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "keyframeEveryTicks": {
+          "type": "integer",
+          "minimum": 1
+        }
       }
     },
     "grid": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["nx", "ny", "nz", "voxelMicrons"],
+      "required": [
+        "nx",
+        "ny",
+        "nz",
+        "voxelMicrons"
+      ],
       "properties": {
-        "nx": { "type": "integer", "minimum": 3, "maximum": 512 },
-        "ny": { "type": "integer", "minimum": 3, "maximum": 512 },
-        "nz": { "type": "integer", "minimum": 3, "maximum": 512 },
-        "voxelMicrons": { "type": "number", "exclusiveMinimum": 0 },
-        "neighborhood": { "enum": [6, 18, 26], "default": 26, "description": "Which voxels count as neighbours for free-space and daughter placement." }
+        "nx": {
+          "type": "integer",
+          "minimum": 3,
+          "maximum": 512
+        },
+        "ny": {
+          "type": "integer",
+          "minimum": 3,
+          "maximum": 512
+        },
+        "nz": {
+          "type": "integer",
+          "minimum": 3,
+          "maximum": 512
+        },
+        "voxelMicrons": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "neighborhood": {
+          "enum": [
+            6,
+            18,
+            26
+          ],
+          "default": 26,
+          "description": "Which voxels count as neighbours for free-space and daughter placement."
+        }
       }
     },
     "seeding": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["clone", "radiusVoxels"],
+      "required": [
+        "clone",
+        "radiusVoxels"
+      ],
       "properties": {
-        "clone": { "type": "integer", "minimum": 0 },
-        "radiusVoxels": { "type": "number", "exclusiveMinimum": 0 },
-        "center": { "type": "array", "items": { "type": "number" }, "minItems": 3, "maxItems": 3 }
+        "clone": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "radiusVoxels": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "center": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "snapToVessel": {
+          "type": "boolean",
+          "default": false,
+          "description": "Move the seed to the nearest free voxel next to a vessel lumen. A tumour starts where there is perfusion; without this a different seed can drop the inoculum in an avascular pocket and it dies at once."
+        }
       }
     },
     "oxygen": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["boundary", "diffusion", "consumptionPerCell", "relaxSweepsPerTick", "proliferationHalfMax", "arrestThreshold", "necrosisThreshold", "necrosisTicks"],
+      "required": [
+        "boundary",
+        "diffusion",
+        "consumptionPerCell",
+        "relaxSweepsPerTick",
+        "proliferationHalfMax",
+        "arrestThreshold",
+        "necrosisThreshold",
+        "necrosisTicks"
+      ],
       "properties": {
-        "boundary": { "type": "number", "minimum": 0, "description": "Normalised pO2 held at the domain boundary (the vascular supply)." },
-        "diffusion": { "type": "number", "exclusiveMinimum": 0, "maximum": 0.166, "description": "Lattice diffusion per relaxation sweep; >1/6 is unstable for the 6-point Laplacian." },
-        "consumptionPerCell": { "type": "number", "minimum": 0, "description": "Normalised oxygen consumed per living cell per sweep." },
-        "debrisConsumptionFactor": { "type": "number", "minimum": 0, "default": 0 },
-        "relaxSweepsPerTick": { "type": "integer", "minimum": 1, "maximum": 200 },
-        "proliferationHalfMax": { "type": "number", "exclusiveMinimum": 0, "description": "Michaelis constant: cycle speed = o/(o+K)." },
-        "arrestThreshold": { "type": "number", "minimum": 0, "description": "Below this, cells arrest (low-oxygen arrest)." },
-        "necrosisThreshold": { "type": "number", "minimum": 0, "description": "Below this for necrosisTicks, cells undergo hypoxic necrosis." },
-        "necrosisTicks": { "type": "integer", "minimum": 1 },
-        "necrosisHazardPerHour": { "type": "number", "minimum": 0, "default": 1 }
+        "boundary": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Normalised pO2 held at the domain boundary (the vascular supply)."
+        },
+        "diffusion": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 0.166,
+          "description": "Lattice diffusion per relaxation sweep; >1/6 is unstable for the 6-point Laplacian."
+        },
+        "consumptionPerCell": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Normalised oxygen consumed per living cell per sweep."
+        },
+        "debrisConsumptionFactor": {
+          "type": "number",
+          "minimum": 0,
+          "default": 0
+        },
+        "relaxSweepsPerTick": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 200
+        },
+        "proliferationHalfMax": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "Michaelis constant: cycle speed = o/(o+K)."
+        },
+        "arrestThreshold": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Below this, cells arrest (low-oxygen arrest)."
+        },
+        "necrosisThreshold": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Below this for necrosisTicks, cells undergo hypoxic necrosis."
+        },
+        "necrosisTicks": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "necrosisHazardPerHour": {
+          "type": "number",
+          "minimum": 0,
+          "default": 1
+        },
+        "maximum": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "default": 1,
+          "description": "Upper bound the field is clamped to. With vessels this is the lumen pO2, not the domain boundary, which may be zero."
+        }
       }
     },
     "drugs": {
@@ -64,43 +198,118 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id", "name", "pk", "penetration"],
+        "required": [
+          "id",
+          "name",
+          "pk",
+          "penetration"
+        ],
         "properties": {
-          "id": { "type": "integer", "minimum": 0, "maximum": 255 },
-          "name": { "type": "string", "minLength": 1 },
-          "displayName": { "type": "string" },
+          "id": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 255
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "displayName": {
+            "type": "string"
+          },
           "pk": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["absorptionPerHour", "eliminationHalfLifeHours"],
+            "required": [
+              "absorptionPerHour",
+              "eliminationHalfLifeHours"
+            ],
             "properties": {
-              "absorptionPerHour": { "type": "number", "exclusiveMinimum": 0, "description": "First-order ka from the gut compartment." },
-              "eliminationHalfLifeHours": { "type": "number", "exclusiveMinimum": 0 },
-              "bioavailability": { "type": "number", "minimum": 0, "maximum": 1, "default": 1 },
-              "volumeOfDistribution": { "type": "number", "exclusiveMinimum": 0, "default": 1 }
+              "absorptionPerHour": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "description": "First-order ka from the gut compartment."
+              },
+              "eliminationHalfLifeHours": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "bioavailability": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "default": 1
+              },
+              "volumeOfDistribution": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "default": 1
+              }
             }
           },
           "penetration": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["diffusion", "uptakePerCell", "relaxSweepsPerTick"],
+            "required": [
+              "diffusion",
+              "uptakePerCell",
+              "relaxSweepsPerTick"
+            ],
             "properties": {
-              "diffusion": { "type": "number", "exclusiveMinimum": 0, "maximum": 0.166 },
-              "uptakePerCell": { "type": "number", "minimum": 0 },
-              "relaxSweepsPerTick": { "type": "integer", "minimum": 1, "maximum": 200 }
+              "diffusion": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 0.166
+              },
+              "uptakePerCell": {
+                "type": "number",
+                "minimum": 0
+              },
+              "relaxSweepsPerTick": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 200
+              }
             }
           },
           "cytostatic": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["maxSlowdown", "ic50", "hill"],
+            "required": [
+              "maxSlowdown",
+              "ic50",
+              "hill"
+            ],
             "properties": {
-              "maxSlowdown": { "type": "number", "minimum": 0, "maximum": 1, "description": "Largest fraction of cycle speed the drug can remove." },
-              "ic50": { "type": "number", "exclusiveMinimum": 0 },
-              "hill": { "type": "number", "exclusiveMinimum": 0 }
-            }
+              "maxSlowdown": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "description": "Largest fraction of cycle speed the drug can remove."
+              },
+              "ic50": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "hill": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "ic50Ratio": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "default": 1,
+                "description": "Cytostatic IC50 as a multiple of the clone's own cytotoxic IC50 for this drug. This is what makes a resistant clone resistant to the growth arrest as well as to the kill - both follow the one IC50 a mutation multiplies. Falls back to the drug-level ic50 for a clone with no sensitivity entry."
+              }
+            },
+            "description": "Growth inhibition. maxSlowdown and hill are properties of the drug; the IC50 is the clone's, scaled by ic50Ratio."
           },
-          "arrestThreshold": { "type": "number", "minimum": 0, "maximum": 1, "description": "Cytostatic slowdown fraction above which the cell is recorded as drug-arrested." }
+          "arrestThreshold": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Cytostatic slowdown fraction above which the cell is recorded as drug-arrested."
+          }
         }
       }
     },
@@ -113,13 +322,35 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["drug", "startHour", "everyHours", "doses", "amount"],
+            "required": [
+              "drug",
+              "startHour",
+              "everyHours",
+              "doses",
+              "amount"
+            ],
             "properties": {
-              "drug": { "type": "integer", "minimum": 0 },
-              "startHour": { "type": "number", "minimum": 0 },
-              "everyHours": { "type": "number", "exclusiveMinimum": 0 },
-              "doses": { "type": "integer", "minimum": 1 },
-              "amount": { "type": "number", "exclusiveMinimum": 0, "description": "Dose in the same normalised units as the IC50s." }
+              "drug": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "startHour": {
+                "type": "number",
+                "minimum": 0
+              },
+              "everyHours": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "doses": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "amount": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "description": "Dose in the same normalised units as the IC50s."
+              }
             }
           }
         },
@@ -128,10 +359,19 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["hour", "doseGy"],
+            "required": [
+              "hour",
+              "doseGy"
+            ],
             "properties": {
-              "hour": { "type": "number", "minimum": 0 },
-              "doseGy": { "type": "number", "exclusiveMinimum": 0 }
+              "hour": {
+                "type": "number",
+                "minimum": 0
+              },
+              "doseGy": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              }
             }
           }
         }
@@ -140,22 +380,56 @@
     "radiation": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["alphaPerGy", "betaPerGy2"],
+      "required": [
+        "alphaPerGy",
+        "betaPerGy2"
+      ],
       "properties": {
-        "alphaPerGy": { "type": "number", "minimum": 0 },
-        "betaPerGy2": { "type": "number", "minimum": 0 },
-        "oxygenEnhancementRatio": { "type": "number", "minimum": 1, "default": 1, "description": "Hypoxic cells are this many times more radioresistant at zero oxygen." },
-        "oxygenHalfMax": { "type": "number", "exclusiveMinimum": 0, "default": 0.1 },
-        "mitoticCatastropheFraction": { "type": "number", "minimum": 0, "maximum": 1, "default": 1, "description": "Fraction of lethally hit cells that become multinucleated and die at their next division attempt instead of dying at once." }
+        "alphaPerGy": {
+          "type": "number",
+          "minimum": 0
+        },
+        "betaPerGy2": {
+          "type": "number",
+          "minimum": 0
+        },
+        "oxygenEnhancementRatio": {
+          "type": "number",
+          "minimum": 1,
+          "default": 1,
+          "description": "Hypoxic cells are this many times more radioresistant at zero oxygen."
+        },
+        "oxygenHalfMax": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "default": 0.1
+        },
+        "mitoticCatastropheFraction": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 1,
+          "description": "Fraction of lethally hit cells that become multinucleated and die at their next division attempt instead of dying at once."
+        }
       }
     },
     "immune": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["killPerHour"],
+      "required": [
+        "killPerHour"
+      ],
       "properties": {
-        "killPerHour": { "type": "number", "minimum": 0, "description": "Baseline immune hazard; scaled per clone by immuneVisibility." },
-        "surfaceOnly": { "type": "boolean", "default": true, "description": "Only cells with a free neighbour are reachable." }
+        "killPerHour": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Baseline immune hazard; scaled per clone by immuneVisibility."
+        },
+        "surfaceOnly": {
+          "type": "boolean",
+          "default": true,
+          "description": "Only cells with a free neighbour are reachable."
+        }
       }
     },
     "clones": {
@@ -164,26 +438,71 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id", "name"],
+        "required": [
+          "id",
+          "name"
+        ],
         "properties": {
-          "id": { "type": "integer", "minimum": 0, "maximum": 65535 },
-          "name": { "type": "string", "minLength": 1 },
-          "derivesFrom": { "type": "integer", "minimum": 0, "description": "Profile is inherited from this clone, then the mutation's multipliers are applied, then the fields below override." },
-          "cycleHours": { "type": "number", "exclusiveMinimum": 0 },
-          "baselineDeathPerHour": { "type": "number", "minimum": 0 },
-          "fitnessCost": { "type": "number", "minimum": 0, "maximum": 1, "description": "Cycle time is multiplied by 1 + fitnessCost." },
-          "immuneVisibility": { "type": "number", "minimum": 0 },
+          "id": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 65535
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "derivesFrom": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Profile is inherited from this clone, then the mutation's multipliers are applied, then the fields below override."
+          },
+          "cycleHours": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "baselineDeathPerHour": {
+            "type": "number",
+            "minimum": 0
+          },
+          "fitnessCost": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Cycle time is multiplied by 1 + fitnessCost."
+          },
+          "immuneVisibility": {
+            "type": "number",
+            "minimum": 0
+          },
           "drugSensitivity": {
             "type": "array",
             "items": {
               "type": "object",
               "additionalProperties": false,
-              "required": ["drug", "ic50", "hill", "killMaxPerHour"],
+              "required": [
+                "drug",
+                "ic50",
+                "hill",
+                "killMaxPerHour"
+              ],
               "properties": {
-                "drug": { "type": "integer", "minimum": 0 },
-                "ic50": { "type": "number", "exclusiveMinimum": 0 },
-                "hill": { "type": "number", "exclusiveMinimum": 0 },
-                "killMaxPerHour": { "type": "number", "minimum": 0 }
+                "drug": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "ic50": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "hill": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "killMaxPerHour": {
+                  "type": "number",
+                  "minimum": 0
+                }
               }
             }
           }
@@ -195,28 +514,65 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id", "name", "fromClone", "toClone", "ratePerDivision"],
+        "required": [
+          "id",
+          "name",
+          "fromClone",
+          "toClone",
+          "ratePerDivision"
+        ],
         "properties": {
-          "id": { "type": "integer", "minimum": 0 },
-          "name": { "type": "string", "minLength": 1 },
-          "fromClone": { "type": "integer", "minimum": 0 },
-          "toClone": { "type": "integer", "minimum": 0 },
-          "ratePerDivision": { "type": "number", "minimum": 0, "maximum": 1 },
+          "id": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "fromClone": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "toClone": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "ratePerDivision": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
           "multipliers": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
-              "cycleHours": { "type": "number", "exclusiveMinimum": 0 },
-              "baselineDeathPerHour": { "type": "number", "minimum": 0 },
-              "immuneVisibility": { "type": "number", "minimum": 0 },
+              "cycleHours": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "baselineDeathPerHour": {
+                "type": "number",
+                "minimum": 0
+              },
+              "immuneVisibility": {
+                "type": "number",
+                "minimum": 0
+              },
               "drugIc50": {
                 "type": "object",
                 "description": "Keyed by drug id; multiplies that drug's IC50 (>1 = more resistant).",
-                "additionalProperties": { "type": "number", "exclusiveMinimum": 0 }
+                "additionalProperties": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                }
               },
               "drugKillMax": {
                 "type": "object",
-                "additionalProperties": { "type": "number", "minimum": 0 }
+                "additionalProperties": {
+                  "type": "number",
+                  "minimum": 0
+                }
               }
             }
           }
@@ -229,17 +585,41 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id", "name"],
+        "required": [
+          "id",
+          "name"
+        ],
         "properties": {
-          "id": { "type": "integer", "minimum": 0, "maximum": 255 },
-          "name": { "type": "string", "minLength": 1 },
-          "label": { "type": "string" },
+          "id": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 255
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "label": {
+            "type": "string"
+          },
           "role": {
-            "enum": ["cycling", "arrested", "damaged", "dying"],
+            "enum": [
+              "cycling",
+              "arrested",
+              "damaged",
+              "dying"
+            ],
             "description": "What this state means to a simulator. The stand-in resolves state ids through these roles so no id is hard-coded in code."
           },
-          "alive": { "type": "boolean", "default": true },
-          "occupies": { "type": "boolean", "default": true, "description": "Whether a node in this state blocks a neighbouring cell from dividing into it." }
+          "alive": {
+            "type": "boolean",
+            "default": true
+          },
+          "occupies": {
+            "type": "boolean",
+            "default": true,
+            "description": "Whether a node in this state blocks a neighbouring cell from dividing into it."
+          }
         }
       }
     },
@@ -249,12 +629,37 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id", "name", "kind", "animation"],
+        "required": [
+          "id",
+          "name",
+          "kind",
+          "animation"
+        ],
         "properties": {
-          "id": { "type": "integer", "minimum": 0, "maximum": 255 },
-          "name": { "type": "string", "minLength": 1 },
-          "kind": { "enum": ["divide", "death", "arrest", "mutation", "removal", "damage"] },
-          "animation": { "type": "string", "minLength": 1, "description": "Key into visuals.json presets. The renderer looks the meaning up here; it never hard-codes a cause." },
+          "id": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 255
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": [
+              "divide",
+              "death",
+              "arrest",
+              "mutation",
+              "removal",
+              "damage"
+            ]
+          },
+          "animation": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Key into visuals.json presets. The renderer looks the meaning up here; it never hard-codes a cause."
+          },
           "role": {
             "enum": [
               "normalCycle",
@@ -270,8 +675,15 @@
             ],
             "description": "Which mechanism in a simulator emits this cause. The stand-in looks its cause ids up by role, so the ids live in this file and not in code. A cause with no role is never emitted by the stand-in - it is there for a simulator that does emit it."
           },
-          "label": { "type": "string", "description": "Hover-card text. {drug} and {clone} are substituted from the event." },
-          "dyingTicks": { "type": "integer", "minimum": 0, "description": "Ticks between death start and removal for this cause." }
+          "label": {
+            "type": "string",
+            "description": "Hover-card text. {drug} and {clone} are substituted from the event."
+          },
+          "dyingTicks": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Ticks between death start and removal for this cause."
+          }
         }
       }
     },
@@ -279,7 +691,96 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "defaultDyingTicks": { "type": "integer", "minimum": 0, "default": 8 }
+        "defaultDyingTicks": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 8
+        }
+      }
+    },
+    "vasculature": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A vascular tree grown deterministically from the seed. Its lumen voxels are where oxygen and drug enter the tissue; no cell may occupy a vessel. Omit the block for a tumour supplied only from the domain boundary.",
+      "required": [
+        "trunks",
+        "maxDepth",
+        "segmentLengthVoxels",
+        "tortuosity",
+        "branchAngle",
+        "branchEverySegments",
+        "trunkRadiusVoxels",
+        "minRadiusVoxels",
+        "wallThicknessVoxels"
+      ],
+      "properties": {
+        "trunks": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32,
+          "description": "Vessels entering from the domain boundary."
+        },
+        "maxDepth": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 12,
+          "description": "Branch generations."
+        },
+        "segmentLengthVoxels": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "tortuosity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 2,
+          "description": "How far the heading wanders per segment. 0 gives straight pipes."
+        },
+        "branchAngle": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1.6,
+          "description": "Divergence half-angle in radians."
+        },
+        "branchEverySegments": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "trunkRadiusVoxels": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "minRadiusVoxels": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "Growth stops below this radius."
+        },
+        "murrayExponent": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 4,
+          "default": 3,
+          "description": "Murray's law: the parent's radius^n is shared between the children."
+        },
+        "wallThicknessVoxels": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Endothelial shell outside the lumen. Blocks cells but supplies nothing."
+        },
+        "oxygenSupply": {
+          "type": "number",
+          "minimum": 0,
+          "default": 1,
+          "description": "pO2 held at lumen voxels."
+        },
+        "drugSupplyFraction": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 1,
+          "description": "Fraction of the plasma concentration that reaches a lumen voxel."
+        }
       }
     }
   }

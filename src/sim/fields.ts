@@ -28,23 +28,37 @@ export class DiffusiveField {
    * boundary value, which is correct while the tumour is far from the faces
    * and is what keeps a 64^3 lattice interactive.
    *
-   * @param weight per-node consumption weight (0 where there is no cell)
+   * `sources` are Dirichlet nodes pinned to `sourceValue` after every sweep.
+   * With a vascular tree those are the lumen voxels, and they - not the domain
+   * boundary - are where oxygen and drug enter the tissue.
    */
-  relax(
-    box: ActiveBox,
-    boundaryValue: number,
-    diffusion: number,
-    consumptionPerCell: number,
-    weight: Float32Array,
-    sweeps: number,
-  ): void {
+  relax(opts: {
+    box: ActiveBox;
+    boundary: number;
+    maximum: number;
+    diffusion: number;
+    consumptionPerCell: number;
+    weight: Float32Array;
+    sweeps: number;
+    sources?: Int32Array;
+    sourceValue?: number;
+  }): void {
     const g = this.grid;
     const { strideY, strideZ } = g;
     const cur = this.value;
     const next = this.scratch;
+    const { box, boundary, maximum, diffusion, consumptionPerCell, weight, sweeps } = opts;
+    const sources = opts.sources;
+    const sourceValue = opts.sourceValue ?? 0;
+
+    const pinSources = () => {
+      if (!sources) return;
+      for (let k = 0; k < sources.length; k++) cur[sources[k]] = sourceValue;
+    };
 
     if (box.empty) {
-      cur.fill(boundaryValue);
+      cur.fill(boundary);
+      pinSources();
       return;
     }
 
@@ -62,10 +76,11 @@ export class DiffusiveField {
         const row = y * strideY + z * strideZ;
         for (let x = x0 - 1; x <= x1 + 1; x++) {
           const i = row + x;
-          if (x < x0 || x > x1 || y < y0 || y > y1 || z < z0 || z > z1) cur[i] = boundaryValue;
+          if (x < x0 || x > x1 || y < y0 || y > y1 || z < z0 || z > z1) cur[i] = boundary;
         }
       }
     }
+    pinSources();
 
     for (let s = 0; s < sweeps; s++) {
       for (let z = z0; z <= z1; z++) {
@@ -81,7 +96,7 @@ export class DiffusiveField {
               6 * c;
             let v = c + diffusion * lap - consumptionPerCell * weight[i];
             if (v < 0) v = 0;
-            else if (v > boundaryValue) v = boundaryValue;
+            else if (v > maximum) v = maximum;
             next[i] = v;
           }
         }
@@ -93,6 +108,7 @@ export class DiffusiveField {
           cur.set(next.subarray(row + x0, row + x1 + 1), row + x0);
         }
       }
+      pinSources();
     }
   }
 }

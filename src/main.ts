@@ -1,5 +1,5 @@
 import { loadData, describeLoadError } from './data.js';
-import { Viewer, type ClipAxis } from './render/viewer.js';
+import { Viewer } from './render/viewer.js';
 import { FileSource } from './source/fileSource.js';
 import { LocalSimSource } from './source/localSim.js';
 import { SocketSource } from './source/socketSource.js';
@@ -8,6 +8,8 @@ import { Controls } from './ui/controls.js';
 import { CauseChart } from './ui/causeChart.js';
 import { CauseTally } from './ui/causeTally.js';
 import { HoverCard } from './ui/hoverCard.js';
+import { Legend } from './ui/legend.js';
+import { ScaleBar } from './ui/scaleBar.js';
 import { StatusPanel } from './ui/statusPanel.js';
 import { CauseStats } from './world/causeStats.js';
 import { World } from './world/world.js';
@@ -74,12 +76,14 @@ async function start(): Promise<void> {
   const world = new World(rules);
   const stats = new CauseStats(rules);
   const canvas = document.getElementById('scene') as HTMLCanvasElement;
-  const viewer = new Viewer(canvas, world, visuals);
+  const viewer = new Viewer(canvas, world, visuals, rules);
 
   const status = new StatusPanel(document.getElementById('status')!, rules, visuals, source.kind);
   const tally = new CauseTally(document.getElementById('tally')!, rules, visuals);
   const chart = new CauseChart(document.getElementById('chart')!, rules, visuals);
   const hover = new HoverCard(document.getElementById('hover')!, rules, visuals);
+  const legend = new Legend(document.getElementById('legend')!, rules, visuals);
+  const scaleBar = new ScaleBar(document.getElementById('scale')!, rules.raw.grid.voxelMicrons);
 
   const subscribe = (s: SimulationSource) =>
     s.onPacket((packet) => {
@@ -88,12 +92,20 @@ async function start(): Promise<void> {
     });
   let unsubscribe = subscribe(source);
 
-  const controls = new Controls(document.getElementById('controls')!, {
-    onChange: (state) => {
-      viewer.setViewMode(state.viewMode);
-      viewer.setClip(state.clipAxis as ClipAxis, state.clipFraction);
+  const controls = new Controls(document.getElementById('controls')!, visuals, {
+    onChange: (state, changed) => {
+      if (changed === 'view' || changed === 'init') {
+        viewer.applyView(state.view);
+        legend.update(state.view);
+      }
+      if (changed === 'colorBy' || changed === 'view') viewer.setColorBy(state.colorBy);
+      if (changed === 'cutMode' || changed === 'cutFraction' || changed === 'init') {
+        viewer.setCut(state.cutMode, state.cutFraction);
+      }
+      viewer.presentation = state.presentation;
     },
     onStep: () => source.pump(1),
+    onFrame: () => viewer.frameTumour(),
     onReset: () => {
       unsubscribe();
       source.reset?.();
@@ -103,9 +115,14 @@ async function start(): Promise<void> {
       viewer.displayTick = 0;
       unsubscribe = subscribe(source);
       source.pump(1);
+      viewer.markDirty();
     },
   });
-  viewer.setClip(controls.state.clipAxis, controls.state.clipFraction);
+  viewer.applyView(controls.state.view);
+  viewer.setColorBy(controls.state.colorBy);
+  viewer.setCut(controls.state.cutMode, controls.state.cutFraction);
+  legend.update(controls.state.view);
+
 
   /* --- hover: pick on the next frame, not on every pointer event --- */
   let pointer: { x: number; y: number } | undefined;
@@ -125,6 +142,7 @@ async function start(): Promise<void> {
   let nextPick = 0;
 
   source.pump(1);
+  let framed = false;
 
   const frame = (now: number) => {
     const dt = Math.min(0.1, (now - last) / 1000);
@@ -141,9 +159,13 @@ async function start(): Promise<void> {
       if (tickDebt > controls.state.ticksPerSecond) tickDebt = 0;
     }
     if (source.done) controls.setPlaying(false);
+    if (!framed && world.count > 0) {
+      viewer.frameTumour();
+      framed = true;
+    }
 
     viewer.advance(dt, controls.state.ticksPerSecond);
-    viewer.render();
+    const frameStats = viewer.render(now / 1000);
 
     // Picking reads a pixel back from the GPU, which stalls the pipeline, so it
     // runs at a fraction of the frame rate rather than every frame.
@@ -157,8 +179,9 @@ async function start(): Promise<void> {
 
     if (now >= nextUiUpdate) {
       nextUiUpdate = now + 200;
-      status.update(world, source);
+      status.update(world, source, frameStats);
       tally.update(stats);
+      scaleBar.update(viewer.worldPerPixel());
     }
     if (now >= nextChartUpdate) {
       nextChartUpdate = now + 500;

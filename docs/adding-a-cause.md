@@ -51,6 +51,9 @@ Add the preset the cause named, and its colour:
 
 Reload. That is the whole change.
 
+If the cause should look different in the three imaging views, give each view a
+`causeColors` entry too; otherwise they all fall back to the shared palette.
+
 ## The effects a preset combines
 
 The shader implements six generic effects; a preset is a set of numbers that
@@ -64,7 +67,9 @@ combines them. There is no per-cause code anywhere.
 | **fragmenting** | `fragments`, `fragmentSpread` |
 | **transparency** | `alphaTarget`, `alphaCurve` |
 | **emissive** | `emissive`, `flashTicks` |
-| **nuclei** | `nuclei`, `nucleiBulge` — smooth internal lobes |
+| **nuclei** | `nuclei`, `nucleiBulge` — smooth internal lobes of the cell body |
+| **the nucleus** | `nucleusScale`, `nucleusFade` — its size, and how far it dissolves |
+| **grain** | `grain` — granular albedo, for tissue that is coarse rather than smooth |
 
 Curves: `linear`, `easeIn`, `easeOut`, `easeInOut`, `pulse`, `step`.
 

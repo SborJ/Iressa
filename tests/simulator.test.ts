@@ -13,6 +13,10 @@ function smallRules(mutate?: (r: any) => void): ResolvedRules {
     r.grid.nz = 24;
     r.seeding.radiusVoxels = 2.5;
     r.time.keyframeEveryTicks = 60;
+    // The shipped scenario doses on day 20; these runs are a few hundred ticks,
+    // so bring treatment into the window they actually cover.
+    r.treatment.schedule[0].startHour = 120;
+    r.treatment.radiation = [{ hour: 300, doseGy: 2.5 }];
     mutate?.(r);
   });
 }

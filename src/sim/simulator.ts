@@ -9,6 +9,7 @@ import type { Keyframe, KeyframeNode } from '../format/keyframes.js';
 import { encodeKeyframe } from '../format/keyframes.js';
 import { DiffusiveField, Pharmacokinetics, hill, michaelis } from './fields.js';
 import { ActiveBox, Grid } from './grid.js';
+import { growVasculature, type Vasculature } from './vasculature.js';
 import { Channel, uniform, uniformInt } from './rng.js';
 import { requireCause, requireState, type ResolvedRules } from './rules.js';
 
@@ -38,7 +39,7 @@ export interface SimStats {
   plasma: Map<number, number>;
 }
 
-const FIELD_MARGIN = 8;
+const FIELD_MARGIN = 10;
 
 /**
  * The stand-in simulator.
@@ -79,6 +80,10 @@ export class Simulator {
   private readonly pk = new Map<number, Pharmacokinetics>();
   private readonly weight: Float32Array;
   private box: ActiveBox;
+  /** The vascular tree, grown from the rules. Its lumen voxels feed every field. */
+  readonly vasculature: Vasculature | undefined;
+  /** 1 where a vessel blocks the voxel, so no cell can be placed there. */
+  private readonly blocked: Uint8Array;
 
   /* Resolved ids - looked up once from the rules, never written in code. */
   private readonly cNormal: number;
@@ -139,6 +144,8 @@ export class Simulator {
       );
     }
     this.box = new ActiveBox(this.grid);
+    this.vasculature = growVasculature(rules.raw, this.grid);
+    this.blocked = this.vasculature?.mask ?? new Uint8Array(n);
 
     this.cNormal = requireCause(rules, 'normalCycle');
     this.cBaseline = requireCause(rules, 'baselineApoptosis');
@@ -202,22 +209,64 @@ export class Simulator {
       Math.floor(g.ny / 2),
       Math.floor(g.nz / 2),
     ];
+    const [sx, sy, sz] = seeding.snapToVessel
+      ? this.nearestPerfusedVoxel(cx, cy, cz)
+      : [cx, cy, cz];
     const r = seeding.radiusVoxels;
     const r2 = r * r;
     const seed = this.rules.raw.seed;
-    for (let z = Math.ceil(cz - r); z <= Math.floor(cz + r); z++) {
-      for (let y = Math.ceil(cy - r); y <= Math.floor(cy + r); y++) {
-        for (let x = Math.ceil(cx - r); x <= Math.floor(cx + r); x++) {
+    for (let z = Math.ceil(sz - r); z <= Math.floor(sz + r); z++) {
+      for (let y = Math.ceil(sy - r); y <= Math.floor(sy + r); y++) {
+        for (let x = Math.ceil(sx - r); x <= Math.floor(sx + r); x++) {
           if (x < 0 || y < 0 || z < 0 || x >= g.nx || y >= g.ny || z >= g.nz) continue;
-          const dx = x - cx;
-          const dy = y - cy;
-          const dz = z - cz;
+          const dx = x - sx;
+          const dy = y - sy;
+          const dz = z - sz;
           if (dx * dx + dy * dy + dz * dz > r2) continue;
           const i = g.index(x, y, z);
+          if (this.blocked[i]) continue;
           this.placeCell(i, seeding.clone, uniform(seed, 0, i, Channel.Seeding));
         }
       }
     }
+  }
+
+
+  /**
+   * The free voxel nearest the requested centre that touches a vessel lumen.
+   * A tumour starts where there is perfusion; dropping the inoculum into an
+   * avascular pocket just kills it on the first tick.
+   */
+  private nearestPerfusedVoxel(cx: number, cy: number, cz: number): [number, number, number] {
+    const vasc = this.vasculature;
+    const g = this.grid;
+    if (!vasc) return [cx, cy, cz];
+    const start = g.index(Math.round(cx), Math.round(cy), Math.round(cz));
+    const seen = new Uint8Array(g.count);
+    const nbr = new Int32Array(g.degree);
+    let frontier = [start];
+    seen[start] = 1;
+    for (let ring = 0; ring < g.nx + g.ny + g.nz && frontier.length; ring++) {
+      const next: number[] = [];
+      for (const i of frontier) {
+        if (!this.blocked[i]) {
+          const n = g.neighbors(i, nbr);
+          for (let k = 0; k < n; k++) {
+            if (vasc.mask[nbr[k]] === 1) return [g.x(i), g.y(i), g.z(i)];
+          }
+        }
+        const n = g.neighbors(i, nbr);
+        for (let k = 0; k < n; k++) {
+          const j = nbr[k];
+          if (!seen[j]) {
+            seen[j] = 1;
+            next.push(j);
+          }
+        }
+      }
+      frontier = next;
+    }
+    return [cx, cy, cz];
   }
 
   /* ---------------------------------------------------------------- *
@@ -315,26 +364,35 @@ export class Simulator {
 
   private relaxFields(): void {
     const ox = this.rules.raw.oxygen;
-    this.oxygen.relax(
-      this.box,
-      ox.boundary,
-      ox.diffusion,
-      ox.consumptionPerCell,
-      this.weight,
-      ox.relaxSweepsPerTick,
-    );
+    const vasc = this.vasculature;
+    const vspec = this.rules.raw.vasculature;
+    this.oxygen.relax({
+      box: this.box,
+      boundary: ox.boundary,
+      maximum: ox.maximum ?? Math.max(ox.boundary, vspec?.oxygenSupply ?? 1),
+      diffusion: ox.diffusion,
+      consumptionPerCell: ox.consumptionPerCell,
+      weight: this.weight,
+      sweeps: ox.relaxSweepsPerTick,
+      sources: vasc?.sources,
+      sourceValue: vspec?.oxygenSupply ?? ox.boundary,
+    });
     for (const d of this.rules.raw.drugs ?? []) {
       const field = this.drugFields.get(d.id);
       const pk = this.pk.get(d.id);
       if (!field || !pk) continue;
-      field.relax(
-        this.box,
-        pk.plasma,
-        d.penetration.diffusion,
-        d.penetration.uptakePerCell,
-        this.weight,
-        d.penetration.relaxSweepsPerTick,
-      );
+      const supply = pk.plasma * (vspec?.drugSupplyFraction ?? 1);
+      field.relax({
+        box: this.box,
+        boundary: vasc ? 0 : pk.plasma,
+        maximum: Math.max(1e-6, vasc ? supply : pk.plasma),
+        diffusion: d.penetration.diffusion,
+        consumptionPerCell: d.penetration.uptakePerCell,
+        weight: this.weight,
+        sweeps: d.penetration.relaxSweepsPerTick,
+        sources: vasc?.sources,
+        sourceValue: supply,
+      });
     }
   }
 
@@ -445,6 +503,7 @@ export class Simulator {
       let freeCount = 0;
       for (let k = 0; k < nbrCount; k++) {
         const j = this.nbr[k];
+        if (this.blocked[j]) continue;
         if (!this.occupied[j] || !this.occupiesByState[this.state[j]]) {
           this.freeSlots[freeCount++] = j;
         }
@@ -529,7 +588,13 @@ export class Simulator {
       for (const d of drugs) {
         if (!d.cytostatic) continue;
         const conc = this.drugFields.get(d.id)!.value[i];
-        const s = d.cytostatic.maxSlowdown * hill(conc, d.cytostatic.ic50, d.cytostatic.hill);
+        // The growth arrest follows the clone's own IC50, so a clone that
+        // resists the kill resists the arrest with it.
+        const sens = profile.drug[d.id];
+        const ic50 = sens
+          ? sens.ic50 * (d.cytostatic.ic50Ratio ?? 1)
+          : d.cytostatic.ic50;
+        const s = d.cytostatic.maxSlowdown * hill(conc, ic50, d.cytostatic.hill);
         if (s > slowdown) {
           slowdown = s;
           slowdownDrug = d.id;

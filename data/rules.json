@@ -13,19 +13,36 @@
     "nx": 64,
     "ny": 64,
     "nz": 64,
-    "voxelMicrons": 20,
+    "voxelMicrons": 15,
     "neighborhood": 26
   },
 
   "seeding": {
     "clone": 0,
-    "radiusVoxels": 3.5
+    "radiusVoxels": 3.5,
+    "snapToVessel": true
+  },
+
+  "vasculature": {
+    "trunks": 6,
+    "maxDepth": 5,
+    "segmentLengthVoxels": 6.5,
+    "tortuosity": 0.42,
+    "branchAngle": 0.62,
+    "branchEverySegments": 2,
+    "trunkRadiusVoxels": 1.35,
+    "minRadiusVoxels": 0.45,
+    "murrayExponent": 2.7,
+    "wallThicknessVoxels": 0.3,
+    "oxygenSupply": 1.0,
+    "drugSupplyFraction": 1.0
   },
 
   "oxygen": {
-    "boundary": 1.0,
+    "boundary": 0.0,
+    "maximum": 1.0,
     "diffusion": 0.16,
-    "consumptionPerCell": 0.004,
+    "consumptionPerCell": 0.014,
     "debrisConsumptionFactor": 0.1,
     "relaxSweepsPerTick": 10,
     "proliferationHalfMax": 0.15,
@@ -54,6 +71,7 @@
       "cytostatic": {
         "maxSlowdown": 0.8,
         "ic50": 0.9,
+        "ic50Ratio": 1.5,
         "hill": 1.5
       },
       "arrestThreshold": 0.35
@@ -62,11 +80,11 @@
 
   "treatment": {
     "schedule": [
-      { "drug": 0, "startHour": 336, "everyHours": 24, "doses": 60, "amount": 1.0 }
+      { "drug": 0, "startHour": 480, "everyHours": 24, "doses": 60, "amount": 1.0 }
     ],
     "radiation": [
-      { "hour": 1008, "doseGy": 2.0 },
-      { "hour": 1032, "doseGy": 2.0 }
+      { "hour": 1200, "doseGy": 2.0 },
+      { "hour": 1224, "doseGy": 2.0 }
     ]
   },
 
@@ -115,7 +133,7 @@
       "name": "T790M gatekeeper",
       "fromClone": 0,
       "toClone": 1,
-      "ratePerDivision": 2.0e-5,
+      "ratePerDivision": 8.0e-5,
       "multipliers": {
         "cycleHours": 1.1,
         "immuneVisibility": 1.1,
@@ -127,7 +145,7 @@
       "name": "MET amplification",
       "fromClone": 0,
       "toClone": 2,
-      "ratePerDivision": 8.0e-6,
+      "ratePerDivision": 3.0e-5,
       "multipliers": {
         "cycleHours": 0.92,
         "baselineDeathPerHour": 1.3,
@@ -147,7 +165,7 @@
     { "id": 0, "name": "normal cycle", "role": "normalCycle",                  "kind": "divide",   "animation": "divide",              "label": "Dividing" },
     { "id": 1, "name": "baseline apoptosis", "role": "baselineApoptosis",            "kind": "death",    "animation": "apoptosis",           "label": "Apoptosis: baseline",            "dyingTicks": 10 },
     { "id": 2, "name": "drug-induced apoptosis", "role": "drugApoptosis",        "kind": "death",    "animation": "apoptosis_drug",      "label": "Apoptosis: {drug}",              "dyingTicks": 10 },
-    { "id": 3, "name": "hypoxic necrosis", "role": "hypoxicNecrosis",              "kind": "death",    "animation": "necrosis",            "label": "Necrosis: hypoxia",              "dyingTicks": 48 },
+    { "id": 3, "name": "hypoxic necrosis", "role": "hypoxicNecrosis",              "kind": "death",    "animation": "necrosis",            "label": "Necrosis: hypoxia",              "dyingTicks": 960 },
     { "id": 4, "name": "radiation (mitotic catastrophe)", "role": "radiation","kind": "death",   "animation": "mitotic_catastrophe", "label": "Mitotic catastrophe: radiation", "dyingTicks": 14 },
     { "id": 5, "name": "crowding arrest", "role": "crowdingArrest",               "kind": "arrest",   "animation": "arrest_crowding",     "label": "Arrested: crowding" },
     { "id": 6, "name": "low-oxygen arrest", "role": "hypoxiaArrest",             "kind": "arrest",   "animation": "arrest_hypoxia",      "label": "Arrested: low oxygen" },

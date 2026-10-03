@@ -48,10 +48,23 @@ body {
   color: var(--text-muted);
 }
 
-#status  { top: 14px; left: 14px; min-width: 232px; }
-#controls{ top: 14px; right: 14px; width: 232px; }
-#tally   { bottom: 14px; left: 14px; width: 288px; }
-#chart   { bottom: 14px; right: 14px; width: min(560px, calc(100vw - 340px)); }
+#status  { top: 14px; left: 14px; min-width: 236px; }
+#controls{ top: 14px; right: 14px; width: 244px; }
+#legend  { top: 14px; left: 266px; width: 210px; }
+#tally   { bottom: 14px; left: 14px; width: 282px; }
+#chart   { bottom: 14px; right: 14px; width: min(540px, calc(100vw - 330px)); }
+
+#scale {
+  position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 9px;
+  color: var(--text-primary); mix-blend-mode: difference; pointer-events: none;
+}
+.scalebar { display: flex; align-items: center; gap: 9px; }
+.note { margin: 0; font-size: 11px; line-height: 1.5; color: var(--text-muted); }
+.note strong { color: var(--text-secondary); font-weight: 600; }
+.btnrow.wrap { flex-wrap: wrap; }
+.btnrow.wrap button { flex: 1 1 60px; }
+button:disabled { opacity: 0.4; cursor: not-allowed; }
 
 /* ---- status ---- */
 .title { font-size: 15px; font-weight: 600; margin: 0 0 2px; letter-spacing: -0.01em; }
@@ -140,6 +153,7 @@ table.data td { text-align: right; padding: 2px 5px; color: var(--text-secondary
 #error ul { margin: 0; padding-left: 18px; font-family: var(--mono); font-size: 12px; color: var(--text-primary); }
 #error li { margin-bottom: 4px; }
 
+@media (max-width: 1400px) { #legend { display: none; } }
 @media (max-width: 1100px) {
   #chart { width: calc(100vw - 28px); left: 14px; right: 14px; }
   #tally { display: none; }
@@ -151,7 +165,9 @@ table.data td { text-align: right; padding: 2px 5px; color: var(--text-secondary
 
 <section class="panel" id="status" aria-label="Simulation state"></section>
 <section class="panel" id="controls" aria-label="Controls"></section>
+<section class="panel" id="legend" aria-label="Legend"></section>
 <section class="panel" id="tally" aria-label="Deaths by cause over the last simulated day"></section>
+<div id="scale" aria-label="Scale bar"></div>
 <section class="panel" id="chart" aria-label="Deaths by cause over time"></section>
 <div id="hover" role="tooltip"></div>
 

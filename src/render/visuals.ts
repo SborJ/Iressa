@@ -15,6 +15,9 @@ export const CURVE_IDS: Record<CurveName, number> = {
 
 export interface PresetSpec {
   durationTicks: number;
+  grain?: number;
+  nucleusScale?: number;
+  nucleusFade?: number;
   scaleTarget?: number;
   scaleCurve?: CurveName;
   swell?: number;
@@ -36,10 +39,70 @@ export interface PresetSpec {
   flashTicks?: number;
 }
 
+export interface LightSpec {
+  direction: [number, number, number];
+  color: string;
+  intensity: number;
+}
+
+export interface ViewSpec {
+  label: string;
+  description?: string;
+  background: string;
+  exposure?: number;
+  emissionOnly?: boolean;
+  lights: { key: LightSpec; fill: LightSpec; rim: LightSpec; sky: string; ground: string };
+  material: {
+    roughness: number;
+    clearcoat: number;
+    sheen: number;
+    thickness: number;
+    subsurface: string;
+  };
+  cloneColors: Record<string, string>;
+  causeColors?: Record<string, string>;
+  nucleus: string;
+  presetOverrides?: Record<string, Partial<PresetSpec>>;
+  slabVoxels?: number;
+  surfaceEmission?: number;
+  surface?: string;
+  surfaceSubsurface?: string;
+  vesselWall?: string;
+  blood?: string;
+  empty?: string;
+  post: {
+    fogDensity: number;
+    ao: number;
+    aoRadius?: number;
+    membrane: number;
+    membraneDarkness?: number;
+    bloom?: number;
+    bloomThreshold?: number;
+    mosaic?: number;
+    grain?: number;
+  };
+}
+
+export interface CellSpec {
+  radiusFraction: number;
+  restingScale?: number;
+  jitterVoxels?: number;
+  sizeVariation?: number;
+  wobbleAmplitude?: number;
+  wobbleFrequency?: number;
+  nucleusOffsetFraction?: number;
+  grainScale?: number;
+  detail?: number;
+  nucleusDetail?: number;
+  slabVoxels?: number;
+}
+
 export interface VisualsFile {
   version: 1;
   scene: { background: string; fogDensity?: number; ambient?: number; keyLight?: number; rimLight?: number };
-  cell: { radiusFraction: number; detail?: number };
+  cell: CellSpec;
+  defaultView?: string;
+  views: Record<string, ViewSpec>;
   cloneColors: Record<string, string>;
   causeColors: Record<string, string>;
   drugColors?: Record<string, string>;
@@ -64,7 +127,7 @@ export type RGB = readonly [number, number, number];
  * what every GLSL target allows, and they only change when an event changes
  * the slot anyway.
  */
-export const PRESET_VEC4S = 5;
+export const PRESET_VEC4S = 6;
 export const PRESET_FLOATS = PRESET_VEC4S * 4;
 
 const IDENTITY_PRESET: PresetSpec = { durationTicks: 0 };
@@ -73,7 +136,7 @@ function srgbToLinear(c: number): number {
   return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
 }
 
-function parseColor(hex: string): RGB {
+export function linearFromHex(hex: string): RGB {
   const n = parseInt(hex.slice(1), 16);
   return [
     srgbToLinear(((n >> 16) & 0xff) / 255),
@@ -93,8 +156,18 @@ export class Visuals {
   readonly raw: VisualsFile;
   readonly presetNames: string[] = [];
   readonly presetIndex = new Map<string, number>();
-  /** Packed per-preset payload: presetCount * PRESET_FLOATS. Copied into instance attributes. */
+  /**
+   * Packed per-preset payload: presetCount * PRESET_FLOATS, copied into
+   * instance attributes. One set per view, because a view may adjust a preset:
+   * a necrotic cell is pale in a cleared sample and simply dark in a
+   * fluorescence image, since it has stopped expressing.
+   */
   readonly presetParams: Float32Array;
+  private readonly byView = new Map<string, {
+    params: Float32Array;
+    tintFrom: Uint8Array;
+    tint: Float32Array;
+  }>();
   /** Per-preset tint source and colour, applied per instance on the CPU. */
   readonly presetTintFrom: Uint8Array;
   readonly presetTint: Float32Array;
@@ -103,6 +176,8 @@ export class Visuals {
   private causeColorCache = new Map<number, RGB>();
   private drugColorCache = new Map<number, RGB>();
   private resolveCache = new Map<number, number>();
+  private viewCloneCache = new Map<string, RGB>();
+  private viewCauseCache = new Map<string, RGB>();
 
   constructor(raw: VisualsFile, private rules: ResolvedRules) {
     this.raw = raw;
@@ -114,13 +189,51 @@ export class Visuals {
     names.forEach((name, i) => {
       this.presetNames.push(name);
       this.presetIndex.set(name, i);
-      this.packPreset(i, raw.presets[name] ?? IDENTITY_PRESET);
+      this.packPreset(i, raw.presets[name] ?? IDENTITY_PRESET, {
+        params: this.presetParams,
+        tintFrom: this.presetTintFrom,
+        tint: this.presetTint,
+      });
     });
+
+    /* One packed set per view. A view may patch a preset, so a necrotic cell
+       can be pale in a cleared sample, pale pink in a section and simply dark
+       under fluorescence, where it has stopped expressing. */
+    for (const [viewName, view] of Object.entries(raw.views)) {
+      const target = {
+        params: this.presetParams.slice(),
+        tintFrom: this.presetTintFrom.slice(),
+        tint: this.presetTint.slice(),
+      };
+      for (const [presetName, patch] of Object.entries(view.presetOverrides ?? {})) {
+        const i = this.presetIndex.get(presetName);
+        if (i === undefined) continue;
+        this.packPreset(i, { ...(raw.presets[presetName] ?? IDENTITY_PRESET), ...patch }, target);
+      }
+      this.byView.set(viewName, target);
+    }
   }
 
-  private packPreset(i: number, p: PresetSpec): void {
+  /** Preset payload as the named view wants it. */
+  paramsFor(viewName: string): Float32Array {
+    return this.byView.get(viewName)?.params ?? this.presetParams;
+  }
+
+  tintFromFor(viewName: string): Uint8Array {
+    return this.byView.get(viewName)?.tintFrom ?? this.presetTintFrom;
+  }
+
+  tintFor(viewName: string): Float32Array {
+    return this.byView.get(viewName)?.tint ?? this.presetTint;
+  }
+
+  private packPreset(
+    i: number,
+    p: PresetSpec,
+    into: { params: Float32Array; tintFrom: Uint8Array; tint: Float32Array },
+  ): void {
     const o = i * PRESET_FLOATS;
-    const f = this.presetParams;
+    const f = into.params;
     const curve = (c: CurveName | undefined, dflt: CurveName) => CURVE_IDS[c ?? dflt];
 
     f[o + 0] = p.durationTicks;
@@ -150,11 +263,16 @@ export class Visuals {
     f[o + 18] = 0;
     f[o + 19] = 0;
 
-    this.presetTintFrom[i] = p.tintFrom === 'drug' ? 1 : p.tintFrom === 'clone' ? 2 : 0;
-    const tint = p.tint ? parseColor(p.tint) : ([1, 1, 1] as RGB);
-    this.presetTint[i * 3 + 0] = tint[0];
-    this.presetTint[i * 3 + 1] = tint[1];
-    this.presetTint[i * 3 + 2] = tint[2];
+    f[o + 20] = p.grain ?? 0;
+    f[o + 21] = p.nucleusScale ?? 0.5;
+    f[o + 22] = p.nucleusFade ?? 0;
+    f[o + 23] = 0;
+
+    into.tintFrom[i] = p.tintFrom === 'drug' ? 1 : p.tintFrom === 'clone' ? 2 : 0;
+    const tint = p.tint ? linearFromHex(p.tint) : ([1, 1, 1] as RGB);
+    into.tint[i * 3 + 0] = tint[0];
+    into.tint[i * 3 + 1] = tint[1];
+    into.tint[i * 3 + 2] = tint[2];
   }
 
   /**
@@ -185,7 +303,7 @@ export class Visuals {
     let c = this.cloneColorCache.get(id);
     if (!c) {
       const hex = this.raw.cloneColors[String(id)] ?? '#888888';
-      c = parseColor(hex);
+      c = linearFromHex(hex);
       this.cloneColorCache.set(id, c);
     }
     return c;
@@ -195,7 +313,7 @@ export class Visuals {
     let c = this.causeColorCache.get(id);
     if (!c) {
       const hex = this.raw.causeColors[String(id)] ?? '#888888';
-      c = parseColor(hex);
+      c = linearFromHex(hex);
       this.causeColorCache.set(id, c);
     }
     return c;
@@ -205,10 +323,53 @@ export class Visuals {
     let c = this.drugColorCache.get(id);
     if (!c) {
       const hex = this.raw.drugColors?.[String(id)] ?? '#ffffff';
-      c = parseColor(hex);
+      c = linearFromHex(hex);
       this.drugColorCache.set(id, c);
     }
     return c;
+  }
+
+  /** The imaging views, in declaration order. */
+  get viewNames(): string[] {
+    return Object.keys(this.raw.views);
+  }
+
+  view(name: string): ViewSpec {
+    return this.raw.views[name] ?? this.raw.views[this.defaultViewName];
+  }
+
+  get defaultViewName(): string {
+    const wanted = this.raw.defaultView;
+    if (wanted && this.raw.views[wanted]) return wanted;
+    return Object.keys(this.raw.views)[0];
+  }
+
+  /** Scene colour for a clone in a given view, falling back to the UI palette. */
+  viewCloneColor(viewName: string, id: number): RGB {
+    const key = `${viewName}:${id}`;
+    let c = this.viewCloneCache.get(key);
+    if (!c) {
+      const hex = this.view(viewName).cloneColors[String(id)] ?? this.raw.cloneColors[String(id)] ?? '#888888';
+      c = linearFromHex(hex);
+      this.viewCloneCache.set(key, c);
+    }
+    return c;
+  }
+
+  viewCauseColor(viewName: string, id: number): RGB {
+    const key = `${viewName}:${id}`;
+    let c = this.viewCauseCache.get(key);
+    if (!c) {
+      const v = this.view(viewName);
+      const hex = v.causeColors?.[String(id)] ?? this.raw.causeColors[String(id)] ?? '#888888';
+      c = linearFromHex(hex);
+      this.viewCauseCache.set(key, c);
+    }
+    return c;
+  }
+
+  static color(hex: string): RGB {
+    return linearFromHex(hex);
   }
 
   cloneCss(id: number): string {
@@ -276,6 +437,31 @@ function crossCheck(v: VisualsFile, rules: ResolvedRules): string[] {
   for (const [name, p] of Object.entries(v.presets)) {
     if ((p.tintFrom ?? 'fixed') === 'fixed' && (p.tintAmount ?? 0) > 0 && !p.tint) {
       problems.push(`preset "${name}" tints but states no tint colour`);
+    }
+  }
+
+  /* Every view has to be able to colour everything the rules declare, or a
+     clone silently falls back to grey in one view and not another. */
+  const viewNames = Object.keys(v.views ?? {});
+  if (!viewNames.length) problems.push('visuals.json declares no views');
+  if (v.defaultView && !viewNames.includes(v.defaultView)) {
+    problems.push(`defaultView "${v.defaultView}" is not one of the declared views`);
+  }
+  for (const [viewName, view] of Object.entries(v.views ?? {})) {
+    for (const clone of rules.raw.clones) {
+      if (!view.cloneColors[String(clone.id)]) {
+        problems.push(`view "${viewName}" has no cloneColor for clone ${clone.id} ("${clone.name}")`);
+      }
+    }
+    if (view.causeColors) {
+      for (const cause of rules.raw.causes) {
+        if (!view.causeColors[String(cause.id)]) {
+          problems.push(`view "${viewName}" overrides causeColors but is missing cause ${cause.id}`);
+        }
+      }
+    }
+    if ((rules.raw.vasculature || (rules.raw.drugs ?? []).length) && !view.blood) {
+      problems.push(`view "${viewName}" has no blood colour, but the matrix has vessels to draw`);
     }
   }
   return problems;

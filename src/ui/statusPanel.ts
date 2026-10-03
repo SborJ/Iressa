@@ -1,5 +1,6 @@
 import type { Visuals } from '../render/visuals.js';
 import type { ResolvedRules } from '../sim/rules.js';
+import type { FrameStats } from '../render/viewer.js';
 import type { SimulationSource } from '../source/types.js';
 import type { World } from '../world/world.js';
 import { chip, el } from './dom.js';
@@ -49,7 +50,7 @@ export class StatusPanel {
     );
   }
 
-  update(world: World, source: SimulationSource): void {
+  update(world: World, source: SimulationSource, frame?: FrameStats): void {
     const counts = countWorld(world, this.rules);
     const hours = world.tick * this.rules.hoursPerTick;
     const frag = document.createDocumentFragment();
@@ -81,6 +82,22 @@ export class StatusPanel {
           chip(this.visuals.cloneCss(id)),
           el('span', { class: 'name', text: cloneName(this.rules, id) }),
           el('span', { class: 'num', text: n.toLocaleString() }),
+        ]),
+      );
+    }
+
+    if (frame) {
+      const fps = frame.frameMs > 0 ? 1000 / frame.frameMs : 0;
+      frag.append(
+        el('div', { class: 'rule' }),
+        el('h2', { text: 'Render' }),
+        el('dl', {}, [
+          row('Frame', `${frame.frameMs.toFixed(1)} ms · ${fps.toFixed(0)} fps`),
+          row('CPU', `${frame.cpuMs.toFixed(2)} ms`),
+          row('Cells drawn', frame.cells.toLocaleString()),
+          row('Triangles', `${(frame.triangles / 1000).toFixed(0)}k`),
+          row('Draw calls', String(frame.drawCalls)),
+          row('Red cells', frame.redCells.toLocaleString()),
         ]),
       );
     }

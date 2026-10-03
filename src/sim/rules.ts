@@ -84,8 +84,23 @@ export interface DrugSpec {
     volumeOfDistribution?: number;
   };
   penetration: { diffusion: number; uptakePerCell: number; relaxSweepsPerTick: number };
-  cytostatic?: { maxSlowdown: number; ic50: number; hill: number };
+  cytostatic?: { maxSlowdown: number; ic50: number; ic50Ratio?: number; hill: number };
   arrestThreshold?: number;
+}
+
+export interface VasculatureSpec {
+  trunks: number;
+  maxDepth: number;
+  segmentLengthVoxels: number;
+  tortuosity: number;
+  branchAngle: number;
+  branchEverySegments: number;
+  trunkRadiusVoxels: number;
+  minRadiusVoxels: number;
+  murrayExponent?: number;
+  wallThicknessVoxels: number;
+  oxygenSupply?: number;
+  drugSupplyFraction?: number;
 }
 
 export interface RulesFile {
@@ -93,9 +108,16 @@ export interface RulesFile {
   seed: number;
   time: { tickMinutes: number; maxTicks?: number; keyframeEveryTicks?: number };
   grid: { nx: number; ny: number; nz: number; voxelMicrons: number; neighborhood?: 6 | 18 | 26 };
-  seeding: { clone: number; radiusVoxels: number; center?: [number, number, number] };
+  seeding: {
+    clone: number;
+    radiusVoxels: number;
+    center?: [number, number, number];
+    snapToVessel?: boolean;
+  };
+  vasculature?: VasculatureSpec;
   oxygen: {
     boundary: number;
+    maximum?: number;
     diffusion: number;
     consumptionPerCell: number;
     debrisConsumptionFactor?: number;

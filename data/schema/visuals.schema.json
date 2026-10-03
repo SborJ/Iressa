@@ -11,7 +11,8 @@
     "cell",
     "cloneColors",
     "causeColors",
-    "presets"
+    "presets",
+    "views"
   ],
   "properties": {
     "$schema": {
@@ -62,15 +63,74 @@
         "radiusFraction": {
           "type": "number",
           "exclusiveMinimum": 0,
-          "maximum": 1,
-          "description": "Cell radius as a fraction of the voxel size."
+          "maximum": 1.2,
+          "description": "Cell radius as a fraction of the voxel. Above 0.5 neighbouring cells overlap and fill space the way packed tissue does; below it they read as separate dots."
+        },
+        "restingScale": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 2,
+          "default": 0.88,
+          "description": "Baseline scale every cell carries. Preset scaleTarget is relative to this, so 'shrink to 45%' means 45% of resting."
+        },
+        "jitterVoxels": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 0.35,
+          "default": 0.3,
+          "description": "Hashed positional jitter. Capped at 0.35 so a cell always stays inside or touching its own node and adjacency is preserved."
+        },
+        "sizeVariation": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 0.5,
+          "default": 0.15,
+          "description": "Hashed radius variation, plus or minus this fraction. Identical sizes read as a generated pattern."
+        },
+        "wobbleAmplitude": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 0.6,
+          "default": 0.12,
+          "description": "Low-frequency surface deformation, so no cell is a perfect sphere."
+        },
+        "wobbleFrequency": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "default": 2.4
+        },
+        "nucleusOffsetFraction": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 0.5,
+          "default": 0.18,
+          "description": "How far the nucleus sits off the cell centre, as a fraction of cell radius."
+        },
+        "grainScale": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "default": 3.0,
+          "description": "Spatial frequency of the necrotic grain, in inverse voxels."
         },
         "detail": {
           "type": "integer",
           "minimum": 0,
           "maximum": 3,
-          "default": 1,
-          "description": "Icosphere subdivision: 0 is 20 triangles, 1 is 80, 2 is 320. Blebbing and fragmenting need at least 1; 2 is for close inspection of a small population and costs four times the vertices."
+          "default": 2,
+          "description": "Icosphere subdivision for cells: 0 is 20 triangles, 1 is 80, 2 is 320. Only the slab behind the cut is instanced, so 2 is affordable."
+        },
+        "nucleusDetail": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3,
+          "default": 1
+        },
+        "slabVoxels": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 12,
+          "default": 4,
+          "description": "How deep behind a cut face individual cells are drawn. Beyond it the mass is the isosurface."
         }
       }
     },
@@ -122,6 +182,18 @@
       "additionalProperties": {
         "$ref": "#/definitions/preset"
       }
+    },
+    "views": {
+      "type": "object",
+      "minProperties": 1,
+      "description": "The imaging views. Each is a complete look: lighting, palette, material and post. Adding one is a data change.",
+      "additionalProperties": {
+        "$ref": "#/definitions/view"
+      }
+    },
+    "defaultView": {
+      "type": "string",
+      "description": "Which view opens first."
     }
   },
   "definitions": {
@@ -257,6 +329,445 @@
           "minimum": 0,
           "default": 0,
           "description": "Length of the emissive flash at the start of the effect. 0 means emissive is steady."
+        },
+        "grain": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 2,
+          "default": 0,
+          "description": "Granular albedo modulation. Necrotic tissue is coarse, not smoothly coloured."
+        },
+        "nucleusScale": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1.5,
+          "default": 0.5,
+          "description": "Nucleus diameter as a fraction of the cell's. Tumour cells run high, 0.45-0.55."
+        },
+        "nucleusFade": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 0,
+          "description": "How far the nucleus dissolves over the effect. Karyolysis in necrosis, condensation then loss in apoptosis."
+        }
+      }
+    },
+    "view": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "label",
+        "background",
+        "lights",
+        "material",
+        "cloneColors",
+        "nucleus",
+        "post"
+      ],
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "background": {
+          "$ref": "#/definitions/color"
+        },
+        "exposure": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "default": 1
+        },
+        "emissionOnly": {
+          "type": "boolean",
+          "default": false,
+          "description": "Fluorescence: surfaces emit rather than reflect, and marks blend additively."
+        },
+        "lights": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "key",
+            "fill",
+            "rim",
+            "sky",
+            "ground"
+          ],
+          "properties": {
+            "key": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "direction",
+                "color",
+                "intensity"
+              ],
+              "properties": {
+                "direction": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "color": {
+                  "$ref": "#/definitions/color"
+                },
+                "intensity": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              }
+            },
+            "fill": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "direction",
+                "color",
+                "intensity"
+              ],
+              "properties": {
+                "direction": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "color": {
+                  "$ref": "#/definitions/color"
+                },
+                "intensity": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              }
+            },
+            "rim": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "direction",
+                "color",
+                "intensity"
+              ],
+              "properties": {
+                "direction": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "color": {
+                  "$ref": "#/definitions/color"
+                },
+                "intensity": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              }
+            },
+            "sky": {
+              "$ref": "#/definitions/color"
+            },
+            "ground": {
+              "$ref": "#/definitions/color"
+            }
+          }
+        },
+        "material": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "roughness",
+            "clearcoat",
+            "sheen",
+            "thickness",
+            "subsurface"
+          ],
+          "properties": {
+            "roughness": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "clearcoat": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 2
+            },
+            "sheen": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 2
+            },
+            "thickness": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 2
+            },
+            "subsurface": {
+              "$ref": "#/definitions/color"
+            }
+          }
+        },
+        "cloneColors": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/color"
+          }
+        },
+        "causeColors": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/color"
+          },
+          "description": "Optional per-view override for the colour-by-cause mode. Falls back to the top-level causeColors."
+        },
+        "nucleus": {
+          "$ref": "#/definitions/color"
+        },
+        "surface": {
+          "$ref": "#/definitions/color"
+        },
+        "surfaceSubsurface": {
+          "$ref": "#/definitions/color"
+        },
+        "vesselWall": {
+          "$ref": "#/definitions/color"
+        },
+        "blood": {
+          "$ref": "#/definitions/color"
+        },
+        "empty": {
+          "$ref": "#/definitions/color"
+        },
+        "post": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "fogDensity",
+            "ao",
+            "membrane"
+          ],
+          "properties": {
+            "fogDensity": {
+              "type": "number",
+              "minimum": 0
+            },
+            "ao": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 2
+            },
+            "aoRadius": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "default": 1.2
+            },
+            "membrane": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 2,
+              "description": "Strength of the screen-space membrane lines. Illustrative: it styles a real boundary between two real cells."
+            },
+            "membraneDarkness": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "default": 0.35
+            },
+            "bloom": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 2,
+              "default": 0
+            },
+            "bloomThreshold": {
+              "type": "number",
+              "minimum": 0,
+              "default": 0.75
+            },
+            "mosaic": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "default": 0,
+              "description": "Procedural cell mosaic on the distant isosurface. Illustrative."
+            },
+            "grain": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "default": 0
+            }
+          }
+        },
+        "slabVoxels": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 12,
+          "description": "Section thickness for this view, overriding cell.slabVoxels. An H&E section is a few micrometres thick, so nearly every cell in it is a cut cell; a cleared sample is viewed many cells deep."
+        },
+        "surfaceEmission": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 2,
+          "default": 1,
+          "description": "How brightly the isosurface emits in an emission-only view. The labelled cells should carry the image, not the shell around them."
+        },
+        "presetOverrides": {
+          "type": "object",
+          "description": "Per-view adjustments to named presets, merged onto the shared definition. A necrotic cell is pale in a cleared sample, pale pink in an H&E section and simply dark in a fluorescence image, because it has stopped expressing - one cause, three appearances, all data.",
+          "additionalProperties": {
+            "$ref": "#/definitions/presetPatch"
+          }
+        }
+      }
+    },
+    "presetPatch": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "durationTicks": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Simulated ticks the effect takes to reach phase 1. Phase clamps at 1, so a preset's phase-1 appearance is its resting appearance; make an effect transient with the \"pulse\" curve, `swell` or `flashTicks` instead."
+        },
+        "scaleTarget": {
+          "type": "number",
+          "minimum": 0,
+          "default": 1,
+          "description": "Radius multiplier at phase 1. <1 shrinks, >1 swells."
+        },
+        "scaleCurve": {
+          "$ref": "#/definitions/curve",
+          "default": "easeInOut"
+        },
+        "swell": {
+          "type": "number",
+          "minimum": 0,
+          "default": 0,
+          "description": "Extra radius added mid-animation and released (an overshoot)."
+        },
+        "alphaTarget": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 1
+        },
+        "alphaCurve": {
+          "$ref": "#/definitions/curve",
+          "default": "easeIn"
+        },
+        "tint": {
+          "$ref": "#/definitions/color"
+        },
+        "tintFrom": {
+          "enum": [
+            "fixed",
+            "drug",
+            "clone"
+          ],
+          "default": "fixed",
+          "description": "fixed uses tint; drug uses drugColors[event.drug]; clone uses cloneColors[event.newClone]."
+        },
+        "tintAmount": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 0
+        },
+        "tintCurve": {
+          "$ref": "#/definitions/curve",
+          "default": "linear"
+        },
+        "desaturate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 0
+        },
+        "bleb": {
+          "type": "number",
+          "minimum": 0,
+          "default": 0,
+          "description": "Surface displacement amplitude as a fraction of radius."
+        },
+        "blebFrequency": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "default": 6
+        },
+        "blebDrift": {
+          "type": "number",
+          "minimum": 0,
+          "default": 1,
+          "description": "How fast the bleb pattern crawls over the animation."
+        },
+        "fragments": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8,
+          "default": 0,
+          "description": "Number of lobes the surface splits into."
+        },
+        "fragmentSpread": {
+          "type": "number",
+          "minimum": 0,
+          "default": 0,
+          "description": "How far lobes separate, as a fraction of radius."
+        },
+        "nuclei": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 6,
+          "default": 0,
+          "description": "Visible internal lobes (multinucleation). Rendered as smooth bulges."
+        },
+        "nucleiBulge": {
+          "type": "number",
+          "minimum": 0,
+          "default": 0.18
+        },
+        "emissive": {
+          "type": "number",
+          "minimum": 0,
+          "default": 0
+        },
+        "flashTicks": {
+          "type": "number",
+          "minimum": 0,
+          "default": 0,
+          "description": "Length of the emissive flash at the start of the effect. 0 means emissive is steady."
+        },
+        "grain": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 2,
+          "default": 0,
+          "description": "Granular albedo modulation. Necrotic tissue is coarse, not smoothly coloured."
+        },
+        "nucleusScale": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1.5,
+          "default": 0.5,
+          "description": "Nucleus diameter as a fraction of the cell's. Tumour cells run high, 0.45-0.55."
+        },
+        "nucleusFade": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 0,
+          "description": "How far the nucleus dissolves over the effect. Karyolysis in necrosis, condensation then loss in apoptosis."
         }
       }
     }
