@@ -112,9 +112,14 @@ h2 { font-size: clamp(32px, 4.6vw, 52px); line-height: 1.05; font-weight: 700; m
 .nav-links a { color: var(--on-dark-2); text-decoration: none; font-size: 15px; font-weight: 500; }
 .nav-links a:hover { color: var(--on-dark); }
 .site-header .btn { padding: 11px 18px; font-size: 14px; }
+/* The simulator asks for research access itself; this is just a shortcut to it. */
+.signin { color: var(--on-dark-2); text-decoration: none; font-size: 15px; font-weight: 500; white-space: nowrap; }
+.signin:hover { color: var(--on-dark); }
 @media (max-width: 760px) {
   .nav-links { display: none; }
   .site-header .btn { margin-left: auto; }
+  .site-header .signin { margin-left: auto; font-size: 14px; }
+  .site-header .signin + .btn { margin-left: 0; }
 }
 
 /* ---------- hero ---------- */
@@ -283,6 +288,7 @@ footer a:hover { color: var(--on-dark); }
       <a href="#features">Explore</a>
       <a href="#trust">The science</a>
     </nav>
+    <a class="signin" href="../?auth=signin">Sign in</a>
     <a class="btn btn-primary" href="../">Open the simulator</a>
   </div>
 </header>

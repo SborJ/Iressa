@@ -312,11 +312,95 @@ table.data td { text-align: right; padding: 3px 6px; color: var(--fg-2); }
 #error ul { margin: 0; padding-left: 18px; font-family: var(--mono); font-size: 12px; color: var(--fg); }
 #error li { margin-bottom: 5px; }
 
-@media (max-width: 1180px) { :root { --panel-w: 296px; } }
+/* ── access: the simulator is hidden until a session exists ───────────── */
+body:not([data-auth="in"]) #app { display: none; }
+#auth[hidden], #account[hidden] { display: none; }
+
+#account { display: flex; align-items: center; gap: var(--s2); flex: none; }
+.acct-who { font-size: 12px; color: var(--fg-3); max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.acct-out { padding: 6px 10px; font-size: 12px; }
+
+#auth { position: fixed; inset: 0; z-index: 50; overflow-y: auto; background: var(--bg); }
+.auth-shell {
+  min-height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: var(--s4); padding: 48px 16px;
+}
+.auth-panel {
+  width: 100%; max-width: 360px; padding: 28px 28px 24px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md);
+}
+.auth-brand { margin: 0 0 18px; font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--fg-3); }
+.auth-title { margin: 0 0 20px; font-size: 18px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.3; }
+.auth-form { display: flex; flex-direction: column; margin: 0; }
+.auth-fields { display: flex; flex-direction: column; gap: 14px; min-width: 0; margin: 0; padding: 0; border: 0; }
+.auth-field label { display: block; margin-bottom: 6px; font-size: 12px; font-weight: 500; color: var(--fg-2); }
+.auth-field input {
+  width: 100%; height: 36px; padding: 0 11px;
+  background: var(--bg); color: var(--fg); font-size: 13.5px;
+  border: 1px solid var(--line); border-radius: var(--r-sm);
+  transition: border-color var(--t) var(--ease);
+}
+.auth-field input:hover { border-color: #323846; }
+.auth-field input:focus { outline: none; border-color: var(--accent); }
+.auth-field input:focus-visible { outline: 1px solid var(--accent); outline-offset: 0; }
+.auth-field input[aria-invalid="true"] { border-color: var(--danger); }
+.auth-fields:disabled input { opacity: 0.6; }
+.auth-hint { margin: 6px 0 0; font-size: 11.5px; color: var(--fg-3); }
+.auth-msg { margin: 14px 0 0; font-size: 12.5px; line-height: 1.45; }
+.auth-msg:empty { display: none; }
+.auth-msg.error { color: var(--danger); }
+.auth-msg.info {
+  padding: 10px 12px; color: var(--fg); background: var(--raised);
+  border-left: 2px solid var(--accent); border-radius: var(--r-sm);
+}
+.auth-title + .auth-msg { margin-top: 0; }
+.auth-submit {
+  width: 100%; height: 38px; margin-top: 18px; cursor: pointer;
+  background: var(--accent); color: #061316; font-size: 13px; font-weight: 600;
+  border: 0; border-radius: var(--r-sm);
+  transition: background var(--t) var(--ease), opacity var(--t) var(--ease);
+}
+.auth-submit:hover:not(:disabled) { background: #5cc3d1; }
+.auth-submit:disabled { opacity: 0.55; cursor: progress; }
+.auth-aside { margin-top: 12px; text-align: center; }
+.auth-link {
+  padding: 0; background: none; border: 0; cursor: pointer;
+  color: var(--accent); font-size: 12.5px; font-weight: 500;
+}
+.auth-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+.auth-switch {
+  margin: 20px 0 0; padding-top: 16px; border-top: 1px solid var(--line-soft);
+  font-size: 12.5px; color: var(--fg-3); text-align: center;
+}
+.auth-note { margin: 12px 0 0; font-size: 12.5px; line-height: 1.5; color: var(--fg-2); }
+.auth-note strong { color: var(--fg); font-weight: 500; overflow-wrap: anywhere; }
+.auth-title + .auth-note { margin: -8px 0 18px; }
+.auth-loading { margin: 0; font-size: 12.5px; color: var(--fg-3); animation: auth-in 300ms 250ms both; }
+@keyframes auth-in { from { opacity: 0; } }
+.auth-or { display: flex; align-items: center; gap: 10px; margin: 18px 0 14px; font-size: 11.5px; color: var(--fg-3); }
+.auth-or::before, .auth-or::after { content: ""; flex: 1; height: 1px; background: var(--line-soft); }
+.auth-orcid {
+  width: 100%; height: 38px; display: flex; align-items: center; justify-content: center; gap: 9px; cursor: pointer;
+  background: var(--raised); color: var(--fg); font-size: 13px; font-weight: 500;
+  border: 1px solid var(--line); border-radius: var(--r-sm);
+  transition: background var(--t) var(--ease), border-color var(--t) var(--ease);
+}
+.auth-orcid:hover:not(:disabled) { background: var(--hover); border-color: #323846; }
+.auth-orcid:disabled { opacity: 0.6; cursor: progress; }
+.orcid-icon { flex: none; display: block; }
+.acct-orcid { display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 11.5px; color: var(--fg-2); text-decoration: none; }
+.acct-orcid:hover { color: var(--fg); }
+.auth-foot { margin: 0; font-size: 12px; }
+.auth-foot a { color: var(--fg-3); text-decoration: none; }
+.auth-foot a:hover { color: var(--fg-2); }
+/* 16px stops iOS zooming the page when a field takes focus */
+@media (max-width: 560px) { .auth-panel { padding: 24px 20px 20px; } .auth-field input { font-size: 16px; height: 40px; } }
+
+@media (max-width: 1180px) { :root { --panel-w: 296px; } .acct-who { display: none; } .acct-orcid span { display: none; } }
 @media (prefers-reduced-motion: reduce) { * { transition-duration: 1ms !important; } }
 </style>
 </head>
-<body>
+<body data-auth="pending">
 
 <div id="app">
   <header id="topbar">
@@ -327,6 +411,8 @@ table.data td { text-align: right; padding: 3px 6px; color: var(--fg-2); }
     <div class="topdiv"></div>
     <div id="headline"><span class="dot"></span><span class="say"></span><span class="because"></span></div>
     <div id="viewswitch" class="seg"></div>
+    <div class="topdiv"></div>
+    <div id="account" aria-label="Account" hidden></div>
   </header>
 
   <aside id="panel"></aside>
@@ -340,6 +426,9 @@ table.data td { text-align: right; padding: 3px 6px; color: var(--fg-2); }
 </div>
 
 <div id="card"></div>
+
+<!-- Research access. The simulator above stays hidden until a session exists. -->
+<div id="auth" hidden></div>
 
 <div id="error"><div class="box">
   <h1 id="error-title"></h1>
