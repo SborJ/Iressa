@@ -35,14 +35,24 @@ const OXYGEN_PRESETS: Record<OxygenMode, Pick<ExperimentParams, 'oxygenSupply' |
   necrotic: { oxygenSupply: 0.48, oxygenUptake: 0.030 },
 };
 
+/**
+ * The longest run the viewer will set up.
+ *
+ * Ten years of simulated time. There has to be some bound - the day count sets
+ * maxTicks, and a value with no ceiling turns a typo into a browser that never
+ * finishes a tick - but it is far past any experiment anyone has asked for
+ * rather than a year, which a resistance study can genuinely outlast.
+ */
+export const MAX_DAYS = 3650;
+
 export function experimentParamsFromQuery(q = new URLSearchParams(location.search)): ExperimentParams {
   const oxygenMode = parseOxygenMode(q.get('oxygenMode')) ?? DEFAULTS.oxygenMode;
   const preset = OXYGEN_PRESETS[oxygenMode];
   return {
-    days: numberParam(q, 'days', DEFAULTS.days, 1, 365),
+    days: numberParam(q, 'days', DEFAULTS.days, 1, MAX_DAYS),
     dose: numberParam(q, 'dose', DEFAULTS.dose, 0, 5),
     schedule: parseSchedule(q.get('schedule')) ?? DEFAULTS.schedule,
-    switchDay: numberParam(q, 'switchDay', DEFAULTS.switchDay, 0, 365),
+    switchDay: numberParam(q, 'switchDay', DEFAULTS.switchDay, 0, MAX_DAYS),
     oxygenMode,
     oxygenSupply: numberParam(q, 'oxygenSupply', preset.oxygenSupply, 0.05, 2),
     oxygenUptake: numberParam(q, 'oxygenUptake', preset.oxygenUptake, 0.001, 0.08),
@@ -80,9 +90,12 @@ function localTreatmentSchedule(params: ExperimentParams, rules: RulesFile): Non
     if (switchDoses > 0) {
       schedule.push({ drug: gefitinib.id, startHour: 0, everyHours: 24, doses: switchDoses, amount: params.dose });
     }
-    if (osimertinib && switchDoses < totalDoses) {
+    if (switchDoses < totalDoses) {
+      // With no second drug there is nothing to switch to, so the first one
+      // carries on. Stopping at the switch day instead would quietly drop the
+      // rest of a run the caller asked to be treated.
       schedule.push({
-        drug: osimertinib.id,
+        drug: (osimertinib ?? gefitinib).id,
         startHour: switchDoses * 24,
         everyHours: 24,
         doses: totalDoses - switchDoses,
@@ -101,9 +114,13 @@ function localTreatmentSchedule(params: ExperimentParams, rules: RulesFile): Non
 }
 
 function numberParam(q: URLSearchParams, name: string, fallback: number, min: number, max: number): number {
-  const raw = Number(q.get(name));
-  if (!Number.isFinite(raw)) return fallback;
-  return Math.max(min, Math.min(max, raw));
+  const raw = q.get(name);
+  // Number(null) is 0, not NaN, so an absent parameter has to be rejected
+  // before the conversion - otherwise every default collapses to `min`.
+  if (raw === null || raw.trim() === '') return fallback;
+  const value = Number(raw);
+  if (!Number.isFinite(value)) return fallback;
+  return Math.max(min, Math.min(max, value));
 }
 
 function parseSchedule(value: string | null): ExperimentSchedule | undefined {

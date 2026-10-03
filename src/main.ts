@@ -5,6 +5,8 @@ import { eventsUrl, keyframesUrl, rulesUrl, sourceKind } from './defaultRun.js';
 import { LocalSimSource } from './source/localSim.js';
 import { SocketSource } from './source/socketSource.js';
 import type { SimulationSource } from './source/types.js';
+import { applyLocalExperimentOverrides, type ExperimentParams } from './experimentParams.js';
+import { resolveRules } from './sim/rules.js';
 import { Card, ScaleBar } from './ui/card.js';
 import { CauseChart } from './ui/causeChart.js';
 import { Controls } from './ui/controls.js';
@@ -23,6 +25,8 @@ import { World } from './world/world.js';
 const TICK_BUDGET_MS = 10;
 /** Picking costs a GPU readback, so it runs well below the frame rate. */
 const PICK_INTERVAL_MS = 60;
+/** How long a frame may spend skipping ahead, so the page stays responsive. */
+const SKIP_BUDGET_MS = 24;
 
 function showError(err: unknown): void {
   const { title, note, problems } = describeLoadError(err);
@@ -102,22 +106,22 @@ async function start(): Promise<void> {
   const { rules, visuals } = data;
   let source = await makeSource(data);
 
+  let framed = false;
   const world = new World(rules);
-  const stats = new CauseStats(rules);
+  let activeRules = rules;
+  let stats = new CauseStats(rules);
   const canvas = document.getElementById('scene') as HTMLCanvasElement;
   const viewer = new Viewer(canvas, world, visuals, rules);
 
   const q = new URLSearchParams(location.search);
   const sourceLabel = rulesUrl(q).split('/').pop() ?? 'rules.json';
   const history = new History(rules);
-  const narrative = new Narrative(rules);
   const capture = new FrameCapture();
 
   const panelRoot = document.getElementById('panel')!;
-  const headline = new Headline(document.getElementById('headline')!);
-  const stageTags = new StageTags(document.getElementById('stagetop')!);
-  const card = new Card(document.getElementById('card')!, rules, visuals, narrative);
+  const headlineRoot = document.getElementById('headline')!;
   const scaleBar = new ScaleBar(document.getElementById('scalebar')!, rules.raw.grid.voxelMicrons);
+  const stageTags = new StageTags(document.getElementById('stagetop')!);
 
   const subscribe = (s: SimulationSource) =>
     s.onPacket((packet) => {
@@ -126,22 +130,140 @@ async function start(): Promise<void> {
     });
   let unsubscribe = subscribe(source);
 
+  const resetWorld = () => {
+    world.clear();
+    world.tick = 0;
+    history.reset();
+    viewer.displayTick = 0;
+    viewer.markDirty();
+    framed = false;
+  };
+
   const resetRun = () => {
     unsubscribe();
     source.reset?.();
-    world.clear();
-    world.tick = 0;
+    resetWorld();
     stats.reset();
-    history.reset();
-    viewer.displayTick = 0;
     unsubscribe = subscribe(source);
     source.pump(1);
-    viewer.markDirty();
   };
 
-  /* The imaging switch belongs in the top bar, because it changes what the
-     whole screen is; everything that shapes the view sits under the hero. */
+  /* Everything below is rebuilt when an experiment replaces the rules: each of
+     these reads the schedule, the clone table or the cause table at
+     construction, and a panel still describing the previous run would be
+     quietly wrong rather than visibly broken. */
+  let narrative = new Narrative(activeRules);
+  const headline = new Headline(headlineRoot);
+  let card = new Card(document.getElementById('card')!, activeRules, visuals, narrative);
+  let chartHost = document.createElement('div');
+  let chart: CauseChart;
+  let panel: Panel;
+  let timeline: Timeline;
+
   const controlsHost = document.createElement('div');
+
+  const startExperiment = (params: ExperimentParams) => {
+    unsubscribe();
+    activeRules = resolveRules(applyLocalExperimentOverrides(data.rules.raw, params));
+    source = new LocalSimSource(activeRules);
+    stats = new CauseStats(activeRules);
+    resetWorld();
+    buildPanels();
+    unsubscribe = subscribe(source);
+    source.pump(1);
+    controls.setPlaying(true);
+    timeline.setPlaying(true);
+  };
+
+  function buildPanels(): void {
+    const openFolds = panel?.foldState() ?? {};
+    narrative = new Narrative(activeRules);
+    card = new Card(document.getElementById('card')!, activeRules, visuals, narrative);
+
+    panelRoot.replaceChildren();
+    chartHost = document.createElement('div');
+    chartHost.id = 'chart';
+    chart = new CauseChart(chartHost, activeRules, visuals);
+
+    panel = new Panel(panelRoot, activeRules, visuals, narrative, {
+      onHighlightCause: (causeId) => {
+        chart.setHighlight(causeId);
+        panel.setHighlight(causeId);
+      },
+      onRunExperiment: startExperiment,
+      onCopyState: () => {
+        const st = controls.state;
+        void copyText(
+          JSON.stringify(
+            {
+              tick: world.tick,
+              day: (world.tick * activeRules.hoursPerTick) / 24,
+              seed: activeRules.raw.seed,
+              rules: sourceLabel,
+              source: source.kind,
+              view: st.view,
+              colorBy: st.colorBy,
+              cut: { mode: st.cutMode, fraction: st.cutFraction },
+              camera: {
+                position: viewer.camera.position.toArray(),
+                target: viewer.controls.target.toArray(),
+              },
+              counts: history.latest && {
+                living: history.latest.living,
+                dying: history.latest.dying,
+                byClone: Object.fromEntries(history.latest.byClone),
+              },
+            },
+            null,
+            2,
+          ),
+        );
+      },
+      onExportFrame: () => capture.request(),
+      onExportParameters: () =>
+        downloadText(
+          `iressa-parameters-${activeRules.raw.seed}.json`,
+          JSON.stringify(activeRules.raw, null, 2),
+        ),
+    }, openFolds);
+    panelRoot.insertBefore(controlsHost, panelRoot.children[1] ?? null);
+    panel.appendChart(chartHost);
+
+    const timelineRoot = document.getElementById('timeline')!;
+    timelineRoot.replaceChildren();
+    timeline = new Timeline(timelineRoot, activeRules, narrative, {
+      onTogglePlay: () => controls.togglePlay(),
+    });
+    timeline.setPlaying(controls.state.playing);
+  }
+
+  /**
+   * Run ahead without drawing every frame of it.
+   *
+   * Spread across animation frames on a time budget: pumping a whole simulated
+   * day in one go would freeze the page for as long as it took.
+   */
+  let skipRun = 0;
+  const skipAhead = (ticks: number) => {
+    const run = ++skipRun;
+    let remaining = Math.max(0, ticks);
+    controls.setPlaying(false);
+    timeline.setPlaying(false);
+    tickDebt = 0;
+
+    const chunk = () => {
+      const deadline = performance.now() + SKIP_BUDGET_MS;
+      while (remaining > 0 && !source.done && performance.now() < deadline) {
+        source.pump(1);
+        remaining--;
+      }
+      viewer.markDirty();
+      viewer.displayTick = world.tick;
+      if (remaining > 0 && !source.done && run === skipRun) requestAnimationFrame(chunk);
+    };
+    requestAnimationFrame(chunk);
+  };
+
   const controls = new Controls(controlsHost, visuals, rules, {
     onChange: (state, changed) => {
       if (changed === 'view' || changed === 'init') viewer.applyView(state.view);
@@ -156,59 +278,12 @@ async function start(): Promise<void> {
     onStep: () => source.pump(1),
     onFrame: () => frameWithRoom(viewer),
     onReset: () => resetRun(),
+    onSkipDay: () => skipAhead(activeRules.ticksPerDay),
   });
   document.getElementById('viewswitch')!.replaceWith(controls.viewSwitch);
   controls.viewSwitch.id = 'viewswitch';
 
-  const chartHost = document.createElement('div');
-  chartHost.id = 'chart';
-  const chart = new CauseChart(chartHost, rules, visuals);
-
-  const panel = new Panel(panelRoot, rules, visuals, narrative, {
-    onHighlightCause: (causeId) => {
-      chart.setHighlight(causeId);
-      panel.setHighlight(causeId);
-    },
-    onCopyState: () => {
-      const st = controls.state;
-      void copyText(
-        JSON.stringify(
-          {
-            tick: world.tick,
-            day: (world.tick * rules.hoursPerTick) / 24,
-            seed: rules.raw.seed,
-            rules: sourceLabel,
-            source: source.kind,
-            view: st.view,
-            colorBy: st.colorBy,
-            cut: { mode: st.cutMode, fraction: st.cutFraction },
-            camera: {
-              position: viewer.camera.position.toArray(),
-              target: viewer.controls.target.toArray(),
-            },
-            counts: history.latest && {
-              living: history.latest.living,
-              dying: history.latest.dying,
-              byClone: Object.fromEntries(history.latest.byClone),
-            },
-          },
-          null,
-          2,
-        ),
-      );
-    },
-    onExportFrame: () => capture.request(),
-    onExportParameters: () =>
-      downloadText(`iressa-parameters-${rules.raw.seed}.json`, JSON.stringify(rules.raw, null, 2)),
-  });
-  // Controls under the hero; the chart inside the question it answers.
-  panelRoot.insertBefore(controlsHost, panelRoot.children[1] ?? null);
-  panel.appendChart(chartHost);
-
-  const timeline = new Timeline(document.getElementById('timeline')!, rules, narrative, {
-    onTogglePlay: () => controls.togglePlay(),
-  });
-  timeline.setPlaying(controls.state.playing);
+  buildPanels();
 
   viewer.applyView(controls.state.view);
   viewer.setColorBy(controls.state.colorBy);
@@ -233,7 +308,6 @@ async function start(): Promise<void> {
   let nextPick = 0;
 
   source.pump(1);
-  let framed = false;
 
   const frame = (now: number) => {
     const dt = Math.min(0.1, (now - last) / 1000);
@@ -272,7 +346,7 @@ async function start(): Promise<void> {
     }
 
     // The drawing buffer is only valid inside the frame that produced it.
-    capture.take(canvas, `day${((world.tick * rules.hoursPerTick) / 24).toFixed(1)}-${controls.state.view}`);
+    capture.take(canvas, `day${((world.tick * activeRules.hoursPerTick) / 24).toFixed(1)}-${controls.state.view}`);
 
     if (now >= nextUiUpdate) {
       nextUiUpdate = now + 200;

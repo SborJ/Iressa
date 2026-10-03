@@ -19,6 +19,7 @@ export interface ControlHandlers {
   onStep(): void;
   onReset(): void;
   onFrame(): void;
+  onSkipDay(): void;
 }
 
 const SPEEDS = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512];
@@ -139,8 +140,13 @@ export class Controls {
       },
     });
 
+    const skipBtn = el('button', { class: 'btn ghost', type: 'button', text: 'Skip a day' });
+    skipBtn.style.flex = '1';
+    skipBtn.title = 'Run a whole simulated day at once, without drawing every frame of it';
+    skipBtn.addEventListener('click', () => handlers.onSkipDay());
+
     const resetBtn = el('button', { class: 'btn ghost', type: 'button', text: 'Start over' });
-    resetBtn.style.width = '100%';
+    resetBtn.style.flex = '1';
     resetBtn.addEventListener('click', () => handlers.onReset());
 
     this.root.append(
@@ -152,7 +158,7 @@ export class Controls {
         el('div', { class: 'muted', style: 'margin:var(--s5) 0 var(--s2)', text: 'Colour the cells' }),
         colorRow,
         el('div', { style: 'margin-top:var(--s5)' }, [speed.node]),
-        el('div', { style: 'margin-top:var(--s4)' }, [resetBtn]),
+        el('div', { style: 'display:flex;gap:var(--s2);margin-top:var(--s4)' }, [skipBtn, resetBtn]),
       ]),
     );
 

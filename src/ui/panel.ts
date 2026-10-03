@@ -2,6 +2,7 @@ import type { FrameStats } from '../render/viewer.js';
 import type { Visuals } from '../render/visuals.js';
 import type { ResolvedRules } from '../sim/rules.js';
 import type { SimulationSource } from '../source/types.js';
+import type { ExperimentParams } from '../experimentParams.js';
 import type { CauseStats } from '../world/causeStats.js';
 import { count, el, fixed, signed, svg } from './dom.js';
 import type { WorldCounts } from './counts.js';
@@ -9,6 +10,7 @@ import type { History } from './history.js';
 import { causeName, cloneName, stateLabel } from './labels.js';
 import { TONE } from './tone.js';
 import type { Narrative, Story } from './narrative.js';
+import { ExperimentPanel } from './experiment.js';
 import { foldTo } from './motion.js';
 import { Sparkline } from './sparkline.js';
 
@@ -21,11 +23,6 @@ const GLOSSARY: Record<string, string> = {
   ic50: 'The concentration that halves a cell population. Higher means harder to kill.',
   clone: 'A lineage of cells sharing the same mutations.',
 };
-
-const PPO_TRAIN_COMMAND =
-  'python3 scripts/train_ppo.py --days 120 --total-timesteps 50000 --output-dir outputs/rl';
-const PPO_EVALUATE_COMMAND =
-  'python3 scripts/evaluate_policy.py --days 120 --seeds 1001,1002,1003 --output-dir outputs/rl_eval';
 
 function term(text: string, key: keyof typeof GLOSSARY | string): HTMLElement {
   const t = el('span', { class: 'term', text });
@@ -52,9 +49,11 @@ function chevron(): SVGElement {
 class Fold {
   readonly node: HTMLDetailsElement;
   readonly body = el('div', { class: 'fold-body' });
+  readonly title: string;
   private summary = el('span', { class: 'sum' });
 
   constructor(title: string, open = false) {
+    this.title = title;
     const head = el('summary', {}, [
       chevron(),
       el('span', { text: title }),
@@ -89,6 +88,7 @@ class Fold {
 
 export interface PanelHandlers {
   onHighlightCause(causeId: number): void;
+  onRunExperiment(params: ExperimentParams): void;
   onCopyState(): void;
   onExportFrame(): void;
   onExportParameters(): void;
@@ -120,6 +120,8 @@ export class Panel {
   private chemistry = new Fold('Drug in the blood');
   private chemistryBody = el('div');
 
+  private setup = new Fold('Set up an experiment');
+  private experiment: ExperimentPanel;
   private about = new Fold('About this run');
 
   private cloneBars = new Map<number, HTMLElement>();
@@ -138,6 +140,8 @@ export class Panel {
     private visuals: Visuals,
     private narrative: Narrative,
     private handlers: PanelHandlers,
+    /** Which groups were open before a rebuild, so the place is not lost. */
+    openFolds: Record<string, boolean> = {},
   ) {
     /* ---- hero ---- */
     this.root.append(
@@ -229,6 +233,11 @@ export class Panel {
       this.causeRows.set(cause.id, { row, n });
     }
 
+    /* ---- the experiment: the only controls that change what is simulated ---- */
+    this.experiment = new ExperimentPanel(rules, { onRun: handlers.onRunExperiment });
+    this.setup.body.append(this.experiment.node);
+    this.setup.set(this.experiment.summary());
+
     /* ---- chemistry ---- */
     this.chemistry.body.append(this.chemistryBody);
 
@@ -259,27 +268,9 @@ export class Panel {
       b.addEventListener('click', fn);
       exportRow.append(b);
     }
-    const rlRow = el('div', { style: 'display:flex;gap:6px;margin-top:10px' });
-    for (const [label, command] of [
-      ['Copy PPO train', PPO_TRAIN_COMMAND],
-      ['Copy PPO eval', PPO_EVALUATE_COMMAND],
-    ] as [string, string][]) {
-      const b = el('button', { class: 'btn ghost', type: 'button', text: label });
-      b.style.flex = '1';
-      b.addEventListener('click', () => void navigator.clipboard?.writeText(command));
-      rlRow.append(b);
-    }
     this.about.body.append(
       ...aboutRows,
       exportRow,
-      el('p', { class: 'note', style: 'margin-top:14px' }, [
-        el('b', { text: 'Evolutionary control: ' }),
-        document.createTextNode(
-          'the Python RL layer now observes clone control margins M_i, resistance-graph distances D_i, and an ECI proxy. ' +
-            'PPO uses those metrics during offline training and evaluation; this viewer shows fixed or recorded schedules.',
-        ),
-      ]),
-      rlRow,
       el('p', { class: 'note', style: 'margin-top:14px' }, [
         el('b', { text: 'Illustrative: ' }),
         document.createTextNode(
@@ -289,7 +280,31 @@ export class Panel {
       ]),
     );
 
-    this.root.append(this.makeup.node, this.deaths.node, this.chemistry.node, this.about.node);
+    this.root.append(
+      this.makeup.node,
+      this.deaths.node,
+      this.chemistry.node,
+      this.setup.node,
+      this.about.node,
+    );
+
+    /* Running an experiment rebuilds this panel, and collapsing whatever the
+       person had open would throw away their place in it. */
+    for (const fold of this.folds()) {
+      const wanted = openFolds[fold.title];
+      if (wanted !== undefined) fold.node.open = wanted;
+    }
+  }
+
+  private folds(): Fold[] {
+    return [this.makeup, this.deaths, this.chemistry, this.setup, this.about];
+  }
+
+  /** Which groups are open, to carry across a rebuild. */
+  foldState(): Record<string, boolean> {
+    const out: Record<string, boolean> = {};
+    for (const fold of this.folds()) out[fold.title] = fold.node.open;
+    return out;
   }
 
   /** The chart belongs inside the question it answers. */
@@ -333,6 +348,7 @@ export class Panel {
     this.updateMakeup(counts, viewName);
     this.updateCauses(stats);
     this.updateChemistry(source, history);
+    this.updateSetup();
     this.updateAbout(frame);
   }
 
@@ -426,6 +442,10 @@ export class Panel {
     }
     this.chemistry.set(summary ? `${summary} × IC50` : '');
     this.chemistry.body.title = GLOSSARY.ic50;
+  }
+
+  private updateSetup(): void {
+    this.setup.set(this.experiment.summary());
   }
 
   private updateAbout(frame: FrameStats | undefined): void {
