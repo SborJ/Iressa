@@ -21,7 +21,7 @@ export interface ControlHandlers {
   onFrame(): void;
 }
 
-const SPEEDS = [1, 2, 4, 8, 16, 32, 64];
+const SPEEDS = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512];
 
 /**
  * The controls.

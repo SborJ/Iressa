@@ -74,6 +74,7 @@ def export_run(
     keyframe_every_days: float = 1.0,
     template_rules: Path = TEMPLATE_RULES,
     vasculature_spec: dict | None = None,
+    microenvironment_args=None,
     progress=None
 ) -> dict[str, Any]:
     out = out_root / name
@@ -90,7 +91,12 @@ def export_run(
     if vasculature_spec:
         config = replace(config, vasculature_trunks=int(vasculature_spec.get("trunks", config.vasculature_trunks)),
                          vasculature_max_depth=int(vasculature_spec.get("maxDepth", config.vasculature_max_depth)))
-    runner = build_runner(schedule_name=schedule, config=config, record_events=True)
+    runner = build_runner(
+        schedule_name=schedule,
+        config=config,
+        microenvironment_args=microenvironment_args,
+        record_events=True
+    )
     automata = runner.automata
     world = automata.world
 

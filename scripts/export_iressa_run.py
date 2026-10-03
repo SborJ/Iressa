@@ -13,6 +13,7 @@ import argparse
 import json
 import sys
 import time
+from argparse import Namespace
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -21,6 +22,7 @@ sys.path.insert(0, str(ROOT))
 from cancer_sim.experiments import ExperimentConfig  # noqa: E402
 from cancer_sim.iressa_export import DEFAULT_3D_TREE, export_run  # noqa: E402
 from cancer_sim.simulation import DRUGS  # noqa: E402
+from cancer_sim.config_controls import OXYGEN_PRESETS  # noqa: E402
 
 SCHEDULES = ("none", "continuous-gefitinib", "continuous-osimertinib", "continuous-capmatinib",
              "gefitinib-osimertinib", "osimertinib-capmatinib", "adaptive-gefitinib", "adaptive-osimertinib", "adaptive-capmatinib")
@@ -49,6 +51,14 @@ def main() -> int:
     p.add_argument("--voxel-um", type=float, default=20.0)
     p.add_argument("--trunks", type=int, default=DEFAULT_3D_TREE["trunks"])
     p.add_argument("--max-depth", type=int, default=DEFAULT_3D_TREE["maxDepth"])
+    p.add_argument("--oxygen-mode", choices=OXYGEN_PRESETS, default="default")
+    p.add_argument("--oxygen-source", type=float, default=None)
+    p.add_argument("--oxygen-uptake", type=float, default=None)
+    p.add_argument("--oxygen-vmax", type=float, default=None)
+    p.add_argument("--oxygen-prolif-threshold", type=float, default=None)
+    p.add_argument("--oxygen-necrosis-threshold", type=float, default=None)
+    p.add_argument("--necrosis-exposure-time", type=float, default=None)
+    p.add_argument("--hypoxic-death-rate", type=float, default=None)
     args = p.parse_args()
 
     width = args.width or args.size
@@ -69,8 +79,23 @@ def main() -> int:
         print(f"  step {step}/{total}  day {rec.time:.1f}  {rec.drug:12s} burden {rec.burden:6d}  "
               f"EGFR {rec.egfr} T790M {rec.t790m} C797S {rec.c797s} MET {rec.met_amp}  ({time.time() - t0:.0f}s)", flush=True)
 
+    microenvironment_args = Namespace(
+        oxygen_mode=args.oxygen_mode,
+        oxygen_source=args.oxygen_source,
+        oxygen_uptake=args.oxygen_uptake,
+        oxygen_vmax=args.oxygen_vmax,
+        oxygen_prolif_threshold=args.oxygen_prolif_threshold,
+        oxygen_necrosis_threshold=args.oxygen_necrosis_threshold,
+        necrosis_exposure_time=args.necrosis_exposure_time,
+        hypoxic_death_rate=args.hypoxic_death_rate,
+        field_substep_minutes=None,
+        drug_solver=None,
+        necrotic_clearance_rate=None,
+        vessel_spacing_um=None
+    )
     summary = export_run(config, args.schedule, name=args.name, tick_minutes=args.tick_minutes,
-                         keyframe_every_days=args.keyframe_every_days, vasculature_spec=spec, progress=progress)
+                         keyframe_every_days=args.keyframe_every_days, vasculature_spec=spec,
+                         microenvironment_args=microenvironment_args, progress=progress)
     print(json.dumps({k: v for k, v in summary.items() if k not in ("config",)}, indent=2))
     print(f"\nopen: http://localhost:5173{summary['viewer_url']}")
     return 0

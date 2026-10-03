@@ -22,6 +22,11 @@ const GLOSSARY: Record<string, string> = {
   clone: 'A lineage of cells sharing the same mutations.',
 };
 
+const PPO_TRAIN_COMMAND =
+  'python3 scripts/train_ppo.py --days 120 --total-timesteps 50000 --output-dir outputs/rl';
+const PPO_EVALUATE_COMMAND =
+  'python3 scripts/evaluate_policy.py --days 120 --seeds 1001,1002,1003 --output-dir outputs/rl_eval';
+
 function term(text: string, key: keyof typeof GLOSSARY | string): HTMLElement {
   const t = el('span', { class: 'term', text });
   const explain = GLOSSARY[key.toLowerCase()];
@@ -254,9 +259,27 @@ export class Panel {
       b.addEventListener('click', fn);
       exportRow.append(b);
     }
+    const rlRow = el('div', { style: 'display:flex;gap:6px;margin-top:10px' });
+    for (const [label, command] of [
+      ['Copy PPO train', PPO_TRAIN_COMMAND],
+      ['Copy PPO eval', PPO_EVALUATE_COMMAND],
+    ] as [string, string][]) {
+      const b = el('button', { class: 'btn ghost', type: 'button', text: label });
+      b.style.flex = '1';
+      b.addEventListener('click', () => void navigator.clipboard?.writeText(command));
+      rlRow.append(b);
+    }
     this.about.body.append(
       ...aboutRows,
       exportRow,
+      el('p', { class: 'note', style: 'margin-top:14px' }, [
+        el('b', { text: 'Evolutionary control: ' }),
+        document.createTextNode(
+          'the Python RL layer now observes clone control margins M_i, resistance-graph distances D_i, and an ECI proxy. ' +
+            'PPO uses those metrics during offline training and evaluation; this viewer shows fixed or recorded schedules.',
+        ),
+      ]),
+      rlRow,
       el('p', { class: 'note', style: 'margin-top:14px' }, [
         el('b', { text: 'Illustrative: ' }),
         document.createTextNode(
