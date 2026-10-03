@@ -1,0 +1,7 @@
+clone_id,model_id,canonical_alterations,drugs,n_drug_measurements
+EGFR,SIDM00046,EGFR_L858R,erlotinib|gefitinib|osimertinib,3
+EGFR,SIDM00237,EGFR_EXON19DEL,erlotinib|gefitinib|osimertinib,3
+EGFR,SIDM00745,EGFR_EXON19DEL,erlotinib|gefitinib|osimertinib,3
+EGFR,SIDM01067,EGFR_EXON19DEL,erlotinib|gefitinib|osimertinib,3
+T790M,SIDM00759,EGFR_L858R|EGFR_T790M,erlotinib|gefitinib|osimertinib,3
+MET_AMP,SIDM01598,EGFR_EXON19DEL|MET_AMP,,0

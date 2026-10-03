@@ -1,0 +1,127 @@
+{
+  "metadata": {
+    "scope": "EGFR-mutant lung cancer resistance simulator seed data",
+    "notes": [
+      "IC50 values are simulator seed values in nM, chosen to encode qualitative sensitivity/resistance patterns until raw public exports are supplied.",
+      "Use data/raw public exports to replace or refine these values for analysis-grade work.",
+      "Do not use this dataset for clinical decision making."
+    ],
+    "source_families": [
+      "Cell Model Passports / GDSC for cell model drug response",
+      "CIViC for mutation-drug evidence",
+      "cBioPortal / MSK-IMPACT for tumor alteration frequencies"
+    ]
+  },
+  "clones": [
+    {
+      "id": "EGFR",
+      "label": "EGFR-mutant",
+      "alterations": ["EGFR_exon19del_or_L858R"],
+      "growth_rate": 0.036,
+      "fitness_cost": 0.0,
+      "drug_sensitivities": {
+        "gefitinib": "sensitive",
+        "osimertinib": "sensitive",
+        "capmatinib": "resistant"
+      },
+      "ic50_nm": {
+        "gefitinib": 35,
+        "osimertinib": 18,
+        "capmatinib": 8000
+      },
+      "allowed_next_resistance_transitions": ["T790M", "MET_AMP"],
+      "initial_fraction_hint": 0.94
+    },
+    {
+      "id": "T790M",
+      "label": "EGFR + T790M",
+      "alterations": ["EGFR_exon19del_or_L858R", "EGFR_T790M"],
+      "growth_rate": 0.032,
+      "fitness_cost": 0.11,
+      "drug_sensitivities": {
+        "gefitinib": "resistant",
+        "osimertinib": "sensitive",
+        "capmatinib": "resistant"
+      },
+      "ic50_nm": {
+        "gefitinib": 13600,
+        "osimertinib": 38,
+        "capmatinib": 8000
+      },
+      "allowed_next_resistance_transitions": ["C797S", "MET_AMP"],
+      "initial_fraction_hint": 0.05
+    },
+    {
+      "id": "C797S",
+      "label": "EGFR + T790M + C797S",
+      "alterations": ["EGFR_exon19del_or_L858R", "EGFR_T790M", "EGFR_C797S"],
+      "growth_rate": 0.029,
+      "fitness_cost": 0.18,
+      "drug_sensitivities": {
+        "gefitinib": "resistant",
+        "osimertinib": "resistant",
+        "capmatinib": "resistant"
+      },
+      "ic50_nm": {
+        "gefitinib": 17000,
+        "osimertinib": 9200,
+        "capmatinib": 8000
+      },
+      "allowed_next_resistance_transitions": [],
+      "initial_fraction_hint": 0.005
+    },
+    {
+      "id": "MET_AMP",
+      "label": "EGFR + MET amplification",
+      "alterations": ["EGFR_exon19del_or_L858R", "MET_amplification"],
+      "growth_rate": 0.034,
+      "fitness_cost": 0.06,
+      "drug_sensitivities": {
+        "gefitinib": "partially_resistant",
+        "osimertinib": "partially_resistant",
+        "capmatinib": "sensitive"
+      },
+      "ic50_nm": {
+        "gefitinib": 4500,
+        "osimertinib": 2200,
+        "capmatinib": 80
+      },
+      "allowed_next_resistance_transitions": [],
+      "initial_fraction_hint": 0.005
+    }
+  ],
+  "resistance_evidence": [
+    {
+      "parent_clone": "EGFR",
+      "child_clone": "T790M",
+      "alteration": "EGFR_T790M",
+      "relationship": "acquired resistance to first-generation EGFR inhibitors",
+      "evidence_source": "CIViC predictive/therapeutic evidence family",
+      "simulation_probability": 0.00002
+    },
+    {
+      "parent_clone": "T790M",
+      "child_clone": "C797S",
+      "alteration": "EGFR_C797S",
+      "relationship": "acquired resistance to osimertinib",
+      "evidence_source": "CIViC predictive/therapeutic evidence family",
+      "simulation_probability": 0.00001
+    },
+    {
+      "parent_clone": "EGFR",
+      "child_clone": "MET_AMP",
+      "alteration": "MET_amplification",
+      "relationship": "bypass resistance mechanism",
+      "evidence_source": "CIViC and cBioPortal alteration evidence families",
+      "simulation_probability": 0.00001
+    },
+    {
+      "parent_clone": "T790M",
+      "child_clone": "MET_AMP",
+      "alteration": "MET_amplification",
+      "relationship": "bypass resistance mechanism after EGFR inhibitor exposure",
+      "evidence_source": "CIViC and cBioPortal alteration evidence families",
+      "simulation_probability": 0.00001
+    }
+  ]
+}

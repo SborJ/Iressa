@@ -1,0 +1,74 @@
+[
+  {
+    "from": "EGFR",
+    "to": "T790M",
+    "mechanism": "mutation",
+    "alteration": "EGFR_T790M",
+    "drug_context": "gefitinib/erlotinib",
+    "effect": "resistance",
+    "transition_probability": null,
+    "evidence": [
+      {
+        "source": "CIViC predictive/therapeutic evidence family",
+        "relationship": "acquired resistance to first-generation EGFR inhibitors",
+        "status": "literature_derived"
+      }
+    ],
+    "simulation_probability": 2e-05,
+    "probability_status": "assumed"
+  },
+  {
+    "from": "T790M",
+    "to": "C797S",
+    "mechanism": "mutation",
+    "alteration": "EGFR_C797S",
+    "drug_context": "osimertinib",
+    "effect": "resistance",
+    "transition_probability": null,
+    "evidence": [
+      {
+        "source": "CIViC predictive/therapeutic evidence family",
+        "relationship": "acquired resistance to osimertinib",
+        "status": "literature_derived"
+      }
+    ],
+    "simulation_probability": 1e-05,
+    "probability_status": "assumed"
+  },
+  {
+    "from": "EGFR",
+    "to": "MET_AMP",
+    "mechanism": "amplification",
+    "alteration": "MET_amplification",
+    "drug_context": "EGFR inhibitor",
+    "effect": "resistance",
+    "transition_probability": null,
+    "evidence": [
+      {
+        "source": "CIViC and cBioPortal alteration evidence families",
+        "relationship": "bypass resistance mechanism",
+        "status": "literature_derived"
+      }
+    ],
+    "simulation_probability": 1e-05,
+    "probability_status": "assumed"
+  },
+  {
+    "from": "T790M",
+    "to": "MET_AMP",
+    "mechanism": "amplification",
+    "alteration": "MET_amplification",
+    "drug_context": "EGFR inhibitor",
+    "effect": "resistance",
+    "transition_probability": null,
+    "evidence": [
+      {
+        "source": "CIViC and cBioPortal alteration evidence families",
+        "relationship": "bypass resistance mechanism after EGFR inhibitor exposure",
+        "status": "literature_derived"
+      }
+    ],
+    "simulation_probability": 1e-05,
+    "probability_status": "assumed"
+  }
+]

@@ -1,0 +1,5 @@
+parent_clone,child_clone,alteration,relationship,evidence_source,simulation_probability
+EGFR,T790M,EGFR_T790M,acquired resistance to first-generation EGFR inhibitors,CIViC predictive/therapeutic evidence family,2e-05
+T790M,C797S,EGFR_C797S,acquired resistance to osimertinib,CIViC predictive/therapeutic evidence family,1e-05
+EGFR,MET_AMP,MET_amplification,bypass resistance mechanism,CIViC and cBioPortal alteration evidence families,1e-05
+T790M,MET_AMP,MET_amplification,bypass resistance mechanism after EGFR inhibitor exposure,CIViC and cBioPortal alteration evidence families,1e-05

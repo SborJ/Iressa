@@ -1,0 +1,18 @@
+model_id,model_name,gene,alteration,protein_change,alteration_type,cancer_type,cancer_type_detail,tissue,cosmic_id,doubling_time_hours,source_dataset
+SIDM00046,H3255,EGFR,p.L858R,p.L858R,snp,Non-Small Cell Lung Carcinoma,Lung Adenocarcinoma,Lung,1247873,96.0,Cell Model Passports mutations_summary_latest
+SIDM00237,PC-14,EGFR,p.E746_A750delELREA,p.E746_A750delELREA,deletion,Non-Small Cell Lung Carcinoma,Lung Adenocarcinoma,Lung,753608,43.34,Cell Model Passports mutations_summary_latest
+SIDM00486,EBC-1,MET,Amplification,,amplification,Squamous Cell Lung Carcinoma,Squamous Cell Lung Carcinoma,Lung,753554,57.74,Cell Model Passports cnv_summary_latest
+SIDM00524,DMS-79,MET,Amplification,,amplification,Small Cell Lung Carcinoma,Small Cell Lung Carcinoma,Lung,753551,90.51,Cell Model Passports cnv_summary_latest
+SIDM00723,NCI-H2444,MET,Amplification,,amplification,Non-Small Cell Lung Carcinoma,Non-Small Cell Lung Carcinoma,Lung,1298356,,Cell Model Passports cnv_summary_latest
+SIDM00727,NCI-H2342,MET,Amplification,,amplification,Non-Small Cell Lung Carcinoma,Lung Adenocarcinoma,Lung,687819,169.12,Cell Model Passports cnv_summary_latest
+SIDM00745,NCI-H1650,EGFR,p.E746_A750delELREA,p.E746_A750delELREA,deletion,Non-Small Cell Lung Carcinoma,Bronchiolo-Alveolar Lung Carcinoma,Lung,687800,81.88,Cell Model Passports mutations_summary_latest
+SIDM00746,NCI-H1648,MET,Amplification,,amplification,Non-Small Cell Lung Carcinoma,Lung Adenocarcinoma,Lung,687799,113.08,Cell Model Passports cnv_summary_latest
+SIDM00749,NCI-H1573,MET,Amplification,,amplification,Non-Small Cell Lung Carcinoma,Lung Adenocarcinoma,Lung,908472,140.71,Cell Model Passports cnv_summary_latest
+SIDM00758,NCI-H1993,MET,Amplification,,amplification,Non-Small Cell Lung Carcinoma,Lung Adenocarcinoma,Lung,908476,54.11,Cell Model Passports cnv_summary_latest
+SIDM00759,NCI-H1975,EGFR,p.L858R,p.L858R,snp,Non-Small Cell Lung Carcinoma,Lung Adenocarcinoma,Lung,924244,40.84,Cell Model Passports mutations_summary_latest
+SIDM00759,NCI-H1975,EGFR,p.T790M,p.T790M,snp,Non-Small Cell Lung Carcinoma,Lung Adenocarcinoma,Lung,924244,40.84,Cell Model Passports mutations_summary_latest
+SIDM00925,NCI-H441,MET,Amplification,,amplification,Non-Small Cell Lung Carcinoma,Papillary Lung Adenocarcinoma,Lung,908460,92.38,Cell Model Passports cnv_summary_latest
+SIDM01067,HCC-827,EGFR,p.E746_A750delELREA,p.E746_A750delELREA,deletion,Non-Small Cell Lung Carcinoma,Lung Adenocarcinoma,Lung,1240146,66.04,Cell Model Passports mutations_summary_latest
+SIDM01116,NCI-H810,MET,Amplification,,amplification,Non-Small Cell Lung Carcinoma,Large Cell Lung Carcinoma,Lung,925341,59.37,Cell Model Passports cnv_summary_latest
+SIDM01598,HCC-2935,EGFR,p.E746_S752delinsI,p.E746_S752delinsI,insertion,Non-Small Cell Lung Carcinoma,Lung Adenocarcinoma,Lung,,,Cell Model Passports mutations_summary_latest
+SIDM01598,HCC-2935,MET,Amplification,,amplification,Non-Small Cell Lung Carcinoma,Lung Adenocarcinoma,Lung,,,Cell Model Passports cnv_summary_latest

@@ -1,0 +1,92 @@
+[
+  {
+    "id": "EGFR",
+    "label": "EGFR-mutant",
+    "alterations": [
+      "EGFR_exon19del_or_L858R"
+    ],
+    "growth_rate": 0.22753526000680058,
+    "fitness_cost": 0.0,
+    "drug_sensitivities": {
+      "gefitinib": "partially_resistant",
+      "osimertinib": "sensitive",
+      "capmatinib": "resistant"
+    },
+    "ic50_nm": {
+      "gefitinib": 446.36165169016465,
+      "osimertinib": 58.456360258609266,
+      "capmatinib": 8000.0
+    },
+    "allowed_next_resistance_transitions": [
+      "T790M",
+      "MET_AMP"
+    ]
+  },
+  {
+    "id": "T790M",
+    "label": "EGFR + T790M",
+    "alterations": [
+      "EGFR_exon19del_or_L858R",
+      "EGFR_T790M"
+    ],
+    "growth_rate": 0.4073342882820442,
+    "fitness_cost": 0.0,
+    "drug_sensitivities": {
+      "gefitinib": "resistant",
+      "osimertinib": "sensitive",
+      "capmatinib": "resistant"
+    },
+    "ic50_nm": {
+      "gefitinib": 13643.715326962285,
+      "osimertinib": 37.92578709404305,
+      "capmatinib": 8000.0
+    },
+    "allowed_next_resistance_transitions": [
+      "C797S",
+      "MET_AMP"
+    ]
+  },
+  {
+    "id": "C797S",
+    "label": "EGFR + T790M + C797S",
+    "alterations": [
+      "EGFR_exon19del_or_L858R",
+      "EGFR_T790M",
+      "EGFR_C797S"
+    ],
+    "growth_rate": 0.029,
+    "fitness_cost": 0.18,
+    "drug_sensitivities": {
+      "gefitinib": "resistant",
+      "osimertinib": "resistant",
+      "capmatinib": "resistant"
+    },
+    "ic50_nm": {
+      "gefitinib": 17000.0,
+      "osimertinib": 9200.0,
+      "capmatinib": 8000.0
+    },
+    "allowed_next_resistance_transitions": []
+  },
+  {
+    "id": "MET_AMP",
+    "label": "EGFR + MET amplification",
+    "alterations": [
+      "EGFR_exon19del_or_L858R",
+      "MET_amplification"
+    ],
+    "growth_rate": 0.034,
+    "fitness_cost": 0.06,
+    "drug_sensitivities": {
+      "gefitinib": "resistant",
+      "osimertinib": "partially_resistant",
+      "capmatinib": "sensitive"
+    },
+    "ic50_nm": {
+      "gefitinib": 4500.0,
+      "osimertinib": 2200.0,
+      "capmatinib": 80.0
+    },
+    "allowed_next_resistance_transitions": []
+  }
+]

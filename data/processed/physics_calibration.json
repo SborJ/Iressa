@@ -1,0 +1,45 @@
+{
+  "config": {
+    "space": {
+      "lattice_spacing_um": 20
+    },
+    "time": {
+      "simulation_step_minutes": 5,
+      "cell_update_hours": 1
+    },
+    "oxygen": {
+      "diffusion_um2_s": 2000,
+      "vessel_concentration": 1.0,
+      "uptake_status": "demo_assumption"
+    },
+    "drugs": {
+      "gefitinib": {
+        "concentration_mode": "normalized",
+        "vessel_concentration_nm": 1000,
+        "diffusion_um2_s": 500,
+        "decay_per_hour": 0.02,
+        "calibration_status": "demo_assumption"
+      },
+      "osimertinib": {
+        "concentration_mode": "normalized",
+        "vessel_concentration_nm": 1000,
+        "diffusion_um2_s": 500,
+        "decay_per_hour": 0.02,
+        "calibration_status": "demo_assumption"
+      },
+      "capmatinib": {
+        "concentration_mode": "normalized",
+        "vessel_concentration_nm": 1000,
+        "diffusion_um2_s": 500,
+        "decay_per_hour": 0.02,
+        "calibration_status": "demo_assumption"
+      }
+    }
+  },
+  "diffusion_grid_coefficients": {
+    "oxygen": 1500.0,
+    "gefitinib": 375.0,
+    "osimertinib": 375.0,
+    "capmatinib": 375.0
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "outputs": {
+    "models": "data/processed/models.csv",
+    "alterations": "data/processed/alterations.csv",
+    "drug_response": "data/processed/drug_response.csv",
+    "civic_evidence": "data/processed/civic_evidence.csv",
+    "model_drug_evidence": "data/processed/model_drug_evidence.csv",
+    "clone_model_matches": "data/processed/clone_model_matches.csv",
+    "calibrated_clone_parameters_json": "data/processed/calibrated_clone_parameters.json",
+    "calibrated_clone_parameters_csv": "data/processed/calibrated_clone_parameters.csv",
+    "resistance_graph": "data/processed/resistance_graph.json",
+    "physics_calibration": "data/processed/physics_calibration.json",
+    "calibration_report": "data/processed/calibration_report.md"
+  },
+  "raw_files_present": {
+    "gdsc_drug_response": true,
+    "cell_model_passports_mutations": true,
+    "civic_evidence": true,
+    "cbioportal_alterations": true
+  },
+  "raw_extract_counts": {
+    "gdsc_drug_response": 2870,
+    "cell_model_passports_mutations": 17,
+    "civic_evidence": 69,
+    "cbioportal_alterations": 777
+  },
+  "input_hashes": {
+    "gdsc_drug_response": "b472905ea811c145b1827f382975756a66c2ac5dffbe9ad323148bfdea38cdb5",
+    "cell_model_passports_mutations": "52f38dd03a5a246dd81f26a7f54a32e9be2f05e45b8d7eb7eebd7a5bcc8c989e",
+    "civic_evidence": "c8393e5708835572922d248c2561bbed13601db94a63426c5f9a1e72ea68ae0f",
+    "cbioportal_alterations": "901439d00f53aaac7cba1f17b89ed2231f6c053af64bab1cd501a5a0716dfd5b"
+  },
+  "warnings": [
+    "oxygen physical diffusion grid coefficient 1500 exceeds the single-step explicit 2D stability limit; avoid one biological CA step as one explicit diffusion step. Runtime field updates use quasi-steady oxygen and drug diffusion substeps.",
+    "gefitinib physical diffusion grid coefficient 375 exceeds the single-step explicit 2D stability limit; avoid one biological CA step as one explicit diffusion step. Runtime field updates use quasi-steady oxygen and drug diffusion substeps.",
+    "osimertinib physical diffusion grid coefficient 375 exceeds the single-step explicit 2D stability limit; avoid one biological CA step as one explicit diffusion step. Runtime field updates use quasi-steady oxygen and drug diffusion substeps.",
+    "capmatinib physical diffusion grid coefficient 375 exceeds the single-step explicit 2D stability limit; avoid one biological CA step as one explicit diffusion step. Runtime field updates use quasi-steady oxygen and drug diffusion substeps."
+  ]
+}
