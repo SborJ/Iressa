@@ -31,21 +31,31 @@ from cancer_sim.mutation_flow import (
     MutationNode,
     MutationTransition
 )
+from cancer_sim.rl_env import (
+    ACTION_TABLE,
+    OBSERVATION_NAMES,
+    CancerTreatmentEnv,
+    RLConfig
+)
 
 __all__ = [
     "AutomataConfig",
     "AutomataStepStats",
     "AdaptiveAT50Treatment",
+    "ACTION_TABLE",
     "Cell",
     "CellSite",
     "CellularAutomataPhysics",
+    "CancerTreatmentEnv",
     "ClonePhenotype",
     "ContinuousTreatment",
     "MutationFlowGenerator",
     "MutationNode",
     "MutationTransition",
+    "OBSERVATION_NAMES",
     "NoTreatment",
     "ResistanceTransition",
+    "RLConfig",
     "ScalarField",
     "SimulationRecord",
     "SimulationRunner",

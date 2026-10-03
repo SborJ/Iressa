@@ -34,11 +34,16 @@ python3 -m pytest -q          # engine, calibration and export tests
 
 See `docs/validation/VIEWER_INTEGRATION.md` (how the two halves connect),
 `docs/validation/VALIDATION_REPORT.md` (what was audited and fixed in the engine) and
-`docs/python-engine.md` (the engine's command reference). The planned treatment
-optimization layer is documented in `docs/rl-treatment-design.md`; PPO is the
-first baseline policy, not a clinical recommendation system. Runnable RL is not
-implemented yet; the current app has fixed/adaptive schedules and experiment
-controls, with PPO kept as the next design target.
+`docs/python-engine.md` (the engine's command reference). The treatment
+optimization scaffold is documented in `docs/rl-treatment-design.md`; it includes
+a Gymnasium-style environment and PPO entrypoint, but no trained policy or
+clinical recommendation system.
+
+```
+python3 scripts/train_ppo.py --smoke
+pip install -r requirements-rl.txt
+python3 scripts/train_ppo.py --days 120 --dt-days 1 --total-timesteps 10000
+```
 
 ## What you see
 

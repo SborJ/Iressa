@@ -1,8 +1,9 @@
 # Reinforcement Learning Treatment Design
 
-Status: design only. The simulator has fixed/adaptive treatment schedules and
-viewer controls, but it does not yet include a runnable Gymnasium environment,
-PPO training script, policy checkpoint, or RL-driven simulation source.
+Status: first implementation scaffold. The simulator now has a Gymnasium-style
+environment in `cancer_sim/rl_env.py` and a PPO entrypoint in
+`scripts/train_ppo.py`. There is not yet a trained policy checkpoint, RL-driven
+viewer source, or validated policy result.
 
 This project is not a clinical treatment optimizer. The RL layer is an experimental
 research scaffold for comparing simulated treatment policies inside the calibrated
@@ -22,6 +23,19 @@ from simulator state and compare it against fixed schedules:
 The baseline algorithm should be PPO because it is stable, well supported, and
 works with continuous or discrete action spaces. PPO is not the scientific claim;
 it is the first reproducible learning baseline.
+
+Run a dependency-free smoke test:
+
+```bash
+python3 scripts/train_ppo.py --smoke --days 10 --smoke-steps 5
+```
+
+Install PPO dependencies and start a small training run:
+
+```bash
+pip install -r requirements-rl.txt
+python3 scripts/train_ppo.py --days 120 --dt-days 1 --total-timesteps 10000
+```
 
 ## Environment
 
