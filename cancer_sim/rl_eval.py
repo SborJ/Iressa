@@ -32,6 +32,7 @@ class EpisodeMetrics:
     cumulative_dose: float
     switches: int
     steps: int
+    first_progression_day: float | None = None
 
     def as_row(self) -> dict[str, int | float | str]:
         return {
@@ -46,6 +47,7 @@ class EpisodeMetrics:
             "cumulative_dose": self.cumulative_dose,
             "switches": self.switches,
             "steps": self.steps,
+            "first_progression_day": self.first_progression_day,
         }
 
 
@@ -143,6 +145,7 @@ def run_episode(
         cumulative_dose=sum(info["cumulative_dose"].values()),
         switches=switches,
         steps=info["step"],
+        first_progression_day=info["first_progression_day"],
     )
 
 
@@ -161,6 +164,12 @@ def summarize(metrics: list[EpisodeMetrics]) -> list[dict[str, int | float | str
             "max_resistant_fraction_median": _median(item.max_resistant_fraction for item in group),
             "cumulative_dose_median": _median(item.cumulative_dose for item in group),
             "switches_median": _median(item.switches for item in group),
+            "steps_median": _median(item.steps for item in group),
+            "progression_fraction": sum(item.first_progression_day is not None for item in group) / len(group),
+            "progression_day_median": (
+                _median(item.first_progression_day for item in group if item.first_progression_day is not None)
+                if any(item.first_progression_day is not None for item in group) else None
+            ),
         })
     return rows
 

@@ -1,11 +1,12 @@
 # Reinforcement Learning Treatment Design
 
-Status: first implementation scaffold with evolutionary-controllability
-features. The simulator now has a Gymnasium-style environment in
+Status: first PPO implementation with evolutionary-controllability
+features. The simulator has a Gymnasium-style environment in
 `cancer_sim/rl_env.py`, a PPO entrypoint in `scripts/train_ppo.py`, policy
 evaluation in `scripts/evaluate_policy.py`, and clone/tumor controllability
-metrics in `cancer_sim/controllability.py`. There is not yet an RL-driven viewer
-source or validated policy result.
+metrics in `cancer_sim/controllability.py`. The local Vite UI starts PPO
+training, compares it with fixed schedules on held-out seeds, and loads a
+PPO-driven recorded run into the main viewer.
 
 This project is not a clinical treatment optimizer. The RL layer is an experimental
 research scaffold for comparing simulated treatment policies inside the calibrated
@@ -32,12 +33,44 @@ Run a dependency-free smoke test:
 python3 scripts/train_ppo.py --smoke --days 10 --smoke-steps 5
 ```
 
+The smoke test writes both a CSV and a PNG trace:
+
+```text
+outputs/rl/ppo_smoke.csv
+outputs/rl/ppo_smoke.png
+```
+
 Install PPO dependencies and start a small training run:
 
 ```bash
 pip install -r requirements-rl.txt
 python3 scripts/train_ppo.py --days 120 --dt-days 1 --total-timesteps 10000
 ```
+
+Training saves the policy plus a deterministic rollout trace:
+
+```text
+outputs/rl/ppo_iressa.zip
+outputs/rl/ppo_training_trace.csv
+outputs/rl/ppo_training_trace.png
+```
+
+## Train In The UI
+
+Start the local app with `npm run dev`, then open the **PPO training** panel.
+Choose episode days and training steps, then click **Train PPO**. The panel
+updates as Python trains: completed steps, episode reward, living cells, ECI,
+and the latest action. **Stop** terminates the current process. At completion,
+the panel shows median reward, burden, resistant fraction, and dose for PPO
+and fixed policies over held-out seeds 1001–1003. It also lists the actions
+PPO chose on seed 1001. The UI uses a compact 14 × 10 × 8 3D capillary-grid scenario for
+both training and held-out comparison. **Play PPO experiment** loads that exact recorded
+Python run into the main scene without a page reload. The checkpoint is saved
+at `outputs/rl/ppo_iressa.zip`; the UI does not open generated plot files.
+
+The UI training API is local to the Vite development server. It requires the
+dependencies in `requirements-rl.txt`. Repeated episodes use a reproducible
+sequence of distinct simulator seeds.
 
 Evaluate fixed baselines, and optionally a saved PPO checkpoint:
 
@@ -200,7 +233,7 @@ burden-based scaffold.
 
 ```text
 reward_t =
-  + controlled_day_reward if ECI >= ECI_min
+  + controlled_day_reward if burden < progression threshold and ECI >= ECI_min
   - w_burden      * normalized_burden
   - w_growth      * positive_burden_slope
   - w_resistance  * resistant_fraction
@@ -236,6 +269,12 @@ burden == 0
 burden >= progression_multiplier * initial_burden
 ECI < ECI_min
 ```
+
+The interactive UI uses a fixed experiment horizon for training and held-out
+comparison: it records the first progression day but does not stop at that
+threshold, and it disables ECI-based early stopping. Extinction can still end
+an episode. This keeps final burden and reward comparisons from favoring a
+policy merely because it progressed sooner.
 
 ## Constraints
 

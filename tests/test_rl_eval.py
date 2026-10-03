@@ -47,6 +47,8 @@ class RLEvaluationTest(unittest.TestCase):
 
         self.assertEqual(rows[0]["policy"], "none")
         self.assertEqual(rows[0]["n"], 2)
+        self.assertIn("progression_fraction", rows[0])
+        self.assertIn("progression_day_median", rows[0])
 
 
 if __name__ == "__main__":

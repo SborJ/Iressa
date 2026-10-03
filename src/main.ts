@@ -1,4 +1,4 @@
-import { loadData, describeLoadError } from './data.js';
+import { loadData, describeLoadError, type LoadedData } from './data.js';
 import { Viewer } from './render/viewer.js';
 import { FileSource } from './source/fileSource.js';
 import { eventsUrl, keyframesUrl, rulesUrl, sourceKind } from './defaultRun.js';
@@ -88,8 +88,10 @@ async function makeSource(data: Awaited<ReturnType<typeof loadData>>): Promise<S
 const STAND_OFF = 1.35;
 
 /** Frames the tumour, then stands back so it is not filling the frame. */
-function frameWithRoom(viewer: Viewer): void {
-  viewer.frameTumour();
+function frameWithRoom(viewer: Viewer, world: World): void {
+  const isSmallSection = Math.max(world.nx, world.ny, world.nz) <= 20;
+  viewer.frameTumour(isSmallSection ? 1.3 : 1);
+  if (isSmallSection) return;
   const target = viewer.controls.target;
   viewer.camera.position.sub(target).multiplyScalar(STAND_OFF).add(target);
   viewer.controls.update();
@@ -101,8 +103,31 @@ function shortDescription(text: string): string {
   return first.length > 2 ? first.charAt(0).toLowerCase() + first.slice(1) : text;
 }
 
-async function start(): Promise<void> {
-  const data = await loadData();
+let disposeCurrent: (() => void) | undefined;
+
+async function openRecordedRun(path: string): Promise<void> {
+  const target = new URL(path, location.href);
+  if (target.origin !== location.origin || !target.searchParams.get('events')?.startsWith('/runs/')) {
+    throw new Error('Invalid recorded run URL');
+  }
+  const previous = location.href;
+  history.pushState({}, '', target.pathname + target.search);
+  try {
+    const data = await loadData();
+    disposeCurrent?.();
+    for (const id of ['panel', 'timeline', 'stagetop', 'scalebar']) document.getElementById(id)?.replaceChildren();
+    document.querySelector('#headline .ring')?.remove();
+    const oldCanvas = document.getElementById('scene') as HTMLCanvasElement;
+    oldCanvas.replaceWith(oldCanvas.cloneNode(false));
+    await start(data);
+  } catch (error) {
+    history.replaceState({}, '', previous);
+    showError(error);
+  }
+}
+
+async function start(loaded?: LoadedData): Promise<void> {
+  const data = loaded ?? await loadData();
   const { rules, visuals } = data;
   let source = await makeSource(data);
 
@@ -177,6 +202,7 @@ async function start(): Promise<void> {
 
   function buildPanels(): void {
     const openFolds = panel?.foldState() ?? {};
+    panel?.dispose();
     narrative = new Narrative(activeRules);
     card = new Card(document.getElementById('card')!, activeRules, visuals, narrative);
 
@@ -225,8 +251,9 @@ async function start(): Promise<void> {
           `iressa-parameters-${activeRules.raw.seed}.json`,
           JSON.stringify(activeRules.raw, null, 2),
         ),
+      onLoadPpoRun: (url) => void openRecordedRun(url),
     }, openFolds);
-    panelRoot.insertBefore(controlsHost, panelRoot.children[1] ?? null);
+    panelRoot.insertBefore(controlsHost, panelRoot.children[2] ?? null);
     panel.appendChart(chartHost);
 
     const timelineRoot = document.getElementById('timeline')!;
@@ -271,12 +298,12 @@ async function start(): Promise<void> {
       if (changed === 'cutMode' || changed === 'cutFraction' || changed === 'init') {
         viewer.setCut(state.cutMode, state.cutFraction);
       }
-      if (changed === 'cutMode') frameWithRoom(viewer);
+      if (changed === 'cutMode') frameWithRoom(viewer, world);
       if (changed === 'playing') timeline.setPlaying(state.playing);
       viewer.presentation = state.presentation;
     },
     onStep: () => source.pump(1),
-    onFrame: () => frameWithRoom(viewer),
+    onFrame: () => frameWithRoom(viewer, world),
     onReset: () => resetRun(),
     onSkipDay: () => skipAhead(activeRules.ticksPerDay),
   });
@@ -288,7 +315,7 @@ async function start(): Promise<void> {
   viewer.applyView(controls.state.view);
   viewer.setColorBy(controls.state.colorBy);
   viewer.setCut(controls.state.cutMode, controls.state.cutFraction);
-  bindShortcuts(controls, { onFrame: () => frameWithRoom(viewer), onReset: () => resetRun() });
+  const unbindShortcuts = bindShortcuts(controls, { onFrame: () => frameWithRoom(viewer, world), onReset: () => resetRun() });
 
   /* --- hover: pick on the next frame, not on every pointer event --- */
   let pointer: { x: number; y: number } | undefined;
@@ -309,6 +336,7 @@ async function start(): Promise<void> {
 
   source.pump(1);
 
+  let frameId = 0;
   const frame = (now: number) => {
     const dt = Math.min(0.1, (now - last) / 1000);
     last = now;
@@ -328,7 +356,7 @@ async function start(): Promise<void> {
       timeline.setPlaying(false);
     }
     if (!framed && world.count > 0) {
-      frameWithRoom(viewer);
+      frameWithRoom(viewer, world);
       framed = true;
     }
 
@@ -369,9 +397,16 @@ async function start(): Promise<void> {
       chart.update(stats);
     }
 
-    requestAnimationFrame(frame);
+    frameId = requestAnimationFrame(frame);
   };
-  requestAnimationFrame(frame);
+  frameId = requestAnimationFrame(frame);
+  disposeCurrent = () => {
+    cancelAnimationFrame(frameId);
+    unbindShortcuts();
+    unsubscribe();
+    panel.dispose();
+    viewer.dispose();
+  };
 
   // One arrival, once. Nothing else on this screen moves unless asked to.
   enter([

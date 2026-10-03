@@ -13,6 +13,7 @@ import type { Narrative, Story } from './narrative.js';
 import { ExperimentPanel } from './experiment.js';
 import { foldTo } from './motion.js';
 import { Sparkline } from './sparkline.js';
+import { RLTraining } from './rlTraining.js';
 
 /** Jargon, explained where it is used rather than in a glossary nobody opens. */
 const GLOSSARY: Record<string, string> = {
@@ -92,6 +93,7 @@ export interface PanelHandlers {
   onCopyState(): void;
   onExportFrame(): void;
   onExportParameters(): void;
+  onLoadPpoRun(url: string): void;
 }
 
 /**
@@ -133,6 +135,7 @@ export class Panel {
   private livingSpark = new Sparkline();
   private highlighted = -1;
   private lastView = '';
+  private rlTraining?: RLTraining;
 
   constructor(
     private root: HTMLElement,
@@ -280,7 +283,9 @@ export class Panel {
       ]),
     );
 
+    this.rlTraining = new RLTraining(handlers.onLoadPpoRun);
     this.root.append(
+      this.rlTraining.node,
       this.makeup.node,
       this.deaths.node,
       this.chemistry.node,
@@ -305,6 +310,10 @@ export class Panel {
     const out: Record<string, boolean> = {};
     for (const fold of this.folds()) out[fold.title] = fold.node.open;
     return out;
+  }
+
+  dispose(): void {
+    this.rlTraining?.dispose();
   }
 
   /** The chart belongs inside the question it answers. */

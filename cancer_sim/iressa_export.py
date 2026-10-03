@@ -75,7 +75,9 @@ def export_run(
     template_rules: Path = TEMPLATE_RULES,
     vasculature_spec: dict | None = None,
     microenvironment_args=None,
-    progress=None
+    progress=None,
+    runner_override=None,
+    advance=None,
 ) -> dict[str, Any]:
     out = out_root / name
     out.mkdir(parents=True, exist_ok=True)
@@ -91,7 +93,7 @@ def export_run(
     if vasculature_spec:
         config = replace(config, vasculature_trunks=int(vasculature_spec.get("trunks", config.vasculature_trunks)),
                          vasculature_max_depth=int(vasculature_spec.get("maxDepth", config.vasculature_max_depth)))
-    runner = build_runner(
+    runner = runner_override or build_runner(
         schedule_name=schedule,
         config=config,
         microenvironment_args=microenvironment_args,
@@ -128,7 +130,11 @@ def export_run(
     keyframes = [keyframe(0)]
     counts = {"divide": 0, "mutate": 0, "death": 0, "removed": 0, "state": 0}
     for step in range(1, config.steps + 1):
-        runner.step(dt=config.dt, step_number=step)
+        keep_going = True
+        if advance is None:
+            runner.step(dt=config.dt, step_number=step)
+        else:
+            keep_going = advance(step)
         tick = step * ticks_per_step
         for event in automata.events:
             kind = event[0]
@@ -152,11 +158,14 @@ def export_run(
             keyframes.append(keyframe(tick + 1))      # a tick with no events: state after this step
         if progress and (step % 10 == 0 or step == config.steps):
             progress(step, config.steps, runner.history[-1])
+        if not keep_going:
+            break
 
     (out / "run.events").write_bytes(writer.bytes())
     (out / "run.keyframes").write_bytes(b"".join(keyframes))
     write_history_csv(out / "history.csv", runner.history)
 
+    config = replace(config, steps=len(runner.history))
     rules = build_rules(template, config, runner, tick_minutes, ticks_per_step, keyframe_every_steps, vasculature_spec, nz, z_offset)
     (out / "rules.json").write_text(json.dumps(rules, indent=2) + "\n")
 

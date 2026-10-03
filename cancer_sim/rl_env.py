@@ -100,7 +100,9 @@ class RLConfig:
     eci_weight: float = 0.5
     exhaustion_weight: float = 0.5
     eci_min: float = 0.05
+    stop_on_progression: bool = True
     controllability_horizon_days: float = 30.0
+    record_events: bool = False
 
     def __post_init__(self) -> None:
         if self.horizon_days <= 0:
@@ -149,10 +151,12 @@ class CancerTreatmentEnv(_gym_base()):
         self._step_index = 0
         self._initial_burden = 1
         self._minimum_burden = 1
+        self._first_progression_day: float | None = None
         self._cumulative_dose = {drug: 0.0 for drug in DRUGS}
         self._last_drug = "none"
         self._days_since_switch = 0.0
         self.last_observation = np.zeros(len(OBSERVATION_NAMES), dtype=np.float32)
+        self._episode_rng = np.random.default_rng(self.config.experiment.seed)
 
     def reset(
         self,
@@ -162,8 +166,10 @@ class CancerTreatmentEnv(_gym_base()):
     ) -> tuple[np.ndarray, dict[str, Any]]:
         if gym is not None:
             super().reset(seed=seed)
-        if seed is None:
-            seed = self.config.experiment.seed
+        if seed is not None:
+            self._episode_rng = np.random.default_rng(seed)
+        else:
+            seed = int(self._episode_rng.integers(0, 2**31 - 1))
         experiment = replace(
             self.config.experiment,
             seed=seed,
@@ -171,18 +177,25 @@ class CancerTreatmentEnv(_gym_base()):
             dt=self.config.decision_interval_days
         )
         self._schedule = FixedActionSchedule()
-        self._runner = build_runner(schedule_name="none", config=experiment)
+        self._runner = build_runner(schedule_name="none", config=experiment, record_events=self.config.record_events)
         self._runner.schedule = self._schedule
         self._step_index = 0
         self._last_record = None
         self._previous_record = None
         self._initial_burden = max(self._runner.initial_burden, 1)
         self._minimum_burden = self._initial_burden
+        self._first_progression_day = None
         self._cumulative_dose = {drug: 0.0 for drug in DRUGS}
         self._last_drug = "none"
         self._days_since_switch = 0.0
         self.last_observation = self._observation()
         return self.last_observation, self._info()
+
+    @property
+    def runner(self):
+        if self._runner is None:
+            raise RuntimeError("environment must be reset before accessing runner")
+        return self._runner
 
     def step(self, action: int) -> tuple[np.ndarray, float, bool, bool, dict[str, Any]]:
         if self._runner is None:
@@ -210,8 +223,11 @@ class CancerTreatmentEnv(_gym_base()):
         reward, components = self._reward(self._last_record, treatment)
         control = self._controllability()
         progressed = self._last_record.burden >= self.config.progression_multiplier * self._initial_burden
+        if progressed and self._first_progression_day is None:
+            self._first_progression_day = self._step_index * self.config.decision_interval_days
         treatment_exhausted = control.eci < self.config.eci_min
-        terminated = self._last_record.burden <= 0 or progressed or treatment_exhausted
+        terminated = (self._last_record.burden <= 0 or
+                      (progressed and self.config.stop_on_progression) or treatment_exhausted)
         truncated = self._step_index >= self.max_steps
         info = self._info()
         info["reward_components"] = components
@@ -302,7 +318,10 @@ class CancerTreatmentEnv(_gym_base()):
         control = max(0.0, (prev - record.burden) / max(self._initial_burden, 1))
         controllability = self._controllability()
         switched = 1.0 if self._previous_record is not None and action.drug != self._previous_record.drug else 0.0
-        controlled_day = 1.0 if controllability.eci >= self.config.eci_min else 0.0
+        controlled_day = float(
+            record.burden < self.config.progression_multiplier * self._initial_burden
+            and controllability.eci >= self.config.eci_min
+        )
         components = {
             "controlled_day": self.config.controlled_day_reward * controlled_day,
             "burden": -self.config.burden_weight * burden,
@@ -327,6 +346,7 @@ class CancerTreatmentEnv(_gym_base()):
             "burden": burden,
             "initial_burden": self._initial_burden,
             "minimum_burden": self._minimum_burden,
+            "first_progression_day": self._first_progression_day,
             "resistant_fraction": 0.0 if record is None else _resistant_fraction(record),
             "eci": control.eci,
             "treatment_exhausted_fraction": control.exhausted_fraction,
