@@ -1,0 +1,5 @@
+clone,label,alterations,growth_rate,fitness_cost,gefitinib_sensitivity,osimertinib_sensitivity,capmatinib_sensitivity,gefitinib_ic50_nm,osimertinib_ic50_nm,capmatinib_ic50_nm,allowed_next_resistance_transitions
+EGFR,EGFR-mutant,EGFR_exon19del_or_L858R,0.2742422079366747,0.0,partially_resistant,sensitive,resistant,247.32846696996984,73.93743620997114,8000.0,T790M|MET_AMP
+T790M,EGFR + T790M,EGFR_exon19del_or_L858R|EGFR_T790M,0.4073342882820442,0.0,resistant,sensitive,resistant,13643.715326962285,37.92578709404305,8000.0,C797S|MET_AMP
+C797S,EGFR + T790M + C797S,EGFR_exon19del_or_L858R|EGFR_T790M|EGFR_C797S,0.4073342882820442,0.18,resistant,resistant,resistant,17000.0,9200.0,8000.0,
+MET_AMP,EGFR + MET amplification,EGFR_exon19del_or_L858R|MET_amplification,0.2742422079366747,0.06,resistant,partially_resistant,sensitive,4500.0,2200.0,80.0,

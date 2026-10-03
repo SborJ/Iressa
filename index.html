@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en" data-palette="#3987e5,#d95926,#199e70,#c98500,#d55181">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Iressa — tumour simulation</title>
+<style>
+/* A dark-only instrument: the 3D scene is the surface, and the whole palette in
+   data/visuals.json is validated against it. */
+:root {
+  color-scheme: dark;
+  --surface-0: #080b11;
+  --surface-1: #121722;
+  --surface-2: #1b2130;
+  --surface-3: #242c3d;
+  --border:    #2a3342;
+  --text-primary:   #e8ecf3;
+  --text-secondary: #a3adbd;
+  --text-muted:     #6b7686;
+  --radius: 8px;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; overflow: hidden; }
+body {
+  background: var(--surface-0);
+  color: var(--text-primary);
+  font: 13px/1.45 var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+#scene { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+
+.panel {
+  position: fixed;
+  background: color-mix(in srgb, var(--surface-1) 88%, transparent);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+}
+.panel h2 {
+  margin: 0 0 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+#status  { top: 14px; left: 14px; min-width: 236px; }
+#controls{ top: 14px; right: 14px; width: 244px; }
+#legend  { top: 14px; left: 266px; width: 210px; }
+#tally   { bottom: 14px; left: 14px; width: 282px; }
+#chart   { bottom: 14px; right: 14px; width: min(540px, calc(100vw - 330px)); }
+
+#scale {
+  position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 9px;
+  color: var(--text-primary); mix-blend-mode: difference; pointer-events: none;
+}
+.scalebar { display: flex; align-items: center; gap: 9px; }
+.note { margin: 0; font-size: 11px; line-height: 1.5; color: var(--text-muted); }
+.note strong { color: var(--text-secondary); font-weight: 600; }
+.btnrow.wrap { flex-wrap: wrap; }
+.btnrow.wrap button { flex: 1 1 60px; }
+button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ---- status ---- */
+.title { font-size: 15px; font-weight: 600; margin: 0 0 2px; letter-spacing: -0.01em; }
+.subtitle { color: var(--text-muted); font-size: 11px; margin: 0 0 12px; }
+.readout { display: flex; justify-content: space-between; gap: 12px; padding: 2px 0; }
+.readout dt { color: var(--text-secondary); font-size: 12px; }
+.readout dd { margin: 0; font-family: var(--mono); font-size: 12px; font-variant-numeric: tabular-nums; }
+dl { margin: 0; }
+.legend-row { display: flex; align-items: center; gap: 8px; padding: 3px 0; }
+.chip { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+.legend-row .name { flex: 1; color: var(--text-secondary); font-size: 12px; }
+.legend-row .num { font-family: var(--mono); font-size: 12px; font-variant-numeric: tabular-nums; }
+.rule { height: 1px; background: var(--border); margin: 10px -14px; }
+
+/* ---- controls ---- */
+.ctl { margin-bottom: 10px; }
+.ctl:last-child { margin-bottom: 0; }
+.ctl > label { display: block; color: var(--text-muted); font-size: 11px; margin-bottom: 5px; }
+.btnrow { display: flex; gap: 6px; }
+button {
+  flex: 1; font: inherit; font-size: 12px; color: var(--text-primary);
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 6px; padding: 6px 8px; cursor: pointer;
+}
+button:hover { background: var(--surface-3); }
+button[aria-pressed="true"] { background: var(--surface-3); border-color: #3c4860; color: #fff; }
+button:focus-visible, input:focus-visible { outline: 2px solid #4c7fd6; outline-offset: 1px; }
+input[type="range"] { width: 100%; accent-color: #4c7fd6; }
+.val { font-family: var(--mono); font-size: 11px; color: var(--text-secondary); float: right; }
+
+/* ---- tally ---- */
+.tally-row { display: grid; grid-template-columns: 10px 1fr auto; gap: 8px; align-items: center; padding: 3px 0; }
+.tally-row .name { color: var(--text-secondary); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tally-row .num { font-family: var(--mono); font-size: 12px; font-variant-numeric: tabular-nums; }
+.tally-bar { grid-column: 2 / 4; height: 3px; border-radius: 2px; background: var(--surface-3); overflow: hidden; margin-bottom: 2px; }
+.tally-bar > i { display: block; height: 100%; border-radius: 2px; }
+.empty { color: var(--text-muted); font-size: 12px; font-style: italic; }
+
+/* ---- chart ---- */
+.chart-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+.chart-head h2 { margin: 0; }
+#chart svg { display: block; width: 100%; height: 150px; overflow: visible; }
+.axis text { fill: var(--text-muted); font-size: 10px; font-family: var(--mono); }
+.axis line, .axis path { stroke: var(--border); }
+.gridline { stroke: var(--border); stroke-opacity: 0.55; }
+.band-edge { fill: none; stroke: var(--surface-1); stroke-width: 2; }
+.marker { stroke: var(--text-muted); stroke-width: 1; stroke-dasharray: 3 3; }
+.marker-label { fill: var(--text-muted); font-size: 9px; font-family: var(--sans); }
+.crosshair { stroke: var(--text-secondary); stroke-width: 1; pointer-events: none; }
+.chart-legend { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 8px; }
+.chart-legend .legend-row { padding: 0; gap: 6px; }
+.chart-legend .name { flex: none; font-size: 11px; }
+.toggle { background: none; border: none; color: var(--text-secondary); font-size: 11px; padding: 2px 4px; flex: none; cursor: pointer; }
+.toggle:hover { color: var(--text-primary); background: none; }
+table.data { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 11px; font-variant-numeric: tabular-nums; }
+table.data th { text-align: right; color: var(--text-muted); font-weight: 500; padding: 3px 5px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--surface-1); }
+table.data th:first-child, table.data td:first-child { text-align: left; }
+table.data td { text-align: right; padding: 2px 5px; color: var(--text-secondary); }
+.table-wrap { max-height: 170px; overflow: auto; }
+
+/* ---- hover card ---- */
+#hover {
+  position: fixed; z-index: 10; pointer-events: none;
+  min-width: 196px; max-width: 260px;
+  background: color-mix(in srgb, var(--surface-1) 94%, transparent);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 10px 12px; display: none;
+}
+#hover.on { display: block; }
+#hover .hv-state { font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 7px; }
+#hover .hv-cause { font-size: 12px; margin-top: 3px; display: flex; align-items: center; gap: 7px; color: var(--text-primary); }
+#hover .hv-clone { font-size: 11px; color: var(--text-secondary); margin-top: 3px; display: flex; align-items: center; gap: 7px; }
+#hover .hv-rule { height: 1px; background: var(--border); margin: 8px -12px; }
+#hover .readout dt { font-size: 11px; }
+#hover .readout dd { font-size: 11px; }
+
+#error {
+  position: fixed; inset: 0; display: none; place-items: center; padding: 32px;
+  background: var(--surface-0); z-index: 100; overflow: auto;
+}
+#error.on { display: grid; }
+#error .box { max-width: 720px; border: 1px solid #5c2b2b; border-radius: var(--radius); padding: 20px 24px; background: var(--surface-1); }
+#error h1 { font-size: 15px; margin: 0 0 4px; color: #e88b8b; }
+#error p { color: var(--text-secondary); margin: 0 0 12px; font-size: 12px; }
+#error ul { margin: 0; padding-left: 18px; font-family: var(--mono); font-size: 12px; color: var(--text-primary); }
+#error li { margin-bottom: 4px; }
+
+@media (max-width: 1400px) { #legend { display: none; } }
+@media (max-width: 1100px) {
+  #chart { width: calc(100vw - 28px); left: 14px; right: 14px; }
+  #tally { display: none; }
+}
+</style>
+</head>
+<body>
+<canvas id="scene"></canvas>
+
+<section class="panel" id="status" aria-label="Simulation state"></section>
+<section class="panel" id="controls" aria-label="Controls"></section>
+<section class="panel" id="legend" aria-label="Legend"></section>
+<section class="panel" id="tally" aria-label="Deaths by cause over the last simulated day"></section>
+<div id="scale" aria-label="Scale bar"></div>
+<section class="panel" id="chart" aria-label="Deaths by cause over time"></section>
+<div id="hover" role="tooltip"></div>
+
+<div id="error"><div class="box">
+  <h1 id="error-title"></h1>
+  <p id="error-note"></p>
+  <ul id="error-list"></ul>
+</div></div>
+
+<script type="module" src="/src/main.ts"></script>
+</body>
+</html>

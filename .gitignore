@@ -1,0 +1,22 @@
+node_modules/
+dist/
+.DS_Store
+*.local
+
+run.events
+run.keyframes
+__pycache__/
+screenshots/
+
+# exported Python runs for the viewer (regenerate with scripts/export_iressa_run.py)
+data/runs/
+
+# Python engine scratch and experiment outputs
+.tmp/
+outputs/
+__pycache__/
+.pytest_cache/
+
+# from simulator-integration
+*.py[cod]
+.mypy_cache/

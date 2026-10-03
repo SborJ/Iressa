@@ -1,0 +1,10 @@
+clone_id,model_id,model_name,histology,canonical_alterations,drugs,n_drug_measurements,gefitinib_ic50_nm,erlotinib_ic50_nm,osimertinib_ic50_nm,growth_rate_per_day,used_in_calibration,exclusion_reason
+EGFR,SIDM00046,H3255,Non-Small Cell Lung Carcinoma,EGFR_L858R,erlotinib|gefitinib|osimertinib,3,645.3948364103595,1384.552523902093,80.19019728072966,0.17328679513998632,True,
+EGFR,SIDM00237,PC-14,Non-Small Cell Lung Carcinoma,EGFR_EXON19DEL,erlotinib|gefitinib|osimertinib,3,247.32846696996984,114.67250452701425,36.722523236488875,0.38383784802581183,True,
+EGFR,SIDM00341,LOU-NH91,Squamous Cell Lung Carcinoma,EGFR_EXON19DEL,erlotinib|gefitinib|osimertinib,3,4124.331722518641,1488.3245140016386,1341.3411880308588,0.27963577632272124,True,
+EGFR,SIDM00361,PC-3_[JPC-3],Non-Small Cell Lung Carcinoma,EGFR_EXON19DEL,erlotinib|gefitinib|osimertinib,3,170.58015080833908,212.43292234533354,73.93743620997114,0.2742422079366747,True,
+EGFR,SIDM00745,NCI-H1650,Non-Small Cell Lung Carcinoma,EGFR_EXON19DEL,erlotinib|gefitinib|osimertinib,3,16503.591105774594,3169.8174516476074,1503.6146861721447,0.2031696669936332,False,homozygous PTEN loss confers intrinsic EGFR-TKI resistance despite the EGFR exon 19 deletion; not representative of an EGFR-inhibitor-sensitive clone
+EGFR,SIDM01067,HCC-827,Non-Small Cell Lung Carcinoma,EGFR_EXON19DEL,erlotinib|gefitinib|osimertinib,3,64.84574391871514,65.1337129342134,27.578356463468786,0.25190085301996795,True,
+EGFR,SIDM01596,HCC4006,Non-Small Cell Lung Carcinoma,EGFR_EXON19DEL,,0,,,,,True,
+T790M,SIDM00759,NCI-H1975,Non-Small Cell Lung Carcinoma,EGFR_L858R|EGFR_T790M,erlotinib|gefitinib|osimertinib,3,13643.715326962285,6132.337508377305,37.92578709404305,0.4073342882820442,True,
+MET_AMP,SIDM01598,HCC-2935,Non-Small Cell Lung Carcinoma,EGFR_EXON19DEL|MET_AMP,,0,,,,,True,
