@@ -1,0 +1,28 @@
+{
+  "name": "iressa",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Data-driven 3D tumour simulation and renderer. All biology lives in rules.json; all appearance lives in visuals.json.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "sim": "tsx scripts/run-sim.ts",
+    "record": "tsx scripts/record-run.ts"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "three": "^0.170.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "@types/three": "^0.170.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11",
+    "vitest": "^2.1.8"
+  }
+}

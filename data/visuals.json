@@ -1,0 +1,196 @@
+{
+  "$schema": "./schema/visuals.schema.json",
+  "version": 1,
+
+  "scene": {
+    "background": "#080b11",
+    "fogDensity": 0.004,
+    "ambient": 0.38,
+    "keyLight": 0.95,
+    "rimLight": 0.35
+  },
+
+  "cell": {
+    "radiusFraction": 0.46,
+    "detail": 1
+  },
+
+  "cloneColors": {
+    "0": "#3987e5",
+    "1": "#d95926",
+    "2": "#199e70"
+  },
+
+  "causeColors": {
+    "0": "#6b7280",
+    "1": "#3987e5",
+    "2": "#d95926",
+    "3": "#199e70",
+    "4": "#c98500",
+    "5": "#008300",
+    "6": "#9085e9",
+    "7": "#e66767",
+    "8": "#d55181",
+    "9": "#eef1f6"
+  },
+
+  "drugColors": {
+    "0": "#d95926"
+  },
+
+  "byEvent": {
+    "1:0": "divide",
+    "2:4": "mitotic_catastrophe",
+    "4:9": "mutation",
+    "5:0": "normal",
+    "5:4": "radiation_damage"
+  },
+
+  "stateFallbackPresets": {
+    "0": "normal",
+    "1": "arrest_crowding",
+    "2": "radiation_damage",
+    "3": "apoptosis"
+  },
+
+  "presets": {
+    "normal": {
+      "durationTicks": 0
+    },
+
+    "divide": {
+      "durationTicks": 4,
+      "scaleTarget": 1.0,
+      "swell": 0.26,
+      "scaleCurve": "easeOut",
+      "emissive": 0.3,
+      "flashTicks": 2
+    },
+
+    "apoptosis": {
+      "durationTicks": 10,
+      "scaleTarget": 0.45,
+      "scaleCurve": "easeIn",
+      "alphaTarget": 0.0,
+      "alphaCurve": "easeIn",
+      "tint": "#9aa7b2",
+      "tintAmount": 0.55,
+      "desaturate": 0.35,
+      "bleb": 0.2,
+      "blebFrequency": 7.0,
+      "blebDrift": 1.4,
+      "fragments": 4,
+      "fragmentSpread": 0.85
+    },
+
+    "apoptosis_drug": {
+      "durationTicks": 10,
+      "scaleTarget": 0.45,
+      "scaleCurve": "easeIn",
+      "alphaTarget": 0.0,
+      "alphaCurve": "easeIn",
+      "tintFrom": "drug",
+      "tintAmount": 0.45,
+      "tintCurve": "easeOut",
+      "desaturate": 0.25,
+      "bleb": 0.2,
+      "blebFrequency": 7.5,
+      "blebDrift": 1.4,
+      "fragments": 5,
+      "fragmentSpread": 0.9,
+      "emissive": 1.4,
+      "flashTicks": 2
+    },
+
+    "necrosis": {
+      "durationTicks": 48,
+      "scaleTarget": 1.2,
+      "scaleCurve": "easeOut",
+      "swell": 0.05,
+      "alphaTarget": 0.3,
+      "alphaCurve": "easeOut",
+      "tint": "#ded6bd",
+      "tintAmount": 0.75,
+      "desaturate": 0.65,
+      "bleb": 0.05,
+      "blebFrequency": 3.0,
+      "blebDrift": 0.3
+    },
+
+    "radiation_damage": {
+      "durationTicks": 8,
+      "scaleTarget": 1.35,
+      "scaleCurve": "easeOut",
+      "nuclei": 3,
+      "nucleiBulge": 0.22,
+      "tint": "#e8b4a0",
+      "tintAmount": 0.25,
+      "emissive": 0.2
+    },
+
+    "mitotic_catastrophe": {
+      "durationTicks": 14,
+      "scaleTarget": 0.6,
+      "scaleCurve": "easeIn",
+      "alphaTarget": 0.0,
+      "nuclei": 3,
+      "nucleiBulge": 0.14,
+      "fragments": 3,
+      "fragmentSpread": 0.7,
+      "tint": "#c98500",
+      "tintAmount": 0.5,
+      "bleb": 0.12,
+      "blebFrequency": 5.0,
+      "emissive": 0.8,
+      "flashTicks": 2
+    },
+
+    "immune_kill": {
+      "durationTicks": 6,
+      "scaleTarget": 0.2,
+      "scaleCurve": "easeIn",
+      "alphaTarget": 0.0,
+      "tint": "#d55181",
+      "tintAmount": 0.6,
+      "fragments": 2,
+      "fragmentSpread": 0.4,
+      "emissive": 2.2,
+      "flashTicks": 1
+    },
+
+    "arrest_crowding": {
+      "durationTicks": 6,
+      "scaleTarget": 0.92,
+      "desaturate": 0.7,
+      "tint": "#8d99ae",
+      "tintAmount": 0.3
+    },
+
+    "arrest_hypoxia": {
+      "durationTicks": 6,
+      "scaleTarget": 0.9,
+      "desaturate": 0.65,
+      "tint": "#6f7f9e",
+      "tintAmount": 0.38
+    },
+
+    "arrest_drug": {
+      "durationTicks": 6,
+      "scaleTarget": 0.88,
+      "desaturate": 0.6,
+      "tintFrom": "drug",
+      "tintAmount": 0.4
+    },
+
+    "mutation": {
+      "durationTicks": 8,
+      "scaleTarget": 1.0,
+      "swell": 0.12,
+      "tintFrom": "clone",
+      "tintAmount": 1.0,
+      "tintCurve": "easeInOut",
+      "emissive": 1.8,
+      "flashTicks": 3
+    }
+  }
+}

@@ -1,0 +1,264 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://iressa.local/schema/visuals.schema.json",
+  "title": "Iressa visual presets",
+  "description": "Appearance only. A preset is a combination of the generic shader effects (scale curve, colour curve, blebbing, fragments, transparency, emissive, nuclei). Adding a cause means adding a preset here and an entry in rules.json - never a shader change.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "scene",
+    "cell",
+    "cloneColors",
+    "causeColors",
+    "presets"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "version": {
+      "const": 1
+    },
+    "scene": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "background"
+      ],
+      "properties": {
+        "background": {
+          "$ref": "#/definitions/color"
+        },
+        "fogDensity": {
+          "type": "number",
+          "minimum": 0,
+          "default": 0
+        },
+        "ambient": {
+          "type": "number",
+          "minimum": 0,
+          "default": 0.4
+        },
+        "keyLight": {
+          "type": "number",
+          "minimum": 0,
+          "default": 0.9
+        },
+        "rimLight": {
+          "type": "number",
+          "minimum": 0,
+          "default": 0.3
+        }
+      }
+    },
+    "cell": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "radiusFraction"
+      ],
+      "properties": {
+        "radiusFraction": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "description": "Cell radius as a fraction of the voxel size."
+        },
+        "detail": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3,
+          "default": 1,
+          "description": "Icosphere subdivision: 0 is 20 triangles, 1 is 80, 2 is 320. Blebbing and fragmenting need at least 1; 2 is for close inspection of a small population and costs four times the vertices."
+        }
+      }
+    },
+    "cloneColors": {
+      "type": "object",
+      "description": "Keyed by clone id (as a string).",
+      "additionalProperties": {
+        "$ref": "#/definitions/color"
+      }
+    },
+    "causeColors": {
+      "type": "object",
+      "description": "Keyed by cause id (as a string). Used by the colour-by-cause view, the tally and the chart.",
+      "additionalProperties": {
+        "$ref": "#/definitions/color"
+      }
+    },
+    "drugColors": {
+      "type": "object",
+      "description": "Keyed by drug id (as a string). Presets with tintFrom=drug take their tint from here.",
+      "additionalProperties": {
+        "$ref": "#/definitions/color"
+      }
+    },
+    "stateFallbackPresets": {
+      "type": "object",
+      "description": "Preset used when a node is in a state with no active cause animation. Keyed by state id.",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "byEvent": {
+      "type": "object",
+      "description": "Most specific override: keyed by \"<eventType>:<causeId>\", e.g. \"5:4\" for the state change a radiation hit causes versus \"2:4\" for the death it leads to.",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "byCause": {
+      "type": "object",
+      "description": "Optional per-cause override of the animation named in rules.json. Keyed by cause id.",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "presets": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "$ref": "#/definitions/preset"
+      }
+    }
+  },
+  "definitions": {
+    "color": {
+      "type": "string",
+      "pattern": "^#[0-9a-fA-F]{6}$"
+    },
+    "curve": {
+      "enum": [
+        "linear",
+        "easeIn",
+        "easeOut",
+        "easeInOut",
+        "pulse",
+        "step"
+      ]
+    },
+    "preset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "durationTicks"
+      ],
+      "properties": {
+        "durationTicks": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Simulated ticks the effect takes to reach phase 1. Phase clamps at 1, so a preset's phase-1 appearance is its resting appearance; make an effect transient with the \"pulse\" curve, `swell` or `flashTicks` instead."
+        },
+        "scaleTarget": {
+          "type": "number",
+          "minimum": 0,
+          "default": 1,
+          "description": "Radius multiplier at phase 1. <1 shrinks, >1 swells."
+        },
+        "scaleCurve": {
+          "$ref": "#/definitions/curve",
+          "default": "easeInOut"
+        },
+        "swell": {
+          "type": "number",
+          "minimum": 0,
+          "default": 0,
+          "description": "Extra radius added mid-animation and released (an overshoot)."
+        },
+        "alphaTarget": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 1
+        },
+        "alphaCurve": {
+          "$ref": "#/definitions/curve",
+          "default": "easeIn"
+        },
+        "tint": {
+          "$ref": "#/definitions/color"
+        },
+        "tintFrom": {
+          "enum": [
+            "fixed",
+            "drug",
+            "clone"
+          ],
+          "default": "fixed",
+          "description": "fixed uses tint; drug uses drugColors[event.drug]; clone uses cloneColors[event.newClone]."
+        },
+        "tintAmount": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 0
+        },
+        "tintCurve": {
+          "$ref": "#/definitions/curve",
+          "default": "linear"
+        },
+        "desaturate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 0
+        },
+        "bleb": {
+          "type": "number",
+          "minimum": 0,
+          "default": 0,
+          "description": "Surface displacement amplitude as a fraction of radius."
+        },
+        "blebFrequency": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "default": 6
+        },
+        "blebDrift": {
+          "type": "number",
+          "minimum": 0,
+          "default": 1,
+          "description": "How fast the bleb pattern crawls over the animation."
+        },
+        "fragments": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8,
+          "default": 0,
+          "description": "Number of lobes the surface splits into."
+        },
+        "fragmentSpread": {
+          "type": "number",
+          "minimum": 0,
+          "default": 0,
+          "description": "How far lobes separate, as a fraction of radius."
+        },
+        "nuclei": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 6,
+          "default": 0,
+          "description": "Visible internal lobes (multinucleation). Rendered as smooth bulges."
+        },
+        "nucleiBulge": {
+          "type": "number",
+          "minimum": 0,
+          "default": 0.18
+        },
+        "emissive": {
+          "type": "number",
+          "minimum": 0,
+          "default": 0
+        },
+        "flashTicks": {
+          "type": "number",
+          "minimum": 0,
+          "default": 0,
+          "description": "Length of the emissive flash at the start of the effect. 0 means emissive is steady."
+        }
+      }
+    }
+  }
+}
