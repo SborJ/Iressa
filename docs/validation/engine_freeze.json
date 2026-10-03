@@ -1,13 +1,13 @@
 {
-  "frozen_at": "2026-10-03T14:19:31+00:00",
+  "frozen_at": "2026-10-03T20:19:01+00:00",
   "note": "Phase 1 validated engine. Any change to these files requires re-running the validation suite and updating this manifest deliberately.",
   "files": {
-    "cancer_sim/automata.py": "7c90f4c8163d334ee5706f9fbe070b13f18bab158df0bb05e3d69729aa3f626c",
+    "cancer_sim/automata.py": "fca49e6f69ca37d97979eb92ded07bac80c4cddaa4d2d78d6e48325c2bde1c51",
     "cancer_sim/fields.py": "4a6361a10cccfddf2164a34373bc71f2446c5d28ddb7c6a23b722a8220e86cd9",
     "cancer_sim/world.py": "72a1e6de7046a07fb7b4fdc913d861c81d75e7348c997bfd4c8fd6b5320b6f2c",
-    "cancer_sim/world_seed.py": "c2cbeae48ceee722b0e4588bbb21b8bf0ee054aae0a8376979b542e1bde0ea4b",
-    "cancer_sim/simulation.py": "a0cd9387e151f62909a53cafbaa2f30a6fd45bab35da481879baeda19c53ee73",
-    "cancer_sim/experiments.py": "82a0fc426cfd0c217d80f32475092599f4ee7aef3d4644266b2f4fcf4f242505",
+    "cancer_sim/world_seed.py": "021df2aa6356c4a14d69707750ba89b1b713c403b76b837c99913736ac38ba8e",
+    "cancer_sim/simulation.py": "60d01b554b115e3e42fa46abfea70b94f0ebd0352178e5b7a39ca4e697f7f115",
+    "cancer_sim/experiments.py": "d238efba82133bbb96ed0f9c97eef5bd4736b6a77cb443da699cb5c1418dca73",
     "cancer_sim/vasculature.py": "99fe84e61ea9a30c2caf9b509924895edd7edb5a3cb0f48c7de77e4db229df73",
     "cancer_sim/calibration/clones.py": "c3c89ada6089c822afa79f1ec3eabbe7831d27fc817d0ca88e09fe5996029fe6",
     "cancer_sim/calibration/targets.py": "3a98aa0ff3e0328ef1d301afbf647356a92b01ced86e63d008c9b02a9065b198",

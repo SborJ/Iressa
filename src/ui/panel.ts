@@ -11,6 +11,10 @@ import { TONE } from './tone.js';
 import type { Narrative, Story } from './narrative.js';
 import { foldTo } from './motion.js';
 import { Sparkline } from './sparkline.js';
+import {
+  evidenceLevel, readingAfter, readingAt,
+  type CloneReading, type MetricsRow, type RunMetrics, type RunProvenance,
+} from './runMetrics.js';
 
 /** Jargon, explained where it is used rather than in a glossary nobody opens. */
 const GLOSSARY: Record<string, string> = {
@@ -121,6 +125,18 @@ export class Panel {
   private chemistryBody = el('div');
 
   private about = new Fold('About this run');
+
+  /* evolutionary control: the resistance graph, the parameters' evidence, the controller */
+  private graph = new Fold('Resistance graph');
+  private graphBody = el('div', { class: 'tree' });
+  private graphNodes = new Map<number, { count: Text; margin: HTMLElement; distance: Text; best: Text; row: HTMLElement }>();
+  private evidence = new Fold('Parameters & evidence');
+  private controller = new Fold('Controller');
+  private controllerBody = el('div');
+  private controllerNow = el('div', { class: 'ctl-now' });
+  private metrics: RunMetrics | undefined;
+  private provenance: RunProvenance = {};
+  private lastReading: MetricsRow | undefined;
 
   private cloneBars = new Map<number, HTMLElement>();
   private cloneRows = new Map<number, { row: HTMLElement; n: Text; tag: HTMLElement }>();
@@ -289,7 +305,204 @@ export class Panel {
       ]),
     );
 
-    this.root.append(this.makeup.node, this.deaths.node, this.chemistry.node, this.about.node);
+    this.buildGraph();
+    this.buildEvidence();
+    this.controller.body.append(this.controllerBody, this.controllerNow);
+    this.controller.node.hidden = true;
+
+    this.root.append(
+      this.makeup.node, this.graph.node, this.deaths.node, this.chemistry.node,
+      this.controller.node, this.evidence.node, this.about.node,
+    );
+  }
+
+  /* ---- resistance graph (section 62): the clone tree with live abundance and the control metrics ---- */
+  private buildGraph(): void {
+    const clones = this.rules.raw.clones;
+    const children = new Map<number | undefined, typeof clones>();
+    for (const c of clones) {
+      const parent = c.derivesFrom;
+      const list = children.get(parent) ?? [];
+      list.push(c);
+      children.set(parent, list);
+    }
+    const walk = (parent: number | undefined, depth: number) => {
+      for (const c of children.get(parent) ?? []) {
+        const sw = el('span', { class: 'sw' });
+        sw.style.background = this.visuals.cloneCss(c.id);
+        const count = document.createTextNode('0');
+        const margin = el('span', { class: 'm' });
+        const distance = document.createTextNode('');
+        const best = document.createTextNode('');
+        const row = el('div', { class: 'node' }, [
+          el('span', { class: 'branch', text: depth === 0 ? '' : '└─' }),
+          sw,
+          el('span', { class: 'n' }, [
+            el('span', { class: 'name', text: cloneName(this.rules, c.id) }),
+            el('span', { class: 'sub mono' }, [
+              document.createTextNode('M '), margin,
+              document.createTextNode('  D '), distance,
+            ]),
+            el('span', { class: 'sub' }, [el('span', { class: 'muted', text: 'best: ' }), best]),
+          ]),
+          el('span', { class: 'c' }, [count]),
+        ]);
+        row.style.paddingLeft = `${depth * 14}px`;
+        this.graphNodes.set(c.id, { count, margin, distance, best, row });
+        this.graphBody.append(row);
+        walk(c.id, depth + 1);
+      }
+    };
+    walk(undefined, 0);
+    this.graph.body.append(
+      this.graphBody,
+      el('p', { class: 'note', style: 'margin-top:10px' }, [
+        el('b', { text: 'M ' }),
+        document.createTextNode('is the control margin: how fast the clone shrinks under the best represented treatment (positive = treatment-controllable, negative = treatment-exhausted under the modelled set). '),
+        el('b', { text: 'D ' }),
+        document.createTextNode('is the evolutionary distance to an exhausted clone under the treatment given that day; "∞" means no modelled route. Simulator quantities, not clinical ones.'),
+      ]),
+    );
+    this.graph.node.hidden = true;
+  }
+
+  /* ---- parameters & evidence (section 63): every number with its source and confidence ---- */
+  private buildEvidence(): void {
+    const body = el('div');
+    let shown = 0;
+    const badge = (record: { evidence?: string; status?: string; source?: string } | undefined) => {
+      const level = evidenceLevel(record);
+      const b = el('span', { class: `ev ev-${level.toLowerCase() || 'none'}`, text: level || '—' });
+      if (record?.source) b.title = String(record.source);
+      return b;
+    };
+    const row = (label: string, value: string, record: { evidence?: string; status?: string; source?: string } | undefined) => {
+      const r = el('div', { class: 'r ev-row' }, [
+        el('span', { class: 'k', text: label }),
+        el('span', { class: 'v mono', text: value }),
+        badge(record),
+      ]);
+      if (record?.source) r.title = String(record.source);
+      return r;
+    };
+    for (const clone of this.rules.raw.clones) {
+      const prov = (clone as unknown as { provenance?: Record<string, any> }).provenance;
+      if (!prov) continue;
+      const head = el('div', { class: 'ev-clone' }, [
+        (() => { const sw = el('span', { class: 'sw' }); sw.style.background = this.visuals.cloneCss(clone.id); return sw; })(),
+        el('span', { text: cloneName(this.rules, clone.id) }),
+      ]);
+      body.append(head);
+      const growth = prov.growth_rate_per_day;
+      if (growth) { body.append(row('division rate', `${fixed(Number(growth.value), 3)} /day`, growth)); shown++; }
+      const cost = prov.fitness_cost;
+      if (cost && Number(cost.value) > 0) { body.append(row('fitness cost', fixed(Number(cost.value), 2), cost)); shown++; }
+      const ic50s = prov.ic50_nM as Record<string, any> | undefined;
+      for (const [drugName, record] of Object.entries(ic50s ?? {})) {
+        const drug = [...this.rules.drugById.values()].find((d) => d.name === drugName);
+        const unit = String(record.unit ?? 'nM');
+        const value = Number(record.value);
+        const text = unit.startsWith('normalized') ? `${fixed(value, 2)} (norm.)` : `${value >= 100 ? Math.round(value) : fixed(value, value < 1 ? 2 : 1)} ${unit}`;
+        body.append(row(`${(drug?.displayName ?? drugName).replace(/\s*\(.*\)\s*$/, '')} IC50`, text, record));
+        shown++;
+        for (const [key, label] of [['growth_inhibition', 'growth inhibition'], ['max_death_rate_per_day', 'kill rate'], ['fitness_cost_relief', 'cost relief']] as const) {
+          const extra = record[key];
+          if (extra) { body.append(row(`  ${label}`, key === 'max_death_rate_per_day' ? `${fixed(Number(extra.value), 2)} /day` : fixed(Number(extra.value), 2), extra)); shown++; }
+        }
+      }
+    }
+    if (!shown) {
+      this.evidence.node.hidden = true;
+      return;
+    }
+    this.evidence.set(`${shown} values`);
+    this.evidence.body.append(
+      body,
+      el('p', { class: 'note', style: 'margin-top:10px' }, [
+        el('b', { text: 'DIRECT ' }), document.createTextNode('measured in a relevant system · '),
+        el('b', { text: 'DERIVED ' }), document.createTextNode('combined from measurements · '),
+        el('b', { text: 'INFERRED ' }), document.createTextNode('supported, not measured here · '),
+        el('b', { text: 'ASSUMPTION ' }), document.createTextNode('a model choice to be randomised. Hover a row for the source.'),
+      ]),
+    );
+  }
+
+  /* ---- controller (section 64): which policy or strategy drove the run, and what it did today ---- */
+  setRunMetrics(metrics: RunMetrics | undefined, provenance: RunProvenance | undefined): void {
+    this.metrics = metrics;
+    this.provenance = provenance ?? {};
+    this.graph.node.hidden = !metrics && !this.provenance.controllability;
+    const policy = this.provenance.policy;
+    const strategy = this.provenance.strategy;
+    const line = (k: string, v: string) =>
+      el('div', { class: 'r' }, [el('span', { class: 'k', text: k }), el('span', { class: 'v', text: v })]);
+    this.controllerBody.replaceChildren();
+    if (policy) {
+      this.controllerBody.append(
+        line('Policy', policy.name),
+        line('Training cancer', policy.training_cancer_name ?? policy.training_cancer),
+        line('Training uncertainty', policy.training_uncertainty),
+        line('Objective', policy.objective),
+        line('Actions', policy.actions ? `${policy.actions} discrete exposure combinations` : '—'),
+      );
+      this.controller.set(policy.name);
+    } else if (strategy) {
+      this.controllerBody.append(
+        line('Strategy', strategy.schedule),
+        line('Kind', String((strategy.spec as { type?: string } | undefined)?.type ?? 'fixed schedule')),
+        line('Declared in', (strategy.declared_in ?? 'the cancer model').split('/').pop() ?? ''),
+      );
+      this.controller.set(strategy.schedule);
+    }
+    this.controllerBody.append(
+      el('p', { class: 'note', style: 'margin-top:10px' }, [
+        el('b', { text: 'Note: ' }),
+        document.createTextNode('this explains what the simulator policy did and the metrics it saw. It is not a clinical rationale.'),
+      ]),
+    );
+    this.controller.node.hidden = !(policy || strategy);
+    if (this.provenance.controllability) this.renderReading(this.provenance.controllability, undefined, undefined);
+  }
+
+  private updateEvolution(day: number | undefined, counts: WorldCounts): void {
+    if (!this.metrics || day === undefined) {
+      // no per-day readings: keep the initial-state values but show live counts
+      for (const [id, node] of this.graphNodes) node.count.nodeValue = count(counts.byClone.get(id) ?? 0);
+      return;
+    }
+    const reading = readingAt(this.metrics, day);
+    if (!reading) return;
+    const next = readingAfter(this.metrics, reading);
+    if (reading !== this.lastReading) {
+      this.lastReading = reading;
+      this.renderReading(reading, next, day);
+    }
+    for (const [id, node] of this.graphNodes) node.count.nodeValue = count(counts.byClone.get(id) ?? 0);
+  }
+
+  private renderReading(reading: MetricsRow, next: MetricsRow | undefined, day: number | undefined): void {
+    let exhausted = 0;
+    for (const [id, node] of this.graphNodes) {
+      const r: CloneReading | undefined = reading.clones[String(id)];
+      if (!r) continue;
+      node.margin.textContent = `${r.margin >= 0 ? '+' : ''}${fixed(r.margin, 3)}`;
+      node.margin.className = `m ${r.margin > 0.01 ? 'm-pos' : r.margin < -0.01 ? 'm-neg' : 'm-zero'}`;
+      node.margin.title = r.margin > 0.01 ? 'treatment-controllable' : r.margin < -0.01 ? 'treatment-exhausted under the modelled set' : 'at the controllability boundary';
+      node.distance.nodeValue = r.escape_distance === null ? '∞' : fixed(r.escape_distance, 1);
+      node.best.nodeValue = r.best_action;
+      if (r.exhausted) exhausted++;
+    }
+    this.graph.set(`ECI ${fixed(reading.eci, 2)}${exhausted ? ` · ${exhausted} exhausted` : ''}`);
+
+    if (this.controller.node.hidden) return;
+    const action = reading.action ?? Object.entries(reading.exposures).map(([d, x]) => `${d} ${Math.round(x * 100)}%`).join(' + ');
+    const esr1 = reading.resistant_fraction;
+    const parts: (Node | string)[] = [];
+    parts.push(el('div', { class: 'label', text: day === undefined ? 'At the start' : `Day ${Math.floor(reading.day)}` }));
+    parts.push(el('div', { class: 'act', text: action || 'no treatment' }));
+    const eciText = next ? `ECI ${fixed(reading.eci, 2)} → ${fixed(next.eci, 2)}` : `ECI ${fixed(reading.eci, 2)}`;
+    parts.push(el('div', { class: 'mono muted', text: eciText + (esr1 !== undefined ? ` · resistant ${(100 * esr1).toFixed(1)}%` : '') }));
+    this.controllerNow.replaceChildren(...parts);
   }
 
   /** The chart belongs inside the question it answers. */
@@ -311,9 +524,11 @@ export class Panel {
     frame: FrameStats | undefined,
     viewName: string,
     story: Story,
+    day?: number,
   ): void {
     const counts = history.latest;
     if (!counts) return;
+    this.updateEvolution(day, counts);
 
     /* ---- hero ---- */
     this.heroValue.textContent = count(counts.living);

@@ -1,0 +1,662 @@
+[
+ {
+  "day": 1.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": -0.0382,
+  "eci": 0.0416,
+  "resistant_fraction": 0.0122
+ },
+ {
+  "day": 2.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.0034,
+  "eci": 0.0482,
+  "resistant_fraction": 0.0127
+ },
+ {
+  "day": 3.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.0367,
+  "eci": 0.0548,
+  "resistant_fraction": 0.0139
+ },
+ {
+  "day": 4.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.0327,
+  "eci": 0.0567,
+  "resistant_fraction": 0.0141
+ },
+ {
+  "day": 5.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.0568,
+  "eci": 0.0604,
+  "resistant_fraction": 0.0136
+ },
+ {
+  "day": 6.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.0944,
+  "eci": 0.0664,
+  "resistant_fraction": 0.0141
+ },
+ {
+  "day": 7.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.1414,
+  "eci": 0.0742,
+  "resistant_fraction": 0.0123
+ },
+ {
+  "day": 8.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.16,
+  "eci": 0.0793,
+  "resistant_fraction": 0.011
+ },
+ {
+  "day": 9.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.1837,
+  "eci": 0.084,
+  "resistant_fraction": 0.0122
+ },
+ {
+  "day": 10.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.2049,
+  "eci": 0.0884,
+  "resistant_fraction": 0.0117
+ },
+ {
+  "day": 11.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.2303,
+  "eci": 0.0933,
+  "resistant_fraction": 0.013
+ },
+ {
+  "day": 12.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.2453,
+  "eci": 0.0967,
+  "resistant_fraction": 0.0123
+ },
+ {
+  "day": 13.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.2796,
+  "eci": 0.1023,
+  "resistant_fraction": 0.0118
+ },
+ {
+  "day": 14.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.2967,
+  "eci": 0.1062,
+  "resistant_fraction": 0.0122
+ },
+ {
+  "day": 15.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.3027,
+  "eci": 0.1082,
+  "resistant_fraction": 0.0144
+ },
+ {
+  "day": 16.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.3199,
+  "eci": 0.1112,
+  "resistant_fraction": 0.0147
+ },
+ {
+  "day": 17.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.3386,
+  "eci": 0.1147,
+  "resistant_fraction": 0.0151
+ },
+ {
+  "day": 18.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.3786,
+  "eci": 0.1212,
+  "resistant_fraction": 0.0147
+ },
+ {
+  "day": 19.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.3982,
+  "eci": 0.1261,
+  "resistant_fraction": 0.0141
+ },
+ {
+  "day": 20.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.4355,
+  "eci": 0.133,
+  "resistant_fraction": 0.0162
+ },
+ {
+  "day": 21.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.4087,
+  "eci": 0.1315,
+  "resistant_fraction": 0.0184
+ },
+ {
+  "day": 22.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.4508,
+  "eci": 0.1366,
+  "resistant_fraction": 0.0167
+ },
+ {
+  "day": 23.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.4576,
+  "eci": 0.139,
+  "resistant_fraction": 0.0118
+ },
+ {
+  "day": 24.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.4854,
+  "eci": 0.1435,
+  "resistant_fraction": 0.0109
+ },
+ {
+  "day": 25.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.4939,
+  "eci": 0.1463,
+  "resistant_fraction": 0.0126
+ },
+ {
+  "day": 26.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.5221,
+  "eci": 0.1515,
+  "resistant_fraction": 0.0146
+ },
+ {
+  "day": 27.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.5401,
+  "eci": 0.1561,
+  "resistant_fraction": 0.0153
+ },
+ {
+  "day": 28.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.5513,
+  "eci": 0.159,
+  "resistant_fraction": 0.0142
+ },
+ {
+  "day": 29.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.5705,
+  "eci": 0.1626,
+  "resistant_fraction": 0.0098
+ },
+ {
+  "day": 30.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.6055,
+  "eci": 0.1691,
+  "resistant_fraction": 0.0087
+ },
+ {
+  "day": 31.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.6094,
+  "eci": 0.1716,
+  "resistant_fraction": 0.0071
+ },
+ {
+  "day": 32.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.619,
+  "eci": 0.1736,
+  "resistant_fraction": 0.0073
+ },
+ {
+  "day": 33.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.6284,
+  "eci": 0.1757,
+  "resistant_fraction": 0.0074
+ },
+ {
+  "day": 34.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.6402,
+  "eci": 0.1784,
+  "resistant_fraction": 0.0096
+ },
+ {
+  "day": 35.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.6519,
+  "eci": 0.1812,
+  "resistant_fraction": 0.0099
+ },
+ {
+  "day": 36.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.6645,
+  "eci": 0.184,
+  "resistant_fraction": 0.0102
+ },
+ {
+  "day": 37.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.6722,
+  "eci": 0.1861,
+  "resistant_fraction": 0.0105
+ },
+ {
+  "day": 38.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.6776,
+  "eci": 0.1877,
+  "resistant_fraction": 0.0128
+ },
+ {
+  "day": 39.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.6723,
+  "eci": 0.1872,
+  "resistant_fraction": 0.0128
+ },
+ {
+  "day": 40.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.7079,
+  "eci": 0.1935,
+  "resistant_fraction": 0.0161
+ },
+ {
+  "day": 41.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.7039,
+  "eci": 0.1947,
+  "resistant_fraction": 0.014
+ },
+ {
+  "day": 42.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.7196,
+  "eci": 0.1979,
+  "resistant_fraction": 0.0146
+ },
+ {
+  "day": 43.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.726,
+  "eci": 0.2003,
+  "resistant_fraction": 0.0176
+ },
+ {
+  "day": 44.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.7373,
+  "eci": 0.2032,
+  "resistant_fraction": 0.0209
+ },
+ {
+  "day": 45.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.7571,
+  "eci": 0.2076,
+  "resistant_fraction": 0.0194
+ },
+ {
+  "day": 46.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.7578,
+  "eci": 0.2093,
+  "resistant_fraction": 0.0199
+ },
+ {
+  "day": 47.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.7592,
+  "eci": 0.2111,
+  "resistant_fraction": 0.0292
+ },
+ {
+  "day": 48.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.7589,
+  "eci": 0.2117,
+  "resistant_fraction": 0.0324
+ },
+ {
+  "day": 49.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.7676,
+  "eci": 0.2131,
+  "resistant_fraction": 0.0298
+ },
+ {
+  "day": 50.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.7831,
+  "eci": 0.2164,
+  "resistant_fraction": 0.0312
+ },
+ {
+  "day": 51.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.8003,
+  "eci": 0.2202,
+  "resistant_fraction": 0.0266
+ },
+ {
+  "day": 52.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.7992,
+  "eci": 0.2223,
+  "resistant_fraction": 0.0377
+ },
+ {
+  "day": 53.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.8116,
+  "eci": 0.2273,
+  "resistant_fraction": 0.0316
+ },
+ {
+  "day": 54.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.812,
+  "eci": 0.2282,
+  "resistant_fraction": 0.032
+ },
+ {
+  "day": 55.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.8151,
+  "eci": 0.2296,
+  "resistant_fraction": 0.0364
+ },
+ {
+  "day": 56.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.8216,
+  "eci": 0.232,
+  "resistant_fraction": 0.0415
+ },
+ {
+  "day": 57.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.8254,
+  "eci": 0.2338,
+  "resistant_fraction": 0.0428
+ },
+ {
+  "day": 58.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.8377,
+  "eci": 0.2372,
+  "resistant_fraction": 0.0413
+ },
+ {
+  "day": 59.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.8282,
+  "eci": 0.2371,
+  "resistant_fraction": 0.0453
+ },
+ {
+  "day": 60.0,
+  "action": "palbociclib+elacestrant",
+  "exposures": {
+   "palbociclib": 0.5,
+   "elacestrant": 1.0
+  },
+  "reward": 0.836,
+  "eci": 0.2399,
+  "resistant_fraction": 0.056
+ }
+]

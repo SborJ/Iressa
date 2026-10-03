@@ -11,12 +11,14 @@ from __future__ import annotations
 
 import json
 import random
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from math import ceil, exp
 from pathlib import Path
+from typing import Mapping
 
 import numpy as np
 
+from cancer_sim.cancers import DEFAULT_CANCER, CancerModel, load_cancer_model
 from cancer_sim.fields import SolveResult, neighbor_sum, solve_quasi_steady
 from cancer_sim.world import Cell, ScalarField, WorldPhysics
 
@@ -33,7 +35,11 @@ DEFAULT_PHYSICS_CALIBRATION = (
 DEFAULT_RESISTANCE_GRAPH = (
     Path(__file__).resolve().parents[1] / "data" / "processed" / "resistance_graph.json"
 )
+# The drugs of the default (lung) model; kept for callers that import it. The
+# automata validates drugs against its own cancer model, not against this set.
 SUPPORTED_DRUGS = {"none", "gefitinib", "osimertinib", "capmatinib"}
+LEGACY_DRUGS = ("gefitinib", "osimertinib", "capmatinib")
+LEGACY_CAPMATINIB_IC50_NM = 8000.0
 # Simulation assumption (not measured): dead cells are cleared at this rate per
 # day, i.e. a mean residence of 4 days. Apoptotic cells are phagocytosed within
 # hours in vivo while necrotic debris persists for days to weeks; the engine
@@ -44,28 +50,89 @@ DEFAULT_NECROTIC_CLEARANCE_RATE = 0.25
 
 @dataclass(frozen=True)
 class ClonePhenotype:
+    """One clone's growth and per-drug response.
+
+    Drug responses live in ``ic50_nm`` (drug id -> IC50, in the drug's reference
+    units). The three ``*_ic50_nm`` fields are the original lung-model spelling
+    and stay accepted: they are merged into ``ic50_nm`` and filled back from it.
+
+    Optional per-drug overrides: ``drug_hill`` and ``drug_max_death_rate`` replace
+    the clone-wide ``hill_coefficient`` / ``max_drug_death_rate`` for one drug, and
+    ``drug_growth_inhibition`` is the fraction by which a saturating exposure
+    slows division (0 = purely cytotoxic, as every lung drug is modelled;
+    endocrine and CDK4/6 agents are mostly cytostatic).
+    """
+
     clone_id: str
     growth_rate: float
     fitness_cost: float
-    gefitinib_ic50_nm: float
-    osimertinib_ic50_nm: float
-    allowed_next_resistance_transitions: tuple[str, ...]
-    capmatinib_ic50_nm: float = 8000.0
+    gefitinib_ic50_nm: float | None = None
+    osimertinib_ic50_nm: float | None = None
+    allowed_next_resistance_transitions: tuple[str, ...] = ()
+    capmatinib_ic50_nm: float | None = None
     hill_coefficient: float = 1.2
     max_drug_death_rate: float = 0.18
+    ic50_nm: Mapping[str, float] = field(default_factory=dict)
+    drug_hill: Mapping[str, float] = field(default_factory=dict)
+    drug_max_death_rate: Mapping[str, float] = field(default_factory=dict)
+    drug_growth_inhibition: Mapping[str, float] = field(default_factory=dict)
+    # Fraction of the clone's fitness cost that disappears at a saturating exposure
+    # to a drug: how a ligand-independent ESR1 mutant stops paying for its mutation
+    # once estrogen is withdrawn (fitness reversal with the environment).
+    drug_fitness_cost_relief: Mapping[str, float] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        merged = {str(k): float(v) for k, v in dict(self.ic50_nm).items()}
+        for drug in LEGACY_DRUGS:
+            value = getattr(self, f"{drug}_ic50_nm")
+            if value is not None:
+                merged[drug] = float(value)
+        if "gefitinib" in merged and "capmatinib" not in merged:
+            merged["capmatinib"] = LEGACY_CAPMATINIB_IC50_NM   # the lung model's historical default
+        object.__setattr__(self, "ic50_nm", merged)
+        for drug in LEGACY_DRUGS:
+            object.__setattr__(self, f"{drug}_ic50_nm", merged.get(drug))
+        object.__setattr__(self, "drug_hill", {str(k): float(v) for k, v in dict(self.drug_hill).items()})
+        object.__setattr__(self, "drug_max_death_rate", {str(k): float(v) for k, v in dict(self.drug_max_death_rate).items()})
+        object.__setattr__(self, "drug_growth_inhibition", {str(k): float(v) for k, v in dict(self.drug_growth_inhibition).items()})
+        for drug, value in self.drug_growth_inhibition.items():
+            if not 0.0 <= value <= 1.0:
+                raise ValueError(f"{self.clone_id}: growth inhibition for {drug} must be in [0, 1]")
+        object.__setattr__(self, "drug_fitness_cost_relief", {str(k): float(v) for k, v in dict(self.drug_fitness_cost_relief).items()})
+        for drug, value in self.drug_fitness_cost_relief.items():
+            if not 0.0 <= value <= 1.0:
+                raise ValueError(f"{self.clone_id}: fitness cost relief for {drug} must be in [0, 1]")
 
     @property
     def effective_fitness_multiplier(self) -> float:
         return max(0.0, 1.0 - self.fitness_cost)
 
+    @property
+    def drugs(self) -> tuple[str, ...]:
+        return tuple(self.ic50_nm)
+
     def ic50(self, drug: str) -> float:
-        if drug == "gefitinib":
-            return self.gefitinib_ic50_nm
-        if drug == "osimertinib":
-            return self.osimertinib_ic50_nm
-        if drug == "capmatinib":
-            return self.capmatinib_ic50_nm
-        raise ValueError(f"unknown drug: {drug}")
+        try:
+            return self.ic50_nm[drug]
+        except KeyError:
+            raise ValueError(f"unknown drug: {drug}") from None
+
+    def hill(self, drug: str) -> float:
+        return self.drug_hill.get(drug, self.hill_coefficient)
+
+    def max_death_rate(self, drug: str) -> float:
+        return self.drug_max_death_rate.get(drug, self.max_drug_death_rate)
+
+    def growth_inhibition(self, drug: str) -> float:
+        return self.drug_growth_inhibition.get(drug, 0.0)
+
+    def fitness_cost_relief(self, drug: str) -> float:
+        return self.drug_fitness_cost_relief.get(drug, 0.0)
+
+    @property
+    def environment_dependent(self) -> bool:
+        """True when any drug changes this clone's division rate (not just its death rate)."""
+        return bool(self.drug_growth_inhibition or self.drug_fitness_cost_relief)
 
 
 @dataclass(frozen=True)
@@ -122,11 +189,19 @@ class AutomataConfig:
     gefitinib_vessel_concentration_nm: float = 1000.0
     osimertinib_vessel_concentration_nm: float = 1000.0
     capmatinib_vessel_concentration_nm: float = 1000.0
+    # drug id -> nM at the vessel for exposure 1.0 (any cancer model). Drugs not
+    # listed fall back to the legacy fields above, then to the model's reference.
+    drug_vessel_concentration_nm: Mapping[str, float] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         for name, value in self.__dict__.items():
             if isinstance(value, (int, float)) and value is not None and value < 0:
                 raise ValueError(f"{name} must be non-negative")
+        object.__setattr__(self, "drug_vessel_concentration_nm",
+                           {str(k): float(v) for k, v in dict(self.drug_vessel_concentration_nm).items()})
+        for name, value in self.drug_vessel_concentration_nm.items():
+            if value < 0:
+                raise ValueError(f"vessel concentration for {name} must be non-negative")
         if self.oxygen_solver not in {"explicit", "quasi_steady"}:
             raise ValueError("oxygen_solver must be explicit or quasi_steady")
         if self.drug_solver not in {"quasi_steady", "explicit_legacy"}:
@@ -147,6 +222,16 @@ class AutomataConfig:
             raise ValueError("field_substep_days must be positive")
         if self.oxygen_mm_vmax is not None and self.oxygen_mm_km <= 0:
             raise ValueError("oxygen_mm_km must be positive when Michaelis-Menten uptake is used")
+
+    def vessel_concentration_nm(self, drug: str, default: float | None = None) -> float:
+        """nM at the vessel for exposure 1.0 of ``drug``."""
+        if drug in self.drug_vessel_concentration_nm:
+            return self.drug_vessel_concentration_nm[drug]
+        if drug in LEGACY_DRUGS:
+            return float(getattr(self, f"{drug}_vessel_concentration_nm"))
+        if default is None:
+            raise KeyError(f"no vessel concentration configured for {drug}")
+        return float(default)
 
     @property
     def drug_grid_diffusion_per_day(self) -> float:
@@ -204,11 +289,16 @@ class CellularAutomataPhysics:
         transitions: dict[str, list[ResistanceTransition]] | None = None,
         config: AutomataConfig | None = None,
         rng: random.Random | None = None,
-        record_events: bool = False
+        record_events: bool = False,
+        model: CancerModel | str | None = None
     ) -> None:
         self.world = world
         self.config = config or AutomataConfig()
-        loaded_responses, loaded_transitions = load_clone_model()
+        self.model = model if isinstance(model, CancerModel) else load_cancer_model(model or DEFAULT_CANCER)
+        loaded_responses: dict[str, ClonePhenotype] = {}
+        loaded_transitions: dict[str, list[ResistanceTransition]] = {}
+        if not clone_responses or not transitions:
+            loaded_responses, loaded_transitions = load_clone_model(model=self.model)
         self.clone_responses = clone_responses or loaded_responses
         self.transitions = transitions or loaded_transitions
         self.rng = rng or random.Random()
@@ -218,6 +308,16 @@ class CellularAutomataPhysics:
         self.record_events = record_events
         self.events: list[tuple] = []
         self._shape = (world.config.depth, world.config.height, world.config.width)
+        # Per-drug concentration fields (normalised to the vessel level) for the
+        # diffusing drugs active this step; ``world.drug`` mirrors the first one.
+        self.drug_fields: dict[str, ScalarField] = {}
+        self._exposures: dict[str, float] = {}
+        # Optional clone-establishment step for new mutants (model block "establishment").
+        # Absent from the validated lung model, so its random draws are untouched.
+        establishment = self.model.raw.get("establishment")
+        self.establishment_base: float | None = (
+            None if not establishment else float(_value(establishment.get("base_probability", 0.5)))
+        )
 
     # ------------------------------------------------------------------ stepping
     def step(
@@ -226,26 +326,34 @@ class CellularAutomataPhysics:
         dt: float = 1.0,
         drug: str = "none",
         vessel_drug_dose: float = 0.0,
+        exposures: Mapping[str, float] | None = None,
         apply_death: bool = True,
         allow_division: bool = True
     ) -> AutomataStepStats:
+        """Advance ``dt`` days.
+
+        One drug is given as ``drug``/``vessel_drug_dose`` (the original API); a
+        combination as ``exposures`` {drug id: dose}, where dose 1.0 means the
+        drug's reference exposure. Diffusing drugs each get their own field;
+        global ones (endocrine deprivation) act uniformly. Kill hazards add, so
+        one drug reproduces the single-drug engine exactly.
+        """
         if dt <= 0:
             raise ValueError("dt must be positive")
-        if drug not in SUPPORTED_DRUGS:
-            raise ValueError("drug must be one of: none, gefitinib, osimertinib, capmatinib")
         if vessel_drug_dose < 0:
             raise ValueError("vessel_drug_dose must be non-negative")
+        self._exposures = self._normalise_exposures(drug, vessel_drug_dose, exposures)
 
         self.events = []
         living_before = self.living_cell_count()
         density = self.cell_density()
         self.world.oxygen = self._next_oxygen_field(density, dt)
-        self.world.drug = self._next_drug_field(density, dt, active_dose=vessel_drug_dose)
+        self._advance_drug_fields(density, dt)
 
         drug_deaths = hypoxic_deaths = births = mutations = cleared = 0
         self._update_cell_states(dt)
         if apply_death:
-            drug_deaths, hypoxic_deaths = self._apply_death(dt, drug)
+            drug_deaths, hypoxic_deaths = self._apply_death(dt)
             cleared = self._clear_dead_cells(dt)
         if allow_division:
             births, mutations = self._apply_division(dt)
@@ -274,6 +382,58 @@ class CellularAutomataPhysics:
             drug_solver_converged=True if drug_solve is None else drug_solve.converged
         )
 
+    # ------------------------------------------------------------------ exposures
+    def _normalise_exposures(
+        self, drug: str, dose: float, exposures: Mapping[str, float] | None
+    ) -> dict[str, float]:
+        combined: dict[str, float] = {}
+        if drug != "none":
+            combined[drug] = float(dose)
+        for name, value in (exposures or {}).items():
+            if name == "none":
+                continue
+            if value < 0:
+                raise ValueError(f"exposure to {name} must be non-negative")
+            combined[name] = combined.get(name, 0.0) + float(value)
+        for name in combined:
+            if not self.model.has_drug(name):
+                raise ValueError(f"drug must be one of: none, {', '.join(self.model.drug_ids)}")
+        return {name: value for name, value in combined.items() if value > 0}
+
+    @property
+    def exposures(self) -> dict[str, float]:
+        """The exposures applied in the most recent step."""
+        return dict(self._exposures)
+
+    def _advance_drug_fields(self, density: np.ndarray, dt: float) -> None:
+        diffusing = [d for d in self._exposures if self.model.drug(d).diffusing]
+        if not diffusing:
+            self.drug_fields = {}
+            self.world.drug = self._next_drug_field(density, dt, active_dose=0.0)
+            return
+        fields: dict[str, ScalarField] = {}
+        for name in diffusing:
+            # With one diffusing drug the previous field is world.drug, exactly as the
+            # validated single-drug engine; combinations keep a field per drug.
+            previous = self.world.drug if len(diffusing) == 1 else self.drug_fields.get(name)
+            fields[name] = self._next_drug_field(density, dt, active_dose=self._exposures[name], previous=previous)
+        self.drug_fields = fields
+        self.world.drug = fields[diffusing[0]]
+
+    def reference_concentration_nm(self, drug: str) -> float:
+        return self.config.vessel_concentration_nm(drug, default=self.model.drug(drug).reference_concentration_nm)
+
+    def local_exposure_nm(self, drug: str, x: int, y: int, z: int = 0) -> float:
+        """Concentration of ``drug`` at a site in its reference units (nM for diffusing drugs)."""
+        spec = self.model.drug(drug)
+        scale = self.reference_concentration_nm(drug)
+        if spec.diffusing:
+            field_ = self.drug_fields.get(drug)
+            if field_ is None:
+                return 0.0
+            return field_.get(x, y, z) * scale
+        return self._exposures.get(drug, 0.0) * scale
+
     # ------------------------------------------------------------------ counts
     def cell_density(self) -> np.ndarray:
         """1.0 at living-cell voxels, shape (depth, height, width)."""
@@ -299,7 +459,7 @@ class CellularAutomataPhysics:
             return 0.0
         response = self.clone_responses[clone_id]
         ic50 = response.ic50(drug)
-        n = response.hill_coefficient
+        n = response.hill(drug)
         numerator = concentration_nm ** n
         return numerator / (ic50 ** n + numerator)
 
@@ -308,7 +468,55 @@ class CellularAutomataPhysics:
             return 0.0
         response = self.clone_responses[clone_id]
         effect = self.drug_effect(clone_id, drug, concentration_nm)
-        return 1.0 - exp(-response.max_drug_death_rate * effect * dt)
+        return 1.0 - exp(-response.max_death_rate(drug) * effect * dt)
+
+    def combined_death_probability(self, clone_id: str, x: int, y: int, z: int, dt: float) -> tuple[float, str | None]:
+        """Death probability from every active drug (independent hazards) and the drug
+        contributing most, for attribution. (0.0, None) when nothing is active."""
+        if not self._exposures:
+            return 0.0, None
+        survival = 1.0
+        strongest: str | None = None
+        strongest_p = -1.0
+        for drug in self._exposures:
+            p = self.drug_death_probability(clone_id, drug, self.local_exposure_nm(drug, x, y, z), dt)
+            survival *= 1.0 - p
+            if p > strongest_p:
+                strongest_p, strongest = p, drug
+        return 1.0 - survival, strongest
+
+    def division_rate_factor(self, clone_id: str, x: int, y: int, z: int) -> float:
+        """Product over active drugs of (1 - inhibition * effect): 1.0 for purely cytotoxic drugs."""
+        response = self.clone_responses[clone_id]
+        factor = 1.0
+        for drug in self._exposures:
+            inhibition = response.growth_inhibition(drug)
+            if inhibition <= 0.0:
+                continue
+            factor *= 1.0 - inhibition * self.drug_effect(clone_id, drug, self.local_exposure_nm(drug, x, y, z))
+        return factor
+
+    def fitness_multiplier(self, clone_id: str, x: int, y: int, z: int) -> float:
+        """1 - cost, with the cost relieved by any active drug the clone is indifferent to
+        (e.g. an ESR1 mutant under estrogen deprivation). Equals the static multiplier
+        when no active drug relieves anything."""
+        response = self.clone_responses[clone_id]
+        if not self._exposures or not response.drug_fitness_cost_relief:
+            return response.effective_fitness_multiplier
+        remaining = 1.0
+        root = self.model.root_clone if self.model.root_clone in self.clone_responses else clone_id
+        for drug in self._exposures:
+            relief = response.fitness_cost_relief(drug)
+            if relief <= 0.0:
+                continue
+            # how far the environment is shifted: the founding clone's response to the drug
+            remaining *= 1.0 - relief * self.drug_effect(root, drug, self.local_exposure_nm(drug, x, y, z))
+        return max(0.0, 1.0 - response.fitness_cost * remaining)
+
+    def local_growth_rate(self, clone_id: str, x: int, y: int, z: int) -> float:
+        """Division rate of a clone at a site under the active exposures (1/day)."""
+        response = self.clone_responses[clone_id]
+        return response.growth_rate * self.fitness_multiplier(clone_id, x, y, z) * self.division_rate_factor(clone_id, x, y, z)
 
     def hypoxic_death_probability(self, oxygen: float, dt: float) -> float:
         if oxygen > self.config.necrosis_threshold:
@@ -318,14 +526,10 @@ class CellularAutomataPhysics:
         return 1.0 - exp(-self.config.hypoxic_death_rate * dt)
 
     def local_drug_concentration_nm(self, drug: str, x: int, y: int, z: int = 0) -> float:
-        normalized = self.world.drug.get(x, y, z)
-        if drug == "gefitinib":
-            return normalized * self.config.gefitinib_vessel_concentration_nm
-        if drug == "osimertinib":
-            return normalized * self.config.osimertinib_vessel_concentration_nm
-        if drug == "capmatinib":
-            return normalized * self.config.capmatinib_vessel_concentration_nm
-        return 0.0
+        """Original single-field API: ``world.drug`` scaled to ``drug``'s vessel concentration."""
+        if drug == "none" or not self.model.has_drug(drug):
+            return 0.0
+        return self.world.drug.get(x, y, z) * self.reference_concentration_nm(drug)
 
     # ------------------------------------------------------------------ fields
     def _source_grid(self, source_rate: float, source_attr: str) -> np.ndarray:
@@ -346,11 +550,13 @@ class CellularAutomataPhysics:
             source_attr="oxygen_strength", use_michaelis_menten=True
         )
 
-    def _next_drug_field(self, density: np.ndarray, dt: float, *, active_dose: float) -> ScalarField:
+    def _next_drug_field(self, density: np.ndarray, dt: float, *, active_dose: float,
+                         previous: ScalarField | None = None) -> ScalarField:
+        previous = previous if previous is not None else self.world.drug
         if self.config.drug_solver == "quasi_steady":
-            return self._next_quasi_steady_drug_field(density, active_dose=active_dose)
+            return self._next_quasi_steady_drug_field(density, active_dose=active_dose, previous=previous)
         return self._next_field_substepped(
-            field=self.world.drug, density=density, dt=dt,
+            field=previous, density=density, dt=dt,
             diffusion=self.config.drug_diffusion, decay=self.config.drug_decay_rate,
             uptake_rate=self.config.drug_uptake_rate, source_rate=self.config.drug_vessel_source * active_dose,
             source_attr="drug_strength", use_michaelis_menten=False
@@ -371,7 +577,8 @@ class CellularAutomataPhysics:
         self.last_oxygen_solve = result
         return ScalarField.from_array(result.values)
 
-    def _next_quasi_steady_drug_field(self, density: np.ndarray, *, active_dose: float) -> ScalarField:
+    def _next_quasi_steady_drug_field(self, density: np.ndarray, *, active_dose: float,
+                                      previous: ScalarField | None = None) -> ScalarField:
         """Converged solve of D*lap(C) - (k_decay + k_uptake*rho)*C = 0 with vessel lumen fixed at the dose.
 
         Concentrations are normalised to the vessel (plasma) level. Physical D (um^2/s),
@@ -389,8 +596,9 @@ class CellularAutomataPhysics:
             self.last_drug_solve = SolveResult(np.zeros(self._shape), 0, True, 0.0)
             return ScalarField(self.world.config.width, self.world.config.height, 0.0, self.world.config.depth)
         sink = self.config.drug_decay_per_day + self.config.drug_uptake_rate * dens
+        initial = (previous if previous is not None else self.world.drug).array
         result = solve_quasi_steady(
-            self.world.drug.array, diffusion=self.config.drug_grid_diffusion_per_day,
+            initial, diffusion=self.config.drug_grid_diffusion_per_day,
             source=np.zeros(self._shape), linear_sink=sink, fixed_mask=fixed_mask, fixed_values=fixed_values,
             omega=self.config.oxygen_solver_relaxation, tolerance=self.config.drug_solver_tolerance,
             max_iterations=self.config.drug_solver_iterations, clamp=(0.0, 1.0)
@@ -446,7 +654,7 @@ class CellularAutomataPhysics:
                 cause = "hypoxiaArrest" if cell.state == "quiescent" else "normalCycle"
                 self.events.append(("state", self._node(x, y, z), cell.state, cause, cell.clone_id))
 
-    def _apply_death(self, dt: float, drug: str) -> tuple[int, int]:
+    def _apply_death(self, dt: float) -> tuple[int, int]:
         drug_deaths = 0
         hypoxic_deaths = 0
         oxygen = self.world.oxygen.array
@@ -462,8 +670,9 @@ class CellularAutomataPhysics:
                 if self.record_events:
                     self.events.append(("death", self._node(x, y, z), "hypoxicNecrosis", None, cell.clone_id))
                 continue
-            concentration_nm = self.local_drug_concentration_nm(drug, x, y, z)
-            if self.rng.random() < self.drug_death_probability(cell.clone_id, drug, concentration_nm, dt):
+            probability, drug = self.combined_death_probability(cell.clone_id, x, y, z, dt)
+            # One draw per living cell whether or not a drug is active, as the validated engine did.
+            if self.rng.random() < probability:
                 cell.state = "necrotic"
                 cell.death_cause = f"{drug}_kill"
                 drug_deaths += 1
@@ -510,11 +719,15 @@ class CellularAutomataPhysics:
                     self.events.append(("state", self._node(x, y, z), "quiescent", "crowdingArrest", parent.clone_id))
                 continue
             phenotype = self.clone_responses[parent.clone_id]
-            division_probability = max(0.0, 1.0 - exp(-phenotype.growth_rate * phenotype.effective_fitness_multiplier * dt))
+            if self._exposures and phenotype.environment_dependent:
+                rate = self.local_growth_rate(parent.clone_id, x, y, z)   # cytostatic drugs / fitness reversal
+            else:
+                rate = phenotype.growth_rate * phenotype.effective_fitness_multiplier
+            division_probability = max(0.0, 1.0 - exp(-rate * dt))
             if self.rng.random() >= division_probability:
                 continue
             target = self.rng.choice(empty_neighbors)
-            daughter_clone, mutated = self._daughter_clone(parent.clone_id)
+            daughter_clone, mutated = self._daughter_clone(parent.clone_id, x, y, z)
             self.world.place_cell(target.x, target.y, Cell(clone_id=daughter_clone, state="proliferating", age=0.0), target.z)
             parent.age = 0.0
             births += 1
@@ -528,15 +741,33 @@ class CellularAutomataPhysics:
                     self.events.append(("mutate", daughter_node, parent.clone_id, daughter_clone))
         return births, mutations
 
-    def _daughter_clone(self, parent_clone: str) -> tuple[str, bool]:
+    def _daughter_clone(self, parent_clone: str, x: int = 0, y: int = 0, z: int = 0) -> tuple[str, bool]:
         transitions = self.transitions.get(parent_clone, [])
         if not transitions:
             return parent_clone, False
         for transition in transitions:
             probability = transition.simulation_probability * self.config.mutation_probability_scale
             if self.rng.random() < probability:
+                if self.establishment_base is not None and not self._establishes(parent_clone, transition.child_clone, x, y, z):
+                    return parent_clone, False
                 return transition.child_clone, True
         return parent_clone, False
+
+    def establishment_probability(self, parent_clone: str, child_clone: str, x: int, y: int, z: int) -> float:
+        """P(a new mutant founds a clone) = base * (child fitness / parent fitness) at this
+        site under the current exposures, clipped to [0, 1]. Without pressure a costly
+        mutant establishes less often than the base; under a drug the parent is sensitive
+        to and the child is not, it establishes every time."""
+        if self.establishment_base is None:
+            return 1.0
+        parent_rate = self.local_growth_rate(parent_clone, x, y, z)
+        child_rate = self.local_growth_rate(child_clone, x, y, z)
+        if parent_rate <= 0.0:
+            return 1.0 if child_rate > 0.0 else self.establishment_base
+        return max(0.0, min(1.0, self.establishment_base * child_rate / parent_rate))
+
+    def _establishes(self, parent_clone: str, child_clone: str, x: int, y: int, z: int) -> bool:
+        return self.rng.random() < self.establishment_probability(parent_clone, child_clone, x, y, z)
 
     @staticmethod
     def _mean_field(field: ScalarField) -> float:
@@ -544,8 +775,22 @@ class CellularAutomataPhysics:
 
 
 def load_clone_model(
-    path: Path = DEFAULT_CLONE_DATA
+    path: Path = DEFAULT_CLONE_DATA,
+    model: CancerModel | None = None
 ) -> tuple[dict[str, ClonePhenotype], dict[str, list[ResistanceTransition]]]:
+    """Clone phenotypes and resistance transitions for a cancer model.
+
+    Without ``model`` (or for the default lung model) this is the original
+    behaviour: the calibrated parameter files written by ``scripts/prepare_data.py``.
+    Other models point at their own calibrated files or carry parameters inline.
+    """
+    if model is not None and model.id != DEFAULT_CANCER:
+        source = str(model.parameters.get("source", "inline"))
+        if source == "inline":
+            return load_inline_clone_model(model)
+        if source == "calibrated_files":
+            return load_calibrated_clone_model(model.path("clones"), graph_path=model.path("resistance_graph"))
+        raise ValueError(f"{model.id}: unknown parameter source {source!r}")
     if path == DEFAULT_CLONE_DATA:
         if DEFAULT_CALIBRATED_CLONE_DATA.exists():
             return load_calibrated_clone_model(DEFAULT_CALIBRATED_CLONE_DATA)
@@ -586,25 +831,77 @@ def load_clone_responses(path: Path = DEFAULT_CLONE_DATA) -> dict[str, ClonePhen
 
 
 def load_calibrated_clone_model(
-    path: Path
+    path: Path,
+    graph_path: Path = DEFAULT_RESISTANCE_GRAPH
 ) -> tuple[dict[str, ClonePhenotype], dict[str, list[ResistanceTransition]]]:
+    """Phenotypes from a calibrated parameter file (one entry per clone, every value
+    carrying its provenance) plus the resistance graph it was calibrated with."""
     with path.open() as handle:
         data = json.load(handle)
     responses = {}
     for clone in data:
+        ic50 = {drug: float(entry["value"]) for drug, entry in clone["drug_response"].items()}
         responses[clone["clone_id"]] = ClonePhenotype(
             clone_id=clone["clone_id"],
             growth_rate=float(clone["growth_rate_per_day"]["value"]),
             fitness_cost=float(clone["fitness_cost"]["value"]),
-            gefitinib_ic50_nm=float(clone["drug_response"]["gefitinib"]["value"]),
-            osimertinib_ic50_nm=float(clone["drug_response"]["osimertinib"]["value"]),
-            capmatinib_ic50_nm=float(clone["drug_response"].get("capmatinib", {"value": 8000.0})["value"]),
+            ic50_nm=ic50,
             allowed_next_resistance_transitions=tuple(clone["allowed_transitions"]),
             hill_coefficient=float(clone.get("hill_coefficient", {"value": 1.2})["value"]),
-            max_drug_death_rate=float(clone.get("max_drug_death_rate_per_day", {"value": 0.18})["value"])
+            max_drug_death_rate=float(clone.get("max_drug_death_rate_per_day", {"value": 0.18})["value"]),
+            drug_hill={d: float(e["hill"]["value"]) for d, e in clone["drug_response"].items() if "hill" in e},
+            drug_max_death_rate={d: float(e["max_death_rate_per_day"]["value"]) for d, e in clone["drug_response"].items() if "max_death_rate_per_day" in e},
+            drug_growth_inhibition={d: float(e["growth_inhibition"]["value"]) for d, e in clone["drug_response"].items() if "growth_inhibition" in e},
+            drug_fitness_cost_relief={d: float(e["fitness_cost_relief"]["value"]) for d, e in clone["drug_response"].items() if "fitness_cost_relief" in e},
         )
 
-    return responses, _load_calibrated_transitions()
+    return responses, _load_calibrated_transitions(graph_path)
+
+
+def _value(entry) -> float:
+    """A bare number or a provenance record ``{"value": x, ...}``."""
+    return float(entry["value"] if isinstance(entry, Mapping) else entry)
+
+
+def load_inline_clone_model(
+    model: CancerModel
+) -> tuple[dict[str, ClonePhenotype], dict[str, list[ResistanceTransition]]]:
+    """Phenotypes carried inside the cancer model file (``parameters.clones`` and
+    ``parameters.transitions``), each value a provenance record with an evidence
+    level, for cancers that have no raw-data calibration pipeline yet."""
+    params = model.parameters
+    responses: dict[str, ClonePhenotype] = {}
+    for clone in params["clones"]:
+        drug_response = clone.get("drug_response", {})
+        for drug in drug_response:
+            if not model.has_drug(drug):
+                raise ValueError(f"{model.id}: clone {clone['id']} responds to unknown drug {drug}")
+        responses[clone["id"]] = ClonePhenotype(
+            clone_id=clone["id"],
+            growth_rate=_value(clone["growth_rate_per_day"]),
+            fitness_cost=_value(clone.get("fitness_cost", 0.0)),
+            ic50_nm={d: _value(e["ic50"]) for d, e in drug_response.items()},
+            allowed_next_resistance_transitions=tuple(clone.get("allowed_transitions", ())),
+            hill_coefficient=_value(clone.get("hill_coefficient", 1.2)),
+            max_drug_death_rate=_value(clone.get("max_drug_death_rate_per_day", 0.18)),
+            drug_hill={d: _value(e["hill"]) for d, e in drug_response.items() if "hill" in e},
+            drug_max_death_rate={d: _value(e["max_death_rate_per_day"]) for d, e in drug_response.items() if "max_death_rate_per_day" in e},
+            drug_growth_inhibition={d: _value(e["growth_inhibition"]) for d, e in drug_response.items() if "growth_inhibition" in e},
+            drug_fitness_cost_relief={d: _value(e["fitness_cost_relief"]) for d, e in drug_response.items() if "fitness_cost_relief" in e},
+        )
+    missing = [c for c in model.clone_ids if c not in responses]
+    if missing:
+        raise ValueError(f"{model.id}: no parameters for clones {missing}")
+    transitions: dict[str, list[ResistanceTransition]] = {}
+    for edge in params.get("transitions", []):
+        transition = ResistanceTransition(
+            parent_clone=edge["from"],
+            child_clone=edge["to"],
+            alteration=edge.get("alteration", f"{edge['from']}->{edge['to']}"),
+            simulation_probability=_value(edge["simulation_probability"])
+        )
+        transitions.setdefault(transition.parent_clone, []).append(transition)
+    return responses, transitions
 
 
 def _load_calibrated_transitions(
@@ -659,19 +956,11 @@ def automata_config_from_physics_calibration(
         if "gefitinib" in drugs:
             params.setdefault("drug_diffusion_um2_s", float(drugs["gefitinib"].get("diffusion_um2_s", 500.0)))
             params.setdefault("drug_decay_per_hour", float(drugs["gefitinib"].get("decay_per_hour", 0.02)))
-        if "gefitinib" in drugs:
-            params.setdefault(
-                "gefitinib_vessel_concentration_nm",
-                float(drugs["gefitinib"]["vessel_concentration_nm"])
-            )
-        if "osimertinib" in drugs:
-            params.setdefault(
-                "osimertinib_vessel_concentration_nm",
-                float(drugs["osimertinib"]["vessel_concentration_nm"])
-            )
-        if "capmatinib" in drugs:
-            params.setdefault(
-                "capmatinib_vessel_concentration_nm",
-                float(drugs["capmatinib"]["vessel_concentration_nm"])
-            )
+        for drug in LEGACY_DRUGS:
+            if drug in drugs:
+                params.setdefault(f"{drug}_vessel_concentration_nm", float(drugs[drug]["vessel_concentration_nm"]))
+        others = {d: float(v["vessel_concentration_nm"]) for d, v in drugs.items()
+                  if d not in LEGACY_DRUGS and "vessel_concentration_nm" in v}
+        if others:
+            params["drug_vessel_concentration_nm"] = {**others, **dict(params.get("drug_vessel_concentration_nm", {}))}
     return AutomataConfig(**params)

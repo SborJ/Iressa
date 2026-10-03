@@ -1,0 +1,859 @@
+{
+  "id": "breast_er_her2neg",
+  "name": "ER+/HER2- breast cancer",
+  "description": "Research model of ER-positive, HER2-negative breast cancer evolving under endocrine suppression, CDK4/6 inhibition and SERD switching. Clones: ER-sensitive (ESR1 wild type), the ESR1 Y537S and D538G ligand-independent mutants, and an aggregate CDK4/6-escape phenotype (RB1 loss / CCNE1-high). Parameters are cell-model calibration values with explicit evidence levels, not clinical constants.",
+  "root_clone": "ESR1_WT",
+  "clones": [
+    {
+      "id": "ESR1_WT",
+      "label": "ER-sensitive (ESR1 wild type)",
+      "parent": null,
+      "resistant": false
+    },
+    {
+      "id": "ESR1_Y537S",
+      "label": "ESR1 Y537S",
+      "parent": "ESR1_WT",
+      "resistant": true
+    },
+    {
+      "id": "ESR1_D538G",
+      "label": "ESR1 D538G",
+      "parent": "ESR1_WT",
+      "resistant": true
+    },
+    {
+      "id": "CDK_ESCAPE",
+      "label": "CDK4/6 escape (RB1 loss / CCNE1)",
+      "parent": "ESR1_WT",
+      "resistant": true
+    }
+  ],
+  "default_clone_weights": [
+    99.0,
+    0.5,
+    0.5,
+    0.0
+  ],
+  "default_clone_weights_note": "Rare pre-existing ESR1-mutant subclones. The research prior is 1e-5 to 1e-3 of cells (ASSUMPTION); a lattice of ~1500 cells cannot hold that, so the demo seeds 0.5% of each ESR1 mutant and no CDK escape, which arises by transition.",
+  "drugs": [
+    {
+      "id": "endocrine",
+      "label": "Endocrine suppression (aromatase inhibitor)",
+      "exposure": "global",
+      "mechanism": "estrogen_deprivation",
+      "half_life_hours": 48.0,
+      "reference_concentration_nm": 1.0,
+      "units": "normalized estrogen deprivation (1.0 = maximal aromatase-inhibitor pressure, estrogen availability ~0.05)",
+      "note": "Aromatase inhibitors act systemically, so this is a uniform environment level, not a diffusing tumour field."
+    },
+    {
+      "id": "palbociclib",
+      "label": "Palbociclib (CDK4/6 inhibitor)",
+      "exposure": "diffusing",
+      "mechanism": "CDK4_6_inhibitor",
+      "half_life_hours": 29.0,
+      "reference_concentration_nm": 1500.0,
+      "reference_note": "Exposure 1.0 = 1500 nM at the vessel, twice the MCF-7 in-vitro IC50 (~70% effect on sensitive cells). ASSUMPTION: chosen so the sensitive clone is controlled at full exposure; clinical plasma levels (~100-130 nM at 125 mg) are not used directly because in-vitro and in-vivo scales differ. Half-life 29 h is the mean plasma elimination half-life (DIRECT, prescribing information)."
+    },
+    {
+      "id": "fulvestrant",
+      "label": "Fulvestrant (SERD)",
+      "exposure": "diffusing",
+      "mechanism": "estrogen_receptor_degrader",
+      "half_life_hours": 960.0,
+      "reference_concentration_nm": 25.0,
+      "reference_note": "Exposure 1.0 = 25 nM, about the steady-state plasma level of 500 mg monthly dosing (DERIVED). Terminal half-life ~40 days (DIRECT, prescribing information)."
+    },
+    {
+      "id": "elacestrant",
+      "label": "Elacestrant (oral SERD)",
+      "exposure": "diffusing",
+      "mechanism": "estrogen_receptor_degrader",
+      "half_life_hours": 40.0,
+      "reference_concentration_nm": 150.0,
+      "reference_note": "Exposure 1.0 = 150 nM at the vessel. ASSUMPTION: an oral SERD exposure several-fold above the parental IC50, which is what lets oral SERDs cover ESR1 mutants; not derived from pharmacokinetics and randomised over 50-300 nM. Half-life 30-50 h (DIRECT, prescribing information)."
+    }
+  ],
+  "parameters": {
+    "source": "inline",
+    "evidence_levels": {
+      "DIRECT": "measured in a relevant experimental system",
+      "DERIVED": "calculated or combined from direct measurements",
+      "INFERRED": "biologically supported but not measured for this exact system",
+      "ASSUMPTION": "model parameter without sufficiently direct evidence; randomise it"
+    },
+    "clones": [
+      {
+        "id": "ESR1_WT",
+        "growth_rate_per_day": {
+          "value": 0.385,
+          "unit": "1/day",
+          "evidence": "DIRECT",
+          "source": "MCF-7 doubling time ~1.8 d (Cellosaurus; r = ln2 / Td). In-vitro cell proliferation, not tumour-level growth."
+        },
+        "fitness_cost": {
+          "value": 0.0,
+          "unit": "fraction",
+          "evidence": "DIRECT",
+          "source": "reference clone"
+        },
+        "hill_coefficient": {
+          "value": 1.2,
+          "unit": "dimensionless",
+          "evidence": "ASSUMPTION",
+          "source": "same slope as the lung model's curated seed"
+        },
+        "max_drug_death_rate_per_day": {
+          "value": 0.05,
+          "unit": "1/day",
+          "evidence": "ASSUMPTION",
+          "source": "endocrine and CDK4/6 agents are mainly cytostatic; death is a minor component"
+        },
+        "drug_response": {
+          "endocrine": {
+            "ic50": {
+              "value": 0.3,
+              "unit": "normalized deprivation",
+              "evidence": "ASSUMPTION",
+              "source": "half-maximal response at 30% of maximal aromatase-inhibitor pressure"
+            },
+            "growth_inhibition": {
+              "value": 0.7,
+              "unit": "fraction",
+              "evidence": "INFERRED",
+              "source": "estrogen deprivation arrests ER-dependent MCF-7/T-47D proliferation (G1 arrest)"
+            },
+            "max_death_rate_per_day": {
+              "value": 0.06,
+              "unit": "1/day",
+              "evidence": "ASSUMPTION",
+              "source": "modest apoptosis under deprivation"
+            }
+          },
+          "palbociclib": {
+            "ic50": {
+              "value": 750.0,
+              "unit": "nM",
+              "evidence": "DIRECT",
+              "source": "MCF-7 palbociclib IC50 0.75 uM in a palbociclib-resistance study; absolute values differ between studies (0.75-3.6 uM), so other clones are calibrated relative to this"
+            },
+            "growth_inhibition": {
+              "value": 0.8,
+              "unit": "fraction",
+              "evidence": "INFERRED",
+              "source": "CDK4/6 inhibition causes G1 arrest in RB-proficient cells"
+            },
+            "max_death_rate_per_day": {
+              "value": 0.04,
+              "unit": "1/day",
+              "evidence": "ASSUMPTION",
+              "source": "largely cytostatic agent"
+            }
+          },
+          "fulvestrant": {
+            "ic50": {
+              "value": 0.4,
+              "unit": "nM",
+              "evidence": "DIRECT",
+              "source": "engineered MCF-7 ESR1 wild type: 0.31-0.4 nM across two genome-edited systems"
+            },
+            "growth_inhibition": {
+              "value": 0.75,
+              "unit": "fraction",
+              "evidence": "INFERRED",
+              "source": "ER degradation arrests ER-dependent proliferation"
+            },
+            "max_death_rate_per_day": {
+              "value": 0.08,
+              "unit": "1/day",
+              "evidence": "ASSUMPTION",
+              "source": "SERDs induce more apoptosis than deprivation alone"
+            }
+          },
+          "elacestrant": {
+            "ic50": {
+              "value": 12.0,
+              "unit": "nM",
+              "evidence": "DIRECT",
+              "source": "parental MCF-7 elacestrant IC50 12.2 nM; FDA pharmacology 4.2-27 nM depending on estradiol"
+            },
+            "growth_inhibition": {
+              "value": 0.75,
+              "unit": "fraction",
+              "evidence": "INFERRED",
+              "source": "as fulvestrant"
+            },
+            "max_death_rate_per_day": {
+              "value": 0.08,
+              "unit": "1/day",
+              "evidence": "ASSUMPTION",
+              "source": "as fulvestrant"
+            }
+          }
+        },
+        "allowed_transitions": [
+          "ESR1_Y537S",
+          "ESR1_D538G",
+          "CDK_ESCAPE"
+        ]
+      },
+      {
+        "id": "ESR1_Y537S",
+        "growth_rate_per_day": {
+          "value": 0.385,
+          "unit": "1/day",
+          "evidence": "INFERRED",
+          "source": "same intrinsic cycle as the parental line; relative fitness is handled by fitness_cost and the estrogen environment"
+        },
+        "fitness_cost": {
+          "value": 0.05,
+          "unit": "fraction",
+          "evidence": "INFERRED",
+          "source": "mutant and wild-type ER cells reverse relative fitness with estrogen availability; under estrogen-rich conditions the mutant has no advantage, modelled as a small cost. Randomise."
+        },
+        "hill_coefficient": {
+          "value": 1.2,
+          "unit": "dimensionless",
+          "evidence": "ASSUMPTION",
+          "source": "as ESR1_WT"
+        },
+        "max_drug_death_rate_per_day": {
+          "value": 0.05,
+          "unit": "1/day",
+          "evidence": "ASSUMPTION",
+          "source": "as ESR1_WT"
+        },
+        "drug_response": {
+          "endocrine": {
+            "ic50": {
+              "value": 6.0,
+              "unit": "normalized deprivation",
+              "evidence": "ASSUMPTION",
+              "source": "20x the wild-type value: Y537S stabilises the active ER conformation and signals without ligand, so deprivation barely affects it"
+            },
+            "growth_inhibition": {
+              "value": 0.7,
+              "unit": "fraction",
+              "evidence": "INFERRED",
+              "source": "as ESR1_WT; the shift is in IC50"
+            },
+            "max_death_rate_per_day": {
+              "value": 0.06,
+              "unit": "1/day",
+              "evidence": "ASSUMPTION",
+              "source": "as ESR1_WT"
+            },
+            "fitness_cost_relief": {
+              "value": 1.0,
+              "unit": "fraction",
+              "evidence": "INFERRED",
+              "source": "competition experiments: D538G cells gain their advantage during estrogen deprivation and show none under hormone-rich conditions, so the mutant's cost is paid only while estrogen is available"
+            }
+          },
+          "palbociclib": {
+            "ic50": {
+              "value": 2025.0,
+              "unit": "nM",
+              "evidence": "DERIVED",
+              "source": "2.7x the wild-type IC50: engineered MCF-7 cells with Y537S or D538G show ~2.7x higher palbociclib IC50 under standard conditions (DIRECT relative shift)"
+            },
+            "growth_inhibition": {
+              "value": 0.8,
+              "unit": "fraction",
+              "evidence": "INFERRED",
+              "source": "RB-proficient"
+            },
+            "max_death_rate_per_day": {
+              "value": 0.04,
+              "unit": "1/day",
+              "evidence": "ASSUMPTION",
+              "source": "as ESR1_WT"
+            }
+          },
+          "fulvestrant": {
+            "ic50": {
+              "value": 20.0,
+              "unit": "nM",
+              "evidence": "DERIVED",
+              "source": "engineered MCF-7 Y537S: 16 nM and 25 nM in two studies (~52x wild type)"
+            },
+            "growth_inhibition": {
+              "value": 0.75,
+              "unit": "fraction",
+              "evidence": "INFERRED",
+              "source": "as ESR1_WT"
+            },
+            "max_death_rate_per_day": {
+              "value": 0.08,
+              "unit": "1/day",
+              "evidence": "ASSUMPTION",
+              "source": "as ESR1_WT"
+            }
+          },
+          "elacestrant": {
+            "ic50": {
+              "value": 35.0,
+              "unit": "nM",
+              "evidence": "ASSUMPTION",
+              "uncertain": true,
+              "range": [
+                20.0,
+                50.0
+              ],
+              "source": "no Y537S-specific elacestrant IC50 was extracted; complex ESR1 mutants report ~20-35 nM. Deliberately not interpolated: left uncertain and randomised over 20-50 nM"
+            },
+            "growth_inhibition": {
+              "value": 0.75,
+              "unit": "fraction",
+              "evidence": "INFERRED",
+              "source": "as fulvestrant"
+            },
+            "max_death_rate_per_day": {
+              "value": 0.08,
+              "unit": "1/day",
+              "evidence": "ASSUMPTION",
+              "source": "as fulvestrant"
+            }
+          }
+        },
+        "allowed_transitions": []
+      },
+      {
+        "id": "ESR1_D538G",
+        "growth_rate_per_day": {
+          "value": 0.385,
+          "unit": "1/day",
+          "evidence": "INFERRED",
+          "source": "as ESR1_Y537S"
+        },
+        "fitness_cost": {
+          "value": 0.03,
+          "unit": "fraction",
+          "evidence": "INFERRED",
+          "source": "D538G cells gain an advantage only during estrogen deprivation (competition experiments); small cost under estrogen-rich conditions. Randomise."
+        },
+        "hill_coefficient": {
+          "value": 1.2,
+          "unit": "dimensionless",
+          "evidence": "ASSUMPTION",
+          "source": "as ESR1_WT"
+        },
+        "max_drug_death_rate_per_day": {
+          "value": 0.05,
+          "unit": "1/day",
+          "evidence": "ASSUMPTION",
+          "source": "as ESR1_WT"
+        },
+        "drug_response": {
+          "endocrine": {
+            "ic50": {
+              "value": 2.4,
+              "unit": "normalized deprivation",
+              "evidence": "ASSUMPTION",
+              "source": "8x the wild-type value: ligand-independent, but less so than Y537S"
+            },
+            "growth_inhibition": {
+              "value": 0.7,
+              "unit": "fraction",
+              "evidence": "INFERRED",
+              "source": "as ESR1_WT"
+            },
+            "max_death_rate_per_day": {
+              "value": 0.06,
+              "unit": "1/day",
+              "evidence": "ASSUMPTION",
+              "source": "as ESR1_WT"
+            },
+            "fitness_cost_relief": {
+              "value": 1.0,
+              "unit": "fraction",
+              "evidence": "INFERRED",
+              "source": "competition experiments: D538G cells gain their advantage during estrogen deprivation and show none under hormone-rich conditions, so the mutant's cost is paid only while estrogen is available"
+            }
+          },
+          "palbociclib": {
+            "ic50": {
+              "value": 2025.0,
+              "unit": "nM",
+              "evidence": "DERIVED",
+              "source": "2.7x wild type, as for Y537S (DIRECT relative shift)"
+            },
+            "growth_inhibition": {
+              "value": 0.8,
+              "unit": "fraction",
+              "evidence": "INFERRED",
+              "source": "RB-proficient"
+            },
+            "max_death_rate_per_day": {
+              "value": 0.04,
+              "unit": "1/day",
+              "evidence": "ASSUMPTION",
+              "source": "as ESR1_WT"
+            }
+          },
+          "fulvestrant": {
+            "ic50": {
+              "value": 6.0,
+              "unit": "nM",
+              "evidence": "DIRECT",
+              "source": "engineered MCF-7 D538G: 5.9 nM (~19x wild type)"
+            },
+            "growth_inhibition": {
+              "value": 0.75,
+              "unit": "fraction",
+              "evidence": "INFERRED",
+              "source": "as ESR1_WT"
+            },
+            "max_death_rate_per_day": {
+              "value": 0.08,
+              "unit": "1/day",
+              "evidence": "ASSUMPTION",
+              "source": "as ESR1_WT"
+            }
+          },
+          "elacestrant": {
+            "ic50": {
+              "value": 28.0,
+              "unit": "nM",
+              "evidence": "DIRECT",
+              "source": "MCF-7 D538G elacestrant IC50 27.7 nM"
+            },
+            "growth_inhibition": {
+              "value": 0.75,
+              "unit": "fraction",
+              "evidence": "INFERRED",
+              "source": "as fulvestrant"
+            },
+            "max_death_rate_per_day": {
+              "value": 0.08,
+              "unit": "1/day",
+              "evidence": "ASSUMPTION",
+              "source": "as fulvestrant"
+            }
+          }
+        },
+        "allowed_transitions": []
+      },
+      {
+        "id": "CDK_ESCAPE",
+        "growth_rate_per_day": {
+          "value": 0.385,
+          "unit": "1/day",
+          "evidence": "INFERRED",
+          "source": "as the parental line"
+        },
+        "fitness_cost": {
+          "value": 0.08,
+          "unit": "fraction",
+          "evidence": "ASSUMPTION",
+          "source": "RB1 loss / CCNE1 amplification carry an unmeasured cost without drug pressure. Randomise."
+        },
+        "hill_coefficient": {
+          "value": 1.2,
+          "unit": "dimensionless",
+          "evidence": "ASSUMPTION",
+          "source": "as ESR1_WT"
+        },
+        "max_drug_death_rate_per_day": {
+          "value": 0.05,
+          "unit": "1/day",
+          "evidence": "ASSUMPTION",
+          "source": "as ESR1_WT"
+        },
+        "drug_response": {
+          "endocrine": {
+            "ic50": {
+              "value": 0.3,
+              "unit": "normalized deprivation",
+              "evidence": "INFERRED",
+              "source": "ESR1 wild type: the escape is downstream of ER, so deprivation still acts, but G1 arrest is weaker without RB"
+            },
+            "growth_inhibition": {
+              "value": 0.45,
+              "unit": "fraction",
+              "evidence": "ASSUMPTION",
+              "source": "loss of the RB checkpoint blunts the cytostatic effect of estrogen deprivation"
+            },
+            "max_death_rate_per_day": {
+              "value": 0.06,
+              "unit": "1/day",
+              "evidence": "ASSUMPTION",
+              "source": "as ESR1_WT"
+            }
+          },
+          "palbociclib": {
+            "ic50": {
+              "value": 6000.0,
+              "unit": "nM",
+              "evidence": "DERIVED",
+              "source": "8x the sensitive IC50 (range 3-15x across MCF-7 / T-47D resistant derivatives: 7.15/0.75, 3.37/0.26, 7.5-12/3.6, 13.5/1.7 uM)"
+            },
+            "growth_inhibition": {
+              "value": 0.3,
+              "unit": "fraction",
+              "evidence": "INFERRED",
+              "source": "RB1 loss / CCNE1 removes the CDK4/6 dependence of the G1-S transition"
+            },
+            "max_death_rate_per_day": {
+              "value": 0.02,
+              "unit": "1/day",
+              "evidence": "ASSUMPTION",
+              "source": "little direct killing"
+            }
+          },
+          "fulvestrant": {
+            "ic50": {
+              "value": 0.4,
+              "unit": "nM",
+              "evidence": "INFERRED",
+              "source": "ER itself is wild type; SERD binding unchanged"
+            },
+            "growth_inhibition": {
+              "value": 0.5,
+              "unit": "fraction",
+              "evidence": "ASSUMPTION",
+              "source": "ER degradation still slows growth but the RB checkpoint is gone"
+            },
+            "max_death_rate_per_day": {
+              "value": 0.08,
+              "unit": "1/day",
+              "evidence": "ASSUMPTION",
+              "source": "as ESR1_WT"
+            }
+          },
+          "elacestrant": {
+            "ic50": {
+              "value": 12.0,
+              "unit": "nM",
+              "evidence": "INFERRED",
+              "source": "ER wild type; as the parental line"
+            },
+            "growth_inhibition": {
+              "value": 0.5,
+              "unit": "fraction",
+              "evidence": "ASSUMPTION",
+              "source": "as fulvestrant"
+            },
+            "max_death_rate_per_day": {
+              "value": 0.08,
+              "unit": "1/day",
+              "evidence": "ASSUMPTION",
+              "source": "as fulvestrant"
+            }
+          }
+        },
+        "allowed_transitions": []
+      }
+    ],
+    "transitions": [
+      {
+        "from": "ESR1_WT",
+        "to": "ESR1_Y537S",
+        "alteration": "ESR1_Y537S",
+        "mechanism": "mutation_or_selection",
+        "simulation_probability": {
+          "value": 1e-06,
+          "unit": "per division",
+          "evidence": "ASSUMPTION",
+          "source": "research prior 1e-9 to 1e-6 per relevant division; the per-division rate in tumours is not reliably known. Demo runs multiply it by mutation_scale, as the lung model does."
+        }
+      },
+      {
+        "from": "ESR1_WT",
+        "to": "ESR1_D538G",
+        "alteration": "ESR1_D538G",
+        "mechanism": "mutation_or_selection",
+        "simulation_probability": {
+          "value": 1e-06,
+          "unit": "per division",
+          "evidence": "ASSUMPTION",
+          "source": "as Y537S"
+        }
+      },
+      {
+        "from": "ESR1_WT",
+        "to": "CDK_ESCAPE",
+        "alteration": "RB1_loss_or_CCNE1_amplification",
+        "mechanism": "mutation_or_selection",
+        "simulation_probability": {
+          "value": 5e-07,
+          "unit": "per division",
+          "evidence": "ASSUMPTION",
+          "source": "acquired RB1 mutations and CCNE1 amplification are documented after CDK4/6 inhibitor exposure; per-cell rates are unconstrained"
+        }
+      }
+    ],
+    "explicit_unknowns": [
+      "per-division ESR1 mutation probabilities",
+      "clone establishment probability",
+      "resistant-clone fitness costs",
+      "absolute tumour drug concentrations (plasma is not tissue)",
+      "drug diffusion coefficients in breast tissue",
+      "cellular oxygen consumption",
+      "hypoxic quiescence / necrosis thresholds",
+      "CDK-resistance transition frequency"
+    ]
+  },
+  "schedules": {
+    "none": {
+      "type": "none"
+    },
+    "continuous-endocrine": {
+      "type": "continuous",
+      "drug": "endocrine"
+    },
+    "continuous-palbociclib": {
+      "type": "continuous",
+      "drug": "palbociclib"
+    },
+    "continuous-fulvestrant": {
+      "type": "continuous",
+      "drug": "fulvestrant"
+    },
+    "continuous-endocrine-cdk": {
+      "type": "combination",
+      "agents": {
+        "endocrine": 1.0,
+        "palbociclib": 1.0
+      }
+    },
+    "continuous-serd-cdk": {
+      "type": "combination",
+      "agents": {
+        "fulvestrant": 1.0,
+        "palbociclib": 1.0
+      }
+    },
+    "endocrine-cdk-then-serd-cdk": {
+      "type": "combination-switch",
+      "first": {
+        "endocrine": 1.0,
+        "palbociclib": 1.0
+      },
+      "second": {
+        "fulvestrant": 1.0,
+        "palbociclib": 1.0
+      }
+    },
+    "early-switch-esr1-10": {
+      "type": "clone-triggered-switch",
+      "first": {
+        "endocrine": 1.0,
+        "palbociclib": 1.0
+      },
+      "second": {
+        "fulvestrant": 1.0,
+        "palbociclib": 1.0
+      },
+      "trigger_clones": [
+        "ESR1_Y537S",
+        "ESR1_D538G"
+      ],
+      "trigger_fraction": 0.1
+    },
+    "early-switch-esr1-1": {
+      "type": "clone-triggered-switch",
+      "first": {
+        "endocrine": 1.0,
+        "palbociclib": 1.0
+      },
+      "second": {
+        "fulvestrant": 1.0,
+        "palbociclib": 1.0
+      },
+      "trigger_clones": [
+        "ESR1_Y537S",
+        "ESR1_D538G"
+      ],
+      "trigger_fraction": 0.01
+    },
+    "adaptive-endocrine-cdk": {
+      "type": "adaptive-combination",
+      "agents": {
+        "endocrine": 1.0,
+        "palbociclib": 1.0
+      }
+    },
+    "late-switch-regrowth": {
+      "type": "regrowth-triggered-switch",
+      "first": {
+        "endocrine": 1.0,
+        "palbociclib": 1.0
+      },
+      "second": {
+        "fulvestrant": 1.0,
+        "palbociclib": 1.0
+      },
+      "response_fraction": 0.8,
+      "regrowth_factor": 1.2,
+      "note": "Baseline B: switch only after the tumour has responded (fallen below 80% of its start) and regrown to 1.2x its nadir"
+    },
+    "adaptive-holiday-30-60": {
+      "type": "adaptive-combination",
+      "agents": {
+        "endocrine": 1.0,
+        "palbociclib": 1.0
+      },
+      "stop_fraction": 0.3,
+      "restart_fraction": 0.6,
+      "note": "Baseline D: treatment off below 30% of the starting burden, on again above 60%"
+    },
+    "continuous-oral-serd-cdk": {
+      "type": "combination",
+      "agents": {
+        "elacestrant": 1.0,
+        "palbociclib": 1.0
+      }
+    },
+    "early-switch-esr1-10-oral-serd": {
+      "type": "clone-triggered-switch",
+      "first": {
+        "endocrine": 1.0,
+        "palbociclib": 1.0
+      },
+      "second": {
+        "elacestrant": 1.0,
+        "palbociclib": 1.0
+      },
+      "trigger_clones": [
+        "ESR1_Y537S",
+        "ESR1_D538G"
+      ],
+      "trigger_fraction": 0.1
+    }
+  },
+  "default_panel": [
+    "none",
+    "continuous-endocrine-cdk",
+    "late-switch-regrowth",
+    "early-switch-esr1-10",
+    "early-switch-esr1-1",
+    "adaptive-endocrine-cdk",
+    "adaptive-holiday-30-60",
+    "early-switch-esr1-10-oral-serd"
+  ],
+  "demo_run": "breast48",
+  "establishment": {
+    "base_probability": {
+      "value": 0.5,
+      "unit": "probability",
+      "evidence": "ASSUMPTION",
+      "source": "clone establishment is unknown and environment-dependent; randomised"
+    },
+    "rule": "P(establish) = base * (child division rate / parent division rate) at the site under the current exposures, clipped to [0, 1]. A mutant that is disadvantaged without pressure establishes less often than the base; one favoured by the current drug establishes every time."
+  },
+  "growth": {
+    "intrinsic_division_time_days": {
+      "ESR1_WT": {
+        "value": 1.8,
+        "evidence": "DIRECT_IN_VITRO",
+        "source": "MCF-7 (Cellosaurus); T-47D ~1.6 d"
+      }
+    },
+    "effective_tumor_doubling_target_days": {
+      "min": 150,
+      "nominal": 250,
+      "max": 500,
+      "evidence": "DERIVED_CLINICAL",
+      "source": "serial imaging of untreated ER+/HER2- tumours: medians ~241-385 d; luminal A ~332 d, luminal B ~203 d",
+      "status": "NOT REPRODUCED: the engine runs on the in-vitro timescale and reproduces only the space- and oxygen-limited slowdown; see tests/test_breast_model.py::test_8"
+    }
+  },
+  "randomization": {
+    "note": "Per-episode draws for RL training and evaluation (domain randomisation). Every entry is an ASSUMPTION about uncertainty, not a measurement.",
+    "initial_resistant_fraction": {
+      "distribution": "log_uniform",
+      "min": 0.001,
+      "max": 0.02,
+      "evidence": "ASSUMPTION",
+      "source": "research prior 1e-5 to 1e-3 of cells, raised so a ~350-1500 cell lattice can hold at least one mutant"
+    },
+    "mutation_scale": {
+      "distribution": "log_uniform",
+      "min": 10.0,
+      "max": 200.0,
+      "evidence": "ASSUMPTION",
+      "source": "per-division rates 1e-9 to 1e-6 are unconstrained; the demo multiplier is varied over an order of magnitude"
+    },
+    "resistant_fitness_cost": {
+      "distribution": "uniform",
+      "min": 0.0,
+      "max": 0.12,
+      "evidence": "ASSUMPTION",
+      "source": "context-dependent fitness costs of ESR1 mutants and CDK escape"
+    },
+    "ic50_multiplier": {
+      "distribution": "log_uniform",
+      "min": 0.5,
+      "max": 2.0,
+      "evidence": "ASSUMPTION",
+      "source": "between-study spread of absolute IC50 values (e.g. palbociclib 0.75-3.6 uM)"
+    },
+    "cdk_resistance_multiplier": {
+      "distribution": "uniform",
+      "min": 5.0,
+      "max": 12.0,
+      "clone": "CDK_ESCAPE",
+      "drug": "palbociclib",
+      "reference_clone": "ESR1_WT",
+      "evidence": "DERIVED",
+      "source": "3-15x fold changes across resistant derivatives"
+    },
+    "oxygen_mm_vmax": {
+      "distribution": "uniform",
+      "min": 0.02,
+      "max": 0.07,
+      "evidence": "ASSUMPTION",
+      "source": "cellular oxygen consumption is platform-dependent; constrained only by realistic hypoxic fractions"
+    },
+    "vessel_concentration_scale": {
+      "distribution": "uniform",
+      "min": 0.6,
+      "max": 1.4,
+      "evidence": "ASSUMPTION",
+      "source": "drug penetration / tumour exposure uncertainty"
+    },
+    "reference_concentration_nm": {
+      "drug": "elacestrant",
+      "distribution": "log_uniform",
+      "min": 50.0,
+      "max": 300.0,
+      "evidence": "ASSUMPTION",
+      "source": "see the drug's reference_note"
+    }
+  },
+  "experiment_69": {
+    "strategies": {
+      "A_continuous": "continuous-endocrine-cdk",
+      "B_late_switch": "late-switch-regrowth",
+      "C_early_switch_10": "early-switch-esr1-10",
+      "D_early_switch_1": "early-switch-esr1-1",
+      "E_policy": "ppo"
+    },
+    "seeding_note": "99.9% WT / 0.05% / 0.05% in the brief; the lattice runs seed 99/0.5/0.5 (see default_clone_weights_note)"
+  },
+  "rl_action_grid": {
+    "levels": [
+      0.0,
+      0.25,
+      0.5,
+      0.75,
+      1.0
+    ],
+    "agents": [
+      "endocrine",
+      "palbociclib",
+      "fulvestrant",
+      "elacestrant"
+    ],
+    "exclusive_groups": [
+      [
+        "endocrine",
+        "fulvestrant",
+        "elacestrant"
+      ]
+    ],
+    "note": "Spec section 41: discrete exposure levels per agent. The mask allows at most one endocrine agent (aromatase inhibition or one SERD) at a time, which removes experimentally meaningless combinations; 5 x (1 + 3 x 4) = 65 actions."
+  }
+}

@@ -4,10 +4,13 @@ from __future__ import annotations
 
 import random
 
+from typing import Sequence
+
 from cancer_sim.vasculature import DEFAULT_SPEC, VesselNetwork, grow_vasculature
 from cancer_sim.world import Vessel, WorldConfig, WorldPhysics
 
 
+# The default (lung) model's clones and seeding mix; any model's can be passed in.
 CLONES = ("EGFR", "T790M", "C797S", "MET_AMP")
 CLONE_WEIGHTS = (88, 8, 2, 2)
 DEFAULT_VESSEL_SPACING_UM = 150.0  # literature-derived intercapillary distance (see WorldPhysics.grid_vessels)
@@ -18,12 +21,13 @@ def build_seeded_world(
     height: int,
     cell_count: int,
     rng: random.Random,
-    clone_weights: tuple[float, float, float, float] = CLONE_WEIGHTS,
+    clone_weights: Sequence[float] = CLONE_WEIGHTS,
     vessel_spacing_um: float | None = DEFAULT_VESSEL_SPACING_UM,
     depth: int = 1,
     vasculature: str = "grid",
     vasculature_spec: dict | None = None,
-    cell_size_um: float = 20.0
+    cell_size_um: float = 20.0,
+    clones: Sequence[str] = CLONES
 ) -> WorldPhysics:
     """Create a seeded tumour.
 
@@ -37,8 +41,9 @@ def build_seeded_world(
     whose lumen voxels are the sources and whose walls are blocked. The network is
     attached as ``world.vessel_network`` so the exporter can write its segments.
     """
-    if len(clone_weights) != len(CLONES):
-        raise ValueError("clone_weights must provide EGFR, T790M, C797S, MET_AMP weights")
+    clones = tuple(clones)
+    if len(clone_weights) != len(clones):
+        raise ValueError(f"clone_weights must provide one weight per clone: {', '.join(clones)}")
     if any(weight < 0 for weight in clone_weights) or sum(clone_weights) <= 0:
         raise ValueError("clone_weights must be non-negative and not all zero")
     if vasculature not in ("grid", "tree"):
@@ -86,7 +91,7 @@ def build_seeded_world(
             continue
         if world.site(x, y, z).occupied or world.is_blocked(x, y, z):
             continue
-        clone_id = rng.choices(CLONES, weights=clone_weights, k=1)[0]
+        clone_id = rng.choices(clones, weights=clone_weights, k=1)[0]
         world.place_clone(x, y, clone_id, z)
         placed += 1
 

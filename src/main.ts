@@ -5,7 +5,7 @@ import { AuthView } from './auth/authView.js';
 import { loadData, describeLoadError } from './data.js';
 import { Viewer } from './render/viewer.js';
 import { FileSource } from './source/fileSource.js';
-import { eventsUrl, keyframesUrl, rulesUrl, sourceKind } from './defaultRun.js';
+import { CANCERS, cancerChoice, cancerUrl, eventsUrl, keyframesUrl, rulesUrl, sourceKind, usesDefaultRun } from './defaultRun.js';
 import { LocalSimSource } from './source/localSim.js';
 import { SocketSource } from './source/socketSource.js';
 import type { SimulationSource } from './source/types.js';
@@ -17,6 +17,7 @@ import { Headline, StageTags } from './ui/headline.js';
 import { History } from './ui/history.js';
 import { Narrative } from './ui/narrative.js';
 import { Panel } from './ui/panel.js';
+import { loadRunMetrics, type RunProvenance } from './ui/runMetrics.js';
 import { enter } from './ui/motion.js';
 import { bindShortcuts } from './ui/shortcuts.js';
 import { Timeline } from './ui/timeline.js';
@@ -95,6 +96,33 @@ function frameWithRoom(viewer: Viewer): void {
   viewer.controls.update();
 }
 
+/**
+ * The cancer-model switch in the top bar: one button per committed demo run.
+ * Switching reloads the page on the other run; everything else about the viewer
+ * is data-driven, so nothing else changes. The brand line names the model when
+ * the run's rules.json says which one produced it.
+ */
+function mountCancerSwitch(q: URLSearchParams, raw: { provenance?: { cancer?: { name?: string } } }): void {
+  const host = document.getElementById('cancerswitch');
+  if (!host) return;
+  const name = raw.provenance?.cancer?.name;
+  const sub = document.querySelector('#topbar .brand .sub');
+  if (name && sub) sub.textContent = name;
+  if (!usesDefaultRun(q)) return;   // an explicit run or the stand-in simulator: nothing to switch between
+  const current = cancerChoice(q).id;
+  for (const cancer of CANCERS) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = cancer.label;
+    b.title = `Open the ${cancer.label} demo run`;
+    b.setAttribute('aria-pressed', String(cancer.id === current));
+    b.addEventListener('click', () => {
+      if (cancer.id !== current) location.href = cancerUrl(cancer.id, q);
+    });
+    host.append(b);
+  }
+}
+
 /** The first clause of a view's own description, for the stage label. */
 function shortDescription(text: string): string {
   const first = (text.split(/[:.]/)[0] ?? '').trim();
@@ -113,6 +141,7 @@ async function startSimulator(): Promise<void> {
 
   const q = new URLSearchParams(location.search);
   const sourceLabel = rulesUrl(q).split('/').pop() ?? 'rules.json';
+  mountCancerSwitch(q, rules.raw as unknown as { provenance?: { cancer?: { name?: string } } });
   const history = new History(rules);
   const narrative = new Narrative(rules);
   const capture = new FrameCapture();
@@ -208,6 +237,9 @@ async function startSimulator(): Promise<void> {
   // Controls under the hero; the chart inside the question it answers.
   panelRoot.insertBefore(controlsHost, panelRoot.children[1] ?? null);
   panel.appendChart(chartHost);
+  // The run's evolutionary-control readings and provenance, when it was recorded with them.
+  const provenance = (rules.raw as unknown as { provenance?: RunProvenance }).provenance;
+  void loadRunMetrics(q).then((metrics) => panel.setRunMetrics(metrics, provenance));
 
   const timeline = new Timeline(document.getElementById('timeline')!, rules, narrative, {
     onTogglePlay: () => controls.togglePlay(),
@@ -284,7 +316,7 @@ async function startSimulator(): Promise<void> {
       const story = narrative.read(counts, history, world.tick);
       headline.update(story);
       scaleBar.update(viewer.worldPerPixel());
-      panel.update(source, history, stats, frameStats, controls.state.view, story);
+      panel.update(source, history, stats, frameStats, controls.state.view, story, (world.tick * rules.hoursPerTick) / 24);
       timeline.update(world.tick, history);
       const view = visuals.view(controls.state.view);
       stageTags.update({

@@ -1,0 +1,43 @@
+{
+  "id": "lung_egfr",
+  "name": "EGFR-mutant lung adenocarcinoma",
+  "description": "Validated EGFR-resistance model: first- and third-generation EGFR inhibitors, T790M / C797S / MET amplification escape. Biology calibrated from GDSC, Cell Model Passports and CIViC (docs/validation).",
+  "root_clone": "EGFR",
+  "clones": [
+    {"id": "EGFR",    "label": "EGFR-mutant (sensitive)",    "parent": null,    "resistant": false},
+    {"id": "T790M",   "label": "EGFR + T790M",               "parent": "EGFR",  "resistant": true},
+    {"id": "C797S",   "label": "EGFR + T790M + C797S",       "parent": "T790M", "resistant": true},
+    {"id": "MET_AMP", "label": "EGFR + MET amplification",   "parent": "EGFR",  "resistant": true}
+  ],
+  "default_clone_weights": [88, 8, 2, 2],
+  "drugs": [
+    {"id": "gefitinib",   "label": "Gefitinib (Iressa)",    "exposure": "diffusing", "half_life_hours": 41.0, "reference_concentration_nm": 1000.0},
+    {"id": "osimertinib", "label": "Osimertinib (Tagrisso)", "exposure": "diffusing", "half_life_hours": 48.0, "reference_concentration_nm": 1000.0},
+    {"id": "capmatinib",  "label": "Capmatinib (Tabrecta)",  "exposure": "diffusing", "half_life_hours": 6.5,  "reference_concentration_nm": 1000.0}
+  ],
+  "parameters": {
+    "source": "calibrated_files",
+    "clones": "data/processed/calibrated_clone_parameters.json",
+    "resistance_graph": "data/processed/resistance_graph.json",
+    "physics": "data/processed/physics_calibration.json"
+  },
+  "schedules": {
+    "none":                   {"type": "none"},
+    "continuous-gefitinib":   {"type": "continuous", "drug": "gefitinib"},
+    "continuous-osimertinib": {"type": "continuous", "drug": "osimertinib"},
+    "continuous-capmatinib":  {"type": "continuous", "drug": "capmatinib"},
+    "gefitinib-osimertinib":  {"type": "switch", "first": "gefitinib", "second": "osimertinib"},
+    "osimertinib-capmatinib": {"type": "switch", "first": "osimertinib", "second": "capmatinib"},
+    "adaptive-gefitinib":     {"type": "adaptive", "drug": "gefitinib"},
+    "adaptive-osimertinib":   {"type": "adaptive", "drug": "osimertinib"},
+    "adaptive-capmatinib":    {"type": "adaptive", "drug": "capmatinib"}
+  },
+  "default_panel": ["none", "continuous-gefitinib", "gefitinib-osimertinib", "adaptive-gefitinib", "continuous-osimertinib", "osimertinib-capmatinib"],
+  "rl_actions": [
+    {"drug": "none", "dose": 0.0},
+    {"drug": "gefitinib", "dose": 0.5}, {"drug": "gefitinib", "dose": 1.0},
+    {"drug": "osimertinib", "dose": 0.5}, {"drug": "osimertinib", "dose": 1.0},
+    {"drug": "capmatinib", "dose": 0.5}, {"drug": "capmatinib", "dose": 1.0}
+  ],
+  "demo_run": "demo48"
+}

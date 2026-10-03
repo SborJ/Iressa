@@ -7,17 +7,21 @@ import random
 from dataclasses import dataclass, replace
 from pathlib import Path
 
+from typing import Sequence
+
 from cancer_sim.automata import (
     DEFAULT_NECROTIC_CLEARANCE_RATE,
     CellularAutomataPhysics,
     automata_config_from_physics_calibration
 )
+from cancer_sim.cancers import DEFAULT_CANCER, CancerModel, load_cancer_model
 from cancer_sim.config_controls import apply_microenvironment_args
 from cancer_sim.simulation import SimulationRecord, SimulationRunner, build_schedule, write_history_csv
 from cancer_sim.world import ScalarField
 from cancer_sim.world_seed import DEFAULT_VESSEL_SPACING_UM, build_seeded_world
 
 
+# The default (lung) model's panel and resistant clones; other models declare their own.
 DEFAULT_PANEL = (
     "none",
     "continuous-gefitinib",
@@ -41,7 +45,9 @@ class ExperimentConfig:
     dose: float = 0.9
     switch_time: float = 40.0
     mutation_scale: float = 50.0
-    clone_weights: tuple[float, float, float, float] = (88.0, 8.0, 2.0, 2.0)
+    # one weight per clone of the model; None = the model's own default seeding mix
+    # (the lung model's is 88/8/2/2, so the default run is unchanged)
+    clone_weights: tuple[float, ...] | None = None
     c797s_growth_scale: float = 1.0
     met_growth_scale: float = 1.0
     c797s_fitness_cost: float | None = None
@@ -56,6 +62,24 @@ class ExperimentConfig:
     cell_size_um: float = 20.0
     vasculature_trunks: int = 10
     vasculature_max_depth: int = 6
+    cancer: str = DEFAULT_CANCER
+    # ablations: child clones whose transitions are switched off, and a flat oxygen field
+    disabled_transitions: tuple[str, ...] = ()
+    uniform_oxygen: bool = False
+
+    @property
+    def model(self) -> CancerModel:
+        return load_cancer_model(self.cancer)
+
+    def resolved_clone_weights(self) -> tuple[float, ...]:
+        weights = self.clone_weights
+        if weights is None:
+            return self.model.default_clone_weights
+        if len(weights) != len(self.model.clone_ids):
+            raise ValueError(
+                f"clone_weights has {len(weights)} entries but {self.cancer} has clones {self.model.clone_ids}"
+            )
+        return tuple(float(w) for w in weights)
 
 
 @dataclass(frozen=True)
@@ -107,11 +131,14 @@ class ExperimentMetrics:
 def run_experiment_panel(
     *,
     config: ExperimentConfig,
-    schedules: tuple[str, ...] = DEFAULT_PANEL,
+    schedules: tuple[str, ...] | None = None,
     output_dir: Path,
     microenvironment_args=None
 ) -> list[ExperimentMetrics]:
     output_dir.mkdir(parents=True, exist_ok=True)
+    model = config.model
+    if schedules is None:
+        schedules = DEFAULT_PANEL if config.cancer == DEFAULT_CANCER else model.default_panel
     metrics = []
     for index, schedule_name in enumerate(schedules):
         history = run_single_experiment(
@@ -120,7 +147,7 @@ def run_experiment_panel(
             output_csv=output_dir / f"{index + 1:02d}_{schedule_name}.csv",
             microenvironment_args=microenvironment_args
         )
-        metrics.append(calculate_metrics(schedule_name, config.seed, history))
+        metrics.append(calculate_metrics(schedule_name, config.seed, history, resistant_clones=model.resistant_clones))
     write_metrics_csv(output_dir / "experiment_metrics.csv", metrics)
     return metrics
 
@@ -133,37 +160,49 @@ def build_runner(
     record_events: bool = False
 ) -> SimulationRunner:
     """Construct world, automata and schedule exactly as run_single_experiment does."""
+    model = config.model
     rng = random.Random(config.seed)
     world = build_seeded_world(
         config.width,
         config.height,
         config.cells,
         rng,
-        clone_weights=config.clone_weights,
+        clone_weights=config.resolved_clone_weights(),
         vessel_spacing_um=config.vessel_spacing_um,
         depth=config.depth,
         vasculature=config.vasculature,
         vasculature_spec={"trunks": config.vasculature_trunks, "maxDepth": config.vasculature_max_depth},
-        cell_size_um=config.cell_size_um
+        cell_size_um=config.cell_size_um,
+        clones=model.clone_ids
     )
     world.drug = ScalarField(config.width, config.height, default=0.0, depth=config.depth)
+    concentrations = model.reference_concentrations(config.vessel_concentration_scale)
+    legacy = {f"{d}_vessel_concentration_nm": c for d, c in concentrations.items() if d in ("gefitinib", "osimertinib", "capmatinib")}
+    oxygen = {"oxygen_mm_vmax": config.oxygen_mm_vmax}
+    if config.uniform_oxygen:
+        # no consumption anywhere: the field relaxes to the vessel level everywhere
+        oxygen = {"oxygen_mm_vmax": 0.0, "oxygen_uptake_rate": 0.0}
     automata_config = automata_config_from_physics_calibration(
-        oxygen_mm_vmax=config.oxygen_mm_vmax,
         mutation_probability_scale=config.mutation_scale,
         necrotic_clearance_rate=config.necrotic_clearance_rate,
         drug_solver=config.drug_solver,
-        gefitinib_vessel_concentration_nm=1000.0 * config.vessel_concentration_scale,
-        osimertinib_vessel_concentration_nm=1000.0 * config.vessel_concentration_scale,
-        capmatinib_vessel_concentration_nm=1000.0 * config.vessel_concentration_scale
+        drug_vessel_concentration_nm=concentrations,
+        **oxygen,
+        **legacy
     )
     if microenvironment_args is not None:
         automata_config = apply_microenvironment_args(automata_config, microenvironment_args)
-    automata = CellularAutomataPhysics(world, config=automata_config, rng=rng, record_events=record_events)
+    automata = CellularAutomataPhysics(world, config=automata_config, rng=rng, record_events=record_events, model=model)
     automata.clone_responses = _apply_clone_sensitivity_modifiers(
         automata.clone_responses,
         config
     )
-    schedule = build_schedule(schedule_name, dose=config.dose, switch_time=config.switch_time)
+    if config.disabled_transitions:
+        automata.transitions = {
+            parent: [t for t in edges if t.child_clone not in config.disabled_transitions]
+            for parent, edges in automata.transitions.items()
+        }
+    schedule = build_schedule(schedule_name, dose=config.dose, switch_time=config.switch_time, model=model)
     return SimulationRunner(automata, schedule)
 
 
@@ -211,17 +250,22 @@ def _apply_clone_sensitivity_modifiers(
     return responses
 
 
-def calculate_metrics(experiment: str, seed: int, history: list[SimulationRecord]) -> ExperimentMetrics:
+def calculate_metrics(
+    experiment: str,
+    seed: int,
+    history: list[SimulationRecord],
+    resistant_clones: Sequence[str] = RESISTANT_CLONES
+) -> ExperimentMetrics:
     if not history:
         raise ValueError("history must not be empty")
 
     initial = history[0].burden
     final = history[-1]
     minimum_record = min(history, key=lambda record: record.burden)
-    resistant_fractions = [_resistant_fraction(record) for record in history]
+    resistant_fractions = [_resistant_fraction(record, resistant_clones) for record in history]
     time_to_progression = _time_to_progression(history, minimum_record.burden)
     time_to_progression_baseline = _time_to_progression_baseline(history, initial)
-    time_to_resistant_dominance = _time_to_resistant_dominance(history)
+    time_to_resistant_dominance = _time_to_resistant_dominance(history, resistant_clones)
 
     return ExperimentMetrics(
         experiment=experiment,
@@ -232,10 +276,10 @@ def calculate_metrics(experiment: str, seed: int, history: list[SimulationRecord
         time_to_minimum_burden=minimum_record.time,
         time_to_progression=time_to_progression,
         time_to_progression_baseline=time_to_progression_baseline,
-        final_resistant_fraction=_resistant_fraction(final),
+        final_resistant_fraction=_resistant_fraction(final, resistant_clones),
         max_resistant_fraction=max(resistant_fractions),
         time_to_resistant_dominance=time_to_resistant_dominance,
-        cumulative_dose=sum(record.dose for record in history),
+        cumulative_dose=sum(sum(record.exposures.values()) for record in history),
         final_necrotic=final.necrotic,
         total_births=sum(record.births for record in history),
         total_mutations=sum(record.mutations for record in history),
@@ -256,11 +300,10 @@ def write_metrics_csv(path: Path, metrics: list[ExperimentMetrics]) -> None:
         writer.writerows(rows)
 
 
-def _resistant_fraction(record: SimulationRecord) -> float:
+def _resistant_fraction(record: SimulationRecord, resistant_clones: Sequence[str] = RESISTANT_CLONES) -> float:
     if record.burden <= 0:
         return 0.0
-    resistant = record.t790m + record.c797s + record.met_amp
-    return resistant / record.burden
+    return record.resistant_count(resistant_clones) / record.burden
 
 
 def _time_to_progression(history: list[SimulationRecord], minimum_burden: int) -> float | None:
@@ -288,8 +331,10 @@ def _time_to_progression_baseline(history: list[SimulationRecord], initial_burde
     return None
 
 
-def _time_to_resistant_dominance(history: list[SimulationRecord]) -> float | None:
+def _time_to_resistant_dominance(
+    history: list[SimulationRecord], resistant_clones: Sequence[str] = RESISTANT_CLONES
+) -> float | None:
     for record in history:
-        if _resistant_fraction(record) >= 0.5:
+        if _resistant_fraction(record, resistant_clones) >= 0.5:
             return record.time
     return None

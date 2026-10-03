@@ -1,0 +1,3726 @@
+{
+ "note": "Per-day evolutionary-control readings of this recorded run: the controllability index proxy, and per clone the control margin M_i (best represented action's negative net growth), the escape distance D_i under the treatment given that day, and the best represented action. Model-scoped; not clinical quantities.",
+ "clone_ids": {
+  "ESR1_WT": 0,
+  "ESR1_Y537S": 1,
+  "ESR1_D538G": 2,
+  "CDK_ESCAPE": 3
+ },
+ "rows": [
+  {
+   "day": 0.0,
+   "eci": 0.0442,
+   "exposures": {},
+   "clones": {
+    "0": {
+     "count": 1500,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 6.358,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 0,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 0,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   }
+  },
+  {
+   "day": 1.0,
+   "eci": 0.0416,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 1452,
+     "margin": 0.0654,
+     "net_growth": -0.0654,
+     "escape_distance": 6.093,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 5,
+     "margin": -0.001,
+     "net_growth": 0.001,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 13,
+     "margin": 0.0053,
+     "net_growth": -0.0053,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0811,
+     "net_growth": 0.0811,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": -0.0382,
+   "resistant_fraction": 0.0122
+  },
+  {
+   "day": 2.0,
+   "eci": 0.0482,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 1400,
+     "margin": 0.0649,
+     "net_growth": -0.0649,
+     "escape_distance": 6.118,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 5,
+     "margin": -0.002,
+     "net_growth": 0.002,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 13,
+     "margin": 0.0043,
+     "net_growth": -0.0043,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.083,
+     "net_growth": 0.083,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.0034,
+   "resistant_fraction": 0.0127
+  },
+  {
+   "day": 3.0,
+   "eci": 0.0548,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 1347,
+     "margin": 0.0643,
+     "net_growth": -0.0643,
+     "escape_distance": 6.143,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 5,
+     "margin": -0.0031,
+     "net_growth": 0.0031,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 14,
+     "margin": 0.0032,
+     "net_growth": -0.0032,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0852,
+     "net_growth": 0.0852,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.0367,
+   "resistant_fraction": 0.0139
+  },
+  {
+   "day": 4.0,
+   "eci": 0.0567,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 1332,
+     "margin": 0.0641,
+     "net_growth": -0.0641,
+     "escape_distance": 6.15,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 5,
+     "margin": -0.0036,
+     "net_growth": 0.0036,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 14,
+     "margin": 0.0028,
+     "net_growth": -0.0028,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.086,
+     "net_growth": 0.086,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.0327,
+   "resistant_fraction": 0.0141
+  },
+  {
+   "day": 5.0,
+   "eci": 0.0604,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 1304,
+     "margin": 0.064,
+     "net_growth": -0.064,
+     "escape_distance": 6.167,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 6,
+     "margin": -0.0039,
+     "net_growth": 0.0039,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 12,
+     "margin": 0.0025,
+     "net_growth": -0.0025,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0867,
+     "net_growth": 0.0867,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.0568,
+   "resistant_fraction": 0.0136
+  },
+  {
+   "day": 6.0,
+   "eci": 0.0664,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 1258,
+     "margin": 0.0639,
+     "net_growth": -0.0639,
+     "escape_distance": 6.201,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 6,
+     "margin": -0.0041,
+     "net_growth": 0.0041,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 12,
+     "margin": 0.0023,
+     "net_growth": -0.0023,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.087,
+     "net_growth": 0.087,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.0944,
+   "resistant_fraction": 0.0141
+  },
+  {
+   "day": 7.0,
+   "eci": 0.0742,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 1203,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 6.245,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 4,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 11,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.1414,
+   "resistant_fraction": 0.0123
+  },
+  {
+   "day": 8.0,
+   "eci": 0.0793,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 1168,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 6.274,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 3,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 10,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.16,
+   "resistant_fraction": 0.011
+  },
+  {
+   "day": 9.0,
+   "eci": 0.084,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 1132,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 6.306,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 3,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 11,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.1837,
+   "resistant_fraction": 0.0122
+  },
+  {
+   "day": 10.0,
+   "eci": 0.0884,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 1102,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 6.332,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 2,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 11,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.2049,
+   "resistant_fraction": 0.0117
+  },
+  {
+   "day": 11.0,
+   "eci": 0.0933,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 1065,
+     "margin": 0.0639,
+     "net_growth": -0.0639,
+     "escape_distance": 6.368,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 3,
+     "margin": -0.004,
+     "net_growth": 0.004,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 11,
+     "margin": 0.0024,
+     "net_growth": -0.0024,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0869,
+     "net_growth": 0.0869,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.2303,
+   "resistant_fraction": 0.013
+  },
+  {
+   "day": 12.0,
+   "eci": 0.0967,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 1041,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 6.389,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 3,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 10,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.2453,
+   "resistant_fraction": 0.0123
+  },
+  {
+   "day": 13.0,
+   "eci": 0.1023,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 1002,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 6.428,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 4,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 8,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.2796,
+   "resistant_fraction": 0.0118
+  },
+  {
+   "day": 14.0,
+   "eci": 0.1062,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 974,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 6.456,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 4,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 8,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.2967,
+   "resistant_fraction": 0.0122
+  },
+  {
+   "day": 15.0,
+   "eci": 0.1082,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 958,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 6.472,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 4,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 10,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.3027,
+   "resistant_fraction": 0.0144
+  },
+  {
+   "day": 16.0,
+   "eci": 0.1112,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 937,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 6.495,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 4,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 10,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.3199,
+   "resistant_fraction": 0.0147
+  },
+  {
+   "day": 17.0,
+   "eci": 0.1147,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 913,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 6.521,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 4,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 10,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.3386,
+   "resistant_fraction": 0.0151
+  },
+  {
+   "day": 18.0,
+   "eci": 0.1212,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 870,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 6.569,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 3,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 10,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.3786,
+   "resistant_fraction": 0.0147
+  },
+  {
+   "day": 19.0,
+   "eci": 0.1261,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 838,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 6.606,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 3,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 9,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.3982,
+   "resistant_fraction": 0.0141
+  },
+  {
+   "day": 20.0,
+   "eci": 0.133,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 791,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 6.664,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 3,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 10,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.4355,
+   "resistant_fraction": 0.0162
+  },
+  {
+   "day": 21.0,
+   "eci": 0.1315,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 799,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 6.654,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 3,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 12,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.4087,
+   "resistant_fraction": 0.0184
+  },
+  {
+   "day": 22.0,
+   "eci": 0.1366,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 766,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 6.696,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 4,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 9,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.4508,
+   "resistant_fraction": 0.0167
+  },
+  {
+   "day": 23.0,
+   "eci": 0.139,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 755,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 6.711,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 3,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 6,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.4576,
+   "resistant_fraction": 0.0118
+  },
+  {
+   "day": 24.0,
+   "eci": 0.1435,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 726,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 6.75,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 3,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 5,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.4854,
+   "resistant_fraction": 0.0109
+  },
+  {
+   "day": 25.0,
+   "eci": 0.1463,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 707,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 6.776,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 3,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 6,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.4939,
+   "resistant_fraction": 0.0126
+  },
+  {
+   "day": 26.0,
+   "eci": 0.1515,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 673,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 6.826,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 3,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 7,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.5221,
+   "resistant_fraction": 0.0146
+  },
+  {
+   "day": 27.0,
+   "eci": 0.1561,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 644,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 6.87,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 3,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 7,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.5401,
+   "resistant_fraction": 0.0153
+  },
+  {
+   "day": 28.0,
+   "eci": 0.159,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 627,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 6.896,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 3,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 6,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.5513,
+   "resistant_fraction": 0.0142
+  },
+  {
+   "day": 29.0,
+   "eci": 0.1626,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 609,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 6.925,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 2,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 4,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.5705,
+   "resistant_fraction": 0.0098
+  },
+  {
+   "day": 30.0,
+   "eci": 0.1691,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 572,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 6.988,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 1,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 4,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.6055,
+   "resistant_fraction": 0.0087
+  },
+  {
+   "day": 31.0,
+   "eci": 0.1716,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 558,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 7.013,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 1,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 3,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.6094,
+   "resistant_fraction": 0.0071
+  },
+  {
+   "day": 32.0,
+   "eci": 0.1736,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 546,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 7.035,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 1,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 3,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.619,
+   "resistant_fraction": 0.0073
+  },
+  {
+   "day": 33.0,
+   "eci": 0.1757,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 534,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 7.057,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 1,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 3,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.6284,
+   "resistant_fraction": 0.0074
+  },
+  {
+   "day": 34.0,
+   "eci": 0.1784,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 515,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 7.093,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 2,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 3,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.6402,
+   "resistant_fraction": 0.0096
+  },
+  {
+   "day": 35.0,
+   "eci": 0.1812,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 499,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 7.125,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 2,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 3,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.6519,
+   "resistant_fraction": 0.0099
+  },
+  {
+   "day": 36.0,
+   "eci": 0.184,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 483,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 7.157,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 2,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 3,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.6645,
+   "resistant_fraction": 0.0102
+  },
+  {
+   "day": 37.0,
+   "eci": 0.1861,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 471,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 7.182,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 2,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 3,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.6722,
+   "resistant_fraction": 0.0105
+  },
+  {
+   "day": 38.0,
+   "eci": 0.1877,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 461,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 7.204,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 2,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 4,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.6776,
+   "resistant_fraction": 0.0128
+  },
+  {
+   "day": 39.0,
+   "eci": 0.1872,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 464,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 7.197,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 2,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 4,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.6723,
+   "resistant_fraction": 0.0128
+  },
+  {
+   "day": 40.0,
+   "eci": 0.1935,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 428,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 7.278,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 2,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 5,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.7079,
+   "resistant_fraction": 0.0161
+  },
+  {
+   "day": 41.0,
+   "eci": 0.1947,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 422,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 7.292,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 2,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 4,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.7039,
+   "resistant_fraction": 0.014
+  },
+  {
+   "day": 42.0,
+   "eci": 0.1979,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 405,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 7.333,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 2,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 4,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.7196,
+   "resistant_fraction": 0.0146
+  },
+  {
+   "day": 43.0,
+   "eci": 0.2003,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 391,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 7.369,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 2,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 5,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.726,
+   "resistant_fraction": 0.0176
+  },
+  {
+   "day": 44.0,
+   "eci": 0.2032,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 375,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 7.41,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 2,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 6,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.7373,
+   "resistant_fraction": 0.0209
+  },
+  {
+   "day": 45.0,
+   "eci": 0.2076,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 353,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 7.471,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 2,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 5,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.7571,
+   "resistant_fraction": 0.0194
+  },
+  {
+   "day": 46.0,
+   "eci": 0.2093,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 344,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 7.497,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 2,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 5,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.7578,
+   "resistant_fraction": 0.0199
+  },
+  {
+   "day": 47.0,
+   "eci": 0.2111,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 333,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 7.529,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 2,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 8,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.7592,
+   "resistant_fraction": 0.0292
+  },
+  {
+   "day": 48.0,
+   "eci": 0.2117,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 329,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 7.541,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 2,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 9,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.7589,
+   "resistant_fraction": 0.0324
+  },
+  {
+   "day": 49.0,
+   "eci": 0.2131,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 326,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 7.55,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 1,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 9,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.7676,
+   "resistant_fraction": 0.0298
+  },
+  {
+   "day": 50.0,
+   "eci": 0.2164,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 310,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 7.601,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 1,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 9,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.7831,
+   "resistant_fraction": 0.0312
+  },
+  {
+   "day": 51.0,
+   "eci": 0.2202,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 293,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 7.657,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 1,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 7,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.8003,
+   "resistant_fraction": 0.0266
+  },
+  {
+   "day": 52.0,
+   "eci": 0.2223,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 281,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 7.699,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 1,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 10,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.7992,
+   "resistant_fraction": 0.0377
+  },
+  {
+   "day": 53.0,
+   "eci": 0.2273,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 276,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 7.717,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 0,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 9,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.8116,
+   "resistant_fraction": 0.0316
+  },
+  {
+   "day": 54.0,
+   "eci": 0.2282,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 272,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 7.731,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 0,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 9,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.812,
+   "resistant_fraction": 0.032
+  },
+  {
+   "day": 55.0,
+   "eci": 0.2296,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 265,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 7.758,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 0,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 10,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.8151,
+   "resistant_fraction": 0.0364
+  },
+  {
+   "day": 56.0,
+   "eci": 0.232,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 254,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 7.8,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 0,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 11,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.8216,
+   "resistant_fraction": 0.0415
+  },
+  {
+   "day": 57.0,
+   "eci": 0.2338,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 246,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 7.832,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 0,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 11,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.8254,
+   "resistant_fraction": 0.0428
+  },
+  {
+   "day": 58.0,
+   "eci": 0.2372,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 232,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 7.891,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 0,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 10,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.8377,
+   "resistant_fraction": 0.0413
+  },
+  {
+   "day": 59.0,
+   "eci": 0.2371,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 232,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 7.891,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 0,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 11,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.8282,
+   "resistant_fraction": 0.0453
+  },
+  {
+   "day": 60.0,
+   "eci": 0.2399,
+   "exposures": {
+    "palbociclib": 0.5,
+    "elacestrant": 1.0
+   },
+   "clones": {
+    "0": {
+     "count": 219,
+     "margin": 0.0638,
+     "net_growth": -0.0638,
+     "escape_distance": 7.948,
+     "exhausted": false,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    },
+    "1": {
+     "count": 0,
+     "margin": -0.0042,
+     "net_growth": 0.0042,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "2": {
+     "count": 13,
+     "margin": 0.0022,
+     "net_growth": -0.0022,
+     "escape_distance": null,
+     "exhausted": false,
+     "best_action": "palbociclib+elacestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "elacestrant": 1.0
+     }
+    },
+    "3": {
+     "count": 0,
+     "margin": -0.0872,
+     "net_growth": 0.0872,
+     "escape_distance": 0.0,
+     "exhausted": true,
+     "best_action": "palbociclib+fulvestrant",
+     "best_exposures": {
+      "palbociclib": 1.0,
+      "fulvestrant": 1.0
+     }
+    }
+   },
+   "action": "palbociclib+elacestrant",
+   "reward": 0.836,
+   "resistant_fraction": 0.056
+  }
+ ]
+}

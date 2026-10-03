@@ -72,6 +72,27 @@ The sign-in screen is the experience, not the security boundary: the static
 simulator files are served to anyone. Anything that must stay private belongs
 in Supabase behind row level security, as `profiles` does.
 
+## Two cancers, one engine
+
+The simulator carries two cancer models and switches between them in the top
+bar (or with `?cancer=<id>`):
+
+| Model id | Cancer | Clones | Treatments |
+|---|---|---|---|
+| `lung_egfr` (default) | EGFR-mutant lung adenocarcinoma | EGFR, T790M, C797S, MET amplification | gefitinib, osimertinib, capmatinib |
+| `breast_er_her2neg` | ER+/HER2− breast cancer | ESR1 wild type, ESR1 Y537S, ESR1 D538G, CDK4/6 escape | endocrine suppression, palbociclib, fulvestrant |
+
+The physics knows only clones, transitions, drugs and exposures; each cancer is
+one file in `cancer_sim/cancers/`. Recorded runs carry per-day evolutionary-control
+readings (`metrics.json`) that the viewer shows in its Resistance graph,
+Parameters & evidence and Controller panels; `?run=<folder>` opens another
+recording of the chosen cancer, such as a policy-driven one. Every Python entry point takes the model:
+`ExperimentConfig(cancer=...)`, and `--cancer` on `scripts/export_iressa_run.py`,
+`scripts/train_ppo.py` and `scripts/evaluate_policy.py`; `scripts/run_breast_experiment.py`
+runs the evolutionary-therapy comparison and `scripts/run_ablations.py` the ablations. The breast model, its
+evidence table and its limits are described in
+[docs/breast_er_positive.md](docs/breast_er_positive.md).
+
 ## The calibrated Python engine
 
 `cancer_sim/` is the validated EGFR-resistance engine (GDSC/Cell Model Passports/CIViC-calibrated
@@ -144,6 +165,8 @@ src/
   render/                instanced mesh, one parameterised shader, visuals.json
   ui/                    hover card, tally, chart, controls
   auth/                  Supabase sign-in: client, service, screens, account menu
+cancer_sim/
+  cancers/               one JSON per cancer model: clones, drugs, parameters, schedules, RL actions
 supabase/
   migrations/            database schema (researcher profiles, RLS, verified ORCID iDs)
 landing/                 the public landing page

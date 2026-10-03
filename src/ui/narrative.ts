@@ -221,25 +221,48 @@ export class Narrative {
     return growth > 0.05 ? days / growth : undefined;
   }
 
-  /** When the next scheduled event happens, for the timeline. */
+  /**
+   * The run as named phases for the timeline: one per stretch in which the set
+   * of drugs being given is constant. Drugs given together ("endocrine +
+   * palbociclib") form one phase, so overlapping schedule entries never draw on
+   * top of each other; sequential single drugs come out one phase each.
+   */
   phases(): { from: number; to: number; label: string; tone: Story['tone'] }[] {
     const out: { from: number; to: number; label: string; tone: Story['tone'] }[] = [];
     const maxHours = this.rules.maxTicks * this.rules.hoursPerTick;
-    const schedule = [...(this.rules.raw.treatment?.schedule ?? [])].sort(
-      (a, b) => a.startHour - b.startHour,
-    );
-    let cursor = 0;
-    for (const s of schedule) {
-      if (s.startHour > cursor) {
-        out.push({ from: cursor, to: s.startHour, label: 'Untreated growth', tone: 'grow' });
-      }
-      const end = Math.min(maxHours, s.startHour + s.everyHours * s.doses);
-      const drug = this.rules.drugById.get(s.drug);
-      out.push({ from: s.startHour, to: end, label: drug?.name ?? 'treatment', tone: 'respond' });
-      cursor = Math.max(cursor, end);
+    const schedule = (this.rules.raw.treatment?.schedule ?? []).map((s) => ({
+      from: s.startHour,
+      to: Math.min(maxHours, s.startHour + s.everyHours * s.doses),
+      drug: s.drug,
+    }));
+    if (!schedule.length) {
+      return [{ from: 0, to: maxHours, label: 'Growth', tone: 'grow' }];
     }
-    if (cursor < maxHours) {
-      out.push({ from: cursor, to: maxHours, label: schedule.length ? 'Off treatment' : 'Growth', tone: schedule.length ? 'resist' : 'grow' });
+    const edges = [...new Set([0, maxHours, ...schedule.flatMap((s) => [s.from, s.to])])]
+      .filter((h) => h >= 0 && h <= maxHours)
+      .sort((a, b) => a - b);
+    const lastTreated = Math.max(...schedule.map((s) => s.to));
+    for (let i = 0; i + 1 < edges.length; i++) {
+      const from = edges[i];
+      const to = edges[i + 1];
+      if (to <= from) continue;
+      const active = schedule.filter((s) => s.from <= from && s.to >= to).map((s) => s.drug);
+      let label: string;
+      let tone: Story['tone'];
+      if (active.length) {
+        const names = [...new Set(active)].sort((a, b) => a - b).map((id) => this.rules.drugById.get(id)?.name ?? 'treatment');
+        label = names.join(' + ');
+        tone = 'respond';
+      } else if (from >= lastTreated) {
+        label = 'Off treatment';
+        tone = 'resist';
+      } else {
+        label = 'Untreated growth';
+        tone = 'grow';
+      }
+      const previous = out[out.length - 1];
+      if (previous && previous.label === label && previous.to === from) previous.to = to;
+      else out.push({ from, to, label, tone });
     }
     return out;
   }

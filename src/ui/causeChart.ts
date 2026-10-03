@@ -130,9 +130,17 @@ export class CauseChart {
 
   private readMarkers(): Marker[] {
     const out: Marker[] = [];
+    // Drugs that start at the same hour (a combination) share one marker.
+    const starts = new Map<number, string[]>();
     for (const s of this.rules.raw.treatment?.schedule ?? []) {
       const drug = this.rules.drugById.get(s.drug);
-      out.push({ hours: s.startHour, label: `${drug?.name ?? `drug ${s.drug}`} start` });
+      const names = starts.get(s.startHour) ?? [];
+      const name = drug?.name ?? `drug ${s.drug}`;
+      if (!names.includes(name)) names.push(name);
+      starts.set(s.startHour, names);
+    }
+    for (const [hours, names] of [...starts.entries()].sort((a, b) => a[0] - b[0])) {
+      out.push({ hours, label: `${names.join(' + ')} start` });
     }
     const rad = this.rules.raw.treatment?.radiation ?? [];
     if (rad.length) {

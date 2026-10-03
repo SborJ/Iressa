@@ -98,6 +98,8 @@ button, input { font: inherit; color: inherit; }
 .brand .mark { font-size: 15px; font-weight: 600; letter-spacing: -0.02em; }
 .brand .sub { font-size: 11.5px; color: var(--fg-3); }
 .topdiv { width: 1px; height: 24px; background: var(--line); flex: none; }
+#cancerswitch:empty { display: none; }
+#cancerswitch button { font-size: 12px; }
 
 /* The headline: what is happening, in words. */
 #headline { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; }
@@ -312,6 +314,32 @@ table.data td { text-align: right; padding: 3px 6px; color: var(--fg-2); }
 #error ul { margin: 0; padding-left: 18px; font-family: var(--mono); font-size: 12px; color: var(--fg); }
 #error li { margin-bottom: 5px; }
 
+/* ── evolutionary control: resistance graph, evidence badges, controller ── */
+.tree .node { display: grid; grid-template-columns: auto 10px 1fr auto; gap: 0 8px; align-items: start; padding: 5px 0; border-bottom: 1px solid var(--line-soft); }
+.tree .node:last-child { border-bottom: 0; }
+.tree .branch { color: var(--fg-3); font-size: 11px; width: 14px; }
+.tree .sw { margin-top: 3px; }
+.tree .n { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.tree .name { font-size: 12.5px; }
+.tree .sub { font-size: 11px; color: var(--fg-2); white-space: pre; }
+.tree .c { font-variant-numeric: tabular-nums; font-size: 12.5px; }
+.tree .m-pos { color: var(--respond); }
+.tree .m-neg { color: var(--danger); }
+.tree .m-zero { color: var(--resist); }
+.ev-clone { display: flex; align-items: center; gap: 8px; margin: 12px 0 4px; font-size: 12.5px; font-weight: 500; }
+.ev-clone:first-child { margin-top: 0; }
+.ev-row { grid-template-columns: minmax(0, 1fr) auto auto !important; display: grid !important; gap: 8px; align-items: baseline; }
+.ev-row .k { white-space: normal; overflow-wrap: anywhere; line-height: 1.3; }
+.ev-row .v { white-space: nowrap; }
+.ev { font-size: 9.5px; font-weight: 600; letter-spacing: 0.06em; padding: 1px 5px; border-radius: 3px; border: 1px solid var(--line); color: var(--fg-2); white-space: nowrap; }
+.ev-direct { color: var(--respond); border-color: var(--respond); }
+.ev-derived { color: var(--fg); }
+.ev-inferred { color: var(--resist); border-color: var(--resist); }
+.ev-assumption { color: var(--danger); border-color: var(--danger); }
+.ctl-now { margin-top: 12px; padding: 10px 12px; background: var(--raised); border-radius: var(--r-sm); }
+.ctl-now .label { font-size: 11px; color: var(--fg-3); }
+.ctl-now .act { font-size: 13px; font-weight: 500; margin: 2px 0; }
+
 /* ── access: the simulator is hidden until a session exists ───────────── */
 body:not([data-auth="in"]) #app { display: none; }
 #auth[hidden], #account[hidden] { display: none; }
@@ -408,6 +436,7 @@ body:not([data-auth="in"]) #app { display: none; }
       <span class="mark">Iressa</span>
       <span class="sub">tumour evolution under treatment</span>
     </div>
+    <div id="cancerswitch" class="seg" role="group" aria-label="Cancer model"></div>
     <div class="topdiv"></div>
     <div id="headline"><span class="dot"></span><span class="say"></span><span class="because"></span></div>
     <div id="viewswitch" class="seg"></div>

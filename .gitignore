@@ -22,6 +22,12 @@ data/runs/*
 !data/runs/demo48/
 !data/runs/demo48/run.events
 !data/runs/demo48/run.keyframes
+!data/runs/breast48/
+!data/runs/breast48/run.events
+!data/runs/breast48/run.keyframes
+!data/runs/breast48-ppo/
+!data/runs/breast48-ppo/run.events
+!data/runs/breast48-ppo/run.keyframes
 .vite/
 
 # Python engine scratch and experiment outputs
