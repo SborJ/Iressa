@@ -30,6 +30,10 @@ export interface ControlHandlers {
 }
 
 const SPEEDS = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512];
+const PPO_TRAIN_COMMAND =
+  'python3 scripts/train_ppo.py --days 120 --total-timesteps 50000 --output-dir outputs/rl';
+const PPO_EVALUATE_COMMAND =
+  'python3 scripts/evaluate_policy.py --days 120 --seeds 1001,1002,1003 --output-dir outputs/rl_eval';
 
 export class Controls {
   readonly state: ControlState;
@@ -289,6 +293,50 @@ export class Controls {
       el('p', { class: 'note oxygen-note', text: '' }),
       el('p', { class: 'note run-note', text: '' }),
       el('div', { class: 'btnrow' }, [applyBtn]),
+      this.buildRlPanel(),
+    ]);
+  }
+
+  private buildRlPanel(): HTMLElement {
+    const trainBtn = el('button', {
+      type: 'button',
+      text: 'Copy train',
+      title: 'Copy the PPO training command for the Python RL environment.',
+    });
+    trainBtn.addEventListener('click', () => this.copyText(PPO_TRAIN_COMMAND));
+
+    const evalBtn = el('button', {
+      type: 'button',
+      text: 'Copy eval',
+      title: 'Copy the PPO policy evaluation command.',
+    });
+    evalBtn.addEventListener('click', () => this.copyText(PPO_EVALUATE_COMMAND));
+
+    return el('div', { class: 'rl-panel' }, [
+      el('div', { class: 'ctl' }, [
+        el('label', { text: 'RL / PPO baseline' }),
+        el('p', {
+          class: 'note',
+          text: 'Python RL is wired: Gymnasium-style environment, PPO training, and policy evaluation.',
+        }),
+        el('div', { class: 'rl-status' }, [
+          el('span', { class: 'status-dot' }),
+          el('span', { text: 'Available for offline experiments' }),
+        ]),
+        el('div', { class: 'rl-command' }, [
+          el('span', { text: 'train' }),
+          el('code', { text: PPO_TRAIN_COMMAND }),
+        ]),
+        el('div', { class: 'rl-command' }, [
+          el('span', { text: 'eval' }),
+          el('code', { text: PPO_EVALUATE_COMMAND }),
+        ]),
+        el('div', { class: 'btnrow' }, [trainBtn, evalBtn]),
+        el('p', {
+          class: 'note',
+          text: 'The browser viewer runs fixed/adaptive schedules; trained PPO policy playback is the next bridge.',
+        }),
+      ]),
     ]);
   }
 
@@ -339,7 +387,7 @@ export class Controls {
     }
     if (note) {
       note.textContent =
-        'Runs a fresh browser experiment immediately. PPO/RL training is planned separately and is not active here yet.';
+        'Runs a fresh browser experiment immediately with fixed or adaptive schedule logic.';
     }
   }
 
@@ -364,6 +412,10 @@ export class Controls {
       el('span', { text: label }),
       input,
     ]);
+  }
+
+  private copyText(text: string): void {
+    void navigator.clipboard?.writeText(text);
   }
 
   private emit(changed: keyof ControlState | 'init'): void {

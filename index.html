@@ -129,6 +129,47 @@ textarea.cmd {
   margin-bottom: 3px;
 }
 .val { font-family: var(--mono); font-size: 11px; color: var(--text-secondary); float: right; }
+.rl-panel {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+.rl-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 7px 0;
+  color: var(--text-secondary);
+  font-size: 11px;
+}
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #58b97b;
+  box-shadow: 0 0 0 3px color-mix(in srgb, #58b97b 18%, transparent);
+}
+.rl-command {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 6px;
+  align-items: baseline;
+  margin: 5px 0;
+}
+.rl-command span {
+  color: var(--text-muted);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.rl-command code {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-secondary);
+  font: 10px/1.45 var(--mono);
+}
 
 /* ---- tally ---- */
 .tally-row { display: grid; grid-template-columns: 10px 1fr auto; gap: 8px; align-items: center; padding: 3px 0; }
