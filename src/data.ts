@@ -1,6 +1,7 @@
-import { loadRules, RulesError, type ResolvedRules } from './sim/rules.js';
+import { loadRules, RulesError, type ResolvedRules, type RulesFile } from './sim/rules.js';
 import { loadVisuals, VisualsError, type Visuals } from './render/visuals.js';
-import { rulesUrl } from './defaultRun.js';
+import { rulesUrl, sourceKind } from './defaultRun.js';
+import { applyLocalExperimentOverrides, experimentParamsFromQuery } from './experimentParams.js';
 
 export interface LoadedData {
   rules: ResolvedRules;
@@ -30,7 +31,10 @@ export async function loadData(): Promise<LoadedData> {
     fetchJson(q.get('visuals') ?? '/visuals.json'),
     fetchJson('/schema/visuals.schema.json'),
   ]);
-  const rules = loadRules(rulesRaw, rulesSchema as object);
+  const experimentRules = sourceKind(q) === 'local'
+    ? applyLocalExperimentOverrides(rulesRaw as RulesFile, experimentParamsFromQuery(q))
+    : rulesRaw;
+  const rules = loadRules(experimentRules, rulesSchema as object);
   const visuals = loadVisuals(visualsRaw, visualsSchema as object, rules);
   return { rules, visuals };
 }
