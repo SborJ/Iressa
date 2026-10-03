@@ -15,6 +15,7 @@ from iressa_format import EventType, decode_events, decode_keyframe, state_of  #
 
 from cancer_sim.experiments import ExperimentConfig, build_runner  # noqa: E402
 from cancer_sim.iressa_export import CLONE_IDS, STATE_FOR_CELL, export_run  # noqa: E402
+from cancer_sim.rl_env import CancerTreatmentEnv, RLConfig  # noqa: E402
 
 SCHEMA = json.load(open(ROOT / "data" / "schema" / "rules.schema.json"))
 
@@ -104,6 +105,29 @@ class ExportTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             with tempfile.TemporaryDirectory() as tmp:
                 export_run(ExperimentConfig(seed=1, width=10, height=10, cells=20, steps=2, dt=0.3), "none", name="bad", out_root=Path(tmp))
+
+    def test_ppo_actions_export_as_the_replayed_experiment(self):
+        config = ExperimentConfig(seed=11, width=12, height=10, cells=30, steps=3, dt=1.0)
+        env = CancerTreatmentEnv(RLConfig(experiment=config, horizon_days=3, decision_interval_days=1,
+                                           progression_multiplier=100, eci_min=0, record_events=True))
+        env.reset(seed=11)
+        actions = [2, 4, 0]
+
+        def advance(step):
+            _, _, terminated, truncated, _ = env.step(actions[step - 1])
+            return not (terminated or truncated)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            summary = export_run(config, "none", name="ppo", out_root=Path(tmp),
+                                 runner_override=env.runner, advance=advance)
+            out = Path(tmp) / "ppo"
+            rules = json.loads((out / "rules.json").read_text())
+            jsonschema.validate(rules, SCHEMA)
+            events = list(decode_events((out / "run.events").read_bytes()))
+            initial = _keyframes((out / "run.keyframes").read_bytes())[0]
+            self.assertEqual(_replay(initial, events, rules), _engine_matrix(env.runner.automata.world, rules))
+            self.assertEqual([item["drug"] for item in rules["treatment"]["schedule"]], [0, 1])
+            self.assertEqual(summary["final_burden"], env.runner.history[-1].burden)
 
 
 if __name__ == "__main__":

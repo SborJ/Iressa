@@ -87,7 +87,9 @@ def export_run(
     template_rules: Path = TEMPLATE_RULES,
     vasculature_spec: dict | None = None,
     microenvironment_args=None,
-    progress=None
+    progress=None,
+    runner_override=None,
+    advance=None,
 ) -> dict[str, Any]:
     out = out_root / name
     out.mkdir(parents=True, exist_ok=True)
@@ -103,7 +105,7 @@ def export_run(
     if vasculature_spec:
         config = replace(config, vasculature_trunks=int(vasculature_spec.get("trunks", config.vasculature_trunks)),
                          vasculature_max_depth=int(vasculature_spec.get("maxDepth", config.vasculature_max_depth)))
-    runner = build_runner(
+    runner = runner_override or build_runner(
         schedule_name=schedule,
         config=config,
         microenvironment_args=microenvironment_args,
@@ -138,11 +140,13 @@ def export_run(
         ]
         return encode_keyframe(Keyframe(tick=tick, nx=world.config.width, ny=world.config.height, nz=nz, nodes=nodes))
 
+    # ``advance(step)`` may drive the run itself (a policy-driven episode) and return False when it ends.
     recording = _record(
         runner, steps=config.steps, dt=config.dt, ticks_per_step=ticks_per_step, keyframe_every_steps=keyframe_every_steps,
         keyframe=keyframe, node_of=node_of, cause=cause, state_code=state_code, clone_ids=clone_ids, drug_ids=drug_ids,
-        advance=lambda step: runner.step(dt=config.dt, step_number=step), progress=progress,
+        advance=advance or (lambda step: runner.step(dt=config.dt, step_number=step)), progress=progress,
     )
+    config = replace(config, steps=len(runner.history))
     return _write_recording(out, name, schedule, config, runner, recording, template, tick_minutes, ticks_per_step,
                             keyframe_every_steps, vasculature_spec, nz, z_offset, policy=None)
 
@@ -161,7 +165,7 @@ def _record(runner, *, steps, dt, ticks_per_step, keyframe_every_steps, keyframe
     counts = {"divide": 0, "mutate": 0, "death": 0, "removed": 0, "state": 0}
     metrics = [_controllability_row(runner, None, 0.0, actions, concentrations)]
     for step in range(1, steps + 1):
-        advance(step)
+        keep_going = advance(step)
         tick = step * ticks_per_step
         for event in automata.events:
             kind = event[0]
@@ -187,6 +191,8 @@ def _record(runner, *, steps, dt, ticks_per_step, keyframe_every_steps, keyframe
             metrics.append(_controllability_row(runner, record, record.time, actions, concentrations))
         if progress and (step % 10 == 0 or step == steps):
             progress(step, steps, runner.history[-1])
+        if keep_going is False:
+            break   # a policy-driven episode ended early
     return {"writer": writer, "keyframes": keyframes, "counts": counts, "metrics": metrics}
 
 
@@ -230,6 +236,7 @@ def _write_recording(out, name, schedule, config, runner, recording, template, t
         "rows": recording["metrics"],
     }, indent=1) + "\n")
 
+    config = replace(config, steps=len(runner.history))
     rules = build_rules(template, config, runner, tick_minutes, ticks_per_step, keyframe_every_steps, vasculature_spec, nz, z_offset)
     rules["provenance"]["controllability"] = recording["metrics"][0]
     if policy:

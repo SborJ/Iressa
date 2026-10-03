@@ -1,5 +1,5 @@
 {
-  "frozen_at": "2026-10-03T20:19:01+00:00",
+  "frozen_at": "2026-10-03T21:22:39+00:00",
   "note": "Phase 1 validated engine. Any change to these files requires re-running the validation suite and updating this manifest deliberately.",
   "files": {
     "cancer_sim/automata.py": "fca49e6f69ca37d97979eb92ded07bac80c4cddaa4d2d78d6e48325c2bde1c51",

@@ -97,6 +97,15 @@ def main() -> int:
             )
         )
 
+    if args.policy is None:
+        # Without a policy this compares the fixed schedules to each other and
+        # prints a table that looks complete, with the one row the script exists
+        # to produce quietly missing.
+        print(
+            "No --policy given: comparing fixed schedules only. "
+            "Pass --policy <dir>/ppo_iressa.zip from scripts/train_ppo.py to include PPO.",
+            file=sys.stderr,
+        )
     if args.policy is not None:
         try:
             from stable_baselines3 import PPO

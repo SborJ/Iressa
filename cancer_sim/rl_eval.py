@@ -40,6 +40,7 @@ class EpisodeMetrics:
     cumulative_dose: float
     switches: int
     steps: int
+    first_progression_day: float | None = None
     horizon_days: float = 0.0
     time_to_loss_of_control: float | None = None
     time_to_resistant_dominance: float | None = None
@@ -78,6 +79,7 @@ class EpisodeMetrics:
             "final_eci": self.final_eci,
             "toxic_days": self.toxic_days,
             "simulated_eradication": int(self.simulated_eradication),
+            "first_progression_day": self.first_progression_day,
         }
 
 
@@ -340,6 +342,7 @@ def run_episode(
         toxic_days=int(info.get("toxic_days", 0)),
         simulated_eradication=info["burden"] <= 0,
         randomization=dict(info.get("randomization") or {}) or None,
+        first_progression_day=info["first_progression_day"],
     )
 
 
@@ -381,6 +384,12 @@ def summarize(metrics: list[EpisodeMetrics]) -> list[dict[str, int | float | str
             "toxic_days_median": _median(item.toxic_days for item in group),
             "switches_median": _median(item.switches for item in group),
             "eradication_fraction": sum(item.simulated_eradication for item in group) / len(group),
+            "steps_median": _median(item.steps for item in group),
+            "progression_fraction": sum(item.first_progression_day is not None for item in group) / len(group),
+            "progression_day_median": (
+                _median(item.first_progression_day for item in group if item.first_progression_day is not None)
+                if any(item.first_progression_day is not None for item in group) else None
+            ),
         })
     return rows
 

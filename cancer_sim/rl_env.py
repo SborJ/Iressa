@@ -95,6 +95,7 @@ class RLConfig:
     eci_weight: float = 0.5
     exhaustion_weight: float = 0.5
     eci_min: float = 0.05
+    stop_on_progression: bool = True
     controllability_horizon_days: float = 30.0
     # spec section 42: reward the *improvement* in controllability and penalise heavy days
     eci_delta_weight: float = 0.2
@@ -168,6 +169,8 @@ class CancerTreatmentEnv(_gym_base()):
         self._toxic_days = 0
         self.theta: dict[str, float] = {}
         self.last_observation = np.zeros(len(self.observation_names), dtype=np.float32)
+        self._first_progression_day: float | None = None
+        self._episode_rng = np.random.default_rng(self.config.experiment.seed)
 
     def reset(
         self,
@@ -177,8 +180,10 @@ class CancerTreatmentEnv(_gym_base()):
     ) -> tuple[np.ndarray, dict[str, Any]]:
         if gym is not None:
             super().reset(seed=seed)
-        if seed is None:
-            seed = self.config.experiment.seed
+        if seed is not None:
+            self._episode_rng = np.random.default_rng(seed)
+        else:
+            seed = int(self._episode_rng.integers(0, 2**31 - 1))
         experiment = replace(
             self.config.experiment,
             seed=seed,
@@ -201,11 +206,18 @@ class CancerTreatmentEnv(_gym_base()):
         self._previous_record = None
         self._initial_burden = max(self._runner.initial_burden, 1)
         self._minimum_burden = self._initial_burden
+        self._first_progression_day = None
         self._cumulative_dose = {drug: 0.0 for drug in self._drug_ids}
         self._last_drug = "none"
         self._days_since_switch = 0.0
         self.last_observation = self._observation()
         return self.last_observation, self._info()
+
+    @property
+    def runner(self):
+        if self._runner is None:
+            raise RuntimeError("environment must be reset before accessing runner")
+        return self._runner
 
     def step(self, action: int) -> tuple[np.ndarray, float, bool, bool, dict[str, Any]]:
         if self._runner is None:
@@ -235,8 +247,11 @@ class CancerTreatmentEnv(_gym_base()):
         reward, components = self._reward(self._last_record, treatment, control)
         self._previous_eci = control.eci
         progressed = self._last_record.burden >= self.config.progression_multiplier * self._initial_burden
+        if progressed and self._first_progression_day is None:
+            self._first_progression_day = self._step_index * self.config.decision_interval_days
         treatment_exhausted = control.eci < self.config.eci_min
-        terminated = self._last_record.burden <= 0 or progressed or treatment_exhausted
+        terminated = (self._last_record.burden <= 0 or
+                      (progressed and self.config.stop_on_progression) or treatment_exhausted)
         truncated = self._step_index >= self.max_steps
         info = self._info()
         info["reward_components"] = components
@@ -309,7 +324,10 @@ class CancerTreatmentEnv(_gym_base()):
         control = max(0.0, (prev - record.burden) / max(self._initial_burden, 1))
         controllability = controllability or self._controllability()
         switched = 1.0 if self._previous_record is not None and action.exposures != dict(self._previous_record.exposures) else 0.0
-        controlled_day = 1.0 if controllability.eci >= self.config.eci_min else 0.0
+        controlled_day = float(
+            record.burden < self.config.progression_multiplier * self._initial_burden
+            and controllability.eci >= self.config.eci_min
+        )
         eci_delta = 0.0 if self._previous_eci is None else controllability.eci - self._previous_eci
         self._last_eci_delta = eci_delta
         toxic = 1.0 if action.total_dose >= self.config.toxicity_threshold else 0.0
@@ -340,6 +358,7 @@ class CancerTreatmentEnv(_gym_base()):
             "burden": burden,
             "initial_burden": self._initial_burden,
             "minimum_burden": self._minimum_burden,
+            "first_progression_day": self._first_progression_day,
             "resistant_fraction": 0.0 if record is None else _resistant_fraction(record, self.model.resistant_clones),
             "eci": control.eci,
             "treatment_exhausted_fraction": control.exhausted_fraction,
