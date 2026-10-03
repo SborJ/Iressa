@@ -583,8 +583,28 @@ python3 -m unittest discover -s tests
 Current status:
 
 ```text
-36 tests passing
+Python engine/export tests and TypeScript viewer tests pass on main.
 ```
+
+## Reinforcement Learning Plan
+
+The planned RL layer is documented in:
+
+```text
+docs/rl-treatment-design.md
+```
+
+The first learning baseline should be PPO over the existing simulator, with:
+
+- fixed schedule policies as baselines,
+- summary observations first rather than full 3D fields,
+- discrete treatment actions first,
+- reward components reported separately,
+- 20-100 held-out seeds for evaluation,
+- no clinical recommendation language.
+
+Oxygen should be part of the RL observation through mean oxygen, low-oxygen
+fraction, necrotic fraction, and recent hypoxic deaths.
 
 ## Important Limitations
 
@@ -600,6 +620,7 @@ Current status:
 
 1. Run full repeated stochastic comparisons with 20-100 seeds over 120-240+ day horizons.
 2. Run the sensitivity panel at 120-240+ days and identify which assumptions dominate outcomes.
-3. Add PK-style drug exposure curves instead of constant vessel concentration.
-4. Improve rare-state calibration for C797S, MET_AMP, and capmatinib response.
-5. Add tests/plots that compare explicit-substep drug transport against an implicit reference solve.
+3. Build a Gymnasium-style RL environment and PPO baseline around the same action/schedule interface.
+4. Add PK-style drug exposure curves instead of constant vessel concentration.
+5. Improve rare-state calibration for C797S, MET_AMP, and capmatinib response.
+6. Add tests/plots that compare explicit-substep drug transport against an implicit reference solve.

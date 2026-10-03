@@ -213,11 +213,11 @@ export class Controls {
     const oxygenRow = el('div', { class: 'btnrow wrap' });
     for (const [mode, label] of [
       ['default', 'Default'],
-      ['vascular', 'Vascular'],
-      ['hypoxic', 'Hypoxic'],
-      ['necrotic', 'Necrotic'],
+      ['vascular', 'More flow'],
+      ['hypoxic', 'Low flow'],
+      ['necrotic', 'Starved'],
     ] as [OxygenMode, string][]) {
-      const b = el('button', { type: 'button', text: label });
+      const b = el('button', { type: 'button', text: label, title: oxygenModeHelp(mode) });
       b.addEventListener('click', () => {
         const preset = oxygenPreset(mode);
         this.state.experiment.oxygenMode = mode;
@@ -235,7 +235,8 @@ export class Controls {
     const supply = el('input', {
       type: 'range', min: '0.05', max: '2', step: '0.05',
       value: String(this.state.experiment.oxygenSupply),
-      'aria-label': 'Oxygen supply',
+      'aria-label': 'Blood oxygen delivery',
+      title: 'Higher values mean vessels deliver more oxygen into nearby tissue.',
     }) as HTMLInputElement;
     supply.addEventListener('input', () => {
       this.state.experiment.oxygenSupply = Number(supply.value);
@@ -247,7 +248,8 @@ export class Controls {
     const uptake = el('input', {
       type: 'range', min: '0.001', max: '0.08', step: '0.001',
       value: String(this.state.experiment.oxygenUptake),
-      'aria-label': 'Oxygen uptake',
+      'aria-label': 'Cell oxygen consumption',
+      title: 'Higher values mean living cells consume oxygen faster, creating stronger hypoxia.',
     }) as HTMLInputElement;
     uptake.addEventListener('input', () => {
       this.state.experiment.oxygenUptake = Number(uptake.value);
@@ -283,14 +285,15 @@ export class Controls {
           this.field('Algorithm', schedule),
         ]),
       ]),
-      el('div', { class: 'ctl' }, [el('label', { text: 'Oxygen flow' }), oxygenRow]),
+      el('div', { class: 'ctl' }, [el('label', { text: 'Oxygen environment' }), oxygenRow]),
       el('div', { class: 'ctl' }, [
-        el('label', {}, [document.createTextNode('Supply'), supplyLabel]), supply,
+        el('label', {}, [document.createTextNode('Blood delivery'), supplyLabel]), supply,
       ]),
       el('div', { class: 'ctl' }, [
-        el('label', {}, [document.createTextNode('Uptake'), uptakeLabel]), uptake,
+        el('label', {}, [document.createTextNode('Cell consumption'), uptakeLabel]), uptake,
       ]),
-      el('p', { class: 'note', text: '' }),
+      el('p', { class: 'note oxygen-note', text: '' }),
+      el('p', { class: 'note run-note', text: '' }),
       el('div', { class: 'btnrow' }, [applyBtn, copyBtn]),
       this.commandText,
     ]);
@@ -336,7 +339,11 @@ export class Controls {
     for (const [mode, b] of this.oxygenButtons) {
       b.setAttribute('aria-pressed', String(mode === this.state.experiment.oxygenMode));
     }
-    const note = this.root.querySelector('.experiment .note');
+    const note = this.root.querySelector('.experiment .run-note');
+    const oxygenNote = this.root.querySelector('.experiment .oxygen-note');
+    if (oxygenNote) {
+      oxygenNote.textContent = oxygenExperimentHelp(this.state.experiment.oxygenMode);
+    }
     if (note) {
       note.textContent = isLocalSource()
         ? 'Run local reloads the browser simulator with these controls.'
@@ -371,4 +378,22 @@ export class Controls {
   private emit(changed: keyof ControlState | 'init'): void {
     this.handlers.onChange(this.state, changed);
   }
+}
+
+function oxygenModeHelp(mode: OxygenMode): string {
+  return {
+    default: 'Balanced vessel oxygen and cell consumption.',
+    vascular: 'More oxygen reaches the tumor; fewer cells become hypoxic.',
+    hypoxic: 'Less oxygen delivery and more consumption; growth slows and hypoxia increases.',
+    necrotic: 'Severe oxygen starvation; sustained hypoxia can kill cells.',
+  }[mode];
+}
+
+function oxygenExperimentHelp(mode: OxygenMode): string {
+  return {
+    default: 'Oxygen is a resource: vessels add it, cells consume it, and low oxygen slows or kills cells.',
+    vascular: 'More flow means vessels refill oxygen faster, usually keeping cells proliferative for longer.',
+    hypoxic: 'Low flow means the tumor can outrun oxygen delivery, creating quiescent/hypoxic regions.',
+    necrotic: 'Starved conditions push cells below the necrosis threshold after sustained oxygen stress.',
+  }[mode];
 }
