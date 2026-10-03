@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Iressa — watch lung cancer outsmart its drug</title>
+<title>Iressa — a living 3D model of lung cancer resistance</title>
 <meta name="description" content="A 3D simulator, built on real lab data, that shows how EGFR lung tumours become resistant." />
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23080b11'/%3E%3Crect x='12.5' y='13' width='7' height='14' rx='1.5' fill='%23e8ecf3'/%3E%3Ccircle cx='16' cy='7.5' r='4' fill='%23d95926'/%3E%3C/svg%3E" />
-<meta name="theme-color" content="#080b11" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230a0c10'/%3E%3Crect x='12.5' y='13' width='7' height='14' rx='1.5' fill='%23f0f2f6'/%3E%3Ccircle cx='16' cy='7.5' r='4' fill='%23d4733a'/%3E%3C/svg%3E" />
+<meta name="theme-color" content="#0a0c10" />
 
 <!-- Share previews (WhatsApp, LinkedIn, X). Absolute URLs work best here;
      replace ./media/og-image.jpg with the full https:// URL once the page is hosted. -->
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Iressa — watch lung cancer outsmart its drug" />
+<meta property="og:title" content="Iressa — a living 3D model of lung cancer resistance" />
 <meta property="og:description" content="A 3D simulator, built on real lab data, that shows how EGFR lung tumours become resistant." />
 <meta property="og:image" content="./media/og-image.jpg" />
 <meta property="og:image:width" content="1200" />
@@ -19,39 +19,47 @@
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:image" content="./media/og-image.jpg" />
 
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
 <link rel="preload" as="image" href="./media/hero-poster.jpg" />
 
 <style>
-/* Colours are the simulator's own (app panels + data/visuals.json), so the page
-   and the product read as one thing. */
+/* Every colour and the type stack are the simulator's own (index.html :root
+   and the tissue view's lineage colours in data/visuals.json), so the page and
+   the product read as one thing. The light sections are the same palette's
+   reading surface: the simulator's ink on paper. */
 :root {
-  --ink-0: #080b11;        /* simulator background */
-  --ink-1: #121722;
-  --ink-2: #1b2130;
-  --ink-line: #2a3342;
-  --on-dark: #e8ecf3;
-  --on-dark-2: #a3adbd;
-  --on-dark-3: #6b7686;
+  /* Surfaces and ink, as in the simulator */
+  --ink-0: #0a0c10;        /* --bg */
+  --ink-1: #13161c;        /* --surface */
+  --ink-2: #1a1e26;        /* --raised */
+  --ink-line: #252a34;     /* --line */
+  --on-dark: #f0f2f6;      /* --fg */
+  --on-dark-2: #a2abb9;    /* --fg-2 */
+  --on-dark-3: #828b9a;    /* --fg-3 */
 
-  --paper: #f6f7f9;
+  --paper: #f4f6f8;
   --paper-2: #ffffff;
-  --paper-line: #e3e6ec;
-  --text: #121722;
-  --text-2: #4a5466;
-  --text-3: #6b7686;
+  --paper-line: #e2e6ec;
+  --text: #13161c;
+  --text-2: #4a5363;
+  --text-3: #6b7280;
 
-  --sensitive: #3987e5;    /* EGFR-mutant, drug-sensitive */
-  --t790m: #d95926;        /* EGFR + T790M */
-  --c797s: #199e70;        /* EGFR + T790M + C797S */
-  --met: #9b51e0;          /* EGFR + MET amplification */
-  --accent: #3987e5;
+  /* Lineages, as the simulator's tissue view and legend draw them */
+  --sensitive: #a8b9c6;    /* EGFR-mutant, drug-sensitive */
+  --t790m: #d4733a;        /* EGFR + T790M */
+  --c797s: #c09a6c;        /* EGFR + T790M + C797S */
+  --met: #8f6fb3;          /* EGFR + MET amplification */
 
-  --display: "Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --radius: 14px;
+  /* Semantic, as in the simulator: teal responds, warm carries the alarm */
+  --accent: #46b6c6;
+  --accent-ink: #2b6f7a;   /* --accent-dim: teal that reads on paper */
+  --accent-wash: rgba(70, 182, 198, 0.12);
+  --resist: #e8a33d;
+  --danger: #e5705f;
+
+  --display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Segoe UI", Roboto, system-ui, sans-serif;
+  --body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", Roboto, system-ui, sans-serif;
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+  --radius: 12px;
   --gutter: clamp(20px, 5vw, 48px);
 }
 * { box-sizing: border-box; }
@@ -66,7 +74,7 @@ body {
 }
 img, video { max-width: 100%; display: block; }
 a { color: inherit; }
-h1, h2, h3 { font-family: var(--display); letter-spacing: -0.02em; margin: 0; }
+h1, h2, h3 { font-family: var(--display); letter-spacing: -0.025em; margin: 0; }
 p { margin: 0; }
 
 .wrap { max-width: 1160px; margin: 0 auto; padding-inline: var(--gutter); }
@@ -84,11 +92,11 @@ h2 { font-size: clamp(32px, 4.6vw, 52px); line-height: 1.05; font-weight: 700; m
   padding: 16px 24px; border-radius: 999px; border: 1px solid transparent;
   transition: background-color .15s, border-color .15s;
 }
-.btn-primary { background: var(--accent); color: #fff; }
-.btn-primary:hover { background: #2f78d2; }
-.btn-ghost { color: var(--on-dark); border-color: #3c4860; }
+.btn-primary { background: var(--accent); color: var(--ink-0); }
+.btn-primary:hover { background: #5fc4d2; }
+.btn-ghost { color: var(--on-dark); border-color: #343a46; }
 .btn-ghost:hover { border-color: var(--on-dark-2); background: rgba(255,255,255,.04); }
-.btn:focus-visible, a:focus-visible { outline: 3px solid #8fb4f0; outline-offset: 3px; }
+.btn:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 .arrow { transition: transform .15s; }
 .btn:hover .arrow { transform: translateX(3px); }
 
@@ -103,9 +111,9 @@ h2 { font-size: clamp(32px, 4.6vw, 52px); line-height: 1.05; font-weight: 700; m
 .logo { display: flex; align-items: center; color: var(--on-dark); text-decoration: none; }
 .wordmark { position: relative; font: 700 24px/1 var(--display); letter-spacing: -0.02em; }
 .wordmark .dot {
-  /* Centred on the stem of Space Grotesk's dotless i (stem centre 0.125em,
-     stem top 0.333em below the line box), with a 0.08em gap like a real dot. */
-  position: absolute; left: -0.005em; top: -0.007em;
+  /* Fallback position; the script below re-measures the font actually used
+     (the system stack differs per platform) and centres the dot on the stem. */
+  position: absolute; left: 0.02em; top: 0;
   width: 0.26em; height: 0.26em; border-radius: 50%; background: var(--t790m);
 }
 .nav-links { display: flex; gap: 26px; margin-left: auto; }
@@ -119,7 +127,7 @@ h2 { font-size: clamp(32px, 4.6vw, 52px); line-height: 1.05; font-weight: 700; m
 
 /* ---------- hero ---------- */
 .hero {
-  background: radial-gradient(120% 70% at 50% 100%, #111a2b 0%, var(--ink-0) 60%);
+  background: radial-gradient(120% 70% at 50% 100%, #10202a 0%, var(--ink-0) 60%);
   color: var(--on-dark);
   padding-top: calc(132px + env(safe-area-inset-top, 0px));
   padding-bottom: clamp(56px, 8vw, 96px);
@@ -128,27 +136,27 @@ h2 { font-size: clamp(32px, 4.6vw, 52px); line-height: 1.05; font-weight: 700; m
 }
 .hero h1 {
   font-size: clamp(42px, 7.4vw, 88px); line-height: 0.98; font-weight: 700;
-  letter-spacing: -0.035em; max-width: 17ch; margin-inline: auto; text-wrap: balance;
+  letter-spacing: -0.035em; max-width: 22ch; margin-inline: auto; text-wrap: balance;
 }
-.hero h1 .hl { color: var(--t790m); }
+.hero h1 .hl { color: var(--resist); }
 .hero .sub { color: var(--on-dark-2); font-size: clamp(17px, 2vw, 21px); max-width: 44ch; margin: 22px auto 0; }
 .hero .cta { margin-top: 34px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
 .hero-media {
   position: relative; margin: clamp(44px, 6vw, 72px) auto 0; max-width: 1080px;
   border-radius: 18px; overflow: hidden; border: 1px solid var(--ink-line);
   background: #000; aspect-ratio: 16 / 9;
-  box-shadow: 0 40px 120px -30px rgba(57, 135, 229, .25), 0 30px 80px -40px rgba(217, 89, 38, .35);
+  box-shadow: 0 40px 120px -30px rgba(70, 182, 198, .22), 0 30px 80px -40px rgba(212, 115, 58, .35);
 }
 .hero-media video, .hero-media img { width: 100%; height: 100%; object-fit: cover; }
 .hero-media .badge {
   position: absolute; left: 16px; bottom: 16px;
   display: flex; align-items: center; gap: 8px;
-  background: rgba(18, 23, 34, .82); backdrop-filter: blur(10px);
+  background: rgba(19, 22, 28, .84); backdrop-filter: blur(10px);
   border: 1px solid var(--ink-line); border-radius: 999px;
   padding: 8px 14px; font-size: 13px; color: var(--on-dark-2);
 }
 .hero-media .badge b { color: var(--on-dark); font-weight: 600; }
-.rec { width: 8px; height: 8px; border-radius: 50%; background: #e66767; }
+.rec { width: 8px; height: 8px; border-radius: 50%; background: var(--danger); }
 .hero-media .try {
   position: absolute; right: 16px; bottom: 16px;
   background: rgba(255,255,255,.94); color: var(--text); text-decoration: none;
@@ -206,9 +214,9 @@ h2 { font-size: clamp(32px, 4.6vw, 52px); line-height: 1.05; font-weight: 700; m
 .bar { display: grid; grid-template-columns: minmax(0, 11.5em) minmax(0, 1fr); align-items: center; gap: 14px; font-size: 14px; }
 .bar .label { color: var(--text-2); line-height: 1.25; }
 .bar .track { display: block; position: relative; height: 26px; }
-.bar .fill { display: block; height: 100%; border-radius: 6px; background: #c9d0dc; min-width: 2px; }
-.bar.highlight .fill { background: var(--sensitive); }
-.bar .val { position: absolute; top: 50%; transform: translateY(-50%); font: 600 13px var(--body); font-variant-numeric: tabular-nums; padding-left: 8px; color: var(--text); white-space: nowrap; }
+.bar .fill { display: block; height: 100%; border-radius: 6px; background: #cfd5dd; min-width: 2px; }
+.bar.highlight .fill { background: var(--accent); }
+.bar .val { position: absolute; top: 50%; transform: translateY(-50%); font: 500 12.5px var(--mono); font-variant-numeric: tabular-nums; padding-left: 8px; color: var(--text); white-space: nowrap; }
 .compare-foot { margin-top: 16px; font-size: 13px; color: var(--text-3); }
 @media (max-width: 480px) {
   .bar { grid-template-columns: 1fr; gap: 4px; }
@@ -228,12 +236,12 @@ h2 { font-size: clamp(32px, 4.6vw, 52px); line-height: 1.05; font-weight: 700; m
 .checks li { display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: start; }
 .checks li::before {
   content: ""; width: 22px; height: 22px; border-radius: 50%; margin-top: 2px;
-  background: color-mix(in srgb, var(--c797s) 15%, transparent)
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23199e70' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 14px no-repeat;
+  background: var(--accent-wash)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232b6f7a' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 14px no-repeat;
 }
 .checks b { display: block; font-weight: 600; }
 .checks span { color: var(--text-2); font-size: 15px; }
-.text-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 28px; font-weight: 600; color: var(--accent); text-decoration: none; }
+.text-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 28px; font-weight: 600; color: var(--accent-ink); text-decoration: none; }
 .text-link:hover { text-decoration: underline; text-underline-offset: 4px; }
 
 /* ---------- audience ---------- */
@@ -252,13 +260,7 @@ h2 { font-size: clamp(32px, 4.6vw, 52px); line-height: 1.05; font-weight: 700; m
 .team { margin-top: clamp(64px, 9vw, 104px); padding-top: 40px; border-top: 1px solid var(--ink-line); }
 .team .kicker { color: var(--on-dark-3); }
 .team-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 28px 40px; margin-top: 8px; }
-.member { display: flex; align-items: center; gap: 12px; text-align: left; }
-.avatar {
-  width: 48px; height: 48px; border-radius: 50%; flex: none;
-  display: grid; place-items: center; font: 700 16px/1 var(--display); color: #fff;
-}
-.member b { display: block; font-weight: 600; }
-.member span { font-size: 14px; color: var(--on-dark-3); }
+.member { font-size: 17px; font-weight: 600; color: var(--on-dark); }
 
 footer {
   background: var(--ink-0); color: var(--on-dark-3); font-size: 14px;
@@ -426,15 +428,15 @@ footer a:hover { color: var(--on-dark); }
     <p class="kicker">Who it's for</p>
     <h2>One simulator, three uses.</h2>
     <div class="aud-grid">
-      <article class="aud" style="--c:var(--sensitive)">
+      <article class="aud" style="--c:var(--accent)">
         <h3>Researchers</h3>
         <p>Test an idea about dosing or resistance, then change any number in a data file and run it again.</p>
       </article>
-      <article class="aud" style="--c:var(--t790m)">
+      <article class="aud" style="--c:var(--resist)">
         <h3>Biotech</h3>
         <p>Explore how a resistance mutation spreads under a given drug plan, and show it to a room instead of describing it.</p>
       </article>
-      <article class="aud" style="--c:var(--c797s)">
+      <article class="aud" style="--c:var(--t790m)">
         <h3>Teaching</h3>
         <p>Let students watch evolution happen inside a tumour and ask any cell why it died.</p>
       </article>
@@ -452,14 +454,13 @@ footer a:hover { color: var(--on-dark); }
       <a class="btn btn-ghost" href="https://github.com/SborJ/Iressa">View on GitHub</a>
     </div>
 
-    <!-- TEAM: replace the placeholder names, roles and initials below. -->
     <div class="team">
       <p class="kicker">The team</p>
       <div class="team-grid">
-        <div class="member"><span class="avatar" style="background:var(--sensitive)">AA</span><div><b>[Name]</b><span>[Role]</span></div></div>
-        <div class="member"><span class="avatar" style="background:var(--t790m)">BB</span><div><b>[Name]</b><span>[Role]</span></div></div>
-        <div class="member"><span class="avatar" style="background:var(--c797s)">CC</span><div><b>[Name]</b><span>[Role]</span></div></div>
-        <div class="member"><span class="avatar" style="background:var(--met)">DD</span><div><b>[Name]</b><span>[Role]</span></div></div>
+        <div class="member">Vasil Vasilev</div>
+        <div class="member">Dimitar Anastasow</div>
+        <div class="member">Demira Lyubenova</div>
+        <div class="member">Alek Alekov</div>
       </div>
     </div>
   </div>
@@ -475,6 +476,64 @@ footer a:hover { color: var(--on-dark); }
 </footer>
 
 <script>
+  // The wordmark's dot is an orange cell over a dotless i. Where the stem sits
+  // depends on the font the platform resolves, so measure it rather than guess.
+  function placeDot() {
+    const wm = document.querySelector('.wordmark');
+    const dot = wm && wm.querySelector('.dot');
+    if (!dot) return;
+    const cs = getComputedStyle(wm);
+    const fs = parseFloat(cs.fontSize);
+    const lh = cs.lineHeight === 'normal' ? fs * 1.2 : parseFloat(cs.lineHeight);
+    const ctx = document.createElement('canvas').getContext('2d');
+    ctx.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+    const m = ctx.measureText('ı');
+    if (!m.fontBoundingBoxAscent) return; // older engines: keep the CSS fallback
+    const baseline = (lh - (m.fontBoundingBoxAscent + m.fontBoundingBoxDescent)) / 2 + m.fontBoundingBoxAscent;
+    const stemTop = baseline - m.actualBoundingBoxAscent;
+    const stemCentre = (m.actualBoundingBoxRight - m.actualBoundingBoxLeft) / 2;
+    const d = 0.26 * fs, gap = 0.08 * fs;
+    dot.style.left = `${stemCentre - d / 2}px`;
+    dot.style.top = `${stemTop - gap - d}px`;
+  }
+  placeDot();
+  document.fonts && document.fonts.ready.then(placeDot);
+
+  // In-page links glide rather than jump. CSS scroll-behavior alone is fast
+  // over a long page (it reads as a jump) and its speed differs per browser,
+  // so the scroll is driven here: eased, and longer for longer distances.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+  let scrollRun = 0;
+  function glideTo(y) {
+    const from = window.scrollY, dist = y - from;
+    if (reduceMotion.matches || Math.abs(dist) < 2) { window.scrollTo(0, y); return; }
+    const duration = Math.min(1400, 500 + Math.abs(dist) * 0.18);
+    const run = ++scrollRun, t0 = performance.now();
+    // Smooth CSS scrolling would fight each step; switch it off while gliding.
+    document.documentElement.style.scrollBehavior = 'auto';
+    (function frame(now) {
+      if (run !== scrollRun) return;              // a newer click took over
+      const t = Math.min(1, (now - t0) / duration);
+      window.scrollTo(0, from + dist * ease(t));
+      if (t < 1) requestAnimationFrame(frame);
+      else document.documentElement.style.scrollBehavior = '';
+    })(t0);
+  }
+  // Wheel or touch during a glide hands control back to the reader.
+  ['wheel', 'touchstart', 'keydown'].forEach((type) =>
+    window.addEventListener(type, () => { scrollRun++; document.documentElement.style.scrollBehavior = ''; }, { passive: true }));
+  document.querySelectorAll('a[href^="#"]').forEach((a) => {
+    a.addEventListener('click', (e) => {
+      const id = a.getAttribute('href').slice(1);
+      const target = id === 'top' ? document.body : document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      glideTo(id === 'top' ? 0 : target.getBoundingClientRect().top + window.scrollY);
+      history.pushState(null, '', '#' + id);
+    });
+  });
+
   // The hero video is the page's one moment of motion. Respect reduced motion:
   // show the poster frame instead of playing.
   const v = document.getElementById('hero-video');
