@@ -16,3 +16,7 @@ data/runs/
 outputs/
 __pycache__/
 .pytest_cache/
+
+# from simulator-integration
+*.py[cod]
+.mypy_cache/

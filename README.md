@@ -31,8 +31,9 @@ npm run dev   # then open the URL the exporter prints
 python3 -m pytest -q          # engine, calibration and export tests
 ```
 
-See `docs/validation/VIEWER_INTEGRATION.md` (how the two halves connect) and
-`docs/validation/VALIDATION_REPORT.md` (what was audited and fixed in the engine).
+See `docs/validation/VIEWER_INTEGRATION.md` (how the two halves connect),
+`docs/validation/VALIDATION_REPORT.md` (what was audited and fixed in the engine) and
+`docs/python-engine.md` (the engine's command reference).
 
 ## What you see
 
