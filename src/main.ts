@@ -5,7 +5,11 @@ import { AuthView } from './auth/authView.js';
 import { loadData, describeLoadError, type LoadedData } from './data.js';
 import { Viewer } from './render/viewer.js';
 import { FileSource } from './source/fileSource.js';
-import { CANCERS, cancerChoice, cancerUrl, eventsUrl, keyframesUrl, rulesUrl, sourceKind, usesDefaultRun } from './defaultRun.js';
+import { CANCERS, cancerChoice, cancerUrl, eventsUrl, keyframesUrl, liveModeUrl, liveUrl, rulesUrl, sourceKind, usesDefaultRun } from './defaultRun.js';
+import { LiveSource } from './source/liveSource.js';
+import { PatternStrip } from './ui/patternStrip.js';
+import { TreatmentConsole } from './ui/treatmentConsole.js';
+import type { RunMetrics } from './ui/runMetrics.js';
 import { LocalSimSource } from './source/localSim.js';
 import { SocketSource } from './source/socketSource.js';
 import type { SimulationSource } from './source/types.js';
@@ -56,9 +60,14 @@ function showError(err: unknown): void {
  *   ?source=socket&host=…&port=…          the same records, streamed
  *   ?source=file&rules=…&events=…&keyframes=…   any recorded run
  */
-async function makeSource(data: Awaited<ReturnType<typeof loadData>>): Promise<SimulationSource> {
+async function makeSource(data: Awaited<ReturnType<typeof loadData>>, live?: LiveSource): Promise<SimulationSource> {
   const q = new URLSearchParams(location.search);
   const kind = sourceKind(q);
+
+  if (kind === 'live' && live) {
+    live.bind(data.rules);
+    return live;
+  }
 
   if (kind === 'socket') {
     // The Vite dev server returns 403 for query strings containing a ws:// URL, so the
@@ -114,18 +123,78 @@ function mountCancerSwitch(q: URLSearchParams, raw: { provenance?: { cancer?: { 
   const name = raw.provenance?.cancer?.name;
   const sub = document.querySelector('#topbar .brand .sub');
   if (name && sub) sub.textContent = name;
-  if (!usesDefaultRun(q)) return;   // an explicit run or the stand-in simulator: nothing to switch between
+  const live = sourceKind(q) === 'live';
+  if (!usesDefaultRun(q) && !live) return;   // an explicit run or the stand-in simulator: nothing to switch between
   const current = cancerChoice(q).id;
   for (const cancer of CANCERS) {
     const b = document.createElement('button');
     b.type = 'button';
     b.textContent = cancer.label;
-    b.title = `Open the ${cancer.label} demo run`;
+    b.title = live ? `A live ${cancer.label} session` : `Open the ${cancer.label} demo run`;
     b.setAttribute('aria-pressed', String(cancer.id === current));
     b.addEventListener('click', () => {
       if (cancer.id !== current) location.href = cancerUrl(cancer.id, q);
     });
     host.append(b);
+  }
+  // recording or live engine
+  const mode = document.getElementById('modeswitch');
+  if (mode) {
+    for (const [label, isLive, title] of [
+      ['Recording', false, 'Play the committed recording of this cancer'],
+      ['Live', true, 'Run the Python engine live and set the treatment yourself, or let the policy choose'],
+    ] as [string, boolean, string][]) {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = label;
+      b.title = title;
+      b.setAttribute('aria-pressed', String(isLive === live));
+      b.addEventListener('click', () => {
+        if (isLive !== live) location.href = liveModeUrl(isLive, q);
+      });
+      mode.append(b);
+    }
+  }
+}
+
+/**
+ * Opens a live session: asks the dev server to start the Python simulator if it
+ * is not running, then connects. The hello carries this session's rules.json.
+ */
+async function openLiveSession(q: URLSearchParams): Promise<LiveSource> {
+  const cancer = cancerChoice(q).id;
+  const want = (key: string) => { const v = Number(q.get(key)); return Number.isFinite(v) && q.get(key) !== null ? v : undefined; };
+  const request = {
+    cancer,
+    size: want('size') ?? 32,
+    cells: want('cells') ?? 600,
+    days: want('days') ?? 120,
+    seed: want('seed') ?? 7,
+    mutation_scale: want('mutationScale') ?? 50,
+    randomize: q.get('randomize') === '1',
+    auto: q.get('auto') === '1',
+  };
+  const policy = q.get('policy') ?? (cancer === 'breast_er_her2neg' ? 'outputs/rl_breast/ppo_breast.zip' : 'outputs/rl/ppo_iressa.zip');
+  const url = liveUrl(q);
+  try {
+    const source = new LiveSource(url);
+    await source.open(request);
+    return source;
+  } catch {
+    // not running yet: ask the dev server to start it, then retry for a while
+    try {
+      await fetch('/api/live/start', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ policy }) });
+    } catch { /* no dev server API: the user may run scripts/serve_live.py by hand */ }
+    let lastError: unknown;
+    for (let attempt = 0; attempt < 30; attempt++) {
+      await new Promise((r) => setTimeout(r, 1000));
+      try {
+        const source = new LiveSource(url);
+        await source.open(request);
+        return source;
+      } catch (error) { lastError = error; }
+    }
+    throw new Error(`The live simulator did not answer at ${url}. Start it with: python3 scripts/serve_live.py  (${lastError instanceof Error ? lastError.message : ''})`);
   }
 }
 
@@ -159,9 +228,11 @@ async function openRecordedRun(path: string): Promise<void> {
 }
 
 async function startSimulator(loaded?: LoadedData): Promise<void> {
-  const data = loaded ?? await loadData();
+  const startQuery = new URLSearchParams(location.search);
+  const liveSource = sourceKind(startQuery) === 'live' ? await openLiveSession(startQuery) : undefined;
+  const data = loaded ?? await loadData(liveSource?.hello.rules);
   const { rules, visuals } = data;
-  let source = await makeSource(data);
+  let source = await makeSource(data, liveSource);
 
   let framed = false;
   const world = new World(rules);
@@ -219,6 +290,22 @@ async function startSimulator(loaded?: LoadedData): Promise<void> {
   let timeline: Timeline;
 
   const controlsHost = document.createElement('div');
+
+  /* live session: the treatment console sits under the view controls, the
+     pattern strip above the timeline, and each day's reading feeds both */
+  const liveMetrics: RunMetrics | undefined = liveSource
+    ? { note: 'live', clone_ids: Object.fromEntries(rules.raw.clones.map((c, i) => [String(i), c.id])), rows: [] }
+    : undefined;
+  const console_ = liveSource
+    ? new TreatmentConsole(liveSource, liveSource.hello.drugs, liveSource.hello.presets, liveSource.hello.policy, liveSource.hello.exposures, liveSource.hello.auto)
+    : undefined;
+  const strip = new PatternStrip(document.getElementById('stage')!, rules, visuals);
+  if (liveSource && liveMetrics) {
+    liveSource.onReading((reading) => {
+      liveMetrics.rows.push(reading);
+      strip.append(reading);
+    });
+  }
 
   const startExperiment = (params: ExperimentParams) => {
     unsubscribe();
@@ -287,10 +374,19 @@ async function startSimulator(loaded?: LoadedData): Promise<void> {
       onLoadPpoRun: (url) => void openRecordedRun(url),
     }, openFolds);
     panelRoot.insertBefore(controlsHost, panelRoot.children[2] ?? null);
+    if (console_) controlsHost.after(console_.node);
     panel.appendChart(chartHost);
     // The run's evolutionary-control readings and provenance, when it was recorded with them.
     const provenance = (activeRules.raw as unknown as { provenance?: RunProvenance }).provenance;
-    void loadRunMetrics(new URLSearchParams(location.search)).then((metrics) => panel.setRunMetrics(metrics, provenance));
+    if (liveMetrics) {
+      panel.setRunMetrics(liveMetrics, provenance);
+      strip.setMetrics(liveMetrics);
+    } else {
+      void loadRunMetrics(new URLSearchParams(location.search)).then((metrics) => {
+        panel.setRunMetrics(metrics, provenance);
+        strip.setMetrics(metrics);
+      });
+    }
 
     const timelineRoot = document.getElementById('timeline')!;
     timelineRoot.replaceChildren();
@@ -420,6 +516,8 @@ async function startSimulator(loaded?: LoadedData): Promise<void> {
       scaleBar.update(viewer.worldPerPixel());
       panel.update(source, history, stats, frameStats, controls.state.view, story, (world.tick * rules.hoursPerTick) / 24);
       timeline.update(world.tick, history);
+      strip.update((world.tick * activeRules.hoursPerTick) / 24);
+      console_?.tick();
       const view = visuals.view(controls.state.view);
       stageTags.update({
         viewLabel: view.label,

@@ -20,7 +20,7 @@ export interface TickPacket {
  * this interface - nothing downstream changes.
  */
 export interface SimulationSource {
-  readonly kind: 'local' | 'file' | 'socket';
+  readonly kind: 'local' | 'file' | 'socket' | 'live';
   readonly rules: ResolvedRules;
   readonly tick: number;
   readonly done: boolean;

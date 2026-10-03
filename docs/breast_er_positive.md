@@ -355,6 +355,20 @@ The 3D viewer's panel gains three folds for recorded runs:
 A policy-driven run is recorded with `scripts/export_iressa_run.py --policy
 outputs/rl_breast/ppo_breast.zip` and opened with `?cancer=breast_er_her2neg&run=<name>`.
 
+Two more pieces make the controller legible:
+
+- **Treatment pattern strip** above the timeline: one row per drug, one cell
+  per day filled at the exposure level, a tick wherever the treatment changed
+  and, on hover, the change in words. Recorded runs carry the words in their
+  `metrics.json` (`cancer_sim/narration.py`); older recordings fall back to the
+  schedule in `rules.json`.
+- **Live mode** (`?source=live`, or the Recording / Live switch): the Python
+  engine runs behind the 3D view one day at a time, with a treatment console
+  (a slider per drug, the model's presets, "Let the AI decide" when a policy is
+  loaded) and a narrated day card. The RL environment's episode rules do not end
+  a live session; the day card reports when control was lost by that definition
+  and the session runs to its horizon so the course can be changed.
+
 ## Validation
 
 `tests/test_breast_model.py` and `tests/test_breast_control.py` run the pre-RL

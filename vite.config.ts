@@ -151,8 +151,67 @@ function trainingApi() {
   };
 }
 
+/**
+ * The live two-way simulator (scripts/serve_live.py), started on demand.
+ *
+ * POST /api/live/start {policy?: string} spawns the Python WebSocket server once
+ * (on port 8788) and answers with its address; GET /api/live/status reports it.
+ * The same Python as the trainer, for the same reason.
+ */
+function liveApi() {
+  let child: ChildProcessWithoutNullStreams | undefined;
+  let state: { state: 'idle' | 'starting' | 'running' | 'failed'; url: string; message: string; policy?: string } =
+    { state: 'idle', url: 'ws://localhost:8788', message: '' };
+  const send = (res: ServerResponse, code: number, body: unknown) => {
+    res.writeHead(code, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
+    res.end(JSON.stringify(body));
+  };
+  const handler = (req: IncomingMessage, res: ServerResponse, next: () => void) => {
+    if (!req.url?.startsWith('/api/live/')) return next();
+    if (req.method === 'GET' && req.url === '/api/live/status') return send(res, 200, state);
+    if (req.method !== 'POST' || req.url !== '/api/live/start') return send(res, 404, { error: 'Not found' });
+    let body = '';
+    req.on('data', (chunk: Buffer) => { body += chunk.toString(); if (body.length > 4096) req.destroy(); });
+    req.on('end', () => {
+      let policy: string | undefined;
+      try {
+        const input = body ? JSON.parse(body) as { policy?: unknown } : {};
+        if (typeof input.policy === 'string' && /^[\w./-]+\.zip$/.test(input.policy) && !input.policy.includes('..')) policy = input.policy;
+      } catch { /* no options */ }
+      if (child && (state.state === 'running' || state.state === 'starting')) {
+        if (policy && policy !== state.policy) return send(res, 409, { ...state, error: `The live server is already running${state.policy ? ` with ${state.policy}` : ''}` });
+        return send(res, 200, state);
+      }
+      const args = ['-u', 'scripts/serve_live.py', '--port', '8788'];
+      if (policy && existsSync(resolve(process.cwd(), policy))) args.push('--policy', policy);
+      state = { state: 'starting', url: 'ws://localhost:8788', message: 'Starting the live simulator', policy };
+      const proc = spawn(pythonExecutable(), args, { cwd: process.cwd(), env: { ...process.env, OPENBLAS_NUM_THREADS: '1', OMP_NUM_THREADS: '1' } });
+      child = proc;
+      let error = '';
+      proc.stdout.on('data', (chunk: Buffer) => {
+        if (child === proc && chunk.toString().includes('live simulator on')) state = { ...state, state: 'running', message: 'Live simulator running' };
+      });
+      proc.stderr.on('data', (chunk: Buffer) => { error = (error + chunk.toString()).slice(-2000); });
+      proc.on('error', (cause) => { if (child === proc) { state = { ...state, state: 'failed', message: cause.message }; child = undefined; } });
+      proc.on('close', (code) => {
+        if (child !== proc) return;
+        state = { ...state, state: code === 0 ? 'idle' : 'failed', message: code === 0 ? '' : (explainTrainerFailure(error) || `Live server exited with code ${code}`) };
+        child = undefined;
+      });
+      return send(res, 202, state);
+    });
+  };
+  return {
+    name: 'local-live-simulator',
+    configureServer(server: { middlewares: { use: typeof handler }; httpServer?: { on: (event: string, fn: () => void) => void } }) {
+      server.middlewares.use(handler);
+      server.httpServer?.on('close', () => child?.kill('SIGTERM'));
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [trainingApi()],
+  plugins: [trainingApi(), liveApi()],
   server: { port: 5173, open: false },
   build: { target: 'es2022', sourcemap: true },
   // rules.json / visuals.json are fetched at runtime from the project root so they

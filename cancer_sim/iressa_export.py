@@ -42,6 +42,7 @@ from cancer_sim.automata import DEFAULT_CALIBRATED_CLONE_DATA, DEFAULT_RESISTANC
 from cancer_sim.cancers import CancerModel, load_cancer_model  # noqa: E402
 from cancer_sim.controllability import evaluate_tumor_controllability, model_actions  # noqa: E402
 from cancer_sim.experiments import ExperimentConfig, build_runner  # noqa: E402
+from cancer_sim.narration import describe_decision, describe_exposures  # noqa: E402
 from cancer_sim.simulation import TreatmentAction, write_history_csv  # noqa: E402
 from cancer_sim.vasculature import DEFAULT_SPEC  # noqa: E402
 
@@ -188,7 +189,14 @@ def _record(runner, *, steps, dt, ticks_per_step, keyframe_every_steps, keyframe
         if step % keyframe_every_steps == 0:
             keyframes.append(keyframe(tick + 1))      # a tick with no events: state after this step
             record = runner.history[-1]
-            metrics.append(_controllability_row(runner, record, record.time, actions, concentrations))
+            row = _controllability_row(runner, record, record.time, actions, concentrations)
+            # what changed in the treatment since the previous reading, in words
+            previous = metrics[-1]["exposures"] if len(metrics) > 1 else None
+            resistant = record.resistant_count(model.resistant_clones) / max(record.burden, 1)
+            row["label"] = describe_decision(model, previous, record.exposures, resistant_fraction=resistant, day=record.time)
+            row.setdefault("action", describe_exposures(model, record.exposures))
+            row.setdefault("resistant_fraction", round(resistant, 4))
+            metrics.append(row)
         if progress and (step % 10 == 0 or step == steps):
             progress(step, steps, runner.history[-1])
         if keep_going is False:

@@ -118,7 +118,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "starting endocrine suppression 90% + palbociclib 90% (resistant share 1%)",
+   "action": "endocrine suppression 90% + palbociclib 90%",
+   "resistant_fraction": 0.0132
   },
   {
    "day": 2.0,
@@ -176,7 +179,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held endocrine suppression 90% + palbociclib 90%",
+   "action": "endocrine suppression 90% + palbociclib 90%",
+   "resistant_fraction": 0.0182
   },
   {
    "day": 3.0,
@@ -234,7 +240,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held endocrine suppression 90% + palbociclib 90%",
+   "action": "endocrine suppression 90% + palbociclib 90%",
+   "resistant_fraction": 0.0218
   },
   {
    "day": 4.0,
@@ -292,7 +301,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held endocrine suppression 90% + palbociclib 90%",
+   "action": "endocrine suppression 90% + palbociclib 90%",
+   "resistant_fraction": 0.0238
   },
   {
    "day": 5.0,
@@ -350,7 +362,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held endocrine suppression 90% + palbociclib 90%",
+   "action": "endocrine suppression 90% + palbociclib 90%",
+   "resistant_fraction": 0.0284
   },
   {
    "day": 6.0,
@@ -408,7 +423,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held endocrine suppression 90% + palbociclib 90%",
+   "action": "endocrine suppression 90% + palbociclib 90%",
+   "resistant_fraction": 0.036
   },
   {
    "day": 7.0,
@@ -466,7 +484,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held endocrine suppression 90% + palbociclib 90%",
+   "action": "endocrine suppression 90% + palbociclib 90%",
+   "resistant_fraction": 0.0413
   },
   {
    "day": 8.0,
@@ -524,7 +545,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held endocrine suppression 90% + palbociclib 90%",
+   "action": "endocrine suppression 90% + palbociclib 90%",
+   "resistant_fraction": 0.0504
   },
   {
    "day": 9.0,
@@ -582,7 +606,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held endocrine suppression 90% + palbociclib 90%",
+   "action": "endocrine suppression 90% + palbociclib 90%",
+   "resistant_fraction": 0.0594
   },
   {
    "day": 10.0,
@@ -640,7 +667,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held endocrine suppression 90% + palbociclib 90%",
+   "action": "endocrine suppression 90% + palbociclib 90%",
+   "resistant_fraction": 0.0741
   },
   {
    "day": 11.0,
@@ -698,7 +728,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held endocrine suppression 90% + palbociclib 90%",
+   "action": "endocrine suppression 90% + palbociclib 90%",
+   "resistant_fraction": 0.0886
   },
   {
    "day": 12.0,
@@ -756,7 +789,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "switched the endocrine drug from endocrine suppression to fulvestrant 90%, kept palbociclib (resistant share 10%)",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.1035
   },
   {
    "day": 13.0,
@@ -814,7 +850,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.109
   },
   {
    "day": 14.0,
@@ -872,7 +911,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.1153
   },
   {
    "day": 15.0,
@@ -930,7 +972,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.1288
   },
   {
    "day": 16.0,
@@ -988,7 +1033,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.1458
   },
   {
    "day": 17.0,
@@ -1046,7 +1094,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.1597
   },
   {
    "day": 18.0,
@@ -1104,7 +1155,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.1724
   },
   {
    "day": 19.0,
@@ -1162,7 +1216,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.1936
   },
   {
    "day": 20.0,
@@ -1220,7 +1277,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.2145
   },
   {
    "day": 21.0,
@@ -1278,7 +1338,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.2313
   },
   {
    "day": 22.0,
@@ -1336,7 +1399,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.2502
   },
   {
    "day": 23.0,
@@ -1394,7 +1460,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.2778
   },
   {
    "day": 24.0,
@@ -1452,7 +1521,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.3018
   },
   {
    "day": 25.0,
@@ -1510,7 +1582,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.3327
   },
   {
    "day": 26.0,
@@ -1568,7 +1643,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.36
   },
   {
    "day": 27.0,
@@ -1626,7 +1704,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.3848
   },
   {
    "day": 28.0,
@@ -1684,7 +1765,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.4103
   },
   {
    "day": 29.0,
@@ -1742,7 +1826,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.4406
   },
   {
    "day": 30.0,
@@ -1800,7 +1887,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.4704
   },
   {
    "day": 31.0,
@@ -1858,7 +1948,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.5103
   },
   {
    "day": 32.0,
@@ -1916,7 +2009,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.5354
   },
   {
    "day": 33.0,
@@ -1974,7 +2070,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.5748
   },
   {
    "day": 34.0,
@@ -2032,7 +2131,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.6076
   },
   {
    "day": 35.0,
@@ -2090,7 +2192,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.6413
   },
   {
    "day": 36.0,
@@ -2148,7 +2253,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.6743
   },
   {
    "day": 37.0,
@@ -2206,7 +2314,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.7005
   },
   {
    "day": 38.0,
@@ -2264,7 +2375,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.7336
   },
   {
    "day": 39.0,
@@ -2322,7 +2436,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.7587
   },
   {
    "day": 40.0,
@@ -2380,7 +2497,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.7761
   },
   {
    "day": 41.0,
@@ -2438,7 +2558,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.8008
   },
   {
    "day": 42.0,
@@ -2496,7 +2619,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.8169
   },
   {
    "day": 43.0,
@@ -2554,7 +2680,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.8308
   },
   {
    "day": 44.0,
@@ -2612,7 +2741,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.8453
   },
   {
    "day": 45.0,
@@ -2670,7 +2802,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.8613
   },
   {
    "day": 46.0,
@@ -2728,7 +2863,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.8756
   },
   {
    "day": 47.0,
@@ -2786,7 +2924,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.8876
   },
   {
    "day": 48.0,
@@ -2844,7 +2985,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.9003
   },
   {
    "day": 49.0,
@@ -2902,7 +3046,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.9087
   },
   {
    "day": 50.0,
@@ -2960,7 +3107,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.917
   },
   {
    "day": 51.0,
@@ -3018,7 +3168,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.9269
   },
   {
    "day": 52.0,
@@ -3076,7 +3229,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.9365
   },
   {
    "day": 53.0,
@@ -3134,7 +3290,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.9436
   },
   {
    "day": 54.0,
@@ -3192,7 +3351,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.9483
   },
   {
    "day": 55.0,
@@ -3250,7 +3412,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.9539
   },
   {
    "day": 56.0,
@@ -3308,7 +3473,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.9599
   },
   {
    "day": 57.0,
@@ -3366,7 +3534,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.9636
   },
   {
    "day": 58.0,
@@ -3424,7 +3595,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.9678
   },
   {
    "day": 59.0,
@@ -3482,7 +3656,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.9719
   },
   {
    "day": 60.0,
@@ -3540,7 +3717,10 @@
       "fulvestrant": 1.0
      }
     }
-   }
+   },
+   "label": "held fulvestrant 90% + palbociclib 90%",
+   "action": "fulvestrant 90% + palbociclib 90%",
+   "resistant_fraction": 0.9765
   }
  ]
 }

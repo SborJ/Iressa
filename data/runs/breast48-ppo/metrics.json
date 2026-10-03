@@ -119,9 +119,10 @@
      }
     }
    },
+   "label": "starting palbociclib 50% + elacestrant 100% (resistant share 1%)",
    "action": "palbociclib+elacestrant",
-   "reward": -0.0382,
-   "resistant_fraction": 0.0122
+   "resistant_fraction": 0.0122,
+   "reward": -0.0382
   },
   {
    "day": 2.0,
@@ -180,9 +181,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.0034,
-   "resistant_fraction": 0.0127
+   "resistant_fraction": 0.0127,
+   "reward": 0.0034
   },
   {
    "day": 3.0,
@@ -241,9 +243,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.0367,
-   "resistant_fraction": 0.0139
+   "resistant_fraction": 0.0139,
+   "reward": 0.0367
   },
   {
    "day": 4.0,
@@ -302,9 +305,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.0327,
-   "resistant_fraction": 0.0141
+   "resistant_fraction": 0.0141,
+   "reward": 0.0327
   },
   {
    "day": 5.0,
@@ -363,9 +367,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.0568,
-   "resistant_fraction": 0.0136
+   "resistant_fraction": 0.0136,
+   "reward": 0.0568
   },
   {
    "day": 6.0,
@@ -424,9 +429,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.0944,
-   "resistant_fraction": 0.0141
+   "resistant_fraction": 0.0141,
+   "reward": 0.0944
   },
   {
    "day": 7.0,
@@ -485,9 +491,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.1414,
-   "resistant_fraction": 0.0123
+   "resistant_fraction": 0.0123,
+   "reward": 0.1414
   },
   {
    "day": 8.0,
@@ -546,9 +553,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.16,
-   "resistant_fraction": 0.011
+   "resistant_fraction": 0.011,
+   "reward": 0.16
   },
   {
    "day": 9.0,
@@ -607,9 +615,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.1837,
-   "resistant_fraction": 0.0122
+   "resistant_fraction": 0.0122,
+   "reward": 0.1837
   },
   {
    "day": 10.0,
@@ -668,9 +677,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.2049,
-   "resistant_fraction": 0.0117
+   "resistant_fraction": 0.0117,
+   "reward": 0.2049
   },
   {
    "day": 11.0,
@@ -729,9 +739,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.2303,
-   "resistant_fraction": 0.013
+   "resistant_fraction": 0.013,
+   "reward": 0.2303
   },
   {
    "day": 12.0,
@@ -790,9 +801,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.2453,
-   "resistant_fraction": 0.0123
+   "resistant_fraction": 0.0123,
+   "reward": 0.2453
   },
   {
    "day": 13.0,
@@ -851,9 +863,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.2796,
-   "resistant_fraction": 0.0118
+   "resistant_fraction": 0.0118,
+   "reward": 0.2796
   },
   {
    "day": 14.0,
@@ -912,9 +925,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.2967,
-   "resistant_fraction": 0.0122
+   "resistant_fraction": 0.0122,
+   "reward": 0.2967
   },
   {
    "day": 15.0,
@@ -973,9 +987,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.3027,
-   "resistant_fraction": 0.0144
+   "resistant_fraction": 0.0144,
+   "reward": 0.3027
   },
   {
    "day": 16.0,
@@ -1034,9 +1049,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.3199,
-   "resistant_fraction": 0.0147
+   "resistant_fraction": 0.0147,
+   "reward": 0.3199
   },
   {
    "day": 17.0,
@@ -1095,9 +1111,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.3386,
-   "resistant_fraction": 0.0151
+   "resistant_fraction": 0.0151,
+   "reward": 0.3386
   },
   {
    "day": 18.0,
@@ -1156,9 +1173,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.3786,
-   "resistant_fraction": 0.0147
+   "resistant_fraction": 0.0147,
+   "reward": 0.3786
   },
   {
    "day": 19.0,
@@ -1217,9 +1235,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.3982,
-   "resistant_fraction": 0.0141
+   "resistant_fraction": 0.0141,
+   "reward": 0.3982
   },
   {
    "day": 20.0,
@@ -1278,9 +1297,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.4355,
-   "resistant_fraction": 0.0162
+   "resistant_fraction": 0.0162,
+   "reward": 0.4355
   },
   {
    "day": 21.0,
@@ -1339,9 +1359,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.4087,
-   "resistant_fraction": 0.0184
+   "resistant_fraction": 0.0184,
+   "reward": 0.4087
   },
   {
    "day": 22.0,
@@ -1400,9 +1421,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.4508,
-   "resistant_fraction": 0.0167
+   "resistant_fraction": 0.0167,
+   "reward": 0.4508
   },
   {
    "day": 23.0,
@@ -1461,9 +1483,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.4576,
-   "resistant_fraction": 0.0118
+   "resistant_fraction": 0.0118,
+   "reward": 0.4576
   },
   {
    "day": 24.0,
@@ -1522,9 +1545,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.4854,
-   "resistant_fraction": 0.0109
+   "resistant_fraction": 0.0109,
+   "reward": 0.4854
   },
   {
    "day": 25.0,
@@ -1583,9 +1607,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.4939,
-   "resistant_fraction": 0.0126
+   "resistant_fraction": 0.0126,
+   "reward": 0.4939
   },
   {
    "day": 26.0,
@@ -1644,9 +1669,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.5221,
-   "resistant_fraction": 0.0146
+   "resistant_fraction": 0.0146,
+   "reward": 0.5221
   },
   {
    "day": 27.0,
@@ -1705,9 +1731,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.5401,
-   "resistant_fraction": 0.0153
+   "resistant_fraction": 0.0153,
+   "reward": 0.5401
   },
   {
    "day": 28.0,
@@ -1766,9 +1793,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.5513,
-   "resistant_fraction": 0.0142
+   "resistant_fraction": 0.0142,
+   "reward": 0.5513
   },
   {
    "day": 29.0,
@@ -1827,9 +1855,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.5705,
-   "resistant_fraction": 0.0098
+   "resistant_fraction": 0.0098,
+   "reward": 0.5705
   },
   {
    "day": 30.0,
@@ -1888,9 +1917,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.6055,
-   "resistant_fraction": 0.0087
+   "resistant_fraction": 0.0087,
+   "reward": 0.6055
   },
   {
    "day": 31.0,
@@ -1949,9 +1979,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.6094,
-   "resistant_fraction": 0.0071
+   "resistant_fraction": 0.0071,
+   "reward": 0.6094
   },
   {
    "day": 32.0,
@@ -2010,9 +2041,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.619,
-   "resistant_fraction": 0.0073
+   "resistant_fraction": 0.0073,
+   "reward": 0.619
   },
   {
    "day": 33.0,
@@ -2071,9 +2103,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.6284,
-   "resistant_fraction": 0.0074
+   "resistant_fraction": 0.0074,
+   "reward": 0.6284
   },
   {
    "day": 34.0,
@@ -2132,9 +2165,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.6402,
-   "resistant_fraction": 0.0096
+   "resistant_fraction": 0.0096,
+   "reward": 0.6402
   },
   {
    "day": 35.0,
@@ -2193,9 +2227,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.6519,
-   "resistant_fraction": 0.0099
+   "resistant_fraction": 0.0099,
+   "reward": 0.6519
   },
   {
    "day": 36.0,
@@ -2254,9 +2289,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.6645,
-   "resistant_fraction": 0.0102
+   "resistant_fraction": 0.0102,
+   "reward": 0.6645
   },
   {
    "day": 37.0,
@@ -2315,9 +2351,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.6722,
-   "resistant_fraction": 0.0105
+   "resistant_fraction": 0.0105,
+   "reward": 0.6722
   },
   {
    "day": 38.0,
@@ -2376,9 +2413,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.6776,
-   "resistant_fraction": 0.0128
+   "resistant_fraction": 0.0128,
+   "reward": 0.6776
   },
   {
    "day": 39.0,
@@ -2437,9 +2475,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.6723,
-   "resistant_fraction": 0.0128
+   "resistant_fraction": 0.0128,
+   "reward": 0.6723
   },
   {
    "day": 40.0,
@@ -2498,9 +2537,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.7079,
-   "resistant_fraction": 0.0161
+   "resistant_fraction": 0.0161,
+   "reward": 0.7079
   },
   {
    "day": 41.0,
@@ -2559,9 +2599,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.7039,
-   "resistant_fraction": 0.014
+   "resistant_fraction": 0.014,
+   "reward": 0.7039
   },
   {
    "day": 42.0,
@@ -2620,9 +2661,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.7196,
-   "resistant_fraction": 0.0146
+   "resistant_fraction": 0.0146,
+   "reward": 0.7196
   },
   {
    "day": 43.0,
@@ -2681,9 +2723,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.726,
-   "resistant_fraction": 0.0176
+   "resistant_fraction": 0.0176,
+   "reward": 0.726
   },
   {
    "day": 44.0,
@@ -2742,9 +2785,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.7373,
-   "resistant_fraction": 0.0209
+   "resistant_fraction": 0.0209,
+   "reward": 0.7373
   },
   {
    "day": 45.0,
@@ -2803,9 +2847,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.7571,
-   "resistant_fraction": 0.0194
+   "resistant_fraction": 0.0194,
+   "reward": 0.7571
   },
   {
    "day": 46.0,
@@ -2864,9 +2909,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.7578,
-   "resistant_fraction": 0.0199
+   "resistant_fraction": 0.0199,
+   "reward": 0.7578
   },
   {
    "day": 47.0,
@@ -2925,9 +2971,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.7592,
-   "resistant_fraction": 0.0292
+   "resistant_fraction": 0.0292,
+   "reward": 0.7592
   },
   {
    "day": 48.0,
@@ -2986,9 +3033,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.7589,
-   "resistant_fraction": 0.0324
+   "resistant_fraction": 0.0324,
+   "reward": 0.7589
   },
   {
    "day": 49.0,
@@ -3047,9 +3095,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.7676,
-   "resistant_fraction": 0.0298
+   "resistant_fraction": 0.0298,
+   "reward": 0.7676
   },
   {
    "day": 50.0,
@@ -3108,9 +3157,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.7831,
-   "resistant_fraction": 0.0312
+   "resistant_fraction": 0.0312,
+   "reward": 0.7831
   },
   {
    "day": 51.0,
@@ -3169,9 +3219,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.8003,
-   "resistant_fraction": 0.0266
+   "resistant_fraction": 0.0266,
+   "reward": 0.8003
   },
   {
    "day": 52.0,
@@ -3230,9 +3281,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.7992,
-   "resistant_fraction": 0.0377
+   "resistant_fraction": 0.0377,
+   "reward": 0.7992
   },
   {
    "day": 53.0,
@@ -3291,9 +3343,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.8116,
-   "resistant_fraction": 0.0316
+   "resistant_fraction": 0.0316,
+   "reward": 0.8116
   },
   {
    "day": 54.0,
@@ -3352,9 +3405,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.812,
-   "resistant_fraction": 0.032
+   "resistant_fraction": 0.032,
+   "reward": 0.812
   },
   {
    "day": 55.0,
@@ -3413,9 +3467,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.8151,
-   "resistant_fraction": 0.0364
+   "resistant_fraction": 0.0364,
+   "reward": 0.8151
   },
   {
    "day": 56.0,
@@ -3474,9 +3529,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.8216,
-   "resistant_fraction": 0.0415
+   "resistant_fraction": 0.0415,
+   "reward": 0.8216
   },
   {
    "day": 57.0,
@@ -3535,9 +3591,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.8254,
-   "resistant_fraction": 0.0428
+   "resistant_fraction": 0.0428,
+   "reward": 0.8254
   },
   {
    "day": 58.0,
@@ -3596,9 +3653,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.8377,
-   "resistant_fraction": 0.0413
+   "resistant_fraction": 0.0413,
+   "reward": 0.8377
   },
   {
    "day": 59.0,
@@ -3657,9 +3715,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.8282,
-   "resistant_fraction": 0.0453
+   "resistant_fraction": 0.0453,
+   "reward": 0.8282
   },
   {
    "day": 60.0,
@@ -3718,9 +3777,10 @@
      }
     }
    },
+   "label": "held palbociclib 50% + elacestrant 100%",
    "action": "palbociclib+elacestrant",
-   "reward": 0.836,
-   "resistant_fraction": 0.056
+   "resistant_fraction": 0.056,
+   "reward": 0.836
   }
  ]
 }

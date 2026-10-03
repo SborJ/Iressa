@@ -98,8 +98,41 @@ button, input { font: inherit; color: inherit; }
 .brand .mark { font-size: 15px; font-weight: 600; letter-spacing: -0.02em; }
 .brand .sub { font-size: 11.5px; color: var(--fg-3); }
 .topdiv { width: 1px; height: 24px; background: var(--line); flex: none; }
-#cancerswitch:empty { display: none; }
-#cancerswitch button { font-size: 12px; }
+#cancerswitch:empty, #modeswitch:empty { display: none; }
+#cancerswitch button, #modeswitch button { font-size: 12px; }
+
+/* ── live session: treatment console (panel) and pattern strip (stage) ──── */
+.console { padding: var(--s3) var(--s5) var(--s4); border-bottom: 1px solid var(--line-soft); }
+.console-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.console-live { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--respond); border: 1px solid var(--respond); border-radius: 3px; padding: 0 5px; }
+.console-computing { font-size: 11px; color: var(--fg-3); }
+.console-sliders { display: flex; flex-direction: column; gap: 6px; }
+.console-row { display: grid; grid-template-columns: minmax(0, 1fr) 110px 40px; align-items: center; gap: 8px; font-size: 12px; }
+.console-row .console-name { color: var(--fg-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.console-row input[type="range"] { width: 100%; margin: 0; accent-color: var(--accent); }
+.console-row input:disabled { opacity: 0.45; }
+.console-val { text-align: right; font-size: 11.5px; }
+.console-sub { margin: 10px 0 4px; font-size: 11px; }
+.console-presets { display: flex; flex-wrap: wrap; gap: 6px; }
+.console-presets .btn { font-size: 11px; padding: 4px 8px; }
+.console-auto { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 12.5px; cursor: pointer; }
+.console-auto input { accent-color: var(--accent); }
+.console-auto-on .console-presets .btn { opacity: 0.45; pointer-events: none; }
+.console-status { margin-top: 8px; font-size: 11.5px; }
+.console-today { margin-top: 10px; padding: 8px 10px; background: var(--raised); border-radius: var(--r-sm); }
+.console-today:empty { display: none; }
+.console-today .label { font-size: 11px; color: var(--fg-3); }
+.console-today .act { font-size: 12.5px; font-weight: 500; margin: 2px 0; }
+.pattern { left: var(--s4); right: var(--s4); bottom: calc(var(--s4) + 72px + 8px); padding: 6px 10px 4px; background: rgba(19,22,28,0.94); border-radius: var(--r-md); }
+.pattern-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+.pattern-head .label { font-size: 11px; font-weight: 500; color: var(--fg-3); letter-spacing: 0.02em; }
+.pattern-note { font-size: 10.5px; }
+.pattern svg { display: block; width: 100%; }
+.pattern-legend { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 4px; font-size: 10.5px; color: var(--fg-2); }
+.pattern-key { display: inline-flex; align-items: center; gap: 5px; }
+.pattern-tip { position: absolute; bottom: calc(100% + 6px); max-width: 260px; padding: 6px 9px; background: var(--raised); border: 1px solid var(--line); border-radius: var(--r-sm); font-size: 11.5px; color: var(--fg); pointer-events: none; }
+.pattern-tip[hidden] { display: none; }
+@media (max-width: 700px) { .pattern { display: none; } }
 
 /* The headline: what is happening, in words. */
 #headline { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; }
@@ -524,6 +557,7 @@ body:not([data-auth="in"]) #app { display: none; }
       <span class="sub">tumour evolution under treatment</span>
     </div>
     <div id="cancerswitch" class="seg" role="group" aria-label="Cancer model"></div>
+    <div id="modeswitch" class="seg" role="group" aria-label="Recording or live engine"></div>
     <div class="topdiv"></div>
     <div id="headline"><span class="dot"></span><span class="say"></span><span class="because"></span></div>
     <div id="viewswitch" class="seg"></div>

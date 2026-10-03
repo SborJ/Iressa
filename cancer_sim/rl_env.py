@@ -224,8 +224,16 @@ class CancerTreatmentEnv(_gym_base()):
             self.reset()
         if not 0 <= int(action) < len(self.action_table):
             raise ValueError(f"action must be in [0, {len(self.action_table) - 1}]")
+        return self.step_action(self.action_table[int(action)])
 
-        treatment = self.action_table[int(action)]
+    def step_action(self, treatment: TreatmentAction) -> tuple[np.ndarray, float, bool, bool, dict[str, Any]]:
+        """Advance one decision interval under any treatment, not only one from the
+        action table: the live simulator applies whatever exposures the viewer set."""
+        if self._runner is None:
+            self.reset()
+        for drug in treatment.exposures:
+            if not self.model.has_drug(drug):
+                raise ValueError(f"{self.model.id} has no drug {drug!r}")
         if treatment.label != self._last_drug:
             self._days_since_switch = 0.0
         else:
