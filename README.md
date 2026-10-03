@@ -87,7 +87,17 @@ python3 -m pytest -q          # engine, calibration and export tests
 
 See `docs/validation/VIEWER_INTEGRATION.md` (how the two halves connect),
 `docs/validation/VALIDATION_REPORT.md` (what was audited and fixed in the engine) and
-`docs/python-engine.md` (the engine's command reference).
+`docs/python-engine.md` (the engine's command reference). The treatment
+optimization scaffold is documented in `docs/rl-treatment-design.md`; it includes
+a Gymnasium-style environment and PPO entrypoint, but no trained policy or
+clinical recommendation system.
+
+```
+python3 scripts/train_ppo.py --smoke
+pip install -r requirements-rl.txt
+python3 scripts/train_ppo.py --days 120 --dt-days 1 --total-timesteps 10000
+python3 scripts/evaluate_policy.py --days 120 --seeds 1001,1002,1003
+```
 
 ## What you see
 
@@ -208,6 +218,22 @@ something, and should be replaced rather than cited.
 What is meant to be taken seriously is that none of these live in code: the
 hypoxic core, the treatment response, the relapse and the radiation effect are
 all consequences of this file, and replacing a value changes them.
+
+## Oxygen Controls
+
+The viewer uses plain-language oxygen controls:
+
+| Control | Meaning |
+|---|---|
+| Blood delivery | how strongly vessels add oxygen to nearby tissue |
+| Cell consumption | how quickly living cells remove oxygen |
+| More flow | more vessel supply and less hypoxia pressure |
+| Low flow | reduced supply and stronger oxygen stress |
+| Starved | severe oxygen stress; sustained low oxygen can cause necrosis |
+
+In the model, oxygen is not a cure. It is a resource field. High oxygen lets
+cells keep cycling; intermediate oxygen slows or arrests them; very low oxygen
+for long enough causes hypoxic necrosis.
 
 ## Performance
 

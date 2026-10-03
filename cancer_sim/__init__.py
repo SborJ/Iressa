@@ -31,29 +31,49 @@ from cancer_sim.mutation_flow import (
     MutationNode,
     MutationTransition
 )
+from cancer_sim.controllability import (
+    CloneControllability,
+    TumorControllability,
+    evaluate_tumor_controllability,
+    treatment_kill_rate
+)
+from cancer_sim.rl_env import (
+    ACTION_TABLE,
+    OBSERVATION_NAMES,
+    CancerTreatmentEnv,
+    RLConfig
+)
 
 __all__ = [
     "AutomataConfig",
     "AutomataStepStats",
     "AdaptiveAT50Treatment",
+    "ACTION_TABLE",
     "Cell",
     "CellSite",
     "CellularAutomataPhysics",
+    "CancerTreatmentEnv",
     "ClonePhenotype",
+    "CloneControllability",
     "ContinuousTreatment",
     "MutationFlowGenerator",
     "MutationNode",
     "MutationTransition",
+    "OBSERVATION_NAMES",
     "NoTreatment",
     "ResistanceTransition",
+    "RLConfig",
     "ScalarField",
     "SimulationRecord",
     "SimulationRunner",
     "SwitchTreatment",
     "TreatmentAction",
     "TreatmentSchedule",
+    "TumorControllability",
     "Vessel",
     "WorldConfig",
     "WorldPhysics",
-    "automata_config_from_physics_calibration"
+    "automata_config_from_physics_calibration",
+    "evaluate_tumor_controllability",
+    "treatment_kill_rate"
 ]
