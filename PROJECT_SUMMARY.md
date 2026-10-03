@@ -586,15 +586,15 @@ Current status:
 Python engine/export tests and TypeScript viewer tests pass on main.
 ```
 
-## Reinforcement Learning Plan
+## Reinforcement Learning And Controllability
 
-The planned RL layer is documented in:
+The RL layer is documented in:
 
 ```text
 docs/rl-treatment-design.md
 ```
 
-The first learning baseline should be PPO over the existing simulator, with:
+The current learning baseline is PPO over the existing simulator, with:
 
 - fixed schedule policies as baselines,
 - summary observations first rather than full 3D fields,
@@ -602,6 +602,14 @@ The first learning baseline should be PPO over the existing simulator, with:
 - reward components reported separately,
 - 20-100 held-out seeds for evaluation,
 - no clinical recommendation language.
+
+The simulator now also exposes experimental evolutionary-controllability
+features for RL:
+
+- clone-level treatment controllability margins,
+- graph distance to modeled treatment-exhausted clone states,
+- an Evolutionary Controllability Index proxy,
+- reward terms for controlled days, ECI, and treatment-exhausted fraction.
 
 Oxygen should be part of the RL observation through mean oxygen, low-oxygen
 fraction, necrotic fraction, and recent hypoxic deaths.
@@ -620,7 +628,8 @@ fraction, necrotic fraction, and recent hypoxic deaths.
 
 1. Run full repeated stochastic comparisons with 20-100 seeds over 120-240+ day horizons.
 2. Run the sensitivity panel at 120-240+ days and identify which assumptions dominate outcomes.
-3. Build a Gymnasium-style RL environment and PPO baseline around the same action/schedule interface.
+3. Run PPO/fixed-policy evaluations with the new controllability reward over held-out seeds.
 4. Add PK-style drug exposure curves instead of constant vessel concentration.
 5. Improve rare-state calibration for C797S, MET_AMP, and capmatinib response.
-6. Add tests/plots that compare explicit-substep drug transport against an implicit reference solve.
+6. Add simultaneous combination-dose actions after the simulator supports multiple active drug fields.
+7. Replace the current ECI proxy with rollout-based viability estimation.

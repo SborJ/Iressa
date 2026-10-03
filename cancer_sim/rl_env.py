@@ -12,6 +12,7 @@ from typing import Any
 
 import numpy as np
 
+from cancer_sim.controllability import TumorControllability, evaluate_tumor_controllability
 from cancer_sim.experiments import ExperimentConfig, build_runner
 from cancer_sim.simulation import DRUGS, SimulationRecord, TreatmentAction, TreatmentSchedule
 
@@ -46,6 +47,16 @@ OBSERVATION_NAMES: tuple[str, ...] = (
     "mean_drug",
     "current_drug_id",
     "current_dose",
+    "EGFR_control_margin",
+    "T790M_control_margin",
+    "C797S_control_margin",
+    "MET_AMP_control_margin",
+    "EGFR_escape_distance",
+    "T790M_escape_distance",
+    "C797S_escape_distance",
+    "MET_AMP_escape_distance",
+    "evolutionary_controllability_index",
+    "treatment_exhausted_fraction",
     "cumulative_gefitinib",
     "cumulative_osimertinib",
     "cumulative_capmatinib",
@@ -85,12 +96,21 @@ class RLConfig:
     switch_weight: float = 0.02
     necrosis_weight: float = 0.1
     control_weight: float = 0.5
+    controlled_day_reward: float = 1.0
+    eci_weight: float = 0.5
+    exhaustion_weight: float = 0.5
+    eci_min: float = 0.05
+    controllability_horizon_days: float = 30.0
 
     def __post_init__(self) -> None:
         if self.horizon_days <= 0:
             raise ValueError("horizon_days must be positive")
         if self.decision_interval_days <= 0:
             raise ValueError("decision_interval_days must be positive")
+        if not 0 <= self.eci_min <= 1:
+            raise ValueError("eci_min must be in [0, 1]")
+        if self.controllability_horizon_days <= 0:
+            raise ValueError("controllability_horizon_days must be positive")
 
 
 class FixedActionSchedule(TreatmentSchedule):
@@ -188,7 +208,10 @@ class CancerTreatmentEnv(_gym_base()):
         self._cumulative_dose[treatment.drug] = self._cumulative_dose.get(treatment.drug, 0.0) + treatment.dose
 
         reward, components = self._reward(self._last_record, treatment)
-        terminated = self._last_record.burden <= 0
+        control = self._controllability()
+        progressed = self._last_record.burden >= self.config.progression_multiplier * self._initial_burden
+        treatment_exhausted = control.eci < self.config.eci_min
+        terminated = self._last_record.burden <= 0 or progressed or treatment_exhausted
         truncated = self._step_index >= self.max_steps
         info = self._info()
         info["reward_components"] = components
@@ -227,11 +250,13 @@ class CancerTreatmentEnv(_gym_base()):
             mean_oxygen = record.mean_oxygen
             mean_drug = record.mean_drug
 
+        control = self._controllability()
         prev_burden = self._previous_record.burden if self._previous_record else self._initial_burden
         burden_denom = max(self._initial_burden, 1)
         living_denom = max(burden, 1)
         total_cells = max(burden + counts["necrotic"], 1)
         current_drug_id = DRUGS.index(self._last_drug) / (len(DRUGS) - 1)
+        escape_scale = 30.0
         return np.array(
             [
                 min(1.0, self._step_index / self.max_steps),
@@ -246,6 +271,16 @@ class CancerTreatmentEnv(_gym_base()):
                 mean_drug,
                 current_drug_id,
                 ACTION_TABLE[0].dose if self._last_record is None else self._last_record.dose,
+                control.margin("EGFR"),
+                control.margin("T790M"),
+                control.margin("C797S"),
+                control.margin("MET_AMP"),
+                _scaled_distance(control.escape_distance("EGFR"), escape_scale),
+                _scaled_distance(control.escape_distance("T790M"), escape_scale),
+                _scaled_distance(control.escape_distance("C797S"), escape_scale),
+                _scaled_distance(control.escape_distance("MET_AMP"), escape_scale),
+                control.eci,
+                control.exhausted_fraction,
                 self._cumulative_dose["gefitinib"] / self.config.max_cumulative_dose,
                 self._cumulative_dose["osimertinib"] / self.config.max_cumulative_dose,
                 self._cumulative_dose["capmatinib"] / self.config.max_cumulative_dose,
@@ -265,8 +300,11 @@ class CancerTreatmentEnv(_gym_base()):
         resistance = _resistant_fraction(record)
         necrosis = record.necrotic / max(record.burden + record.necrotic, 1)
         control = max(0.0, (prev - record.burden) / max(self._initial_burden, 1))
+        controllability = self._controllability()
         switched = 1.0 if self._previous_record is not None and action.drug != self._previous_record.drug else 0.0
+        controlled_day = 1.0 if controllability.eci >= self.config.eci_min else 0.0
         components = {
+            "controlled_day": self.config.controlled_day_reward * controlled_day,
             "burden": -self.config.burden_weight * burden,
             "growth": -self.config.growth_weight * growth,
             "resistance": -self.config.resistance_weight * resistance,
@@ -274,12 +312,15 @@ class CancerTreatmentEnv(_gym_base()):
             "switch": -self.config.switch_weight * switched,
             "necrosis": -self.config.necrosis_weight * necrosis,
             "control": self.config.control_weight * control,
+            "eci": self.config.eci_weight * controllability.eci,
+            "treatment_exhaustion": -self.config.exhaustion_weight * controllability.exhausted_fraction,
         }
         return float(sum(components.values())), components
 
     def _info(self) -> dict[str, Any]:
         record = self._last_record
         burden = self._initial_burden if record is None else record.burden
+        control = self._controllability()
         return {
             "step": self._step_index,
             "time_days": self._step_index * self.config.decision_interval_days,
@@ -287,16 +328,52 @@ class CancerTreatmentEnv(_gym_base()):
             "initial_burden": self._initial_burden,
             "minimum_burden": self._minimum_burden,
             "resistant_fraction": 0.0 if record is None else _resistant_fraction(record),
+            "eci": control.eci,
+            "treatment_exhausted_fraction": control.exhausted_fraction,
+            "control_margins": {
+                clone_id: item.margin for clone_id, item in control.clones.items()
+            },
+            "escape_distances": {
+                clone_id: item.escape_distance for clone_id, item in control.clones.items()
+            },
+            "treatment_exhausted_clones": [
+                clone_id for clone_id, item in control.clones.items() if item.treatment_exhausted
+            ],
             "cumulative_dose": dict(self._cumulative_dose),
             "observation_names": OBSERVATION_NAMES,
             "action_table": ACTION_TABLE,
         }
+
+    def _controllability(self) -> TumorControllability:
+        if self._runner is None:
+            raise RuntimeError("environment must be reset before controllability is available")
+        config = self._runner.automata.config
+        return evaluate_tumor_controllability(
+            record=self._last_record,
+            initial_burden=self._initial_burden,
+            clone_responses=self._runner.automata.clone_responses,
+            transitions=self._runner.automata.transitions,
+            allowed_actions=ACTION_TABLE,
+            progression_multiplier=self.config.progression_multiplier,
+            horizon_days=self.config.controllability_horizon_days,
+            vessel_concentration_nm={
+                "gefitinib": config.gefitinib_vessel_concentration_nm,
+                "osimertinib": config.osimertinib_vessel_concentration_nm,
+                "capmatinib": config.capmatinib_vessel_concentration_nm,
+            },
+        )
 
 
 def _resistant_fraction(record: SimulationRecord) -> float:
     if record.burden <= 0:
         return 0.0
     return (record.t790m + record.c797s + record.met_amp) / record.burden
+
+
+def _scaled_distance(value: float, scale: float) -> float:
+    if not np.isfinite(value):
+        return 1.0
+    return float(min(1.0, max(0.0, value / scale)))
 
 
 @dataclass(frozen=True)

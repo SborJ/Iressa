@@ -1,9 +1,11 @@
 # Reinforcement Learning Treatment Design
 
-Status: first implementation scaffold. The simulator now has a Gymnasium-style
-environment in `cancer_sim/rl_env.py` and a PPO entrypoint in
-`scripts/train_ppo.py`. There is not yet a trained policy checkpoint, RL-driven
-viewer source, or validated policy result.
+Status: first implementation scaffold with evolutionary-controllability
+features. The simulator now has a Gymnasium-style environment in
+`cancer_sim/rl_env.py`, a PPO entrypoint in `scripts/train_ppo.py`, policy
+evaluation in `scripts/evaluate_policy.py`, and clone/tumor controllability
+metrics in `cancer_sim/controllability.py`. There is not yet an RL-driven viewer
+source or validated policy result.
 
 This project is not a clinical treatment optimizer. The RL layer is an experimental
 research scaffold for comparing simulated treatment policies inside the calibrated
@@ -92,6 +94,16 @@ cumulative_gefitinib
 cumulative_osimertinib
 cumulative_capmatinib
 days_since_last_switch
+EGFR_control_margin
+T790M_control_margin
+C797S_control_margin
+MET_AMP_control_margin
+EGFR_escape_distance
+T790M_escape_distance
+C797S_escape_distance
+MET_AMP_escape_distance
+evolutionary_controllability_index
+treatment_exhausted_fraction
 ```
 
 Later, add image/field observations:
@@ -138,13 +150,57 @@ capmatinib_dose in [0, 1]
 
 The simulator should enforce constraints even if the policy proposes nonsense.
 
+## Evolutionary Controllability Metrics
+
+The first controllability implementation is deterministic and lightweight. It
+does not claim clinical curability.
+
+For clone `i`, the environment estimates a net growth rate under each available
+treatment action:
+
+```text
+lambda_i = effective_growth_i - treatment_kill_i
+```
+
+`effective_growth_i` uses calibrated clone growth, fitness cost, and the current
+proliferative fraction. `treatment_kill_i` uses the clone's IC50, Hill
+coefficient, max drug death rate, dose, and vessel concentration.
+
+The clone-level control margin is:
+
+```text
+M_i = - min_a(lambda_i)
+```
+
+Interpretation:
+
+```text
+M_i > 0  at least one modeled treatment can push the clone into negative growth
+M_i = 0  near the boundary of modeled control
+M_i < 0  treatment-exhausted under the simulator's represented drugs/actions
+```
+
+The module also computes a resistance-graph distance to treatment exhaustion.
+Edges use:
+
+```text
+weight_ij = -log(mu_ij * expected_divisions_i * P_establish + epsilon)
+```
+
+The tumor-level `evolutionary_controllability_index` is currently a bounded
+proxy that combines burden safety, treatment-exhausted fraction, clone margins,
+and graph distance. A future version can replace this proxy with Monte Carlo
+rollouts over policies and domain-randomized biology.
+
 ## Reward
 
 Use a reward that explicitly separates tumor control from treatment cost and
-resistance.
+resistance. The current environment adds controllability terms to the original
+burden-based scaffold.
 
 ```text
 reward_t =
+  + controlled_day_reward if ECI >= ECI_min
   - w_burden      * normalized_burden
   - w_growth      * positive_burden_slope
   - w_resistance  * resistant_fraction
@@ -152,6 +208,8 @@ reward_t =
   - w_switch      * drug_switch_event
   - w_necrosis    * hypoxic_necrotic_fraction
   + w_control     * burden_reduction
+  + w_eci         * ECI
+  - w_exhaustion  * treatment_exhausted_fraction
 ```
 
 Suggested first weights:
@@ -164,10 +222,20 @@ w_dose       = 0.05
 w_switch     = 0.02
 w_necrosis   = 0.1
 w_control    = 0.5
+w_eci        = 0.5
+w_exhaustion = 0.5
 ```
 
 Track every reward component separately in `info`. A single scalar reward is not
 enough to understand why the policy learned a behavior.
+
+Episodes terminate when:
+
+```text
+burden == 0
+burden >= progression_multiplier * initial_burden
+ECI < ECI_min
+```
 
 ## Constraints
 
@@ -263,13 +331,15 @@ The oxygen controls in the viewer map to:
 
 ## Implementation Milestones
 
-1. Add a `cancer_sim.rl_env` Gymnasium environment around the existing engine.
-2. Add deterministic fixed-policy wrappers so schedules and PPO use the same action interface.
-3. Add `scripts/train_ppo.py`.
-4. Add `scripts/evaluate_policy.py`.
-5. Save policy checkpoints and evaluation CSVs under `outputs/rl/`.
-6. Add viewer export for PPO policy runs, so learned policies can be inspected visually.
-7. Add tests for action validation, observation shape, reward components, deterministic reset, and fixed-policy parity.
+1. Add a `cancer_sim.rl_env` Gymnasium environment around the existing engine. Done.
+2. Add deterministic fixed-policy wrappers so schedules and PPO use the same action interface. Done.
+3. Add `scripts/train_ppo.py`. Done.
+4. Add `scripts/evaluate_policy.py`. Done.
+5. Add controllability metrics to observations and reward. Done.
+6. Save policy checkpoints and evaluation CSVs under `outputs/rl/`. Done.
+7. Add viewer export for PPO policy runs, so learned policies can be inspected visually.
+8. Add combination-dose actions once the simulator supports simultaneous drug fields.
+9. Replace the ECI proxy with rollout-based viability estimation.
 
 ## First PPO Experiment
 

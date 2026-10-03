@@ -323,6 +323,20 @@ export class Controls {
           el('span', { class: 'status-dot' }),
           el('span', { text: 'Available for offline experiments' }),
         ]),
+        el('div', { class: 'control-metrics' }, [
+          el('div', {}, [
+            el('strong', { text: 'M_i' }),
+            document.createTextNode(' clone control margins'),
+          ]),
+          el('div', {}, [
+            el('strong', { text: 'D_i' }),
+            document.createTextNode(' distance to modeled treatment exhaustion'),
+          ]),
+          el('div', {}, [
+            el('strong', { text: 'ECI' }),
+            document.createTextNode(' reward and episode-stop signal'),
+          ]),
+        ]),
         el('div', { class: 'rl-command' }, [
           el('span', { text: 'train' }),
           el('code', { text: PPO_TRAIN_COMMAND }),
@@ -334,7 +348,7 @@ export class Controls {
         el('div', { class: 'btnrow' }, [trainBtn, evalBtn]),
         el('p', {
           class: 'note',
-          text: 'The browser viewer runs fixed/adaptive schedules; trained PPO policy playback is the next bridge.',
+          text: 'The browser viewer runs fixed/adaptive schedules; PPO uses these metrics during Python training and evaluation.',
         }),
       ]),
     ]);

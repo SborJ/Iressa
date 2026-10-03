@@ -23,6 +23,7 @@ class CancerTreatmentEnvTest(unittest.TestCase):
             ),
             horizon_days=4,
             decision_interval_days=1.0,
+            eci_min=0.0,
         )
         return CancerTreatmentEnv(config)
 
@@ -48,6 +49,21 @@ class CancerTreatmentEnvTest(unittest.TestCase):
         self.assertEqual(info["step"], 1)
         self.assertEqual(env.action_meaning(2), ACTION_TABLE[2])
         self.assertIn("burden", info["reward_components"])
+        self.assertIn("controlled_day", info["reward_components"])
+        self.assertIn("eci", info)
+        self.assertIn("control_margins", info)
+        self.assertIn("escape_distances", info)
+
+    def test_observation_includes_controllability_features(self) -> None:
+        env = self.make_env()
+        obs, info = env.reset(seed=11)
+
+        names = list(info["observation_names"])
+        self.assertEqual(obs.shape, (len(OBSERVATION_NAMES),))
+        self.assertIn("EGFR_control_margin", names)
+        self.assertIn("EGFR_escape_distance", names)
+        self.assertIn("evolutionary_controllability_index", names)
+        self.assertIn("treatment_exhausted_fraction", names)
 
     def test_episode_truncates_at_horizon(self) -> None:
         env = self.make_env()
