@@ -1,6 +1,8 @@
 import type { ColorBy, CutMode } from '../render/viewer.js';
 import type { Visuals } from '../render/visuals.js';
+import type { ResolvedRules } from '../sim/rules.js';
 import { el } from './dom.js';
+import { Slider } from './slider.js';
 
 export interface ControlState {
   playing: boolean;
@@ -36,11 +38,12 @@ export class Controls {
   private viewButtons = new Map<string, HTMLButtonElement>();
   private colorButtons = new Map<ColorBy, HTMLButtonElement>();
   private cutButtons = new Map<CutMode, HTMLButtonElement>();
-  private speedLabel = el('span', { class: 'v' });
+  private cutSlider!: Slider;
 
   constructor(
     private root: HTMLElement,
     private visuals: Visuals,
+    rules: ResolvedRules,
     private handlers: ControlHandlers,
   ) {
     this.state = {
@@ -78,14 +81,21 @@ export class Controls {
       this.cutButtons.set(mode, b);
       cutRow.append(b);
     }
-    const cutSlider = el('input', {
-      type: 'range', min: '-0.6', max: '1', step: '0.02', value: '0',
-      'aria-label': 'How deep the cut goes',
-      style: 'width:100%;margin-top:10px;accent-color:var(--accent)',
-    }) as HTMLInputElement;
-    cutSlider.addEventListener('input', () => {
-      this.state.cutFraction = Number(cutSlider.value);
-      this.handlers.onChange(this.state, 'cutFraction');
+    this.cutSlider = new Slider({
+      min: -0.6, max: 1, step: 0.02, value: 0,
+      label: 'Where the cut falls',
+      ticks: [-0.6, -0.3, 0, 0.5, 1],
+      /* Stated in micrometres from the centre of the specimen, because that is
+         a distance a person can picture - unlike a fraction of a half-span. */
+      format: (v) => {
+        const microns = Math.round((v * Math.max(rules.raw.grid.nx, rules.raw.grid.nz)) / 2 * rules.raw.grid.voxelMicrons);
+        if (Math.abs(microns) < rules.raw.grid.voxelMicrons) return 'through the centre';
+        return microns > 0 ? `${microns} µm out` : `${Math.abs(microns)} µm in`;
+      },
+      onInput: (v) => {
+        this.state.cutFraction = v;
+        this.handlers.onChange(this.state, 'cutFraction');
+      },
     });
 
     /* ---- colouring ---- */
@@ -117,18 +127,17 @@ export class Controls {
       this.handlers.onChange(this.state, 'presentation');
     });
 
-    const speed = el('input', {
-      type: 'range', min: '0', max: String(SPEEDS.length - 1), step: '1',
-      value: String(SPEEDS.indexOf(this.state.ticksPerSecond)),
-      'aria-label': 'How fast time runs',
-      style: 'width:100%;accent-color:var(--accent)',
-    }) as HTMLInputElement;
-    speed.addEventListener('input', () => {
-      this.state.ticksPerSecond = SPEEDS[Number(speed.value)];
-      this.speedLabel.textContent = `${this.state.ticksPerSecond}× `;
-      this.handlers.onChange(this.state, 'ticksPerSecond');
+    const speed = new Slider({
+      min: 0, max: SPEEDS.length - 1, step: 1,
+      value: SPEEDS.indexOf(this.state.ticksPerSecond),
+      label: 'Speed',
+      ticks: SPEEDS.map((_, i) => i),
+      format: (v) => `${SPEEDS[v]}× real time`,
+      onInput: (v) => {
+        this.state.ticksPerSecond = SPEEDS[v];
+        this.handlers.onChange(this.state, 'ticksPerSecond');
+      },
     });
-    this.speedLabel.textContent = `${this.state.ticksPerSecond}× `;
 
     const resetBtn = el('button', { class: 'btn ghost', type: 'button', text: 'Start over' });
     resetBtn.style.width = '100%';
@@ -136,18 +145,14 @@ export class Controls {
 
     this.root.append(
       el('div', { class: 'block' }, [
-        el('div', { class: 'muted', style: 'margin-bottom:8px', text: 'Cut away' }),
+        el('div', { class: 'muted', style: 'margin-bottom:var(--s2)', text: 'Cut away' }),
         cutRow,
-        cutSlider,
-        el('div', { style: 'display:flex;gap:6px;margin-top:10px' }, [frameBtn, presentBtn]),
-        el('div', { class: 'muted', style: 'margin:16px 0 8px', text: 'Colour the cells' }),
+        el('div', { style: 'margin-top:var(--s3)' }, [this.cutSlider.node]),
+        el('div', { style: 'display:flex;gap:var(--s2);margin-top:var(--s3)' }, [frameBtn, presentBtn]),
+        el('div', { class: 'muted', style: 'margin:var(--s5) 0 var(--s2)', text: 'Colour the cells' }),
         colorRow,
-        el('div', { class: 'r', style: 'margin-top:16px' }, [
-          el('span', { class: 'k', text: 'Speed' }),
-          this.speedLabel,
-        ]),
-        speed,
-        el('div', { style: 'margin-top:12px' }, [resetBtn]),
+        el('div', { style: 'margin-top:var(--s5)' }, [speed.node]),
+        el('div', { style: 'margin-top:var(--s4)' }, [resetBtn]),
       ]),
     );
 
@@ -187,6 +192,7 @@ export class Controls {
     for (const [mode, b] of this.cutButtons) {
       b.setAttribute('aria-pressed', String(mode === this.state.cutMode));
     }
+    this.cutSlider?.setDisabled(this.state.cutMode === 'none');
     /* H&E is a two-dye stain, not a per-cause channel: colouring by cause would
        stop it being a histology image at all. */
     const histology = this.state.view === 'histology';

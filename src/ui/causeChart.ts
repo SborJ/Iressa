@@ -4,8 +4,54 @@ import type { CauseStats } from '../world/causeStats.js';
 import { count, el, niceMax, svg } from './dom.js';
 import { causeName } from './labels.js';
 
-const PAD = { top: 12, right: 8, bottom: 20, left: 30 };
-const HEIGHT = 118;
+const PAD = { top: 12, right: 10, bottom: 22, left: 32 };
+const HEIGHT = 124;
+
+/**
+ * A smooth path through the points that never overshoots them.
+ *
+ * Catmull-Rom would be shorter but it can bulge below zero between two small
+ * values, which would draw deaths that did not happen. The monotone condition
+ * is what makes a smoothed count honest.
+ */
+function monotonePath(pts: [number, number][]): string {
+  const n = pts.length;
+  if (n < 2) return '';
+  if (n === 2) return `M${pts[0][0]},${pts[0][1]}L${pts[1][0]},${pts[1][1]}`;
+
+  const dx: number[] = [];
+  const dy: number[] = [];
+  const slope: number[] = [];
+  for (let i = 0; i < n - 1; i++) {
+    dx.push(pts[i + 1][0] - pts[i][0]);
+    dy.push(pts[i + 1][1] - pts[i][1]);
+    slope.push(dx[i] === 0 ? 0 : dy[i] / dx[i]);
+  }
+  const m: number[] = [slope[0]];
+  for (let i = 1; i < n - 1; i++) {
+    if (slope[i - 1] * slope[i] <= 0) m.push(0);
+    else {
+      const w1 = 2 * dx[i] + dx[i - 1];
+      const w2 = dx[i] + 2 * dx[i - 1];
+      m.push((w1 + w2) / (w1 / slope[i - 1] + w2 / slope[i]));
+    }
+  }
+  m.push(slope[n - 2]);
+
+  let d = `M${pts[0][0].toFixed(1)},${pts[0][1].toFixed(1)}`;
+  for (let i = 0; i < n - 1; i++) {
+    const h = dx[i] / 3;
+    d += `C${(pts[i][0] + h).toFixed(1)},${(pts[i][1] + m[i] * h).toFixed(1)}`;
+    d += ` ${(pts[i + 1][0] - h).toFixed(1)},${(pts[i + 1][1] - m[i + 1] * h).toFixed(1)}`;
+    d += ` ${pts[i + 1][0].toFixed(1)},${pts[i + 1][1].toFixed(1)}`;
+  }
+  return d;
+}
+
+/** Reverses a path's points for the closing edge of a filled band. */
+function reversePoints(pts: [number, number][]): [number, number][] {
+  return [...pts].reverse();
+}
 
 interface Marker {
   hours: number;
@@ -164,39 +210,43 @@ export class CauseChart {
     /* ---- stacked bands ---- */
     if (buckets.length > 1) {
       const cum = new Float64Array(buckets.length);
-      const points: string[][] = [];
+      const points: [number, number][][] = [];
       for (const id of this.causeIds) {
-        const upper: string[] = [];
+        const upper: [number, number][] = [];
         for (let i = 0; i < buckets.length; i++) {
           cum[i] += buckets[i].deaths[id];
-          upper.push(`${this.xOf(buckets[i].tick, innerW).toFixed(1)},${yOf(cum[i]).toFixed(1)}`);
+          upper.push([this.xOf(buckets[i].tick, innerW), yOf(cum[i])]);
         }
         points.push(upper);
       }
-      const baseline = buckets.map((b) => `${this.xOf(b.tick, innerW).toFixed(1)},${yOf(0).toFixed(1)}`);
+      const baseline: [number, number][] = buckets.map((b) => [this.xOf(b.tick, innerW), yOf(0)]);
 
       for (let s = this.causeIds.length - 1; s >= 0; s--) {
         const id = this.causeIds[s];
-        const upper = points[s];
         const lower = s === 0 ? baseline : points[s - 1];
-        const d = `M${upper.join('L')}L${[...lower].reverse().join('L')}Z`;
+        const d =
+          `${monotonePath(points[s])} ` +
+          `L${lower[lower.length - 1][0].toFixed(1)},${lower[lower.length - 1][1].toFixed(1)} ` +
+          `${monotonePath(reversePoints(lower)).replace(/^M/, 'L')} Z`;
         const dimmed = this.highlighted >= 0 && this.highlighted !== id;
         this.svgRoot.append(
           svg('path', {
             d,
             fill: this.visuals.causeCss(id),
-            'fill-opacity': dimmed ? 0.12 : 0.95,
+            'fill-opacity': dimmed ? 0.1 : 0.9,
+            style: 'transition: fill-opacity 220ms cubic-bezier(0.22,0.61,0.36,1)',
           }),
         );
       }
-      // A hairline of the chart surface separates adjacent bands.
+      // A hairline of the panel surface separates adjacent bands.
       for (let s = 0; s < this.causeIds.length; s++) {
         this.svgRoot.append(
           svg('path', {
-            d: `M${points[s].join('L')}`,
+            d: monotonePath(points[s]),
             fill: 'none',
-            stroke: 'var(--hull-0)',
-            'stroke-width': 1,
+            stroke: 'var(--surface)',
+            'stroke-width': 1.25,
+            'stroke-linecap': 'round',
           }),
         );
       }

@@ -9,6 +9,7 @@ import type { History } from './history.js';
 import { causeName, cloneName, stateLabel } from './labels.js';
 import { TONE } from './tone.js';
 import type { Narrative, Story } from './narrative.js';
+import { foldTo } from './motion.js';
 import { Sparkline } from './sparkline.js';
 
 /** Jargon, explained where it is used rather than in a glossary nobody opens. */
@@ -56,6 +57,24 @@ class Fold {
     ]);
     this.node = el('details', { class: 'fold' }, [head, this.body]) as HTMLDetailsElement;
     this.node.open = open;
+
+    /* <details> has no animatable height of its own, so the open is deferred
+       until the body has been measured and the close waits for the animation
+       before the element actually collapses. */
+    head.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      if (this.node.open) {
+        foldTo(this.body, false);
+        window.setTimeout(() => {
+          this.node.open = false;
+          this.body.style.height = '';
+        }, 220);
+      } else {
+        this.node.open = true;
+        this.body.style.height = '';
+        foldTo(this.body, true);
+      }
+    });
   }
 
   set(text: string): void {

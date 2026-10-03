@@ -13,6 +13,7 @@ import { Headline, StageTags } from './ui/headline.js';
 import { History } from './ui/history.js';
 import { Narrative } from './ui/narrative.js';
 import { Panel } from './ui/panel.js';
+import { enter } from './ui/motion.js';
 import { bindShortcuts } from './ui/shortcuts.js';
 import { Timeline } from './ui/timeline.js';
 import { CauseStats } from './world/causeStats.js';
@@ -141,7 +142,7 @@ async function start(): Promise<void> {
   /* The imaging switch belongs in the top bar, because it changes what the
      whole screen is; everything that shapes the view sits under the hero. */
   const controlsHost = document.createElement('div');
-  const controls = new Controls(controlsHost, visuals, {
+  const controls = new Controls(controlsHost, visuals, rules, {
     onChange: (state, changed) => {
       if (changed === 'view' || changed === 'init') viewer.applyView(state.view);
       if (changed === 'colorBy' || changed === 'view') viewer.setColorBy(state.colorBy);
@@ -297,6 +298,14 @@ async function start(): Promise<void> {
     requestAnimationFrame(frame);
   };
   requestAnimationFrame(frame);
+
+  // One arrival, once. Nothing else on this screen moves unless asked to.
+  enter([
+    document.getElementById('topbar')!,
+    document.querySelector('#panel .hero')!,
+    document.getElementById('stagetop')!,
+    document.getElementById('timeline')!,
+  ]);
 }
 
 start().catch(showError);

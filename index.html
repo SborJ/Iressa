@@ -105,14 +105,57 @@ button, input { font: inherit; color: inherit; }
 #headline .say { font-size: 13.5px; font-weight: 500; letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 #headline .because { font-size: 12.5px; color: var(--fg-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
+/* A share, drawn rather than spelled out. */
+.ring { display: inline-flex; align-items: center; gap: 6px; flex: none; }
+.ring svg { display: block; }
+.ring circle { transition: stroke-dashoffset 400ms var(--ease); }
+.ring-value {
+  font-size: 12.5px; font-weight: 600; font-variant-numeric: tabular-nums;
+  color: currentColor; letter-spacing: -0.01em;
+}
+@media (prefers-reduced-motion: reduce) { .ring circle { transition: none; } }
+
+/* ── slider ─────────────────────────────────────────────────────────────── */
+.sl { --h: 18px; }
+.sl-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s2); margin-bottom: var(--s2); }
+.sl-label { font-size: 12.5px; color: var(--fg-2); }
+.sl-value { font-size: 12.5px; font-weight: 500; font-variant-numeric: tabular-nums; color: var(--fg); }
+.sl-track { position: relative; height: var(--h); cursor: grab; touch-action: none; outline: none; }
+.sl.dragging .sl-track { cursor: grabbing; }
+.sl-track::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 50%;
+  height: 4px; margin-top: -2px; border-radius: 2px; background: var(--raised);
+}
+.sl-fill {
+  position: absolute; left: 0; top: 50%; height: 4px; margin-top: -2px;
+  border-radius: 2px; background: var(--accent);
+}
+.sl-ticks { position: absolute; inset: 0; pointer-events: none; }
+.sl-ticks > i {
+  position: absolute; top: 50%; width: 2px; height: 2px; margin: -1px 0 0 -1px;
+  border-radius: 1px; background: var(--fg-3); opacity: 0.5;
+}
+.sl-thumb {
+  position: absolute; top: 50%; width: 14px; height: 14px; margin: -7px 0 0 -7px;
+  border-radius: 50%; background: var(--fg);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  transition: transform 140ms var(--ease), box-shadow 140ms var(--ease);
+  will-change: transform;
+}
+.sl-track:hover .sl-thumb { transform: scale(1.14); }
+.sl.dragging .sl-thumb { transform: scale(1.22); box-shadow: 0 2px 10px rgba(0,0,0,0.6), 0 0 0 6px var(--accent-wash); }
+.sl-track:focus-visible .sl-thumb { box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--accent); }
+.sl.disabled { opacity: 0.4; pointer-events: none; }
+
 /* ── segmented control ──────────────────────────────────────────────────── */
 .seg { display: inline-flex; background: var(--raised); border-radius: var(--r-md); padding: 3px; gap: 2px; flex: none; }
 .seg button {
-  border: 0; background: transparent; color: var(--fg-2);
-  padding: 6px 12px; border-radius: var(--r-sm); cursor: pointer;
+  position: relative; border: 0; background: transparent; color: var(--fg-2);
+  padding: 7px 12px; border-radius: var(--r-sm); cursor: pointer;
   font-size: 12.5px; font-weight: 500; white-space: nowrap;
-  transition: background var(--t) var(--ease), color var(--t) var(--ease);
+  transition: background 140ms var(--ease), color 140ms var(--ease), transform 90ms var(--ease);
 }
+.seg button:active:not(:disabled) { transform: scale(0.96); }
 .seg button:hover:not(:disabled):not([aria-pressed="true"]) { background: var(--hover); color: var(--fg); }
 .seg button[aria-pressed="true"] { background: var(--accent-wash); color: var(--accent); }
 .seg button:disabled { color: var(--fg-3); cursor: not-allowed; }
@@ -127,13 +170,15 @@ button, input { font: inherit; color: inherit; }
   transition: background var(--t) var(--ease), border-color var(--t) var(--ease), transform 90ms var(--ease);
 }
 .btn:hover { background: var(--hover); }
-.btn:active { transform: scale(0.97); }
+.btn:active:not(:disabled) { transform: scale(0.96); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .btn.primary { background: var(--accent-wash); color: var(--accent); }
 .btn.primary:hover { background: rgba(70,182,198,0.2); }
 .btn.icon { padding: 7px 10px; }
 .btn.ghost { background: transparent; color: var(--fg-2); }
 .btn.ghost:hover { background: var(--hover); color: var(--fg); }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--r-sm); }
+.seg button:focus-visible { outline-offset: -2px; }
 
 /* ── the panel ──────────────────────────────────────────────────────────── */
 .block { padding: var(--s5) var(--s5) var(--s5); border-bottom: 1px solid var(--line-soft); }

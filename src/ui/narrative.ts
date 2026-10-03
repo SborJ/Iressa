@@ -21,6 +21,13 @@ export interface Story {
   because: string;
   /** Which semantic colour the state belongs to. */
   tone: 'grow' | 'respond' | 'resist' | 'danger' | 'neutral';
+  /**
+   * A share worth watching, drawn as a filling ring rather than spelled out in
+   * the sentence. A number inside a clause changes every tick and drags the
+   * whole line with it; a ring carries the same reading at a glance and leaves
+   * the words still.
+   */
+  meter?: { value: number; label: string };
 }
 
 /**
@@ -147,25 +154,35 @@ export class Narrative {
       return {
         phase: growing ? 'relapsing' : 'resisting',
         say: growing ? 'Relapsing' : 'Resistance established',
-        because: `${cloneName(this.rules, resistant.cloneId)} is ${pct(resistant.share)} of the tumour and ${drugs[0]} no longer reaches it`,
+        because: `of the tumour is ${cloneName(this.rules, resistant.cloneId)}, which ${drugs[0]} no longer reaches`,
         tone: 'resist',
+        meter: {
+          value: resistant.share,
+          label: `${cloneName(this.rules, resistant.cloneId)} is ${pct(resistant.share)} of living cells`,
+        },
       };
     }
     if (drugs.length && resistant.share > 0.05) {
       return {
         phase: 'resisting',
         say: 'Resistance emerging',
-        because: `${cloneName(this.rules, resistant.cloneId)} has reached ${pct(resistant.share)} of the tumour`,
+        because: `of the tumour is now ${cloneName(this.rules, resistant.cloneId)}`,
         tone: 'resist',
+        meter: {
+          value: resistant.share,
+          label: `${cloneName(this.rules, resistant.cloneId)} is ${pct(resistant.share)} of living cells`,
+        },
       };
     }
     if (drugs.length && shrinking) {
-      const lost = Math.abs(Math.round(change!));
+      const lost = Math.abs(change!);
+      const fraction = Math.min(1, lost / Math.max(1, counts.living + lost));
       return {
         phase: 'responding',
         say: `Responding to ${drugs[0]}`,
-        because: `${lost.toLocaleString()} fewer cells than a day ago`,
+        because: 'of the tumour was lost in the last day',
         tone: 'respond',
+        meter: { value: fraction, label: `${pct(fraction)} fewer cells than a day ago` },
       };
     }
     if (drugs.length) {
