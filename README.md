@@ -1,300 +1,381 @@
+<div align="center">
+
 # Iressa
 
-A 3D tumour simulation and renderer in which **no cell event is hardcoded**.
-Cells divide, arrest, mutate and die for biological reasons, and every reason —
-every rate, threshold, probability and schedule — lives in `data/rules.json`.
-Every colour, animation and duration lives in `data/visuals.json`. Changing a
-number in either file changes the behaviour, with no code edits and no rebuild.
+### Watch a tumour outsmart its treatment, one cell at a time.
 
-A stand-in simulator currently generates the events. A Python simulation will
-later produce the same events from real models, writing the same files or
-streaming the same records. Nothing downstream changes when that happens.
+A 3D simulator of how cancers evolve drug resistance, calibrated on public lab data,<br>
+where every cell that divides, mutates or dies can tell you why.
 
-```
+[![CI](https://github.com/SborJ/Iressa/actions/workflows/ci.yml/badge.svg)](https://github.com/SborJ/Iressa/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f.svg)](LICENSE)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.6-3178c6?logo=typescript&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.10+-3776ab?logo=python&logoColor=white)
+![three.js](https://img.shields.io/badge/three.js-WebGL2-000000?logo=threedotjs&logoColor=white)
+
+<img src="docs/images/timelapse.gif" alt="Sixty simulated days in a few seconds: a grey drug-sensitive tumour is overtaken by an orange resistant clone, the treatment switches, and tan and purple clones take over in turn" width="760">
+
+<sub>Sixty simulated days. Grey cells are drug-sensitive. Orange carries T790M and shrugs off gefitinib.<br>The treatment switches on day 20, and tan (C797S) and purple (MET-amplified) clones take over.</sub>
+
+[**Quick start**](#quick-start) ·
+[**What you can do**](#what-you-can-do) ·
+[**How it works**](#how-it-works) ·
+[**The science**](#the-science) ·
+[**Docs**](#documentation)
+
+</div>
+
+---
+
+## The pill works. Then it doesn't.
+
+Targeted cancer drugs can melt a tumour in weeks. Then, months later, it comes
+back, and the drug that worked no longer does. Nothing new arrived from
+outside: a handful of cells already carried, or picked up while dividing, the
+one mutation that makes them immune. The treatment killed their competition
+and handed them the tissue.
+
+Iressa makes that process something you can watch, pause, cut open and
+question. This is one recorded run of the calibrated engine, start to finish:
+
+<table>
+<tr>
+<td width="25%"><img src="docs/images/story-1.jpg" alt="Day 2: a small, mostly grey tumour among blood vessels"></td>
+<td width="25%"><img src="docs/images/story-2.jpg" alt="Day 19: an orange tumour with a dark dead core"></td>
+<td width="25%"><img src="docs/images/story-3.jpg" alt="Day 36: orange cells thinning, tan and purple patches appearing"></td>
+<td width="25%"><img src="docs/images/story-4.jpg" alt="Day 58: a large tan tumour with a purple region"></td>
+</tr>
+<tr>
+<td valign="top"><b>Day 2 · Gefitinib</b><br>The tumour is drug-sensitive (grey). A few T790M cells (orange) are already there.</td>
+<td valign="top"><b>Day 19 · Relapse</b><br>The sensitive cells are gone. T790M owns the tumour, and its core is starving.</td>
+<td valign="top"><b>Day 36 · Osimertinib</b><br>The switch on day 20 hits T790M hard. Two new clones survive it.</td>
+<td valign="top"><b>Day 58 · Relapse again</b><br>C797S (tan) and MET amplification (purple) rebuild the tumour.</td>
+</tr>
+</table>
+
+None of that sequence is scripted. It falls out of growth rates, drug
+sensitivities, oxygen supply and mutation odds, all of which live in data
+files you can edit.
+
+## What you can do
+
+<img src="docs/images/simulator.jpg" alt="The Iressa simulator: a quarter-cut 3D tumour threaded by blood vessels, with cell counts by lineage on the left, a treatment timeline at the bottom and a plain-language status line at the top">
+
+### See it three ways
+
+The same cells, drawn the way three different lab techniques would show them.
+Press <kbd>1</kbd>, <kbd>2</kbd> or <kbd>3</kbd> to switch.
+
+<table>
+<tr>
+<td width="33%"><img src="docs/images/view-tissue.jpg" alt="Tissue view: solid packed cells in warm colours, brown vessels"></td>
+<td width="33%"><img src="docs/images/view-fluorescence.jpg" alt="Fluorescence view: glowing red cells against teal vessels on black"></td>
+<td width="33%"><img src="docs/images/view-histology.jpg" alt="Histology view: pink and purple cells on a pale background with red vessels"></td>
+</tr>
+<tr>
+<td valign="top"><b>Tissue</b><br>A cleared sample: packed cells, membranes, nuclei, and necrosis deep inside.</td>
+<td valign="top"><b>Fluorescence</b><br>A lineage-tracing experiment: every clone glows in its own colour.</td>
+<td valign="top"><b>Histology</b><br>An H&amp;E section: pink cytoplasm, purple nuclei, red cells in the vessels.</td>
+</tr>
+</table>
+
+### Ask any cell what happened to it
+
+<table>
+<tr>
+<td width="50%"><img src="docs/images/hover-card.jpg" alt="A hover card on a dying cell reading: Dying. Apoptosis: Osimertinib (Tagrisso). EGFR + T790M, resistant"></td>
+<td width="50%"><img src="docs/images/colour-by-outcome.jpg" alt="The tumour coloured by outcome: most cells grey, with orange cells dying of drug-induced apoptosis"></td>
+</tr>
+<tr>
+<td valign="top"><b>Hover a cell</b> for its state, its lineage and the cause behind it: <i>"Apoptosis: Osimertinib"</i>, <i>"Necrosis: hypoxia"</i>.</td>
+<td valign="top"><b>Colour by outcome</b> to tint every cell by why it is in its current state. Here, four days after the switch to osimertinib.</td>
+</tr>
+</table>
+
+Cut a quarter or a half away and slide the cut through the mass. The cut faces
+are individual cells; the rest of the tumour is a smooth surface.
+
+### Read the evidence and run your own experiment
+
+<table>
+<tr>
+<td width="25%"><img src="docs/images/panel-deaths.png" alt="Deaths by cause in the last day, and a chart of deaths over the run that spikes when osimertinib starts"></td>
+<td width="25%"><img src="docs/images/panel-evidence.png" alt="A list of model parameters, each tagged DIRECT, INFERRED or ASSUMPTION"></td>
+<td width="25%"><img src="docs/images/panel-resistance-graph.png" alt="The resistance graph for the breast model: each clone with its control margin and best treatment"></td>
+<td width="25%"><img src="docs/images/panel-experiment.png" alt="Experiment controls: run length, dose, treatment, switch day, blood supply and oxygen sliders"></td>
+</tr>
+<tr>
+<td valign="top"><b>Why cells are dying</b><br>Deaths by cause, last day and whole run, with treatment changes marked.</td>
+<td valign="top"><b>Parameters &amp; evidence</b><br>Every value labelled as measured, inferred or assumed.</td>
+<td valign="top"><b>Resistance graph</b><br>Which clones the represented drugs can still control.</td>
+<td valign="top"><b>Set up an experiment</b><br>Change the dose, schedule or blood supply and run again.</td>
+</tr>
+</table>
+
+### Two cancers, one engine
+
+The physics knows only clones, transitions, drugs and exposures. Each cancer
+is a single JSON file in [cancer_sim/cancers/](cancer_sim/cancers/), and the
+top bar switches between them.
+
+| | Lung · EGFR | Breast · ER+ |
+|---|---|---|
+| Disease | EGFR-mutant lung adenocarcinoma | ER+/HER2− breast cancer |
+| Clones | EGFR, T790M, C797S, MET amplification | ESR1 wild type, ESR1 Y537S, ESR1 D538G, CDK4/6 escape |
+| Treatments | gefitinib, osimertinib, capmatinib | endocrine suppression, palbociclib, fulvestrant, elacestrant |
+| Open with | default | `?cancer=breast_er_her2neg` |
+
+<img src="docs/images/breast-model.jpg" alt="The breast cancer model on day 47: ESR1 Y537S cells in orange overtaking grey ER-sensitive cells under palbociclib plus fulvestrant">
+
+### Watch an AI agent learn a treatment pattern
+
+Press **AI agent**, give it 15 to 60 seconds, and a small REINFORCE agent
+practises on hundreds of simulated tumours of the cancer on screen, choosing a
+regimen every 10 days. While it learns, the 3D view plays its latest practice
+run and the panel draws its "brain": what it looks at, what it now prefers,
+and its learning curve. At the end it plays the learned pattern on a tumour it
+never practised on and ranks it against fixed strategies on held-out seeds.
+
+<img src="docs/images/ai-agent.jpg" alt="The AI agent panel mid-training: 480 practice runs, a diagram linking tumour size, resistance, time and last drug to six regimens, preference bars and a rising learning curve">
+
+The policy is a linear softmax over a handful of readable features, written in
+plain numpy ([cancer_sim/reinforce.py](cancer_sim/reinforce.py)), so its
+weights can be read rather than guessed at. A half-minute of practice is a
+demonstration of learning, and its result is often a poor schedule. A heavier
+PPO pipeline with domain randomisation lives in
+[scripts/train_ppo.py](scripts/train_ppo.py); see
+[docs/rl-treatment-design.md](docs/rl-treatment-design.md).
+
+> [!IMPORTANT]
+> A learned pattern is whatever keeps *this model's* simulated tumour
+> controlled with *its* represented drugs. It is not treatment advice.
+
+## Quick start
+
+You need Node 20+ and, for the engine and the AI agent, Python 3.10+.
+
+```bash
+git clone https://github.com/SborJ/Iressa.git
+cd Iressa
 npm install
-npm run dev          # http://localhost:5173 opens the calibrated engine's demo run (data/runs/demo48)
-                     # add ?source=local for the TypeScript stand-in simulator
-npm test             # viewer tests
-npm run sim          # the stand-in simulator, headless, with a cause breakdown
-npm run record       # write run.events + run.keyframes for replay
+cp .env.example .env.local    # then add your Supabase URL and anon key
+npm run dev                   # http://localhost:5173
 ```
 
-The public landing page is `landing/index.html` (`/landing/` on the dev
-server). The simulator itself asks researchers to sign in first; see
-[Research access](#research-access) to configure it.
+The simulator asks researchers to sign in, so it needs a Supabase project
+before it will open: [docs/research-access.md](docs/research-access.md) walks
+through it, including ORCID sign-in. The landing page at `/landing/` is public.
 
-## Research access
+To run the Python engine, the tests and the AI agent:
 
-Sign-in uses [Supabase Auth](https://supabase.com/docs/guides/auth) (email and
-password, email confirmation, password reset). The landing page stays public;
-the simulator is only built after a session exists.
+```bash
+python3 -m venv .venv
+.venv/bin/pip install -r requirements-dev.txt
 
-1. **Keys.** Copy `.env.example` to `.env.local` and fill in the project URL
-   and the public **anon** key (Supabase → Project Settings → API). Never use
-   the service-role key: anything prefixed `VITE_` ships to the browser, and
-   the app refuses to start with a secret key.
-2. **Database.** Apply `supabase/migrations/` (Supabase → SQL Editor, paste the
-   file and run it; or `supabase link` then `supabase db push`). It creates
-   `public.profiles`, a trigger that gives every new user a profile, and
-   owner-only row level security.
-3. **Redirects.** Supabase → Authentication → URL Configuration: set the Site
-   URL to where the simulator is hosted, and add `http://localhost:5173/**`
-   (plus the hosted URL with `/**`) to Redirect URLs, so confirmation and reset
-   emails can return to the app.
-4. **Password policy.** Authentication → Providers → Email: set the minimum
-   password length to 8 to match the form. "Confirm email" may be on or off;
-   both paths are handled.
+# simulate a tumour and export it for the 3D viewer
+.venv/bin/python scripts/export_iressa_run.py --name demo48 --schedule gefitinib-osimertinib --size 48 --days 60
 
-### Sign in with ORCID
-
-Researchers can also sign in with their [ORCID iD](https://orcid.org). There is
-no separate registration: the first ORCID sign-in creates the account. Supabase
-runs the OpenID Connect exchange and verifies ORCID's signed token; a database
-trigger then records the iD on the profile with `orcid_verified_at`. Nobody can
-type an iD in or mark themselves verified, so a verified iD always means ORCID
-authenticated that person. ORCID never shares an email, so these accounts show
-the researcher's name and a link to their ORCID record instead.
-
-1. Create ORCID public API credentials at <https://orcid.org/developer-tools>
-   with the redirect URI `https://<project-ref>.supabase.co/auth/v1/callback`.
-2. Enable custom OAuth providers for the project in the Supabase dashboard
-   (Authentication → Sign In / Providers).
-3. Register the provider, from your own machine (the service-role key stays there):
-
-   ```
-   SUPABASE_URL=https://<project-ref>.supabase.co SUPABASE_SERVICE_ROLE_KEY=… \
-   ORCID_CLIENT_ID=APP-… ORCID_CLIENT_SECRET=… npm run setup:orcid
-   ```
-
-4. Set `VITE_ORCID_ENABLED=true` in `.env.local`. Until then the button is hidden.
-
-The sign-in screen is the experience, not the security boundary: the static
-simulator files are served to anyone. Anything that must stay private belongs
-in Supabase behind row level security, as `profiles` does.
-
-## Two cancers, one engine
-
-The simulator carries two cancer models and switches between them in the top
-bar (or with `?cancer=<id>`):
-
-| Model id | Cancer | Clones | Treatments |
-|---|---|---|---|
-| `lung_egfr` (default) | EGFR-mutant lung adenocarcinoma | EGFR, T790M, C797S, MET amplification | gefitinib, osimertinib, capmatinib |
-| `breast_er_her2neg` | ER+/HER2− breast cancer | ESR1 wild type, ESR1 Y537S, ESR1 D538G, CDK4/6 escape | endocrine suppression, palbociclib, fulvestrant |
-
-The physics knows only clones, transitions, drugs and exposures; each cancer is
-one file in `cancer_sim/cancers/`. Recorded runs carry per-day evolutionary-control
-readings (`metrics.json`) that the viewer shows in its Resistance graph,
-Parameters & evidence and Controller panels; `?run=<folder>` opens another
-recording of the chosen cancer, such as a policy-driven one.
-
-### AI agent: a REINFORCE agent learning on the world view
-
-The simulator works exactly as before until you press **AI agent** in the top
-bar. Then a panel offers a training budget (15–60 s) and **Start learning**: a
-lightweight REINFORCE agent (`cancer_sim/reinforce.py`, numpy only) practises
-on hundreds of simulated tumours of the cancer on screen, choosing one of a few
-regimens (`reinforce_actions` in the model file) every 10 days. Its policy is a
-linear softmax over scale-free features - tumour size relative to the start,
-the resistant share and each resistant clone's share, time, and the previous
-regimen - so its weights can be read.
-
-While it learns, the 3D world plays its latest practice run (recorded on a 3D
-tumour after each update), and the panel draws its "brain" (weights from what it
-looks at to what it chooses), what it now prefers, and the learning curve. At
-the end it plays the learned pattern on a tumour it never practised on, narrates
-it, and ranks it against the model's fixed strategies and every regimen held
-constant on held-out seeds.
-
-The dev server runs `scripts/train_reinforce.py` (behind `/api/ai/*`). It needs a
-Python with numpy: a `.venv` in the repository, or `IRESSA_PYTHON` pointing at
-one. From a terminal: `python3 scripts/train_reinforce.py --cancer lung_egfr --seconds 45`
-writes `outputs/rl/reinforce_<cancer>.json`. A learned pattern is what keeps this
-model's simulated tumour controlled with its represented drugs; it is not
-treatment advice. Every Python entry point takes the model:
-`ExperimentConfig(cancer=...)`, and `--cancer` on `scripts/export_iressa_run.py`,
-`scripts/train_ppo.py` and `scripts/evaluate_policy.py`; `scripts/run_breast_experiment.py`
-runs the evolutionary-therapy comparison and `scripts/run_ablations.py` the ablations. The breast model, its
-evidence table and its limits are described in
-[docs/breast_er_positive.md](docs/breast_er_positive.md).
-
-## The calibrated Python engine
-
-`cancer_sim/` is the validated EGFR-resistance engine (GDSC/Cell Model Passports/CIViC-calibrated
-clones, oxygen and drug fields, division, mutation on division, treatment schedules). It writes
-runs in this viewer's format:
-
-```
-pip install -r requirements.txt
-python3 scripts/export_iressa_run.py --name demo48 --schedule gefitinib-osimertinib --size 48 --days 60
-npm run dev   # then open the URL the exporter prints
-python3 -m pytest -q          # engine, calibration and export tests
+# train the AI agent from a terminal
+.venv/bin/python scripts/train_reinforce.py --cancer lung_egfr --seconds 45
 ```
 
-See `docs/validation/VIEWER_INTEGRATION.md` (how the two halves connect),
-`docs/validation/VALIDATION_REPORT.md` (what was audited and fixed in the engine) and
-`docs/python-engine.md` (the engine's command reference). The treatment
-optimization scaffold is documented in `docs/rl-treatment-design.md`; it includes
-a Gymnasium-style environment and PPO entrypoint, but no trained policy or
-clinical recommendation system.
+| Command | What it does |
+|---|---|
+| `npm run dev` | The viewer, opening the calibrated engine's recorded run |
+| `npm test` | 91 viewer tests |
+| `npm run build` | Typecheck and production build |
+| `npm run sim` | The TypeScript stand-in simulator, headless, with a cause breakdown |
+| `npm run record` | Write `run.events` and `run.keyframes` for replay |
+| `.venv/bin/python -m pytest -q` | 141 engine, calibration and export tests |
+
+<details>
+<summary><b>Keyboard shortcuts and URL parameters</b></summary>
+
+| Key | Action |
+|---|---|
+| <kbd>Space</kbd> | Play or pause |
+| <kbd>.</kbd> | Step |
+| <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> | Tissue, Fluorescence, Histology |
+| <kbd>F</kbd> | Frame the tumour |
+| <kbd>R</kbd> | Start the run over |
+
+| URL | Opens |
+|---|---|
+| `/` | The lung model's recorded run |
+| `/?cancer=breast_er_her2neg` | The breast model's recorded run |
+| `/?cancer=breast_er_her2neg&run=breast48-ppo` | The same tumour treated by a trained PPO policy |
+| `/?source=local` | The TypeScript stand-in simulator, live |
+| `/?source=file&rules=…&events=…&keyframes=…` | Any recorded run |
+| `/?source=socket&host=…&port=…` | A run streamed over a WebSocket |
+
+</details>
+
+## How it works
+
+```mermaid
+flowchart LR
+    subgraph data["Public lab data"]
+        A["GDSC · Cell Model Passports<br>CIViC · cBioPortal"]
+    end
+    subgraph engine["Python engine · cancer_sim/"]
+        B["Calibration<br>clones, IC50s, growth"]
+        C["Cellular automaton<br>oxygen + drug fields"]
+        D["RL agents<br>REINFORCE · PPO"]
+    end
+    subgraph contract["The contract"]
+        E["rules.json<br>16-byte events<br>keyframes"]
+    end
+    subgraph viewer["Browser viewer · src/"]
+        F["World<br>rebuilt from events"]
+        G["WebGL renderer<br>+ panels"]
+    end
+    A --> B --> C --> E --> F --> G
+    D <--> C
+    V["visuals.json"] --> G
+```
+
+**The engine** ([cancer_sim/](cancer_sim/)) is a 3D cellular automaton, one
+cell per voxel. Blood vessels supply oxygen and drug, which diffuse through
+the tissue and are consumed along the way. Each cell reads its local oxygen
+and drug level, then cycles, arrests, dies or divides, and each division is a
+chance to mutate into the next clone on the resistance graph.
+
+**The contract** ([docs/format.md](docs/format.md)) is deliberately tiny: a
+`rules.json`, a stream of 16-byte event records (divide, die, mutate, change
+state, each with its cause) and periodic keyframes. The Python and TypeScript
+implementations are tested against each other byte for byte.
+
+**The viewer** ([src/](src/)) knows no biology. It rebuilds the tissue from
+the event stream and reads what a cause means from `rules.json` and how it
+looks from `visuals.json`. There is not a rate, a threshold or a probability
+anywhere in the renderer. The whole scene is five draw calls: only the cells
+the cut exposes are drawn individually, and the rest is an isosurface.
+
+That split is the point of the project. Change a number in a data file and the
+behaviour changes, with no code edits and no rebuild. Adding a new cause of
+death takes [a JSON edit and nothing else](docs/adding-a-cause.md).
+
+<details>
+<summary><b>Repository layout</b></summary>
 
 ```
-python3 scripts/train_ppo.py --smoke
-pip install -r requirements-rl.txt
-python3 scripts/train_ppo.py --days 120 --dt-days 1 --total-timesteps 10000
-python3 scripts/evaluate_policy.py --days 120 --seeds 1001,1002,1003
-```
-
-## What you see
-
-A 64³ voxel lattice at 15 µm - one cell per voxel. A vascular tree runs through
-it; its lumen is where oxygen and drug enter the tissue, and no cell may occupy
-a vessel. A seeded clone grows in perfused tissue, outruns the supply between
-vessels and develops hypoxic, necrotic ground with living cuffs around the
-vessels. Gefitinib starts on day 20; most of the tumour dies of drug-induced
-apoptosis and the rest arrests. A T790M subclone acquired at some division
-survives and relapses. Two radiation fractions land on day 50. Every one of
-those is a consequence of numbers in `rules.json`, not of a branch in the code.
-
-It opens on a quarter-cut tumour: the cut faces are individual cells, and
-outside them the mass is a smooth isosurface.
-
-- **Three imaging views.** *Tissue* is a cleared sample: packed cells with
-  visible membranes and nuclei, vessels running through, darker necrosis deep
-  inside. *Fluorescence* is a light-sheet volume of a lineage-tracing
-  experiment: nuclear stain in blue, each clone in its own fluorescent protein.
-  *Histology* is an H&E section: eosin cytoplasm, haematoxylin nuclei, pale
-  necrosis, red cells in the vessels.
-- **Hover a cell** for its state and, when it is dying or arrested, the cause —
-  "Necrosis: hypoxia", "Apoptosis: Gefitinib (Iressa)" — plus the local oxygen
-  and drug concentration it is responding to.
-- **Colour by** clone or cause. Colour-by-cause tints every cell by the cause of
-  its current state.
-- **Cut** a quarter or a half away, and slide the cut through the mass.
-- **Deaths — last 24 h** tallies deaths by cause over the last simulated day;
-  the chart below it shows deaths by cause over the whole run, with the
-  treatment schedule marked from `rules.json`.
-
-## Layout
-
-```
-data/
-  rules.json             every rate, threshold, probability and schedule
-  visuals.json           every colour, animation preset and duration
-  schema/*.schema.json   both files are validated against these at startup
+cancer_sim/              the Python engine
+  cancers/               one JSON per cancer: clones, drugs, schedules, RL actions
+  calibration/           public data -> clone parameters, with provenance
+  automata.py fields.py  the cellular automaton and its oxygen/drug solvers
+  reinforce.py rl_env.py the REINFORCE agent and the Gymnasium environment
 src/
   format/                the 16-byte event record and the keyframe. No biology.
   sim/                   the stand-in simulator. All the biology, none of the numbers.
   source/                the seam: local simulator | recorded file | WebSocket
-  world/                 the matrix rebuilt from the event stream, plus the tallies
-  render/                instanced mesh, one parameterised shader, visuals.json
-  ui/                    hover card, tally, chart, controls
-  auth/                  Supabase sign-in: client, service, screens, account menu
-cancer_sim/
-  cancers/               one JSON per cancer model: clones, drugs, parameters, schedules, RL actions
-supabase/
-  migrations/            database schema (researcher profiles, RLS, verified ORCID iDs)
+  world/                 the tissue rebuilt from the event stream, plus the tallies
+  render/                instanced cells, isosurface, vessels, one parameterised shader
+  ui/                    hover card, panels, timeline, AI agent
+  auth/                  Supabase sign-in
+data/
+  rules.json             every rate, threshold, probability and schedule
+  visuals.json           every colour, animation preset and duration
+  schema/                both files are validated against these at startup
+  raw/ processed/        public datasets and the calibrated parameters built from them
+  runs/                  recorded runs the viewer opens
+scripts/                 CLIs: export runs, train agents, run experiment panels
+tests/                   Vitest and pytest suites
+docs/                    format, rendering, validation, model notes
 landing/                 the public landing page
-python/
-  iressa_format.py       the wire format for the Python simulation
-  serve.py               example: stream a recorded run over a WebSocket
-docs/
-  format.md              the contract between a simulation and the renderer
-  adding-a-cause.md      how to add one, without touching any code
-  rendering.md           how it is drawn, and what is data vs illustration
-screenshots/             the captured views, described in VISUAL_REPORT.md
+supabase/migrations/     researcher profiles, row level security, verified ORCID iDs
 ```
 
-## The two halves
+</details>
 
-**`src/sim/` knows the biology but not the numbers.** It grows a vascular tree
-from the rules, perfuses the lattice from its lumen, then reads each living
-node's local situation out of the matrix — oxygen, drug concentration, free
-neighbours, its clone profile, how long it has been in its state — turns that
-into per-cause hazards using the rules, and emits the event with the cause that
-fired. It resolves cause and state ids by *role* (`drugApoptosis`,
-`hypoxicNecrosis`, …) so even the ids live in the data file. Rolls are hashed
-from `(seed, tick, node, channel)`, so a run is reproducible and does not depend
-on the order nodes are visited in.
+## The science
 
-**`src/render/` and `src/ui/` know neither.** They read the meaning of a cause
-from the cause table in `rules.json` and its appearance from `visuals.json`.
-There is not a rate, a threshold or a probability anywhere in them. The shader
-implements six generic effects — scale curve, colour curve, blebbing,
-fragmenting, transparency, emissive — and a preset is a set of numbers that
-combines them.
+Iressa is built to be checked. The numbers come from public datasets, every
+parameter says where it came from, and the engine was audited before anything
+was built on top of it.
 
-## Swapping in the real simulation
-
-`SimulationSource` (`src/source/types.ts`) is the only thing the renderer talks
-to. Three implementations ship:
-
-| Source | How to use it |
+| Source | Used for |
 |---|---|
-| the stand-in simulator | the default |
-| a recorded run | `?source=file&events=/run.events&keyframes=/run.keyframes` |
-| a stream | `?source=socket&url=ws://localhost:8787` |
+| [GDSC](https://www.cancerrxgene.org/) | Drug response: 242,036 dose-response rows, reduced to IC50s for matched cell lines |
+| [Cell Model Passports](https://cellmodelpassports.sanger.ac.uk/) | Which cell lines carry which mutations, and how fast they grow |
+| [CIViC](https://civicdb.org/) | Curated clinical evidence for each resistance mutation |
+| [cBioPortal](https://www.cbioportal.org/) | How often each alteration occurs in a real patient cohort |
 
-A Python run supplies its own `rules.json` alongside its events; point the
-viewer at it with `?rules=/path/to/rules.json`.
+**Provenance on every value.** Each parameter is tagged `DIRECT` (measured in
+a relevant system), `DERIVED`, `INFERRED` or `ASSUMPTION`, in the data and in
+the viewer's evidence panel. Gefitinib's IC50 against the sensitive clone is
+measured across five cell lines; C797S's osimertinib resistance is supported
+by the literature but its number is an assumption, and the interface says so.
 
-`docs/format.md` is the contract. `python/iressa_format.py` implements it, and
-`tests/pythonFormat.test.ts` checks the two implementations against each other
-byte for byte rather than each against its own idea of the format.
+**An audited engine.** The [validation report](docs/validation/VALIDATION_REPORT.md)
+covers ingestion, calibration, units, both field solvers and multi-seed
+behaviour over 20 seeds of 120 simulated days. It found and fixed real bugs,
+including a drug field that never reached the cells and an unconverged oxygen
+solver. The overall verdict is *pass with limitations*, and the limitations
+are listed.
 
-## Reading the numbers
+<img src="docs/validation/figures/multiseed_summary.png" alt="Bar charts over 20 seeds for seven treatment schedules: time to progression, final burden, final resistant fraction and cumulative dose, with interquartile ranges">
 
-The *structure* of `rules.json` is meant to survive contact with the real
-simulation; several of the *values* in it were chosen so that a 60-day run shows
-something, and should be replaced rather than cited.
+**Experiments, not anecdotes.** In the breast model, seven strategies were
+compared over 120 days on five seeds. No fixed schedule prevented the ESR1
+mutants from taking over; switching earlier only made the tumour smaller. The
+[full table and discussion](docs/breast_er_positive.md) include the cases
+where the learned policies did better, and the caveats that go with five seeds.
 
-- **Mutation rates** (`2e-5` and `8e-6` per division) are orders of magnitude
-  above real somatic rates. At a realistic rate no resistant clone would appear
-  in 44 000 divisions, and the relapse — the thing worth looking at — would
-  never happen. This is the number to change first when real models arrive.
-- **The fields are in normalised lattice units.** `oxygen.diffusion` is a
-  per-sweep lattice coefficient (above 1/6 the 6-point Laplacian goes unstable,
-  which the schema enforces), oxygen runs 0–1 against the boundary supply, and
-  drug concentrations are on whatever scale the IC50s are. A plasma reading of
-  1.48 means "1.48 of the same units as the IC50s", not ng/mL.
-- **`immune.killPerHour`** is a flat surface-only hazard, not an immune model.
-  It exists so the immune-kill cause is exercised; it is the most obviously
-  placeholder parameter in the file.
-- **Pharmacokinetics** is one compartment with first-order absorption. The
-  half-life is gefitinib's; the dose is normalised.
+<img src="docs/figures/breast_experiment_trajectories.png" alt="Three line charts over 120 days for each strategy: tumour burden, ESR1-mutant fraction and controllability index">
 
-What is meant to be taken seriously is that none of these live in code: the
-hypoxic core, the treatment response, the relapse and the radiation effect are
-all consequences of this file, and replacing a value changes them.
+### What this is not
 
-## Oxygen Controls
+> [!WARNING]
+> Iressa is a research and teaching model. It is not a clinical tool, and
+> nothing it shows is a prediction for a patient.
 
-The viewer uses plain-language oxygen controls:
+- **Time runs fast.** Growth is calibrated on cell lines that double in 40 to
+  100 hours, so events unfold 10 to 30 times faster than in a person.
+- **Mutation rates are scaled up.** At real somatic rates no resistant clone
+  would appear in a tumour of a few thousand simulated cells, so demo runs
+  multiply the rate. The relapse you see is real in kind, not in timing.
+- **Some drug responses are assumed.** Every MET-amplification and C797S IC50
+  is an assumption, as is capmatinib's. They are labelled, not hidden.
+- **Pharmacokinetics is simple.** The calibrated engine holds a constant drug
+  concentration at the vessel wall.
+- **The stand-in simulator's numbers are placeholders.** `data/rules.json`
+  drives the TypeScript simulator used for development. Its structure is
+  meant to last; several of its values were chosen so a 60-day run shows
+  something, and its immune term is a flat surface hazard, not an immune model.
 
-| Control | Meaning |
+## Documentation
+
+| Read this | To learn |
 |---|---|
-| Blood delivery | how strongly vessels add oxygen to nearby tissue |
-| Cell consumption | how quickly living cells remove oxygen |
-| More flow | more vessel supply and less hypoxia pressure |
-| Low flow | reduced supply and stronger oxygen stress |
-| Starved | severe oxygen stress; sustained low oxygen can cause necrosis |
+| [docs/format.md](docs/format.md) | The event format: the contract between any simulation and the renderer |
+| [docs/adding-a-cause.md](docs/adding-a-cause.md) | How to add a cause of death or arrest without touching code |
+| [docs/rendering.md](docs/rendering.md) | How the scene is drawn, and what is data versus illustration |
+| [docs/physics_world.md](docs/physics_world.md) | The lattice, the fields and the cell rules |
+| [docs/python-engine.md](docs/python-engine.md) | The engine's command reference |
+| [docs/stand-in-simulator.md](docs/stand-in-simulator.md) | The TypeScript simulator, the source seam and how to read `rules.json` |
+| [docs/breast_er_positive.md](docs/breast_er_positive.md) | The breast model, its evidence table and its experiments |
+| [docs/rl-treatment-design.md](docs/rl-treatment-design.md) | The RL environment, rewards and PPO pipeline |
+| [docs/validation/](docs/validation/) | The validation report, parameter provenance and viewer integration |
+| [docs/research-access.md](docs/research-access.md) | Setting up sign-in with Supabase and ORCID |
+| [docs/references.md](docs/references.md) | The papers and datasets behind the model |
 
-In the model, oxygen is not a cure. It is a resource field. High oxygen lets
-cells keep cycling; intermediate oxygen slows or arrests them; very low oxygen
-for long enough causes hypoxic necrosis.
+## Contributing
 
-## Performance
+Issues and pull requests are welcome. [CONTRIBUTING.md](CONTRIBUTING.md) covers
+setup, the tests to run and the one rule that matters most here: numbers
+belong in data files with a provenance label, never in code. To report a
+security problem, see [SECURITY.md](SECURITY.md).
 
-Five draw calls for the whole scene: one G-buffer pass over the isosurface,
-the cells, the nuclei and the vessels, then one pass that turns it into the
-image. Only the cells the cut exposes are instanced - a few thousand of them -
-and the rest of the mass is the isosurface, which is both what makes it
-affordable and what stops a distant tumour reading as a cloud of dots. Preset
-parameters ride along as per-instance attributes, so an event touches only the
-slots it changed. The oxygen and drug fields are relaxed only inside a box
-around the tumour.
+## Citing
 
-The knobs that matter if you change the grid: `cell.detail` (0 is 20 triangles
-per cell, 1 is 80, 2 is 320), `cell.slabVoxels` and each view's own
-`slabVoxels`, and `oxygen.relaxSweepsPerTick`. `docs/rendering.md` explains the
-architecture; `VISUAL_REPORT.md` records measured frame times.
+If Iressa is useful in your work, please cite it. GitHub's **Cite this
+repository** button reads [CITATION.cff](CITATION.cff).
+
+## License
+
+[MIT](LICENSE). The public datasets under [data/raw/](data/raw/) remain under
+their own providers' terms; see [docs/references.md](docs/references.md).
+
+<sub>The project takes its name from gefitinib's brand name, the first drug in
+the story it simulates. It is an independent research project and is not
+affiliated with or endorsed by the drug's manufacturer.</sub>

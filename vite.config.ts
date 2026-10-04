@@ -148,7 +148,8 @@ function aiApi() {
 
 export default defineConfig({
   plugins: [aiApi()],
-  server: { port: 5173, open: false },
+  server: { port: 5173, open: false, allowedHosts: ['iressa.quicx.dev'] },
+  preview: { allowedHosts: ['iressa.quicx.dev'] },
   build: { target: 'es2022', sourcemap: true },
   // rules.json / visuals.json are fetched at runtime from the project root so they
   // can be edited without a rebuild. Keep them out of the bundle.

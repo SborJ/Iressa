@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: If you use this software, please cite it as below.
+title: 'Iressa: a 3D simulator of treatment-driven tumour evolution'
+type: software
+authors:
+  - name: The Iressa contributors
+repository-code: https://github.com/SborJ/Iressa
+license: MIT
+version: 0.1.0
+date-released: 2026-10-04
+keywords:
+  - cancer
+  - drug resistance
+  - tumour evolution
+  - cellular automaton
+  - EGFR
+  - reinforcement learning
+  - visualisation

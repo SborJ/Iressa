@@ -1,0 +1,14 @@
+# No line-ending normalisation: the raw datasets are hashed in data/processed/data_manifest.json
+# and must stay byte-identical.
+
+# recorded runs and media are binary
+*.events binary
+*.keyframes binary
+*.gz binary
+*.mp4 binary
+
+# keep datasets out of the language statistics and collapsed in diffs
+data/raw/** linguist-vendored
+data/processed/** linguist-generated
+data/runs/** linguist-generated
+package-lock.json linguist-generated

@@ -1,0 +1,26 @@
+# Security
+
+## Reporting a problem
+
+Please report vulnerabilities privately through
+[GitHub security advisories](https://github.com/SborJ/Iressa/security/advisories/new),
+not in a public issue. Say what you found, how to reproduce it and what it
+exposes. You should hear back within a week.
+
+## What is in scope
+
+- The sign-in flow in `src/auth/` and the database schema and row level
+  security policies in `supabase/migrations/`.
+- The dev server's `/api/ai/*` endpoints in `vite.config.ts`, which start a
+  local Python process.
+- Anything that would leak a key or a researcher's profile data.
+
+## What to know before reporting
+
+- The sign-in screen is the experience, not the security boundary. The
+  simulator's static files are served to anyone; that is by design. Data that
+  must stay private lives in Supabase behind row level security.
+- Only the public **anon** key belongs in a `VITE_` variable. The app refuses
+  to start with a service-role key. If you find a secret committed to this
+  repository, that is a valid report.
+- `/api/ai/*` exists only on the Vite dev server and is meant for local use.

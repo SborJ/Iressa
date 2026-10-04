@@ -1,0 +1,22 @@
+name: Scientific question or correction
+description: A parameter, assumption or model behaviour looks wrong or needs a source
+labels: [science]
+body:
+  - type: textarea
+    id: claim
+    attributes:
+      label: Which value or behaviour?
+      description: Name the parameter, clone, drug or file, and the cancer model it belongs to.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: What does the evidence say?
+      description: Link the paper, dataset or record. Say whether it is measured, derived, inferred or assumed.
+    validations:
+      required: true
+  - type: textarea
+    id: change
+    attributes:
+      label: Suggested change

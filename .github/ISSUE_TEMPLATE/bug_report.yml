@@ -1,0 +1,39 @@
+name: Bug report
+description: Something in the viewer, the engine or the docs is wrong
+labels: [bug]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Where is the problem?
+      options:
+        - 3D viewer (src/)
+        - Python engine (cancer_sim/)
+        - AI agent / RL
+        - Sign-in
+        - Data or calibration
+        - Documentation
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+      description: Include the URL parameters or the command you ran, and the seed if there is one.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. npm run dev
+        2. Open /?cancer=breast_er_her2neg
+        3. ...
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      description: OS, browser and GPU for viewer problems; Python version for engine problems.
