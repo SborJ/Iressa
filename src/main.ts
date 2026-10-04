@@ -21,6 +21,7 @@ import { History } from './ui/history.js';
 import { Narrative } from './ui/narrative.js';
 import { Panel } from './ui/panel.js';
 import { loadRunMetrics, type RunProvenance } from './ui/runMetrics.js';
+import { hideLoader, overlayLoader, showLoader } from './ui/loader.js';
 import { enter } from './ui/motion.js';
 import { bindShortcuts } from './ui/shortcuts.js';
 import { Timeline } from './ui/timeline.js';
@@ -35,6 +36,7 @@ const PICK_INTERVAL_MS = 60;
 const SKIP_BUDGET_MS = 24;
 
 function showError(err: unknown): void {
+  hideLoader();
   const { title, note, problems } = describeLoadError(err);
   document.getElementById('error-title')!.textContent = title;
   document.getElementById('error-note')!.textContent = note;
@@ -164,6 +166,8 @@ async function openRecordedRun(path: string): Promise<void> {
   }
   const previous = location.href;
   history.pushState({}, '', location.pathname + target.search);
+  const stage = document.getElementById('stage')!;
+  const doneLoading = overlayLoader(stage, 'Loading the agent’s run…');
   try {
     const data = await loadData();
     disposeCurrent?.();
@@ -175,6 +179,9 @@ async function openRecordedRun(path: string): Promise<void> {
   } catch (error) {
     history.replaceState({}, '', previous);
     showError(error);
+  } finally {
+    // After the new run's first frame, so the old scene is never seen again.
+    requestAnimationFrame(doneLoading);
   }
 }
 
@@ -505,6 +512,7 @@ async function enterSimulator(view: AuthView, user: AuthUser): Promise<void> {
   if (simulatorStarted) return;
   simulatorStarted = true;
   authService.clearAuthParams();
+  showLoader('Loading the tumour model…');
   view.hide();
   mountAccount(document.getElementById('account')!, user, async () => {
     await authService.signOut();
@@ -512,7 +520,11 @@ async function enterSimulator(view: AuthView, user: AuthUser): Promise<void> {
   });
   // Visible before the viewer is built: it sizes itself from the canvas.
   document.body.dataset.auth = 'in';
-  await startSimulator();
+  const data = await loadData();
+  showLoader('Preparing the 3D scene…');
+  await startSimulator(data);
+  // The first frame is already queued; the cells go once it has been drawn.
+  requestAnimationFrame(hideLoader);
   mountAiAgent();
 }
 
@@ -524,7 +536,7 @@ async function bootstrap(): Promise<void> {
     view.showConfigProblem(authService.configProblem);
     return;
   }
-  view.showLoading();
+  view.showLoading(authService.intent.orcid ? 'Completing ORCID sign-in…' : 'Checking access…');
 
   authService.subscribeToAuthChanges((change, user) => {
     if (change === 'signed-out' && simulatorStarted) leaveSimulator();
