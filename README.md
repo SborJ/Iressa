@@ -181,6 +181,7 @@ python3 -m venv .venv
 
 | Command | What it does |
 |---|---|
+| `npm start` | Set up anything missing (Node packages, the Python `.venv`), then start the server. The one command for a fresh machine |
 | `npm run dev` | The viewer, opening the calibrated engine's recorded run |
 | `npm test` | 91 viewer tests |
 | `npm run build` | Typecheck and production build |

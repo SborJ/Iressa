@@ -5,6 +5,7 @@
   "type": "module",
   "description": "Data-driven 3D tumour simulation and renderer. All biology lives in rules.json; all appearance lives in visuals.json.",
   "scripts": {
+    "start": "bash scripts/start.sh",
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
