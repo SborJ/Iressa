@@ -3,6 +3,10 @@
 This file keeps the project references separate from the build notes. Links are
 grouped by what they support in the simulator.
 
+These resources support data provenance and the biological mechanisms represented
+by the models. They do not, by themselves, validate simulated treatment outcomes
+or turn a cell-line IC50 into a patient-specific prediction.
+
 ## Public Data Resources
 
 - Cell Model Passports database. Wellcome Sanger Institute.  
@@ -119,6 +123,68 @@ grouped by what they support in the simulator.
   doi: 10.1038/nm.3854  
   https://pubmed.ncbi.nlm.nih.gov/25939061/
 
+- Piotrowska Z, Thress KS, Mooradian M, et al. MET amplification as a
+  resistance mechanism to osimertinib. *Journal of Clinical Oncology*.
+  2017;35(15_suppl):9020. Meeting abstract; supports the bypass-resistance
+  hypothesis, not a calibrated MET drug-response value.
+  doi: 10.1200/JCO.2017.35.15_suppl.9020
+  https://ascopubs.org/doi/10.1200/JCO.2017.35.15_suppl.9020
+
+## Clinical Treatment Evidence
+
+- Mok TS, Wu Y-L, Ahn M-J, et al. Osimertinib or platinum-pemetrexed in EGFR
+  T790M-positive lung cancer (AURA3). *New England Journal of Medicine*.
+  2017;376:629-640. Clinical evidence for osimertinib after progression on an
+  earlier EGFR inhibitor; not a direct calibration of this simulator's timing.
+  doi: 10.1056/NEJMoa1612674
+  https://www.nejm.org/doi/full/10.1056/NEJMoa1612674
+
+- Bidard F-C, et al. First-line camizestrant for emerging ESR1-mutated advanced
+  breast cancer (SERENA-6). *New England Journal of Medicine*. 2025. Evidence
+  for the clinical relevance of detecting emerging ESR1 mutations; the model
+  does not simulate this trial's patient outcomes.
+  doi: 10.1056/NEJMoa2502929
+  https://www.nejm.org/doi/full/10.1056/NEJMoa2502929
+
+- Bidard F-C, et al. Elacestrant versus standard endocrine therapy for
+  ER-positive, HER2-negative advanced breast cancer (EMERALD). *Journal of
+  Clinical Oncology*. 2022;40(28):3246-3256. Phase III evidence for
+  elacestrant, including an ESR1-mutant subgroup; not a source for the model's
+  assumed exposure values.
+  doi: 10.1200/JCO.22.00338
+  https://ascopubs.org/doi/10.1200/JCO.22.00338
+
+## Breast Resistance Biology
+
+- Toy W, Shen Y, Won H, et al. ESR1 ligand-binding domain mutations in
+  hormone-resistant breast cancer. *Nature Genetics*. 2013;45:1439-1445.
+  Describes recurrent ESR1 alterations including Y537S and D538G.
+  doi: 10.1038/ng.2822
+  https://www.nature.com/articles/ng.2822
+
+- Fanning SW, Mayne CG, Dharmarajan V, et al. Estrogen receptor alpha somatic
+  mutations Y537S and D538G confer breast cancer endocrine resistance by
+  stabilizing the activating function-2 binding conformation. *eLife*.
+  2016;5:e12792. Structural and cellular mechanism evidence.
+  doi: 10.7554/eLife.12792
+  https://pmc.ncbi.nlm.nih.gov/articles/PMC4821807/
+
+- Martin L-A, Ribas R, Simigdala N, et al. Discovery of naturally occurring
+  ESR1 mutations in breast cancer cell lines modelling endocrine resistance.
+  *Nature Communications*. 2017;8:1865. Reports naturally arising Y537C and
+  Y537S in selected endocrine-resistant cell-line models, not D538G in those
+  models.
+  doi: 10.1038/s41467-017-01864-y
+  https://www.nature.com/articles/s41467-017-01864-y
+
+- Lin CCA, Chica-Parrado MR, Unni N, et al. ESR1 Y537S and D538G mutations
+  drive resistance to CDK4/6 inhibitors in estrogen receptor-positive breast
+  cancer. *Clinical Cancer Research*. 2025;31(9):1667-1675. Real-world
+  association plus knock-in and xenograft results; does not establish that
+  every ESR1-mutant tumour resists palbociclib.
+  doi: 10.1158/1078-0432.CCR-24-2307
+  https://aacrjournals.org/clincancerres/article/31/9/1667/761236/ESR1-Y537S-and-D538G-Mutations-Drive-Resistance-to
+
 ## Modeling References
 
 - Goutelle S, Maurin M, Rougier F, et al. The Hill equation: a review of its
@@ -130,4 +196,3 @@ grouped by what they support in the simulator.
 - Mager DE, Jusko WJ. Mechanism-based pharmacodynamic modeling. *Clinical
   Pharmacology and Therapeutics*. 2001;70(3):210-216.  
   https://pmc.ncbi.nlm.nih.gov/articles/PMC3684160/
-

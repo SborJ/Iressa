@@ -370,9 +370,33 @@ was built on top of it.
 | Source | Used for |
 |---|---|
 | [GDSC](https://www.cancerrxgene.org/) | Drug response: 242,036 dose-response rows, reduced to IC50s for matched cell lines |
-| [Cell Model Passports](https://cellmodelpassports.sanger.ac.uk/) | Which cell lines carry which mutations, and how fast they grow |
-| [CIViC](https://civicdb.org/) | Curated clinical evidence for each resistance mutation |
+| [Cell Model Passports](https://cellmodelpassports.sanger.ac.uk/) ([Sanger overview](https://www.sanger.ac.uk/tool/cell-model-passports-database/)) | Which cell lines carry which mutations, and how fast they grow |
+| [CIViC](https://civicdb.org/) ([documentation](https://docs.civicdb.org/)) | Curated clinical evidence for each resistance mutation |
 | [cBioPortal](https://www.cbioportal.org/) | How often each alteration occurs in a real patient cohort |
+
+The studies below support the resistance mechanisms and treatment context
+represented in the two models. They are distinct from the datasets used to
+calibrate specific numeric parameters.
+
+| Lung cancer research | What it supports |
+|---|---|
+| [Pao et al., *PLoS Medicine* (2005)](https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020073) | Acquired EGFR T790M resistance after gefitinib or erlotinib |
+| [Kobayashi et al., *NEJM* (2005)](https://www.nejm.org/doi/full/10.1056/NEJMoa044238) | Independent evidence linking T790M to gefitinib resistance |
+| [AURA3, *NEJM* (2017)](https://www.nejm.org/doi/full/10.1056/NEJMoa1612674) | Clinical activity of osimertinib after progression with T790M-positive disease |
+| [Thress et al., *Nature Medicine* (2015)](https://www.nature.com/articles/nm.3854) | EGFR C797S as a mechanism of osimertinib resistance |
+| [Piotrowska et al., *JCO* meeting abstract (2017)](https://ascopubs.org/doi/10.1200/JCO.2017.35.15_suppl.9020) | MET amplification as an observed osimertinib bypass-resistance mechanism |
+
+| Breast cancer research | What it supports |
+|---|---|
+| [Toy et al., *Nature Genetics* (2013)](https://www.nature.com/articles/ng.2822) | Recurrent ESR1 ligand-binding-domain mutations in hormone-resistant disease |
+| [Fanning et al., *eLife* (2016)](https://pmc.ncbi.nlm.nih.gov/articles/PMC4821807/) | Structural and cellular evidence for Y537S/D538G endocrine resistance |
+| [Martin et al., *Nature Communications* (2017)](https://www.nature.com/articles/s41467-017-01864-y) | Naturally occurring Y537C/Y537S mutations in endocrine-resistant cell-line models |
+| [Lin et al., *Clinical Cancer Research* (2025)](https://aacrjournals.org/clincancerres/article/31/9/1667/761236/ESR1-Y537S-and-D538G-Mutations-Drive-Resistance-to) | Evidence that Y537S/D538G can contribute to CDK4/6-inhibitor resistance |
+| [EMERALD, *JCO* (2022)](https://ascopubs.org/doi/10.1200/JCO.22.00338) | Phase III elacestrant results, including the ESR1-mutant subgroup |
+
+See [all model references](docs/references.md), including dataset publications.
+These studies support model choices; they do not clinically validate the
+simulator or its learned schedules.
 
 **Provenance on every value.** Each parameter is tagged `DIRECT` (measured in
 a relevant system), `DERIVED`, `INFERRED` or `ASSUMPTION`, in the data and in
