@@ -29,9 +29,9 @@ where every cell that divides, mutates or dies can tell you why.
 [**Quick start**](#quick-start) ·
 [**What you can do**](#what-you-can-do) ·
 [**How it works**](#how-it-works) ·
-[**Code map**](#code-map) ·
 [**The science**](#the-science) ·
-[**Docs**](#documentation)
+[**Docs**](#documentation) ·
+[**Code map**](#code-map)
 
 </div>
 
@@ -329,6 +329,110 @@ That split is the point of the project. Change a number in a data file and the
 behaviour changes, with no code edits and no rebuild. Adding a new cause of
 death takes [a JSON edit and nothing else](docs/adding-a-cause.md).
 
+## The science
+
+Iressa is built to be checked. The numbers come from public datasets, every
+parameter says where it came from, and the engine was audited before anything
+was built on top of it.
+
+| Source | Used for |
+|---|---|
+| [GDSC](https://www.cancerrxgene.org/) | Drug response: 242,036 dose-response rows, reduced to IC50s for matched cell lines |
+| [Cell Model Passports](https://cellmodelpassports.sanger.ac.uk/) ([Sanger overview](https://www.sanger.ac.uk/tool/cell-model-passports-database/)) | Which cell lines carry which mutations, and how fast they grow |
+| [CIViC](https://civicdb.org/) ([documentation](https://docs.civicdb.org/)) | Curated clinical evidence for each resistance mutation |
+| [cBioPortal](https://www.cbioportal.org/) | How often each alteration occurs in a real patient cohort |
+
+The studies below support the resistance mechanisms and treatment context
+represented in the two models. They are distinct from the datasets used to
+calibrate specific numeric parameters.
+
+| Lung cancer research | What it supports |
+|---|---|
+| [Pao et al., *PLoS Medicine* (2005)](https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020073) | Acquired EGFR T790M resistance after gefitinib or erlotinib |
+| [Kobayashi et al., *NEJM* (2005)](https://www.nejm.org/doi/full/10.1056/NEJMoa044238) | Independent evidence linking T790M to gefitinib resistance |
+| [AURA3, *NEJM* (2017)](https://www.nejm.org/doi/full/10.1056/NEJMoa1612674) | Clinical activity of osimertinib after progression with T790M-positive disease |
+| [Thress et al., *Nature Medicine* (2015)](https://www.nature.com/articles/nm.3854) | EGFR C797S as a mechanism of osimertinib resistance |
+| [Piotrowska et al., *JCO* meeting abstract (2017)](https://ascopubs.org/doi/10.1200/JCO.2017.35.15_suppl.9020) | MET amplification as an observed osimertinib bypass-resistance mechanism |
+
+| Breast cancer research | What it supports |
+|---|---|
+| [Toy et al., *Nature Genetics* (2013)](https://www.nature.com/articles/ng.2822) | Recurrent ESR1 ligand-binding-domain mutations in hormone-resistant disease |
+| [Fanning et al., *eLife* (2016)](https://pmc.ncbi.nlm.nih.gov/articles/PMC4821807/) | Structural and cellular evidence for Y537S/D538G endocrine resistance |
+| [Martin et al., *Nature Communications* (2017)](https://www.nature.com/articles/s41467-017-01864-y) | Naturally occurring Y537C/Y537S mutations in endocrine-resistant cell-line models |
+| [Lin et al., *Clinical Cancer Research* (2025)](https://aacrjournals.org/clincancerres/article/31/9/1667/761236/ESR1-Y537S-and-D538G-Mutations-Drive-Resistance-to) | Evidence that Y537S/D538G can contribute to CDK4/6-inhibitor resistance |
+| [EMERALD, *JCO* (2022)](https://ascopubs.org/doi/10.1200/JCO.22.00338) | Phase III elacestrant results, including the ESR1-mutant subgroup |
+
+See [all model references](docs/references.md), including dataset publications.
+These studies support model choices; they do not clinically validate the
+simulator or its learned schedules.
+
+**Provenance on every value.** Each parameter is tagged `DIRECT` (measured in
+a relevant system), `DERIVED`, `INFERRED` or `ASSUMPTION`, in the data and in
+the viewer's evidence panel. Gefitinib's IC50 against the sensitive clone is
+measured across five cell lines; C797S's osimertinib resistance is supported
+by the literature but its number is an assumption, and the interface says so.
+
+**An audited engine.** The [validation report](docs/validation/VALIDATION_REPORT.md)
+covers ingestion, calibration, units, both field solvers and multi-seed
+behaviour over 20 seeds of 120 simulated days. It found and fixed real bugs,
+including a drug field that never reached the cells and an unconverged oxygen
+solver. The overall verdict is *pass with limitations*, and the limitations
+are listed.
+
+<img src="docs/validation/figures/multiseed_summary.png" alt="Bar charts over 20 seeds for seven treatment schedules: time to progression, final burden, final resistant fraction and cumulative dose, with interquartile ranges">
+
+**Experiments, not anecdotes.** In the breast model, seven strategies were
+compared over 120 days on five seeds. No fixed schedule prevented the ESR1
+mutants from taking over; switching earlier only made the tumour smaller. The
+[full table and discussion](docs/breast_er_positive.md) include the cases
+where the learned policies did better, and the caveats that go with five seeds.
+
+<img src="docs/figures/breast_experiment_trajectories.png" alt="Three line charts over 120 days for each strategy: tumour burden, ESR1-mutant fraction and controllability index">
+
+### What this is not
+
+> [!WARNING]
+> Iressa is a research and teaching model. It is not a clinical tool, and
+> nothing it shows is a prediction for a patient.
+
+- **Time runs fast.** Growth is calibrated on cell lines that double in 40 to
+  100 hours, so events unfold 10 to 30 times faster than in a person.
+- **Mutation rates are scaled up.** At real somatic rates no resistant clone
+  would appear in a tumour of a few thousand simulated cells, so demo runs
+  multiply the rate. The relapse you see is real in kind, not in timing.
+- **Some drug responses are assumed.** Every MET-amplification and C797S IC50
+  is an assumption, as is capmatinib's. They are labelled, not hidden.
+- **Pharmacokinetics is simple.** The calibrated engine holds a constant drug
+  concentration at the vessel wall.
+- **The stand-in simulator's numbers are placeholders.** `data/rules.json`
+  drives the TypeScript simulator used for development. Its structure is
+  meant to last; several of its values were chosen so a 60-day run shows
+  something, and its immune term is a flat surface hazard, not an immune model.
+
+## Documentation
+
+| Read this | To learn |
+|---|---|
+| [docs/format.md](docs/format.md) | The event format: the contract between any simulation and the renderer |
+| [docs/adding-a-cause.md](docs/adding-a-cause.md) | How to add a cause of death or arrest without touching code |
+| [docs/rendering.md](docs/rendering.md) | How the scene is drawn, and what is data versus illustration |
+| [docs/physics_world.md](docs/physics_world.md) | The lattice, the fields and the cell rules |
+| [docs/python-engine.md](docs/python-engine.md) | The engine's command reference |
+| [docs/roadmap.md](docs/roadmap.md) | Known bottlenecks and what comes next |
+| [docs/stand-in-simulator.md](docs/stand-in-simulator.md) | The TypeScript simulator, the source seam and how to read `rules.json` |
+| [docs/breast_er_positive.md](docs/breast_er_positive.md) | The breast model, its evidence table and its experiments |
+| [docs/rl-treatment-design.md](docs/rl-treatment-design.md) | The RL environment, rewards and PPO pipeline |
+| [docs/validation/](docs/validation/) | The validation report, parameter provenance and viewer integration |
+| [docs/research-access.md](docs/research-access.md) | Setting up sign-in with Supabase and ORCID |
+| [docs/references.md](docs/references.md) | The papers and datasets behind the model |
+| [Business_plan.md](Business_plan.md) | The commercial hypothesis, clinical and market research used, and evidence limits |
+
+The [business plan](Business_plan.md) draws on the [FLAURA](https://www.nejm.org/doi/full/10.1056/NEJMoa1713137)
+and [SERENA-6](https://www.nejm.org/doi/full/10.1056/NEJMoa2502929) trials,
+[GLOBOCAN 2022 incidence](https://www.wcrf.org/preventing-cancer/cancer-statistics/worldwide-cancer-data/),
+and linked biosimulation market reports. Its market sizing, prices and revenue
+are estimates or hypotheses, not clinical validation or proven demand.
+
 ## Code map
 
 Where everything lives and what each file is for. The project has two halves
@@ -470,110 +574,6 @@ It decides what happens to each cell and writes it out in the viewer's format.
 | [supabase/migrations/](supabase/migrations/) | The accounts database: researcher profiles, row level security, verified ORCID iDs |
 | [.github/](.github/) | CI (typecheck, tests, build), issue and pull-request templates, Dependabot |
 | [Business_plan.md](Business_plan.md) | The business plan |
-
-## The science
-
-Iressa is built to be checked. The numbers come from public datasets, every
-parameter says where it came from, and the engine was audited before anything
-was built on top of it.
-
-| Source | Used for |
-|---|---|
-| [GDSC](https://www.cancerrxgene.org/) | Drug response: 242,036 dose-response rows, reduced to IC50s for matched cell lines |
-| [Cell Model Passports](https://cellmodelpassports.sanger.ac.uk/) ([Sanger overview](https://www.sanger.ac.uk/tool/cell-model-passports-database/)) | Which cell lines carry which mutations, and how fast they grow |
-| [CIViC](https://civicdb.org/) ([documentation](https://docs.civicdb.org/)) | Curated clinical evidence for each resistance mutation |
-| [cBioPortal](https://www.cbioportal.org/) | How often each alteration occurs in a real patient cohort |
-
-The studies below support the resistance mechanisms and treatment context
-represented in the two models. They are distinct from the datasets used to
-calibrate specific numeric parameters.
-
-| Lung cancer research | What it supports |
-|---|---|
-| [Pao et al., *PLoS Medicine* (2005)](https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020073) | Acquired EGFR T790M resistance after gefitinib or erlotinib |
-| [Kobayashi et al., *NEJM* (2005)](https://www.nejm.org/doi/full/10.1056/NEJMoa044238) | Independent evidence linking T790M to gefitinib resistance |
-| [AURA3, *NEJM* (2017)](https://www.nejm.org/doi/full/10.1056/NEJMoa1612674) | Clinical activity of osimertinib after progression with T790M-positive disease |
-| [Thress et al., *Nature Medicine* (2015)](https://www.nature.com/articles/nm.3854) | EGFR C797S as a mechanism of osimertinib resistance |
-| [Piotrowska et al., *JCO* meeting abstract (2017)](https://ascopubs.org/doi/10.1200/JCO.2017.35.15_suppl.9020) | MET amplification as an observed osimertinib bypass-resistance mechanism |
-
-| Breast cancer research | What it supports |
-|---|---|
-| [Toy et al., *Nature Genetics* (2013)](https://www.nature.com/articles/ng.2822) | Recurrent ESR1 ligand-binding-domain mutations in hormone-resistant disease |
-| [Fanning et al., *eLife* (2016)](https://pmc.ncbi.nlm.nih.gov/articles/PMC4821807/) | Structural and cellular evidence for Y537S/D538G endocrine resistance |
-| [Martin et al., *Nature Communications* (2017)](https://www.nature.com/articles/s41467-017-01864-y) | Naturally occurring Y537C/Y537S mutations in endocrine-resistant cell-line models |
-| [Lin et al., *Clinical Cancer Research* (2025)](https://aacrjournals.org/clincancerres/article/31/9/1667/761236/ESR1-Y537S-and-D538G-Mutations-Drive-Resistance-to) | Evidence that Y537S/D538G can contribute to CDK4/6-inhibitor resistance |
-| [EMERALD, *JCO* (2022)](https://ascopubs.org/doi/10.1200/JCO.22.00338) | Phase III elacestrant results, including the ESR1-mutant subgroup |
-
-See [all model references](docs/references.md), including dataset publications.
-These studies support model choices; they do not clinically validate the
-simulator or its learned schedules.
-
-**Provenance on every value.** Each parameter is tagged `DIRECT` (measured in
-a relevant system), `DERIVED`, `INFERRED` or `ASSUMPTION`, in the data and in
-the viewer's evidence panel. Gefitinib's IC50 against the sensitive clone is
-measured across five cell lines; C797S's osimertinib resistance is supported
-by the literature but its number is an assumption, and the interface says so.
-
-**An audited engine.** The [validation report](docs/validation/VALIDATION_REPORT.md)
-covers ingestion, calibration, units, both field solvers and multi-seed
-behaviour over 20 seeds of 120 simulated days. It found and fixed real bugs,
-including a drug field that never reached the cells and an unconverged oxygen
-solver. The overall verdict is *pass with limitations*, and the limitations
-are listed.
-
-<img src="docs/validation/figures/multiseed_summary.png" alt="Bar charts over 20 seeds for seven treatment schedules: time to progression, final burden, final resistant fraction and cumulative dose, with interquartile ranges">
-
-**Experiments, not anecdotes.** In the breast model, seven strategies were
-compared over 120 days on five seeds. No fixed schedule prevented the ESR1
-mutants from taking over; switching earlier only made the tumour smaller. The
-[full table and discussion](docs/breast_er_positive.md) include the cases
-where the learned policies did better, and the caveats that go with five seeds.
-
-<img src="docs/figures/breast_experiment_trajectories.png" alt="Three line charts over 120 days for each strategy: tumour burden, ESR1-mutant fraction and controllability index">
-
-### What this is not
-
-> [!WARNING]
-> Iressa is a research and teaching model. It is not a clinical tool, and
-> nothing it shows is a prediction for a patient.
-
-- **Time runs fast.** Growth is calibrated on cell lines that double in 40 to
-  100 hours, so events unfold 10 to 30 times faster than in a person.
-- **Mutation rates are scaled up.** At real somatic rates no resistant clone
-  would appear in a tumour of a few thousand simulated cells, so demo runs
-  multiply the rate. The relapse you see is real in kind, not in timing.
-- **Some drug responses are assumed.** Every MET-amplification and C797S IC50
-  is an assumption, as is capmatinib's. They are labelled, not hidden.
-- **Pharmacokinetics is simple.** The calibrated engine holds a constant drug
-  concentration at the vessel wall.
-- **The stand-in simulator's numbers are placeholders.** `data/rules.json`
-  drives the TypeScript simulator used for development. Its structure is
-  meant to last; several of its values were chosen so a 60-day run shows
-  something, and its immune term is a flat surface hazard, not an immune model.
-
-## Documentation
-
-| Read this | To learn |
-|---|---|
-| [docs/format.md](docs/format.md) | The event format: the contract between any simulation and the renderer |
-| [docs/adding-a-cause.md](docs/adding-a-cause.md) | How to add a cause of death or arrest without touching code |
-| [docs/rendering.md](docs/rendering.md) | How the scene is drawn, and what is data versus illustration |
-| [docs/physics_world.md](docs/physics_world.md) | The lattice, the fields and the cell rules |
-| [docs/python-engine.md](docs/python-engine.md) | The engine's command reference |
-| [docs/roadmap.md](docs/roadmap.md) | Known bottlenecks and what comes next |
-| [docs/stand-in-simulator.md](docs/stand-in-simulator.md) | The TypeScript simulator, the source seam and how to read `rules.json` |
-| [docs/breast_er_positive.md](docs/breast_er_positive.md) | The breast model, its evidence table and its experiments |
-| [docs/rl-treatment-design.md](docs/rl-treatment-design.md) | The RL environment, rewards and PPO pipeline |
-| [docs/validation/](docs/validation/) | The validation report, parameter provenance and viewer integration |
-| [docs/research-access.md](docs/research-access.md) | Setting up sign-in with Supabase and ORCID |
-| [docs/references.md](docs/references.md) | The papers and datasets behind the model |
-| [Business_plan.md](Business_plan.md) | The commercial hypothesis, clinical and market research used, and evidence limits |
-
-The [business plan](Business_plan.md) draws on the [FLAURA](https://www.nejm.org/doi/full/10.1056/NEJMoa1713137)
-and [SERENA-6](https://www.nejm.org/doi/full/10.1056/NEJMoa2502929) trials,
-[GLOBOCAN 2022 incidence](https://www.wcrf.org/preventing-cancer/cancer-statistics/worldwide-cancer-data/),
-and linked biosimulation market reports. Its market sizing, prices and revenue
-are estimates or hypotheses, not clinical validation or proven demand.
 
 ## Contributing
 
