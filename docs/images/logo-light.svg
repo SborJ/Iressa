@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 124" width="280" height="124" role="img" aria-label="Iressa">
+  <!-- Wordmark: a dotless i whose dot is an orange (resistant) cell, as on the site header. -->
+  <rect x="6" y="52" width="14" height="50" rx="2" fill="#0a0c10"/>
+  <circle cx="13" cy="31" r="12.5" fill="#d4733a"/>
+  <text x="29" y="102" textLength="244" lengthAdjust="spacing" fill="#0a0c10"
+        font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', Inter, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
+        font-size="96" font-weight="700">ressa</text>
+</svg>

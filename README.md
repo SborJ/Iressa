@@ -1,6 +1,11 @@
 <div align="center">
 
-# Iressa
+<h1>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/images/logo-dark.svg">
+    <img src="docs/images/logo-light.svg" alt="Iressa" width="200">
+  </picture>
+</h1>
 
 ### Watch a tumour outsmart its treatment, one cell at a time.
 
