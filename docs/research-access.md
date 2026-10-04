@@ -1,6 +1,7 @@
 # Research access
 
-The landing page (`landing/index.html`, `/landing/` on the dev server) is public.
+The landing page (`index.html`, served at `/`) is public. The simulator lives at
+`/simulation/`.
 The simulator asks researchers to sign in first. This page sets that up.
 
 Sign-in uses [Supabase Auth](https://supabase.com/docs/guides/auth) (email and

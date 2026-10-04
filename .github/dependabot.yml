@@ -11,7 +11,12 @@ updates:
     directory: /
     schedule:
       interval: monthly
+    # requirements are minimum versions; only raise one when it stops working
+    versioning-strategy: increase-if-necessary
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: monthly
+    groups:
+      actions:
+        patterns: ['*']

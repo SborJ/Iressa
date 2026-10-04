@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite';
+import { defineConfig, type Plugin } from 'vite';
 import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { existsSync } from 'node:fs';
@@ -59,7 +59,7 @@ type AiStatus = {
 };
 const AI_CANCERS = ['lung_egfr', 'breast_er_her2neg'];
 
-function aiApi() {
+function aiApi(): Plugin {
   let child: ChildProcessWithoutNullStreams | undefined;
   let status: AiStatus = { state: 'idle', message: '', updates: [], showcases: [] };
   let pending = '';
@@ -139,7 +139,7 @@ function aiApi() {
   };
   return {
     name: 'reinforce-ai',
-    configureServer(server: { middlewares: { use: typeof handler }; httpServer?: { on: (event: string, fn: () => void) => void } }) {
+    configureServer(server) {
       server.middlewares.use(handler);
       server.httpServer?.on('close', () => child?.kill('SIGTERM'));
     },
@@ -156,7 +156,7 @@ function aiApi() {
  * /landing/, its relative links resolved under /landing/ too, and every one of
  * them answered with the same page - so "Open the simulator" did nothing.
  */
-function pageRoutes() {
+function pageRoutes(): Plugin {
   const redirect = (req: IncomingMessage, res: ServerResponse, next: () => void) => {
     const url = new URL(req.url ?? '/', 'http://localhost');
     const to =
@@ -169,8 +169,8 @@ function pageRoutes() {
   };
   return {
     name: 'page-routes',
-    configureServer(server: { middlewares: { use: typeof redirect } }) { server.middlewares.use(redirect); },
-    configurePreviewServer(server: { middlewares: { use: typeof redirect } }) { server.middlewares.use(redirect); },
+    configureServer(server) { server.middlewares.use(redirect); },
+    configurePreviewServer(server) { server.middlewares.use(redirect); },
   };
 }
 

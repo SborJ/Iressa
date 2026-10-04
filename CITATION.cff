@@ -5,6 +5,7 @@ type: software
 authors:
   - name: The Iressa contributors
 repository-code: https://github.com/SborJ/Iressa
+url: https://iressa.quicx.dev/
 license: MIT
 version: 0.1.0
 date-released: 2026-10-04

@@ -7,6 +7,9 @@
 A 3D simulator of how cancers evolve drug resistance, calibrated on public lab data,<br>
 where every cell that divides, mutates or dies can tell you why.
 
+### [**▶ Open the live simulator at iressa.quicx.dev**](https://iressa.quicx.dev/)
+
+[![Live demo](https://img.shields.io/badge/live%20demo-iressa.quicx.dev-e8590c)](https://iressa.quicx.dev/)
 [![CI](https://github.com/SborJ/Iressa/actions/workflows/ci.yml/badge.svg)](https://github.com/SborJ/Iressa/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f.svg)](LICENSE)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.6-3178c6?logo=typescript&logoColor=white)
@@ -17,6 +20,7 @@ where every cell that divides, mutates or dies can tell you why.
 
 <sub>Sixty simulated days. Grey cells are drug-sensitive. Orange carries T790M and shrugs off gefitinib.<br>The treatment switches on day 20, and tan (C797S) and purple (MET-amplified) clones take over.</sub>
 
+[**Live demo**](#try-it-live) ·
 [**Quick start**](#quick-start) ·
 [**What you can do**](#what-you-can-do) ·
 [**How it works**](#how-it-works) ·
@@ -56,6 +60,19 @@ question. This is one recorded run of the calibrated engine, start to finish:
 None of that sequence is scripted. It falls out of growth rates, drug
 sensitivities, oxygen supply and mutation odds, all of which live in data
 files you can edit.
+
+## Try it live
+
+Iressa is running at **[iressa.quicx.dev](https://iressa.quicx.dev/)**. Nothing to install.
+
+| | |
+|---|---|
+| [iressa.quicx.dev](https://iressa.quicx.dev/) | The landing page: the idea in a minute, open to everyone |
+| [iressa.quicx.dev/simulation/](https://iressa.quicx.dev/simulation/) | The simulator. Create a free researcher account or sign in, then explore |
+| [iressa.quicx.dev/simulation/?cancer=breast_er_her2neg](https://iressa.quicx.dev/simulation/?cancer=breast_er_her2neg) | The same, opening on the breast cancer model |
+
+It needs a desktop browser with WebGL2. Everything below, including the AI
+agent, works on the hosted version.
 
 ## What you can do
 
@@ -123,7 +140,7 @@ top bar switches between them.
 | Disease | EGFR-mutant lung adenocarcinoma | ER+/HER2− breast cancer |
 | Clones | EGFR, T790M, C797S, MET amplification | ESR1 wild type, ESR1 Y537S, ESR1 D538G, CDK4/6 escape |
 | Treatments | gefitinib, osimertinib, capmatinib | endocrine suppression, palbociclib, fulvestrant, elacestrant |
-| Open with | default | `?cancer=breast_er_her2neg` |
+| Open with | [`/simulation/`](https://iressa.quicx.dev/simulation/) | [`/simulation/?cancer=breast_er_her2neg`](https://iressa.quicx.dev/simulation/?cancer=breast_er_her2neg) |
 
 <img src="docs/images/breast-model.jpg" alt="The breast cancer model on day 47: ESR1 Y537S cells in orange overtaking grey ER-sensitive cells under palbociclib plus fulvestrant">
 
@@ -152,24 +169,26 @@ PPO pipeline with domain randomisation lives in
 
 ## Quick start
 
-You need Node 20+ and, for the engine and the AI agent, Python 3.10+.
+To run your own copy you need Node 20+ and Python 3.10+.
 
 ```bash
 git clone https://github.com/SborJ/Iressa.git
 cd Iressa
-npm install
 cp .env.example .env.local    # then add your Supabase URL and anon key
-npm run dev                   # http://localhost:5173
+npm start                     # installs what is missing, then serves http://localhost:5173
 ```
+
+`npm start` installs the Node packages, creates the Python environment the AI
+agent needs, and starts the server. The landing page is at `/` and the
+simulator at `/simulation/`.
 
 The simulator asks researchers to sign in, so it needs a Supabase project
 before it will open: [docs/research-access.md](docs/research-access.md) walks
-through it, including ORCID sign-in. The landing page at `/landing/` is public.
+through it, including ORCID sign-in. The landing page is public.
 
-To run the Python engine, the tests and the AI agent:
+To work on the Python engine and run its tests:
 
 ```bash
-python3 -m venv .venv
 .venv/bin/pip install -r requirements-dev.txt
 
 # simulate a tumour and export it for the 3D viewer
@@ -181,8 +200,8 @@ python3 -m venv .venv
 
 | Command | What it does |
 |---|---|
-| `npm start` | Set up anything missing (Node packages, the Python `.venv`), then start the server. The one command for a fresh machine |
-| `npm run dev` | The viewer, opening the calibrated engine's recorded run |
+| `npm start` | Set up anything missing (Node packages, the Python `.venv`), then start the server |
+| `npm run dev` | Start the server only, when everything is already installed |
 | `npm test` | 91 viewer tests |
 | `npm run build` | Typecheck and production build |
 | `npm run sim` | The TypeScript stand-in simulator, headless, with a cause breakdown |
@@ -202,14 +221,38 @@ python3 -m venv .venv
 
 | URL | Opens |
 |---|---|
-| `/` | The lung model's recorded run |
-| `/?cancer=breast_er_her2neg` | The breast model's recorded run |
-| `/?cancer=breast_er_her2neg&run=breast48-ppo` | The same tumour treated by a trained PPO policy |
-| `/?source=local` | The TypeScript stand-in simulator, live |
-| `/?source=file&rules=…&events=…&keyframes=…` | Any recorded run |
-| `/?source=socket&host=…&port=…` | A run streamed over a WebSocket |
+| `/` | The landing page |
+| `/simulation/` | The lung model's recorded run |
+| `/simulation/?cancer=breast_er_her2neg` | The breast model's recorded run |
+| `/simulation/?cancer=breast_er_her2neg&run=breast48-ppo` | The same tumour treated by a trained PPO policy |
+| `/simulation/?source=local` | The TypeScript stand-in simulator, live |
+| `/simulation/?source=file&rules=…&events=…&keyframes=…` | Any recorded run |
+| `/simulation/?source=socket&host=…&port=…` | A run streamed over a WebSocket |
 
 </details>
+
+## Deploying
+
+The hosted site at [iressa.quicx.dev](https://iressa.quicx.dev/) is this
+repository running `npm start` behind a Cloudflare Tunnel. To host your own:
+
+1. On the server: clone the repository, add `.env.local`, run `npm start`.
+   On Debian or Ubuntu, install `python3-venv` first; the script names the
+   exact package if it is missing.
+2. Add your domain to `server.allowedHosts` in [vite.config.ts](vite.config.ts),
+   or the server answers "Blocked request".
+3. Point your tunnel or reverse proxy at `http://localhost:5173`.
+4. In Supabase, set the Site URL and Redirect URLs to your domain
+   ([docs/research-access.md](docs/research-access.md)).
+
+To update a running site: `git pull`, then `npm start` again.
+
+> [!NOTE]
+> The AI agent needs the Node server, because pressing **Start learning** runs
+> a Python trainer on the host. A static build (`npm run build`, then serve
+> `dist/`) hosts everything else, with the AI agent button inactive. On a
+> public server, anyone can start a training run; only one runs at a time and
+> each is capped at two minutes.
 
 ## How it works
 
@@ -282,7 +325,8 @@ data/
 scripts/                 CLIs: export runs, train agents, run experiment panels
 tests/                   Vitest and pytest suites
 docs/                    format, rendering, validation, model notes
-landing/                 the public landing page
+index.html               the public landing page (media in landing/)
+simulation/index.html    the simulator page
 supabase/migrations/     researcher profiles, row level security, verified ORCID iDs
 ```
 
@@ -353,6 +397,7 @@ where the learned policies did better, and the caveats that go with five seeds.
 | [docs/rendering.md](docs/rendering.md) | How the scene is drawn, and what is data versus illustration |
 | [docs/physics_world.md](docs/physics_world.md) | The lattice, the fields and the cell rules |
 | [docs/python-engine.md](docs/python-engine.md) | The engine's command reference |
+| [docs/roadmap.md](docs/roadmap.md) | Known bottlenecks and what comes next |
 | [docs/stand-in-simulator.md](docs/stand-in-simulator.md) | The TypeScript simulator, the source seam and how to read `rules.json` |
 | [docs/breast_er_positive.md](docs/breast_er_positive.md) | The breast model, its evidence table and its experiments |
 | [docs/rl-treatment-design.md](docs/rl-treatment-design.md) | The RL environment, rewards and PPO pipeline |

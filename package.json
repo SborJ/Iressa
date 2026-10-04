@@ -1,6 +1,10 @@
 {
   "name": "iressa",
   "private": true,
+  "license": "MIT",
+  "homepage": "https://iressa.quicx.dev/",
+  "repository": { "type": "git", "url": "git+https://github.com/SborJ/Iressa.git" },
+  "bugs": { "url": "https://github.com/SborJ/Iressa/issues" },
   "version": "0.1.0",
   "type": "module",
   "description": "Data-driven 3D tumour simulation and renderer. All biology lives in rules.json; all appearance lives in visuals.json.",

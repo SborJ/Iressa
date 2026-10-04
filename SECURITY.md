@@ -11,8 +11,8 @@ exposes. You should hear back within a week.
 
 - The sign-in flow in `src/auth/` and the database schema and row level
   security policies in `supabase/migrations/`.
-- The dev server's `/api/ai/*` endpoints in `vite.config.ts`, which start a
-  local Python process.
+- The server's `/api/ai/*` endpoints in `vite.config.ts`, which start a
+  Python training process on the host.
 - Anything that would leak a key or a researcher's profile data.
 
 ## What to know before reporting
@@ -23,4 +23,7 @@ exposes. You should hear back within a week.
 - Only the public **anon** key belongs in a `VITE_` variable. The app refuses
   to start with a service-role key. If you find a secret committed to this
   repository, that is a valid report.
-- `/api/ai/*` exists only on the Vite dev server and is meant for local use.
+- `/api/ai/*` is not behind sign-in. It accepts only a cancer id from a fixed
+  list and a duration, runs one trainer at a time and caps each at two
+  minutes. A way to make it run anything else, or to exhaust the host, is a
+  valid report.
