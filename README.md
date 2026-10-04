@@ -428,6 +428,13 @@ where the learned policies did better, and the caveats that go with five seeds.
 | [docs/validation/](docs/validation/) | The validation report, parameter provenance and viewer integration |
 | [docs/research-access.md](docs/research-access.md) | Setting up sign-in with Supabase and ORCID |
 | [docs/references.md](docs/references.md) | The papers and datasets behind the model |
+| [Business_plan.md](Business_plan.md) | The commercial hypothesis, clinical and market research used, and evidence limits |
+
+The [business plan](Business_plan.md) draws on the [FLAURA](https://www.nejm.org/doi/full/10.1056/NEJMoa1713137)
+and [SERENA-6](https://www.nejm.org/doi/full/10.1056/NEJMoa2502929) trials,
+[GLOBOCAN 2022 incidence](https://www.wcrf.org/preventing-cancer/cancer-statistics/worldwide-cancer-data/),
+and linked biosimulation market reports. Its market sizing, prices and revenue
+are estimates or hypotheses, not clinical validation or proven demand.
 
 ## Contributing
 
