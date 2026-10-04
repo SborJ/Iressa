@@ -35,6 +35,14 @@ const PICK_INTERVAL_MS = 60;
 /** How long a frame may spend skipping ahead, so the page stays responsive. */
 const SKIP_BUDGET_MS = 24;
 
+/**
+ * ?slow (or ?slow=N) holds each loading step for N seconds (default 3), so the
+ * loading screen can be watched. Normal visits never wait.
+ */
+const slowParam = new URLSearchParams(location.search).get('slow');
+const SLOW_MS = slowParam === null ? 0 : (Number(slowParam) || 3) * 1000;
+const slow = (): Promise<void> => new Promise((resolve) => setTimeout(resolve, SLOW_MS));
+
 function showError(err: unknown): void {
   hideLoader();
   const { title, note, problems } = describeLoadError(err);
@@ -169,6 +177,7 @@ async function openRecordedRun(path: string): Promise<void> {
   const stage = document.getElementById('stage')!;
   const doneLoading = overlayLoader(stage, 'Loading the agent’s run…');
   try {
+    if (SLOW_MS) await slow();
     const data = await loadData();
     disposeCurrent?.();
     for (const id of ['panel', 'timeline', 'stagetop']) document.getElementById(id)?.replaceChildren();
@@ -520,8 +529,10 @@ async function enterSimulator(view: AuthView, user: AuthUser): Promise<void> {
   });
   // Visible before the viewer is built: it sizes itself from the canvas.
   document.body.dataset.auth = 'in';
+  if (SLOW_MS) await slow();
   const data = await loadData();
   showLoader('Preparing the 3D scene…');
+  if (SLOW_MS) await slow();
   await startSimulator(data);
   // The first frame is already queued; the cells go once it has been drawn.
   requestAnimationFrame(hideLoader);
@@ -547,6 +558,7 @@ async function bootstrap(): Promise<void> {
     }
   });
 
+  if (SLOW_MS) await slow();
   const user = await authService.getSession();
   if (user && authService.isRecovery()) {
     view.show('recovery');
