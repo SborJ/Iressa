@@ -29,10 +29,20 @@ PYTHON="${IRESSA_PYTHON:-}"
 if [ -n "$PYTHON" ]; then
   "$PYTHON" -c 'import numpy' 2>/dev/null || die "IRESSA_PYTHON ($PYTHON) cannot import numpy."
 else
+  # A .venv without pip is the leftover of a failed attempt (no python3-venv
+  # package); it looks like an environment but nothing can be installed into it.
+  if [ -d .venv ] && [ ! -x .venv/bin/pip ]; then
+    say "Removing an incomplete .venv"
+    rm -rf .venv
+  fi
   if [ ! -x .venv/bin/python ]; then
     command -v python3 >/dev/null || die "python3 is not installed. Install Python 3.10 or newer, then run this again."
     say "Creating the Python environment in .venv"
-    python3 -m venv .venv || die "Could not create .venv. On Debian or Ubuntu: sudo apt install python3-venv"
+    if ! python3 -m venv .venv; then
+      rm -rf .venv
+      version="$(python3 -c 'import sys; print("%d.%d" % sys.version_info[:2])')"
+      die "Could not create .venv. On Debian or Ubuntu run: sudo apt install python${version}-venv   then: npm start"
+    fi
   fi
   if ! .venv/bin/python -c 'import numpy, matplotlib' 2>/dev/null; then
     say "Installing Python packages"
