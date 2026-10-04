@@ -175,15 +175,12 @@ function pageRoutes() {
 }
 
 export default defineConfig({
-  plugins: [aiApi()],
-  server: { port: 5173, open: false, allowedHosts: ['iressa.quicx.dev'] },
-  preview: { allowedHosts: ['iressa.quicx.dev'] },
-  build: { target: 'es2022', sourcemap: true },
   plugins: [pageRoutes(), aiApi()],
   // A multi-page site, not a single-page app: an address that matches no page
   // is a 404, rather than the landing page served under the wrong URL.
   appType: 'mpa',
-  server: { port: 5173, open: false },
+  server: { port: 5173, open: false, allowedHosts: ['iressa.quicx.dev'] },
+  preview: { allowedHosts: ['iressa.quicx.dev'] },
   build: {
     target: 'es2022',
     sourcemap: true,
