@@ -1,4 +1,5 @@
 import { el } from '../ui/dom.js';
+import { hideLoader, showLoader } from '../ui/loader.js';
 import type { AuthService } from './authService.js';
 import type { AuthIntent, AuthScreen, AuthUser } from './authTypes.js';
 import { orcidIcon } from './orcidIcon.js';
@@ -62,10 +63,11 @@ export class AuthView {
     this.panel.replaceChildren();
   }
 
-  showLoading(): void {
-    this.mount('loading', [
-      el('p', { class: 'auth-loading', role: 'status', text: 'Checking access…' }),
-    ]);
+  /** The page's loading cells, saying what is being waited for. */
+  showLoading(text = 'Checking access…'): void {
+    this.state = 'loading';
+    this.root.hidden = true;
+    showLoader(text);
   }
 
   showConfigProblem(problem: ConfigProblem): void {
@@ -247,9 +249,11 @@ export class AuthView {
       button.disabled = true;
       label.textContent = 'Redirecting to ORCID…';
       msg.textContent = '';
+      showLoader('Redirecting to ORCID…');
       const res = await this.auth.signInWithOrcid();
       // On success the browser is already leaving for ORCID.
       if (!res.ok) {
+        hideLoader();
         button.disabled = false;
         label.textContent = text;
         msg.textContent = res.message;
@@ -273,6 +277,7 @@ export class AuthView {
     this.root.hidden = false;
     this.panel.replaceChildren(el('div', { class: 'auth-brand', text: 'Iressa' }), ...children);
     this.panel.dataset.screen = state;
+    hideLoader();
     focus?.focus();
   }
 
