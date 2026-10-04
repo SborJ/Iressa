@@ -29,6 +29,7 @@ where every cell that divides, mutates or dies can tell you why.
 [**Quick start**](#quick-start) ·
 [**What you can do**](#what-you-can-do) ·
 [**How it works**](#how-it-works) ·
+[**Code map**](#code-map) ·
 [**The science**](#the-science) ·
 [**Docs**](#documentation)
 
@@ -328,38 +329,147 @@ That split is the point of the project. Change a number in a data file and the
 behaviour changes, with no code edits and no rebuild. Adding a new cause of
 death takes [a JSON edit and nothing else](docs/adding-a-cause.md).
 
-<details>
-<summary><b>Repository layout</b></summary>
+## Code map
+
+Where everything lives and what each file is for. The project has two halves
+that only meet through a file format: a **Python engine** that decides what
+happens to each cell, and a **browser viewer** that draws it.
 
 ```
-cancer_sim/              the Python engine
-  cancers/               one JSON per cancer: clones, drugs, schedules, RL actions
-  calibration/           public data -> clone parameters, with provenance
-  automata.py fields.py  the cellular automaton and its oxygen/drug solvers
-  reinforce.py rl_env.py the REINFORCE agent and the Gymnasium environment
-src/
-  format/                the 16-byte event record and the keyframe. No biology.
-  sim/                   the stand-in simulator. All the biology, none of the numbers.
-  source/                the seam: local simulator | recorded file | WebSocket
-  world/                 the tissue rebuilt from the event stream, plus the tallies
-  render/                instanced cells, isosurface, vessels, one parameterised shader
-  ui/                    hover card, panels, timeline, AI agent
-  auth/                  Supabase sign-in
-data/
-  rules.json             every rate, threshold, probability and schedule
-  visuals.json           every colour, animation preset and duration
-  schema/                both files are validated against these at startup
-  raw/ processed/        public datasets and the calibrated parameters built from them
-  runs/                  recorded runs the viewer opens
-scripts/                 CLIs: export runs, train agents, run experiment panels
-tests/                   Vitest and pytest suites
-docs/                    format, rendering, validation, model notes
-index.html               the public landing page (media in landing/)
-simulation/index.html    the simulator page
-supabase/migrations/     researcher profiles, row level security, verified ORCID iDs
+Iressa/
+├── index.html            the landing page
+├── simulation/           the simulator page
+├── src/                  the browser viewer (TypeScript)
+├── cancer_sim/           the simulation engine (Python)
+├── data/                 rules, colours, datasets and recorded runs
+├── scripts/              command-line tools
+├── tests/                viewer and engine tests
+├── docs/                 documentation
+└── supabase/             the accounts database
 ```
 
-</details>
+### The pages
+
+| File | What it is |
+|---|---|
+| [index.html](index.html) | The public landing page, in one self-contained file: its styles, the hero video player and the scroll-driven "how resistance happens" section |
+| [landing/media/](landing/media/) | The landing page's video and images |
+| [simulation/index.html](simulation/index.html) | The simulator's page: layout, styles and the loading screen. Everything interactive is loaded from `src/` |
+| [vite.config.ts](vite.config.ts) | The dev server: page routes, the allowed hostname, and the `/api/ai/*` endpoints that start the Python trainer for the AI agent |
+
+### The viewer: `src/`
+
+It draws a run and knows no biology. Every number it shows comes from the data files or the event stream.
+
+| File | What it does |
+|---|---|
+| [src/main.ts](src/main.ts) | The entry point: checks sign-in, loads the data, picks where the run comes from, and wires the renderer, panels and controls together |
+| [src/data.ts](src/data.ts) | Fetches `rules.json` and `visuals.json` at startup and validates them against their schemas |
+| [src/defaultRun.ts](src/defaultRun.ts) | Which recorded run opens for each cancer |
+| [src/doseLimits.ts](src/doseLimits.ts) | The highest exposure of each drug the experiment controls will allow |
+| [src/experimentParams.ts](src/experimentParams.ts) | Turns the "Set up an experiment" choices into a run |
+| **`src/format/`** | **The file format, shared with Python** |
+| [events.ts](src/format/events.ts) | The 16-byte event record: divide, die, mutate, change state |
+| [keyframes.ts](src/format/keyframes.ts) | Full snapshots of the tissue, so the viewer can jump in time |
+| **`src/source/`** | **Where a run comes from** |
+| [types.ts](src/source/types.ts) | The one interface the renderer talks to |
+| [fileSource.ts](src/source/fileSource.ts) | Replays a recorded run |
+| [socketSource.ts](src/source/socketSource.ts) | Receives a run streamed over a WebSocket |
+| [localSim.ts](src/source/localSim.ts) | Runs the TypeScript stand-in simulator in the browser |
+| **`src/world/`** | **The tissue, as the viewer holds it** |
+| [world.ts](src/world/world.ts) | Rebuilds the state of every cell purely from the event stream |
+| [causeStats.ts](src/world/causeStats.ts) | Tallies deaths and arrests by cause over time |
+| **`src/render/`** | **The 3D drawing (three.js, WebGL2)** |
+| [viewer.ts](src/render/viewer.ts) | The scene, camera, the cut, picking the cell under the pointer, and the frame loop |
+| [cellMesh.ts](src/render/cellMesh.ts) | The individual cells on the cut faces, drawn as instances |
+| [isosurface.ts](src/render/isosurface.ts), [surfaceMesh.ts](src/render/surfaceMesh.ts) | The smooth outer surface of the tumour where single cells are not drawn |
+| [vesselMesh.ts](src/render/vesselMesh.ts) | Blood vessels and the red cells inside them |
+| [visuals.ts](src/render/visuals.ts) | Reads `visuals.json` into colours and animation presets |
+| [shaders/](src/render/shaders/) | The GLSL for cells, surface, vessels and the final image, shared by the three imaging views |
+| **`src/ui/`** | **Everything around the 3D view** |
+| [panel.ts](src/ui/panel.ts) | The side panel: lineages, states, resistance graph, parameters and evidence |
+| [controls.ts](src/ui/controls.ts), [shortcuts.ts](src/ui/shortcuts.ts) | Play, speed, view, cut and colour controls, and their keys |
+| [timeline.ts](src/ui/timeline.ts) | The scrubber with the treatment schedule under it |
+| [card.ts](src/ui/card.ts) | The hover card that says why a cell is in its state |
+| [headline.ts](src/ui/headline.ts), [narrative.ts](src/ui/narrative.ts) | The plain-language status line in the top bar |
+| [causeChart.ts](src/ui/causeChart.ts) | The deaths-by-cause chart |
+| [experiment.ts](src/ui/experiment.ts) | The "Set up an experiment" form |
+| [aiAgent.ts](src/ui/aiAgent.ts) | The AI agent panel: training progress, its "brain" diagram, preferences and learning curve |
+| [runMetrics.ts](src/ui/runMetrics.ts) | Reads the controllability readings a recorded run carries |
+| [labels.ts](src/ui/labels.ts) | All wording about causes and states, taken from `rules.json` |
+| **`src/sim/`** | **The stand-in simulator (for development; `?source=local`)** |
+| [simulator.ts](src/sim/simulator.ts) | A TypeScript simulator that produces the same events as the engine |
+| [rules.ts](src/sim/rules.ts) | Parses `rules.json` into typed rules |
+| [fields.ts](src/sim/fields.ts), [grid.ts](src/sim/grid.ts), [vasculature.ts](src/sim/vasculature.ts), [rng.ts](src/sim/rng.ts) | Oxygen and drug fields, the voxel lattice, the vessel tree and reproducible random numbers |
+| **`src/auth/`** | **Sign-in** |
+| [authService.ts](src/auth/authService.ts) | The only module that talks to Supabase: sign in, register, reset, ORCID |
+| [authView.ts](src/auth/authView.ts) | The sign-in, register and password screens |
+| [supabase.ts](src/auth/supabase.ts) | Creates the Supabase client from the `.env.local` keys and refuses secret keys |
+
+### The engine: `cancer_sim/`
+
+It decides what happens to each cell and writes it out in the viewer's format.
+
+| File | What it does |
+|---|---|
+| [cancers/lung_egfr.json](cancer_sim/cancers/lung_egfr.json), [cancers/breast_er_her2neg.json](cancer_sim/cancers/breast_er_her2neg.json) | One file per cancer: its clones, mutations, drugs, schedules and the AI agent's choices |
+| [world.py](cancer_sim/world.py), [world_seed.py](cancer_sim/world_seed.py) | The lattice of cells and vessels, and how the starting tumour is seeded |
+| [vasculature.py](cancer_sim/vasculature.py) | Grows the 3D blood-vessel tree |
+| [fields.py](cancer_sim/fields.py) | Solves how oxygen and drug spread from the vessels through the tissue |
+| [automata.py](cancer_sim/automata.py) | The core rules, one step at a time: fields, cell states, death, clearance, division and mutation |
+| [mutation_flow.py](cancer_sim/mutation_flow.py) | Which clone can mutate into which |
+| [simulation.py](cancer_sim/simulation.py) | Treatment schedules (none, continuous, switch, adaptive) and the runner that steps the tumour through them |
+| [experiments.py](cancer_sim/experiments.py) | Runs one configuration or a panel of them and computes the outcome metrics |
+| [controllability.py](cancer_sim/controllability.py) | Measures how controllable the tumour still is with the drugs available |
+| [iressa_export.py](cancer_sim/iressa_export.py) | Writes a run as `rules.json`, events and keyframes for the viewer |
+| [reinforce.py](cancer_sim/reinforce.py) | The lightweight REINFORCE agent behind the AI agent button (numpy only) |
+| [rl_env.py](cancer_sim/rl_env.py), [rl_eval.py](cancer_sim/rl_eval.py) | The Gymnasium environment for PPO, and evaluation on held-out tumours |
+| [narration.py](cancer_sim/narration.py) | Plain-language descriptions of the agent's decisions |
+| [live.py](cancer_sim/live.py) | A live two-way session that streams a running simulation to the viewer |
+| [provenance.py](cancer_sim/provenance.py) | The source and unit of every parameter |
+| [calibration/](cancer_sim/calibration/) | Turns the public datasets into clone parameters: [ingest/](cancer_sim/calibration/ingest/) reads GDSC, Cell Model Passports, CIViC and cBioPortal; [clones.py](cancer_sim/calibration/clones.py) matches cell lines and derives growth and drug response; [pipeline.py](cancer_sim/calibration/pipeline.py) runs it end to end; [report.py](cancer_sim/calibration/report.py) writes the calibration report |
+| `*_viz.py` | Matplotlib and terminal plots for working without the 3D viewer |
+| [python/iressa_format.py](python/iressa_format.py) | The Python side of the event format, tested byte for byte against the TypeScript one |
+
+### The data: `data/`
+
+| Path | What it holds |
+|---|---|
+| [rules.json](data/rules.json) | Every rate, threshold, probability and schedule for the stand-in simulator |
+| [visuals.json](data/visuals.json) | Every colour, animation preset and duration |
+| [schema/](data/schema/) | The JSON schemas both files are checked against at startup |
+| [raw/](data/raw/) | The public datasets as downloaded, with checksums |
+| [curated/](data/curated/), [config/](data/config/) | Hand-written clone definitions and physical constants |
+| [processed/](data/processed/) | The calibrated parameters the engine runs on, and the calibration report |
+| [runs/](data/runs/) | Recorded runs the viewer opens: `demo48` (lung), `breast48`, `breast48-ppo` |
+
+### Scripts: `scripts/`
+
+| Script | What it does |
+|---|---|
+| [start.sh](scripts/start.sh) | `npm start`: installs what is missing, then starts the server |
+| [export_iressa_run.py](scripts/export_iressa_run.py) | Simulates a tumour and records it for the viewer |
+| [train_reinforce.py](scripts/train_reinforce.py) | Trains the AI agent; the server runs this when you press **Start learning** |
+| [train_ppo.py](scripts/train_ppo.py), [evaluate_policy.py](scripts/evaluate_policy.py) | Trains the deeper PPO policy and compares policies on held-out tumours |
+| [prepare_data.py](scripts/prepare_data.py), [fetch_raw_data.py](scripts/fetch_raw_data.py), [audit_raw_data.py](scripts/audit_raw_data.py) | Download, check and calibrate the public data |
+| [run_validation_suite.py](scripts/run_validation_suite.py), [render_validation_report.py](scripts/render_validation_report.py) | Run the validation experiments and write the validation report |
+| [run_experiment_panel.py](scripts/run_experiment_panel.py), [run_repeated_experiments.py](scripts/run_repeated_experiments.py), [run_sensitivity_panel.py](scripts/run_sensitivity_panel.py) | Compare treatment schedules, repeat them over many seeds, and test sensitivity to assumptions |
+| [run_breast_experiment.py](scripts/run_breast_experiment.py), [run_ablations.py](scripts/run_ablations.py) | The breast-cancer strategy comparison and its ablations |
+| [engine_freeze.py](scripts/engine_freeze.py) | Records or verifies the checksums of the validated engine files |
+| [serve_live.py](scripts/serve_live.py) | Streams a live simulation to the viewer over a WebSocket |
+| [run-sim.ts](scripts/run-sim.ts), [record-run.ts](scripts/record-run.ts) | Run and record the TypeScript stand-in simulator from the terminal |
+| [setup-orcid-provider.mjs](scripts/setup-orcid-provider.mjs) | Registers ORCID as a sign-in provider in Supabase |
+
+### Tests, docs and the rest
+
+| Path | What it holds |
+|---|---|
+| [tests/](tests/) `*.test.ts` | Viewer tests: the format, the rules, the stand-in simulator, sources, dose limits |
+| [tests/](tests/) `test_*.py` | Engine tests: automaton, field solvers, calibration, export, RL environment, scientific invariants |
+| [docs/](docs/) | The documentation listed [below](#documentation), plus [images/](docs/images/) used in this README |
+| [supabase/migrations/](supabase/migrations/) | The accounts database: researcher profiles, row level security, verified ORCID iDs |
+| [.github/](.github/) | CI (typecheck, tests, build), issue and pull-request templates, Dependabot |
+| [Business_plan.md](Business_plan.md) | The business plan |
 
 ## The science
 
