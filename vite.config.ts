@@ -146,10 +146,45 @@ function aiApi() {
   };
 }
 
+/**
+ * Two pages: the landing page at / and the simulator at /simulation/.
+ *
+ * Addresses a static host would resolve are made to resolve the same way here:
+ * /simulation gains its trailing slash (keeping the query - recorded-run and
+ * sign-in links carry one), and the landing page's old address, /landing/,
+ * sends people to /. Without that, an old bookmark showed the landing page at
+ * /landing/, its relative links resolved under /landing/ too, and every one of
+ * them answered with the same page - so "Open the simulator" did nothing.
+ */
+function pageRoutes() {
+  const redirect = (req: IncomingMessage, res: ServerResponse, next: () => void) => {
+    const url = new URL(req.url ?? '/', 'http://localhost');
+    const to =
+      url.pathname === '/simulation' ? `/simulation/${url.search}`
+      : url.pathname === '/landing' || url.pathname === '/landing/' || url.pathname === '/landing/index.html' ? `/${url.search}${url.hash}`
+      : undefined;
+    if (!to) return next();
+    res.writeHead(301, { Location: to });
+    res.end();
+  };
+  return {
+    name: 'page-routes',
+    configureServer(server: { middlewares: { use: typeof redirect } }) { server.middlewares.use(redirect); },
+    configurePreviewServer(server: { middlewares: { use: typeof redirect } }) { server.middlewares.use(redirect); },
+  };
+}
+
 export default defineConfig({
-  plugins: [aiApi()],
+  plugins: [pageRoutes(), aiApi()],
+  // A multi-page site, not a single-page app: an address that matches no page
+  // is a 404, rather than the landing page served under the wrong URL.
+  appType: 'mpa',
   server: { port: 5173, open: false },
-  build: { target: 'es2022', sourcemap: true },
+  build: {
+    target: 'es2022',
+    sourcemap: true,
+    rollupOptions: { input: { main: resolve('index.html'), simulation: resolve('simulation/index.html') } },
+  },
   // rules.json / visuals.json are fetched at runtime from the project root so they
   // can be edited without a rebuild. Keep them out of the bundle.
   publicDir: 'data',

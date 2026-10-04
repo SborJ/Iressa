@@ -44,7 +44,8 @@ export class AuthView {
       el('div', { class: 'auth-shell' }, [
         this.panel,
         el('p', { class: 'auth-foot' }, [
-          el('a', { href: 'landing/', text: 'About Iressa' }),
+          // The simulator lives at /simulation/; the overview is the site root.
+          el('a', { href: '../', text: 'About Iressa' }),
         ]),
       ]),
     );
