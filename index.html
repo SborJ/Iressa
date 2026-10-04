@@ -40,19 +40,15 @@
 <style>
 /* Every colour and the type stack are the simulator's own (simulation/index.html
    :root and the tissue view's lineage colours in data/visuals.json), so the page
-   and the product read as one thing: the simulator's ink, its teal for "responds"
-   and its warm tones for resistance. */
+   and the product read as one thing. Sections alternate between the simulator's
+   ink and its reading surface, paper; each sets the few variables below and
+   every component draws from them. */
 :root {
-  /* Surfaces and ink, as in the simulator */
-  --ink-0: #0a0c10;        /* --bg */
-  --ink-1: #10131a;
-  --ink-2: #161a22;        /* --raised */
-  --ink-3: #1d222c;
-  --ink-line: #232833;     /* --line */
-  --ink-line-2: #313846;
-  --on-dark: #f0f2f6;      /* --fg */
-  --on-dark-2: #a9b2c0;    /* --fg-2 */
-  --on-dark-3: #7d8696;    /* --fg-3 */
+  --ink-0: #0a0c10;        /* the simulator's --bg */
+  --ink-1: #13161c;        /* --surface */
+  --ink-line: #252a34;     /* --line */
+  --paper: #f4f5f2;
+  --white: #ffffff;
 
   /* Lineages, as the simulator's tissue view and legend draw them */
   --sensitive: #a8b9c6;    /* EGFR-mutant, drug-sensitive */
@@ -62,115 +58,87 @@
 
   /* Semantic, as in the simulator: teal responds, warm carries the alarm */
   --accent: #46b6c6;
-  --accent-2: #7fd4e0;
-  --accent-wash: rgba(70, 182, 198, 0.12);
+  --accent-ink: #1f6672;   /* teal that reads on paper */
   --resist: #e8a33d;
   --danger: #e5705f;
 
-  --display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Segoe UI", Roboto, system-ui, sans-serif;
-  --body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", Roboto, system-ui, sans-serif;
+  --sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Segoe UI", Roboto, system-ui, sans-serif;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
   --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
-  --radius: 16px;
-  --gutter: clamp(20px, 5vw, 48px);
+  --gutter: clamp(20px, 5vw, 56px);
   --ease: cubic-bezier(.2, .7, .2, 1);
 }
+.dark  { --bg: var(--ink-0); --fg: #f0f2f6; --fg-2: #a9b2c0; --fg-3: #7d8696; --line: #262b35; --surface: #12151b; --link: var(--accent); --bar: #2c323d; }
+.light { --bg: var(--paper); --fg: #13161c; --fg-2: #474f5d; --fg-3: #6b7280; --line: #dcdfd9; --surface: #ffffff; --link: var(--accent-ink); --bar: #cfd4d6; }
+.light.white { --bg: var(--white); --line: #e3e6e9; --surface: var(--paper); }
+.dark, .light { background: var(--bg); color: var(--fg); }
+
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; background: var(--ink-0); }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-body {
-  margin: 0;
-  background: var(--ink-0);
-  color: var(--on-dark);
-  font: 17px/1.6 var(--body);
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-}
+body { margin: 0; font: 17px/1.6 var(--sans); -webkit-font-smoothing: antialiased; }
 img, video { max-width: 100%; display: block; }
 a { color: inherit; }
-h1, h2, h3 { font-family: var(--display); letter-spacing: -0.025em; margin: 0; }
+h1, h2, h3 { font-family: var(--sans); letter-spacing: -0.028em; margin: 0; }
 p { margin: 0; }
-::selection { background: rgba(70, 182, 198, .35); }
+::selection { background: rgba(70, 182, 198, .3); }
 
-.wrap { max-width: 1180px; margin: 0 auto; padding-inline: var(--gutter); }
-section { padding-block: clamp(80px, 11vw, 140px); position: relative; }
+.wrap { max-width: 1200px; margin: 0 auto; padding-inline: var(--gutter); }
+section { padding-block: clamp(76px, 10vw, 136px); }
 .kicker {
-  display: inline-flex; align-items: center; gap: 10px;
-  font: 600 12.5px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--accent-2); margin-bottom: 20px;
+  font: 600 12.5px/1 var(--sans); letter-spacing: 0.09em; text-transform: uppercase;
+  color: var(--fg-3); margin-bottom: 22px; display: flex; align-items: center; gap: 12px;
 }
-.kicker::before { content: ""; width: 7px; height: 7px; border-radius: 2px; background: var(--accent); box-shadow: 0 0 12px var(--accent); }
-h2 { font-size: clamp(34px, 4.8vw, 58px); line-height: 1.03; font-weight: 700; max-width: 18ch; text-wrap: balance; }
-.lead { font-size: clamp(17px, 1.6vw, 20px); color: var(--on-dark-2); max-width: 56ch; margin-top: 20px; }
+.kicker::before { content: ""; width: 28px; height: 1px; background: currentColor; }
+h2 { font-size: clamp(34px, 4.8vw, 60px); line-height: 1.02; font-weight: 700; max-width: 17ch; text-wrap: balance; }
+.lead { font-size: clamp(17px, 1.55vw, 20px); color: var(--fg-2); max-width: 54ch; margin-top: 22px; }
+.sci { font-size: 14px; color: var(--fg-3); }
 
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-  font: 600 16px/1 var(--body); text-decoration: none;
-  padding: 16px 24px; border-radius: 12px; border: 1px solid transparent;
-  transition: background-color .2s, border-color .2s, box-shadow .25s, transform .2s var(--ease);
+  font: 600 16px/1 var(--sans); text-decoration: none;
+  padding: 16px 22px; border-radius: 8px; border: 1px solid transparent;
+  transition: background-color .15s, border-color .15s, color .15s;
 }
-.btn-primary { background: var(--accent); color: #06181c; box-shadow: 0 0 0 1px rgba(127, 212, 224, .35) inset, 0 10px 36px -10px rgba(70, 182, 198, .7); }
-.btn-primary:hover { background: #63c8d6; box-shadow: 0 0 0 1px rgba(255, 255, 255, .5) inset, 0 14px 44px -8px rgba(70, 182, 198, .9); transform: translateY(-1px); }
-.btn-primary:active { transform: translateY(0); }
-.btn-ghost { color: var(--on-dark); border-color: var(--ink-line-2); background: rgba(255, 255, 255, .02); }
-.btn-ghost:hover { border-color: var(--on-dark-3); background: rgba(255, 255, 255, .06); }
-.btn:focus-visible, a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 3px; }
-.arrow { transition: transform .2s var(--ease); }
-.btn:hover .arrow, .text-link:hover .arrow { transform: translateX(4px); }
-
+.btn-primary { background: var(--accent); color: #071a1e; }
+.btn-primary:hover { background: #6ccbd8; }
+.btn-ghost { color: var(--fg); border-color: #3a414e; }
+.btn-ghost:hover { border-color: var(--fg-2); }
+.btn:focus-visible, a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.arrow { display: inline-block; transition: transform .2s var(--ease); }
+a:hover > .arrow { transform: translateX(4px); }
 .chip { display: inline-block; width: 10px; height: 10px; border-radius: 3px; flex: none; }
 
-/* A card whose border lights up under the pointer. --mx / --my are set by script. */
-.card {
-  position: relative; background: linear-gradient(180deg, var(--ink-2), var(--ink-1));
-  border: 1px solid var(--ink-line); border-radius: var(--radius);
-  transition: border-color .25s, transform .3s var(--ease);
-}
-.card::before {
-  content: ""; position: absolute; inset: -1px; border-radius: inherit; pointer-events: none;
-  background: radial-gradient(340px circle at var(--mx, 50%) var(--my, 0%), rgba(127, 212, 224, .5), transparent 60%);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor; mask-composite: exclude; padding: 1px;
-  opacity: 0; transition: opacity .3s;
-}
-.card::after {
-  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
-  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), rgba(70, 182, 198, .09), transparent 60%);
-  opacity: 0; transition: opacity .3s;
-}
-@media (hover: hover) { .card:hover::before, .card:hover::after { opacity: 1; } }
-
-/* Things arrive as they are scrolled to. Without script nothing is hidden. */
-.js .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s var(--ease) var(--d, 0s), transform .7s var(--ease) var(--d, 0s); }
+/* Things settle into place as they are scrolled to. Without script nothing is hidden. */
+.js .reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s var(--ease) var(--d, 0s), transform .6s var(--ease) var(--d, 0s); }
 .js .reveal.in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { .js .reveal { opacity: 1; transform: none; transition: none; } }
 
 /* ---------- header ---------- */
-.progress { position: fixed; inset: 0 0 auto 0; height: 2px; z-index: 30; background: linear-gradient(90deg, var(--accent), var(--resist), var(--t790m)); transform: scaleX(0); transform-origin: 0 50%; }
 .site-header {
-  position: fixed; inset: 0 0 auto 0; z-index: 20;
+  position: fixed; inset: 0 0 auto 0; z-index: 20; color: #f0f2f6;
   padding-top: env(safe-area-inset-top, 0px);
-  border-bottom: 1px solid transparent;
-  transition: background-color .3s, border-color .3s, backdrop-filter .3s;
+  border-bottom: 1px solid transparent; transition: background-color .25s, border-color .25s;
 }
-.site-header.scrolled { background: rgba(10, 12, 16, .72); -webkit-backdrop-filter: saturate(160%) blur(16px); backdrop-filter: saturate(160%) blur(16px); border-bottom-color: var(--ink-line); }
-.site-header .wrap { display: flex; align-items: center; gap: 24px; height: 68px; }
-.logo { display: flex; align-items: center; color: var(--on-dark); text-decoration: none; }
-.wordmark { position: relative; font: 700 24px/1 var(--display); letter-spacing: -0.02em; }
+.site-header.scrolled { background: rgba(10, 12, 16, .94); border-bottom-color: var(--ink-line); }
+.site-header .wrap { display: flex; align-items: center; gap: 26px; height: 68px; }
+.logo { display: flex; align-items: center; color: inherit; text-decoration: none; }
+.wordmark { position: relative; font: 700 24px/1 var(--sans); letter-spacing: -0.02em; }
 .wordmark .dot {
   /* Fallback position; the script below re-measures the font actually used
      (the system stack differs per platform) and centres the dot on the stem. */
   position: absolute; left: 0.02em; top: 0;
   width: 0.26em; height: 0.26em; border-radius: 50%; background: var(--t790m);
-  box-shadow: 0 0 10px rgba(212, 115, 58, .8);
 }
-.nav-links { display: flex; gap: 4px; margin-left: auto; }
-.nav-links a { color: var(--on-dark-2); text-decoration: none; font-size: 15px; font-weight: 500; padding: 8px 14px; border-radius: 8px; transition: color .2s, background-color .2s; }
-.nav-links a:hover { color: var(--on-dark); background: rgba(255, 255, 255, .05); }
-.nav-links a.active { color: var(--on-dark); background: rgba(255, 255, 255, .07); }
-.site-header .btn { padding: 11px 16px; font-size: 14px; border-radius: 10px; }
+.nav-links { display: flex; gap: 28px; margin-left: auto; }
+.nav-links a { position: relative; color: #a9b2c0; text-decoration: none; font-size: 15px; font-weight: 500; padding-block: 6px; transition: color .15s; }
+.nav-links a:hover, .nav-links a.active { color: #f0f2f6; }
+.nav-links a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: 0 50%; transition: transform .25s var(--ease); }
+.nav-links a.active::after { transform: scaleX(1); }
+.site-header .btn { padding: 11px 16px; font-size: 14px; }
 /* The simulator asks for research access itself; this is just a shortcut to it. */
-.signin { color: var(--on-dark-2); text-decoration: none; font-size: 15px; font-weight: 500; white-space: nowrap; transition: color .2s; }
-.signin:hover { color: var(--on-dark); }
+.signin { color: #a9b2c0; text-decoration: none; font-size: 15px; font-weight: 500; white-space: nowrap; transition: color .15s; }
+.signin:hover { color: #f0f2f6; }
 @media (max-width: 800px) {
   .nav-links { display: none; }
   .site-header .signin { margin-left: auto; font-size: 14px; }
@@ -178,255 +146,157 @@ h2 { font-size: clamp(34px, 4.8vw, 58px); line-height: 1.03; font-weight: 700; m
 @media (max-width: 400px) { .site-header .wrap { gap: 14px; } .site-header .btn { padding: 10px 12px; } }
 
 /* ---------- hero ---------- */
-.hero {
-  padding-top: calc(150px + env(safe-area-inset-top, 0px));
-  padding-bottom: clamp(64px, 8vw, 110px);
-  text-align: center; overflow: hidden; isolation: isolate;
-}
-.hero-bg { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
-.hero-bg::before {       /* a faint lattice, like the voxel grid the cells live on */
-  content: ""; position: absolute; inset: 0;
-  background-image: linear-gradient(rgba(255, 255, 255, .045) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, .045) 1px, transparent 1px);
-  background-size: 56px 56px; background-position: 50% 0;
-  -webkit-mask-image: radial-gradient(70% 55% at 50% 30%, #000 0%, transparent 100%); mask-image: radial-gradient(70% 55% at 50% 30%, #000 0%, transparent 100%);
-}
-.hero-bg::after {
-  content: ""; position: absolute; inset: 0;
-  background:
-    radial-gradient(46% 34% at 50% 16%, rgba(70, 182, 198, .20), transparent 70%),
-    radial-gradient(40% 30% at 82% 62%, rgba(212, 115, 58, .16), transparent 70%),
-    radial-gradient(40% 30% at 16% 70%, rgba(143, 111, 179, .13), transparent 70%);
-}
-#cells { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .75; }
-.hero h1 {
-  font-size: clamp(44px, 7.6vw, 96px); line-height: 0.97; font-weight: 700;
-  letter-spacing: -0.04em; max-width: 20ch; margin-inline: auto; text-wrap: balance;
-  background: linear-gradient(180deg, #fff 30%, #b9c3d0 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
-}
-.hero h1 .hl {
-  background: linear-gradient(100deg, var(--resist) 0%, var(--t790m) 55%, var(--danger) 100%);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-  background-size: 200% 100%; animation: shimmer 7s ease-in-out infinite alternate;
-}
-@keyframes shimmer { to { background-position: 100% 0; } }
-.hero .sub { color: var(--on-dark-2); font-size: clamp(17px, 2vw, 21px); max-width: 44ch; margin: 24px auto 0; }
-.hero .cta { margin-top: 36px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+.hero { padding-top: calc(clamp(120px, 15vw, 176px) + env(safe-area-inset-top, 0px)); padding-bottom: clamp(56px, 7vw, 96px); }
+.hero h1 { font-size: clamp(44px, 7.6vw, 104px); line-height: 0.95; font-weight: 700; letter-spacing: -0.045em; max-width: 17ch; text-wrap: balance; }
+/* The one word the whole project is about, set apart the way a caption would be. */
+.hero h1 .hl { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spacing: -0.02em; color: var(--resist); }
+.hero-foot { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px 48px; flex-wrap: wrap; margin-top: clamp(28px, 4vw, 44px); }
+.hero .sub { color: var(--fg-2); font-size: clamp(18px, 1.9vw, 22px); line-height: 1.45; max-width: 36ch; }
 
-/* The recording, framed as the instrument it came from, with its own transport. */
-.stage { perspective: 1600px; margin: clamp(48px, 6vw, 80px) auto 0; max-width: 1080px; }
-.hero-media {
-  position: relative; border-radius: 18px; overflow: hidden;
-  border: 1px solid var(--ink-line-2); background: var(--ink-1);
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, .04) inset, 0 50px 140px -30px rgba(70, 182, 198, .30), 0 40px 100px -40px rgba(212, 115, 58, .45);
-  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transform-style: preserve-3d;
-  transition: transform .5s var(--ease);
-}
-.hero-media.live { transition: transform .08s linear; }
-.media-bar {
-  display: flex; align-items: center; gap: 12px; padding: 12px 16px;
-  border-bottom: 1px solid var(--ink-line); background: rgba(22, 26, 34, .9);
-  font-size: 13px; color: var(--on-dark-2); text-align: left;
-}
-.media-bar .lights { display: flex; gap: 6px; }
-.media-bar .lights i { width: 10px; height: 10px; border-radius: 50%; background: var(--ink-line-2); }
-.media-bar b { color: var(--on-dark); font-weight: 600; }
-.rec { width: 8px; height: 8px; border-radius: 50%; background: var(--danger); box-shadow: 0 0 0 0 rgba(229, 112, 95, .7); animation: pulse 2s infinite; flex: none; }
-@keyframes pulse { 70% { box-shadow: 0 0 0 8px rgba(229, 112, 95, 0); } 100% { box-shadow: 0 0 0 0 rgba(229, 112, 95, 0); } }
-.media-bar .badge { display: flex; align-items: center; gap: 8px; margin-left: 4px; min-width: 0; }
-.media-bar .badge span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.hero-media .screen { position: relative; aspect-ratio: 16 / 9; background: #000; }
+/* The recording, with its own transport: play it, drag it, read the day. */
+.hero-media { margin-top: clamp(40px, 5vw, 64px); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--surface); }
+.hero-media .screen { aspect-ratio: 16 / 9; background: #000; }
 .hero-media video { width: 100%; height: 100%; object-fit: cover; cursor: pointer; }
-.transport {
-  display: flex; align-items: center; gap: 14px; padding: 12px 16px;
-  border-top: 1px solid var(--ink-line); background: rgba(22, 26, 34, .9);
-}
+.transport { display: flex; align-items: center; gap: 16px; padding: 12px 16px; border-top: 1px solid var(--line); }
 .play {
-  width: 36px; height: 36px; flex: none; border-radius: 10px; cursor: pointer;
-  border: 1px solid var(--ink-line-2); background: var(--ink-3); color: var(--on-dark);
-  display: grid; place-items: center; transition: background-color .2s, border-color .2s;
+  width: 34px; height: 34px; flex: none; border-radius: 50%; cursor: pointer;
+  border: 1px solid #3a414e; background: transparent; color: var(--fg);
+  display: grid; place-items: center; transition: background-color .15s, border-color .15s;
 }
-.play:hover { background: #262c38; border-color: var(--on-dark-3); }
-.play svg { width: 14px; height: 14px; fill: currentColor; }
-.play .i-play { display: none; }
+.play:hover { background: #1d222b; border-color: var(--fg-3); }
+.play svg { width: 12px; height: 12px; fill: currentColor; }
+.play .i-play { display: none; margin-left: 1px; }
 .play[aria-pressed="false"] .i-play { display: block; }
 .play[aria-pressed="false"] .i-pause { display: none; }
 .scrub { flex: 1; min-width: 0; -webkit-appearance: none; appearance: none; height: 22px; background: transparent; cursor: pointer; margin: 0; }
-.scrub::-webkit-slider-runnable-track { height: 6px; border-radius: 3px; background: linear-gradient(90deg, var(--accent) var(--p, 0%), var(--ink-line-2) var(--p, 0%)); }
-.scrub::-moz-range-track { height: 6px; border-radius: 3px; background: var(--ink-line-2); }
-.scrub::-moz-range-progress { height: 6px; border-radius: 3px; background: var(--accent); }
-.scrub::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; margin-top: -5px; border-radius: 50%; background: #fff; border: 0; box-shadow: 0 0 0 4px rgba(70, 182, 198, .25); }
-.scrub::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: #fff; border: 0; box-shadow: 0 0 0 4px rgba(70, 182, 198, .25); }
-.day { font: 500 13px/1 var(--mono); font-variant-numeric: tabular-nums; color: var(--on-dark-2); white-space: nowrap; min-width: 9.5ch; text-align: right; }
-.day b { color: var(--on-dark); font-weight: 600; }
-.try {
-  background: #fff; color: #0a0c10; text-decoration: none; white-space: nowrap;
-  font: 600 14px/1 var(--body); padding: 11px 14px; border-radius: 10px; transition: transform .2s var(--ease), box-shadow .2s;
-}
-.try:hover { transform: translateY(-1px); box-shadow: 0 8px 24px -8px rgba(255, 255, 255, .5); }
-@media (max-width: 620px) {
-  .hero-media { border-radius: 14px; }
-  .media-bar .lights { display: none; }
-  .media-bar .badge { margin-left: 0; }
-  .transport { flex-wrap: wrap; gap: 10px 12px; }
-  .scrub { order: 3; flex-basis: 100%; }
-  .day { margin-left: auto; }
-}
+.scrub::-webkit-slider-runnable-track { height: 3px; background: linear-gradient(90deg, var(--fg) var(--p, 0%), #3a414e var(--p, 0%)); }
+.scrub::-moz-range-track { height: 3px; background: #3a414e; }
+.scrub::-moz-range-progress { height: 3px; background: var(--fg); }
+.scrub::-webkit-slider-thumb { -webkit-appearance: none; width: 13px; height: 13px; margin-top: -5px; border-radius: 50%; background: var(--fg); border: 0; }
+.scrub::-moz-range-thumb { width: 13px; height: 13px; border-radius: 50%; background: var(--fg); border: 0; }
+.day { font: 500 13px/1 var(--mono); font-variant-numeric: tabular-nums; color: var(--fg-3); white-space: nowrap; min-width: 10ch; text-align: right; }
+.day b { color: var(--fg); font-weight: 600; }
+.media-caption { display: flex; align-items: center; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap; margin-top: 14px; font-size: 14px; color: var(--fg-3); }
+.media-caption .badge { display: flex; align-items: center; gap: 9px; }
+.media-caption b { color: var(--fg-2); font-weight: 600; }
+.rec { width: 7px; height: 7px; border-radius: 50%; background: var(--danger); flex: none; }
+.try { color: var(--fg); font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--fg-3); padding-bottom: 2px; transition: border-color .15s; }
+.try:hover { border-color: var(--fg); }
+@media (max-width: 560px) { .transport { gap: 12px; padding: 10px 12px; } .day { min-width: 0; } }
 
-/* ---------- how it happens: three steps, one stage ---------- */
-#how { border-top: 1px solid var(--ink-line); background: linear-gradient(180deg, var(--ink-1), var(--ink-0)); }
-.steps { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: clamp(24px, 4vw, 56px); margin-top: 56px; align-items: center; }
-.step-list { display: grid; gap: 12px; }
-.step {
-  position: relative; padding: 22px 24px 22px 28px; border-radius: var(--radius); cursor: pointer;
-  border: 1px solid transparent; background: transparent; overflow: hidden;
-  transition: background-color .3s, border-color .3s;
-}
-.step:hover { background: rgba(255, 255, 255, .025); }
-.step[aria-selected="true"] { background: linear-gradient(180deg, var(--ink-2), var(--ink-1)); border-color: var(--ink-line-2); }
-.step::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--ink-line); }
-.step::after { content: ""; position: absolute; left: 0; top: 0; width: 3px; height: 0; background: var(--c, var(--accent)); box-shadow: 0 0 14px var(--c, var(--accent)); }
-.step[aria-selected="true"]::after { height: 100%; }
-.steps.auto .step[aria-selected="true"]::after { height: 0; animation: fill 6s linear forwards; }
-.steps.auto:hover .step::after, .steps.auto:focus-within .step::after { animation-play-state: paused; }
-@keyframes fill { to { height: 100%; } }
-.step .num { font: 600 13px/1 var(--mono); letter-spacing: .04em; color: var(--on-dark-3); display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-.step h3 { font-size: clamp(22px, 2.4vw, 28px); line-height: 1.15; margin-bottom: 8px; color: var(--on-dark-2); transition: color .3s; }
-.step[aria-selected="true"] h3 { color: var(--on-dark); }
-.step p { color: var(--on-dark-2); font-size: 16px; }
-.step .sci { margin-top: 12px; font: 500 13px/1.5 var(--mono); color: var(--on-dark-3); }
-.step-stage { position: relative; aspect-ratio: 1; border-radius: 20px; overflow: hidden; border: 1px solid var(--ink-line-2); background: #000; box-shadow: 0 40px 100px -40px rgba(70, 182, 198, .35); }
-.step-stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.06); transition: opacity .7s var(--ease), transform 1.4s var(--ease); }
-.step-stage img.on { opacity: 1; transform: none; }
-.step-dots { position: absolute; left: 16px; bottom: 16px; display: flex; gap: 6px; padding: 8px 10px; border-radius: 999px; background: rgba(10, 12, 16, .7); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border: 1px solid var(--ink-line); }
-.step-dots i { width: 22px; height: 4px; border-radius: 2px; background: var(--ink-line-2); transition: background-color .3s; }
-.step-dots i.on { background: var(--on-dark); }
+/* ---------- how it happens: three steps, one picture ---------- */
+.steps { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 72px); margin-top: clamp(44px, 6vw, 72px); align-items: center; }
+.step-stage { position: relative; aspect-ratio: 1; border-radius: 12px; overflow: hidden; background: #000; }
+.step-stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .6s ease; }
+.step-stage img.on { opacity: 1; }
+.step-count { position: absolute; left: 16px; bottom: 14px; font: 500 12px/1 var(--mono); color: rgba(255, 255, 255, .8); letter-spacing: .04em; }
+.step-list { border-bottom: 1px solid var(--line); }
+.step { position: relative; padding: 24px 8px 24px 26px; cursor: pointer; border-top: 1px solid var(--line); }
+/* The step's own lineage colour runs down its edge; while the page turns itself, it fills like a clock. */
+.step::before { content: ""; position: absolute; left: 0; top: -1px; bottom: 0; width: 3px; background: var(--c); transform: scaleY(0); transform-origin: 50% 0; transition: transform .35s var(--ease); }
+.step[aria-selected="true"]::before { transform: scaleY(1); }
+.steps.auto .step[aria-selected="true"]::before { transition: none; animation: fill 6s linear both; }
+.steps.auto:hover .step::before, .steps.auto:focus-within .step::before { animation-play-state: paused; }
+@keyframes fill { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+.step .num { font: 600 13px/1 var(--sans); color: var(--fg-3); display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.step h3 { font-size: clamp(22px, 2.3vw, 28px); line-height: 1.15; color: var(--fg-3); transition: color .25s; }
+.step:hover h3, .step[aria-selected="true"] h3 { color: var(--fg); }
+/* Every step stays readable; the selected one is simply the one in full ink. */
+.step p { color: var(--fg-3); font-size: 16px; margin-top: 8px; max-width: 44ch; transition: color .25s; }
+.step[aria-selected="true"] p { color: var(--fg-2); }
+.step p.sci, .step[aria-selected="true"] p.sci { font-size: 13.5px; margin-top: 10px; color: var(--fg-3); }
 @media (max-width: 860px) {
   .steps { grid-template-columns: 1fr; }
-  .step-stage { order: -1; max-width: 520px; width: 100%; justify-self: center; aspect-ratio: 4 / 3; }
+  .step-stage { aspect-ratio: 4 / 3; }
 }
 
 /* ---------- features ---------- */
-.features { border-top: 1px solid var(--ink-line); }
-.feature {
-  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
-  gap: clamp(28px, 6vw, 80px); align-items: center; margin-top: clamp(56px, 8vw, 104px);
-}
+.feature { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: clamp(28px, 6vw, 88px); align-items: center; margin-top: clamp(56px, 8vw, 112px); }
+.feature:nth-of-type(even) { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); }
 .feature:nth-of-type(even) .feature-media { order: -1; }
-.feature h3 { font-size: clamp(26px, 3vw, 36px); line-height: 1.1; }
-.feature p { color: var(--on-dark-2); margin-top: 14px; max-width: 46ch; }
-.feature .sci { font: 500 13.5px/1.55 var(--mono); color: var(--on-dark-3); margin-top: 18px; padding-left: 14px; border-left: 2px solid var(--ink-line-2); }
-.feature-media { overflow: hidden; padding: 0; }
-.feature-media img {
-  width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: inherit;
-  transform-origin: var(--ox, 50%) var(--oy, 50%); transition: transform .5s var(--ease);
-}
-@media (hover: hover) { .feature-media:hover img { transform: scale(1.35); } }
+.feature h3 { font-size: clamp(26px, 3vw, 38px); line-height: 1.08; }
+.feature p { color: var(--fg-2); margin-top: 16px; max-width: 44ch; }
+.feature p.sci { font-size: 14px; color: var(--fg-3); margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
+.feature-media { margin: 0; border-radius: 12px; overflow: hidden; background: #000; border: 1px solid var(--line); }
+.feature-media img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
 @media (max-width: 860px) {
-  .feature { grid-template-columns: 1fr; }
+  .feature, .feature:nth-of-type(even) { grid-template-columns: 1fr; }
   .feature:nth-of-type(even) .feature-media { order: 0; }
 }
 
 /* treatment comparison: a plain bar chart of the validation suite's medians */
-.compare { padding: clamp(20px, 3vw, 32px); margin: 0; }
-.compare-title { font: 600 16px/1.35 var(--body); }
-.compare-sub { font-size: 13px; color: var(--on-dark-3); margin-top: 4px; }
-.bars { list-style: none; padding: 0; margin: 22px 0 0; display: grid; gap: 6px; position: relative; z-index: 1; }
-.bar { display: grid; grid-template-columns: minmax(0, 11.5em) minmax(0, 1fr); align-items: center; gap: 14px; font-size: 14px; padding: 5px 8px; margin-inline: -8px; border-radius: 8px; transition: background-color .2s, opacity .2s; }
-.bar .label { color: var(--on-dark-2); line-height: 1.25; transition: color .2s; }
-.bar .track { display: block; position: relative; height: 26px; }
-.bar .fill { display: block; height: 100%; border-radius: 6px; background: #343b48; min-width: 2px; width: var(--w); transform-origin: 0 50%; transition: transform 1s var(--ease) var(--d, 0s), background-color .2s; }
-.bar.highlight .fill { background: linear-gradient(90deg, #2f8d9b, var(--accent)); box-shadow: 0 0 22px -4px rgba(70, 182, 198, .8); }
+.compare { margin: 0; padding: clamp(20px, 3vw, 32px); background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+.compare-title { font: 600 16px/1.35 var(--sans); }
+.compare-sub { font-size: 13px; color: var(--fg-3); margin-top: 4px; }
+.bars { list-style: none; padding: 0; margin: 22px 0 0; display: grid; gap: 4px; }
+.bar { display: grid; grid-template-columns: minmax(0, 11.5em) minmax(0, 1fr); align-items: center; gap: 14px; font-size: 14px; padding: 5px 0; transition: opacity .2s; }
+.bar .label { color: var(--fg-2); line-height: 1.25; }
+.bar .track { display: block; position: relative; height: 24px; }
+.bar .fill { display: block; height: 100%; border-radius: 3px; background: var(--bar); min-width: 2px; width: var(--w); transform-origin: 0 50%; transition: transform .9s var(--ease) var(--d, 0s); }
+.bar.highlight .fill { background: var(--accent); }
+.bar.highlight .label { color: var(--fg); font-weight: 600; }
+.bar .val { position: absolute; left: var(--w); top: 50%; transform: translateY(-50%); font: 500 12.5px var(--mono); font-variant-numeric: tabular-nums; padding-left: 8px; color: var(--fg); white-space: nowrap; transition: opacity .4s calc(var(--d, 0s) + .5s); }
 .js .bars:not(.in) .fill { transform: scaleX(0); }
-.bar .val { position: absolute; left: var(--w); top: 50%; transform: translateY(-50%); font: 500 12.5px var(--mono); font-variant-numeric: tabular-nums; padding-left: 8px; color: var(--on-dark); white-space: nowrap; transition: opacity .4s var(--d, 0s); }
 .js .bars:not(.in) .val { opacity: 0; }
-@media (hover: hover) {
-  .bars:hover .bar { opacity: .45; }
-  .bars:hover .bar:hover { opacity: 1; background: rgba(255, 255, 255, .04); }
-  .bar:hover .label { color: var(--on-dark); }
-  .bar:not(.highlight):hover .fill { background: #4a5364; }
-}
-.compare-foot { margin-top: 18px; font-size: 13px; color: var(--on-dark-3); position: relative; z-index: 1; }
+@media (hover: hover) { .bars:hover .bar { opacity: .4; } .bars:hover .bar:hover { opacity: 1; } }
+.compare-foot { margin-top: 18px; font-size: 13px; color: var(--fg-3); }
 @media (max-width: 480px) { .bar { grid-template-columns: 1fr; gap: 4px; } }
 @media (prefers-reduced-motion: reduce) { .js .bars:not(.in) .fill { transform: none; } .js .bars:not(.in) .val { opacity: 1; } }
 
 /* ---------- trust ---------- */
-#trust { border-top: 1px solid var(--ink-line); background: linear-gradient(180deg, var(--ink-1), var(--ink-0)); }
-.trust-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 80px); align-items: center; }
+.trust-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(36px, 6vw, 96px); align-items: end; }
 @media (max-width: 860px) { .trust-grid { grid-template-columns: 1fr; } }
-.sources { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-.source { padding: 22px; display: flex; flex-direction: column; gap: 8px; min-height: 168px; }
-.source:hover { transform: translateY(-3px); border-color: var(--ink-line-2); }
-.source b { font: 700 clamp(20px, 2.2vw, 26px)/1.1 var(--display); letter-spacing: -0.02em; position: relative; z-index: 1; }
-.source span { font-size: 13.5px; line-height: 1.45; color: var(--on-dark-3); position: relative; z-index: 1; }
-.source i { width: 28px; height: 28px; border-radius: 8px; background: var(--c); opacity: .9; box-shadow: 0 0 24px -2px var(--c); margin-bottom: auto; flex: none; }
-@media (max-width: 420px) { .sources { grid-template-columns: 1fr; } .source { min-height: 0; gap: 10px; } .source i { margin-bottom: 6px; } }
-.checks { list-style: none; margin: 32px 0 0; padding: 0; display: grid; gap: 18px; }
-.checks li { display: grid; grid-template-columns: 28px 1fr; gap: 14px; align-items: start; }
+/* The four sources as a ruled table, not four boxes. */
+.sources { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--fg); }
+.source { padding: 22px 20px 26px 0; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 6px; }
+.source:nth-child(odd) { border-right: 1px solid var(--line); }
+.source:nth-child(even) { padding-left: 20px; }
+.source b { font: 700 clamp(20px, 2.1vw, 25px)/1.15 var(--sans); letter-spacing: -0.02em; }
+.source span { font-size: 14px; line-height: 1.45; color: var(--fg-3); }
+@media (max-width: 420px) {
+  .sources { grid-template-columns: 1fr; }
+  .source:nth-child(odd), .source:nth-child(even) { padding-left: 0; border-right: 0; }
+}
+.checks { list-style: none; margin: 34px 0 0; padding: 0; display: grid; gap: 18px; }
+.checks li { display: grid; grid-template-columns: 22px 1fr; gap: 14px; align-items: start; }
 .checks li::before {
-  content: ""; width: 24px; height: 24px; border-radius: 50%; margin-top: 1px;
-  background: var(--accent-wash)
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237fd4e0' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 14px no-repeat;
-  box-shadow: 0 0 0 1px rgba(70, 182, 198, .35) inset;
+  content: ""; width: 20px; height: 20px; margin-top: 3px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231f6672' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12.5l5 5L20 6.5'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 .checks b { display: block; font-weight: 600; }
-.checks span { color: var(--on-dark-2); font-size: 15px; }
-.checks b span { color: inherit; font-size: inherit; font-variant-numeric: tabular-nums; }
-.text-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 32px; font-weight: 600; color: var(--accent-2); text-decoration: none; }
-.text-link:hover { text-decoration: underline; text-underline-offset: 5px; }
+.checks span { color: var(--fg-2); font-size: 15px; }
+.text-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 32px; font-weight: 600; color: var(--link); text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
 
 /* ---------- audience ---------- */
-.audience { border-top: 1px solid var(--ink-line); }
-.aud-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 48px; }
-@media (max-width: 860px) { .aud-grid { grid-template-columns: 1fr; } }
-.aud { padding: 30px 28px 32px; overflow: hidden; }
-.aud:hover { transform: translateY(-4px); border-color: var(--ink-line-2); }
-.aud .glow { position: absolute; inset: 0 0 auto 0; height: 3px; background: var(--c); box-shadow: 0 0 40px 6px var(--c); opacity: .85; }
-.aud h3 { font-size: 26px; margin-bottom: 10px; position: relative; z-index: 1; }
-.aud p { color: var(--on-dark-2); font-size: 16px; position: relative; z-index: 1; }
+.audience { border-top: 1px solid var(--line); }
+.aud-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(20px, 3vw, 40px); margin-top: clamp(40px, 5vw, 60px); }
+@media (max-width: 860px) { .aud-grid { grid-template-columns: 1fr; gap: 32px; } }
+.aud { border-top: 3px solid var(--c); padding-top: 22px; }
+.aud h3 { font-size: 26px; margin-bottom: 10px; }
+.aud p { color: var(--fg-2); font-size: 16px; max-width: 40ch; }
 
 /* ---------- final ---------- */
-.final { text-align: center; border-top: 1px solid var(--ink-line); overflow: hidden; isolation: isolate; padding-bottom: clamp(56px, 7vw, 88px); }
-.final::before {
-  content: ""; position: absolute; inset: 0; z-index: -1;
-  background:
-    radial-gradient(50% 60% at 50% 0%, rgba(70, 182, 198, .22), transparent 70%),
-    radial-gradient(36% 40% at 78% 30%, rgba(212, 115, 58, .14), transparent 70%);
-}
-.final::after {
-  content: ""; position: absolute; inset: 0; z-index: -1;
-  background-image: linear-gradient(rgba(255, 255, 255, .04) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px);
-  background-size: 56px 56px; background-position: 50% 0;
-  -webkit-mask-image: radial-gradient(60% 60% at 50% 20%, #000, transparent); mask-image: radial-gradient(60% 60% at 50% 20%, #000, transparent);
-}
-.final h2 { margin-inline: auto; max-width: 16ch; font-size: clamp(40px, 6vw, 76px); }
-.final .lead { color: var(--on-dark-2); margin-inline: auto; }
+.final { text-align: center; padding-bottom: clamp(56px, 7vw, 88px); }
+.final h2 { margin-inline: auto; max-width: 14ch; font-size: clamp(44px, 7.4vw, 96px); letter-spacing: -0.045em; line-height: 0.97; }
+.final .lead { margin-inline: auto; }
 .final .cta { margin-top: 36px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
-.team { margin-top: clamp(64px, 9vw, 110px); padding-top: 44px; border-top: 1px solid var(--ink-line); }
-.team .kicker { color: var(--on-dark-3); }
-.team .kicker::before { background: var(--on-dark-3); box-shadow: none; }
-.team-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 4px; }
-.member { font-size: 16px; font-weight: 600; color: var(--on-dark); padding: 12px 20px; border-radius: 999px; border: 1px solid var(--ink-line-2); background: rgba(255, 255, 255, .03); transition: border-color .2s, background-color .2s, transform .2s var(--ease); }
-.member:hover { border-color: var(--accent); background: var(--accent-wash); transform: translateY(-2px); }
+.team { margin-top: clamp(64px, 9vw, 112px); padding-top: 36px; border-top: 1px solid var(--line); display: flex; align-items: baseline; justify-content: space-between; gap: 16px 40px; flex-wrap: wrap; text-align: left; }
+.team .kicker { margin: 0; }
+.team-grid { display: flex; flex-wrap: wrap; gap: 10px 36px; }
+.member { font-size: 17px; font-weight: 600; }
 
-footer {
-  background: var(--ink-0); color: var(--on-dark-3); font-size: 14px;
-  border-top: 1px solid var(--ink-line);
-  padding-block: 28px calc(28px + env(safe-area-inset-bottom, 0px));
-}
+footer { background: var(--ink-0); color: #7d8696; font-size: 14px; border-top: 1px solid var(--ink-line); padding-block: 26px calc(26px + env(safe-area-inset-bottom, 0px)); }
 footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 28px; }
-footer a { color: var(--on-dark-2); text-decoration: none; }
-footer a:hover { color: var(--on-dark); }
+footer a { color: #a9b2c0; text-decoration: none; }
+footer a:hover { color: #f0f2f6; }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero h1 .hl, .rec { animation: none; }
-  .steps.auto .step[aria-selected="true"]::after { animation: none; height: 100%; }
-  .step-stage img, .feature-media img, .hero-media { transition: none; }
+  .steps.auto .step[aria-selected="true"]::before { animation: none; transform: scaleY(1); }
+  .step-stage img { transition: none; }
 }
 </style>
 </head>
-<body>
-
-<div class="progress" aria-hidden="true"></div>
+<body class="dark">
 
 <header class="site-header">
   <div class="wrap">
@@ -447,50 +317,54 @@ footer a:hover { color: var(--on-dark); }
 <main id="top">
 
 <!-- 1. Hero -->
-<section class="hero">
-  <div class="hero-bg" aria-hidden="true"><canvas id="cells"></canvas></div>
+<section class="hero dark">
   <div class="wrap">
-    <h1 class="reveal">A living 3D model of lung cancer <span class="hl">resistance</span>.</h1>
-    <p class="sub reveal" style="--d:.08s">A 3D simulator, built on real lab data, that shows how EGFR lung tumours become resistant.</p>
-    <div class="cta reveal" style="--d:.16s">
-      <a class="btn btn-primary" href="simulation/">Open the simulator <span class="arrow" aria-hidden="true">→</span></a>
+    <h1>A living 3D model of lung cancer <span class="hl">resistance</span>.</h1>
+    <div class="hero-foot">
+      <p class="sub">A 3D simulator, built on real lab data, that shows how EGFR lung tumours become resistant.</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="simulation/">Open the simulator <span class="arrow" aria-hidden="true">→</span></a>
+      </div>
     </div>
 
-    <div class="stage reveal" style="--d:.24s">
-      <div class="hero-media" id="hero-media">
-        <div class="media-bar">
-          <span class="lights" aria-hidden="true"><i></i><i></i><i></i></span>
-          <div class="badge"><span class="rec" aria-hidden="true"></span><span><b>Recorded in the simulator</b> · 60 days in 7 seconds</span></div>
-        </div>
-        <div class="screen">
-          <video id="hero-video" autoplay muted loop playsinline preload="auto"
-                 poster="./landing/media/hero-poster.jpg"
-                 aria-label="Recording from the simulator: a tumour of blue drug-sensitive cells is treated; most die and turn pale, orange resistant cells take over, and the tumour regrows over 60 simulated days">
-            <source src="./landing/media/hero.mp4" type="video/mp4" />
-          </video>
-        </div>
-        <div class="transport">
-          <button class="play" id="hero-play" type="button" aria-label="Pause the recording" aria-pressed="true">
-            <svg class="i-pause" viewBox="0 0 14 14" aria-hidden="true"><rect x="2" y="1" width="3.6" height="12" rx="1"/><rect x="8.4" y="1" width="3.6" height="12" rx="1"/></svg>
-            <svg class="i-play" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.4v11.2a.6.6 0 0 0 .92.5l8.6-5.6a.6.6 0 0 0 0-1L3.92.9A.6.6 0 0 0 3 1.4z"/></svg>
-          </button>
-          <input class="scrub" id="hero-scrub" type="range" min="0" max="1000" value="0" step="1" aria-label="Simulated day" />
-          <span class="day" id="hero-day" aria-hidden="true">Day <b>0</b> of 60</span>
-          <a class="try" href="simulation/">Try it live →</a>
-        </div>
+    <div class="hero-media">
+      <div class="screen">
+        <video id="hero-video" autoplay muted loop playsinline preload="auto"
+               poster="./landing/media/hero-poster.jpg"
+               aria-label="Recording from the simulator: a tumour of blue drug-sensitive cells is treated; most die and turn pale, orange resistant cells take over, and the tumour regrows over 60 simulated days">
+          <source src="./landing/media/hero.mp4" type="video/mp4" />
+        </video>
       </div>
+      <div class="transport">
+        <button class="play" id="hero-play" type="button" aria-label="Pause the recording" aria-pressed="true">
+          <svg class="i-pause" viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="1" width="3" height="10" rx=".6"/><rect x="7" y="1" width="3" height="10" rx=".6"/></svg>
+          <svg class="i-play" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.2v9.6a.5.5 0 0 0 .77.42l7.4-4.8a.5.5 0 0 0 0-.84l-7.4-4.8a.5.5 0 0 0-.77.42z"/></svg>
+        </button>
+        <input class="scrub" id="hero-scrub" type="range" min="0" max="1000" value="0" step="1" aria-label="Simulated day" />
+        <span class="day" id="hero-day" aria-hidden="true">Day <b>0</b> of 60</span>
+      </div>
+    </div>
+    <div class="media-caption">
+      <div class="badge"><span class="rec" aria-hidden="true"></span><span><b>Recorded in the simulator</b> · 60 days in 7 seconds</span></div>
+      <a class="try" href="simulation/">Try it live →</a>
     </div>
   </div>
 </section>
 
 <!-- 2. The problem in one picture -->
-<section id="how">
+<section id="how" class="light">
   <div class="wrap">
     <p class="kicker reveal">How resistance happens</p>
     <h2 class="reveal">The pill works. Then it doesn't.</h2>
     <p class="lead reveal">Targeted drugs like gefitinib (sold as Iressa) shrink EGFR lung tumours fast. But a tumour is millions of slightly different cells, and the drug only has to miss a few.</p>
 
     <div class="steps reveal" id="steps">
+      <div class="step-stage" id="step-stage" role="tabpanel">
+        <img class="on" src="./landing/media/step-1.jpg" alt="Day 0: a ball of blue drug-sensitive cells with a few orange cells among them" width="640" height="640" />
+        <img src="./landing/media/step-2.jpg" alt="Days later: most cells have died and turned pale; a ring of orange resistant cells remains" loading="lazy" width="640" height="640" />
+        <img src="./landing/media/step-3.jpg" alt="Day 60: the tumour has regrown, packed with resistant cells" loading="lazy" width="640" height="640" />
+        <span class="step-count" id="step-count" aria-hidden="true">1 / 3</span>
+      </div>
       <div class="step-list" role="tablist" aria-label="How resistance happens, in three steps">
         <article class="step" role="tab" tabindex="0" aria-selected="true" aria-controls="step-stage" style="--c:var(--sensitive)">
           <div class="num"><span class="chip" style="background:var(--sensitive)"></span>Day 0</div>
@@ -510,18 +384,12 @@ footer a:hover { color: var(--on-dark); }
           <p class="sci">Osimertinib from day 20; C797S and MET-amplified cells regrow.</p>
         </article>
       </div>
-      <div class="step-stage" id="step-stage" role="tabpanel">
-        <img class="on" src="./landing/media/step-1.jpg" alt="Day 0: a ball of blue drug-sensitive cells with a few orange cells among them" width="640" height="640" />
-        <img src="./landing/media/step-2.jpg" alt="Days later: most cells have died and turned pale; a ring of orange resistant cells remains" loading="lazy" width="640" height="640" />
-        <img src="./landing/media/step-3.jpg" alt="Day 60: the tumour has regrown, packed with resistant cells" loading="lazy" width="640" height="640" />
-        <div class="step-dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
-      </div>
     </div>
   </div>
 </section>
 
 <!-- 3. What you can do -->
-<section class="features" id="features">
+<section class="features dark" id="features">
   <div class="wrap">
     <p class="kicker reveal">What you can do</p>
     <h2 class="reveal">Every cell has a story. Read it.</h2>
@@ -532,7 +400,7 @@ footer a:hover { color: var(--on-dark); }
         <p>Point at any cell and it tells you what it's doing and why: killed by the drug, starved of oxygen, or just dividing. Nothing is scripted; each event follows from a rule.</p>
         <p class="sci">Causes include drug-induced apoptosis, hypoxic necrosis and crowding arrest.</p>
       </div>
-      <div class="feature-media card zoom reveal" style="--d:.1s"><img src="./landing/media/feature-hover.jpg" alt="The simulator's hover card on a cell: Dying, Apoptosis: Gefitinib (Iressa), EGFR-mutant (sensitive)" loading="lazy" width="580" height="435" /></div>
+      <div class="feature-media reveal" style="--d:.08s"><img src="./landing/media/feature-hover.jpg" alt="The simulator's hover card on a cell: Dying, Apoptosis: Gefitinib (Iressa), EGFR-mutant (sensitive)" loading="lazy" width="580" height="435" /></div>
     </div>
 
     <div class="feature">
@@ -541,7 +409,7 @@ footer a:hover { color: var(--on-dark); }
         <p>Slice away a quarter or half and look inside. You'll see a dead core where oxygen runs out, living cells hugging the blood vessels, and resistant cells taking over from within.</p>
         <p class="sci">One cell per 20 µm voxel, each in its own state.</p>
       </div>
-      <div class="feature-media card zoom reveal" style="--d:.1s"><img src="./landing/media/feature-cut.jpg" alt="A quarter cut into the tumour showing a dark dead core, orange resistant cells and pale dying cells around it" loading="lazy" width="960" height="720" /></div>
+      <div class="feature-media reveal" style="--d:.08s"><img src="./landing/media/feature-cut.jpg" alt="A quarter cut into the tumour showing a dark dead core, orange resistant cells and pale dying cells around it" loading="lazy" width="960" height="720" /></div>
     </div>
 
     <div class="feature">
@@ -550,18 +418,18 @@ footer a:hover { color: var(--on-dark); }
         <p>Run the same tumour under different plans, like one drug, two drugs in sequence, or pausing the drug when the tumour shrinks, and see how long each holds resistance off.</p>
         <p class="sci">In the model, no plan stopped relapse. Adaptive osimertinib delayed it the most and used 39% less drug.</p>
       </div>
-      <figure class="compare card reveal" style="--d:.1s">
+      <figure class="compare reveal" style="--d:.08s">
         <figcaption>
           <div class="compare-title">Days until resistant cells take over</div>
           <div class="compare-sub">Median of 20 simulated runs per treatment</div>
         </figcaption>
         <ol class="bars" id="bars">
-          <li class="bar" style="--w:calc(6 / 42 * 85%)"><span class="label">Gefitinib, daily</span><span class="track"><span class="fill"></span><span class="val"><span data-count>6</span> days</span></span></li>
-          <li class="bar" style="--w:calc(6 / 42 * 85%);--d:.08s"><span class="label">Gefitinib → osimertinib</span><span class="track"><span class="fill"></span><span class="val"><span data-count>6</span> days</span></span></li>
-          <li class="bar" style="--w:calc(8 / 42 * 85%);--d:.16s"><span class="label">Osimertinib, daily</span><span class="track"><span class="fill"></span><span class="val"><span data-count>8</span> days</span></span></li>
-          <li class="bar" style="--w:calc(8 / 42 * 85%);--d:.24s"><span class="label">Osimertinib → capmatinib</span><span class="track"><span class="fill"></span><span class="val"><span data-count>8</span> days</span></span></li>
-          <li class="bar" style="--w:calc(19 / 42 * 85%);--d:.32s"><span class="label">Adaptive gefitinib</span><span class="track"><span class="fill"></span><span class="val"><span data-count>19</span> days</span></span></li>
-          <li class="bar highlight" style="--w:85%;--d:.4s"><span class="label">Adaptive osimertinib</span><span class="track"><span class="fill"></span><span class="val"><span data-count>42</span> days</span></span></li>
+          <li class="bar" style="--w:calc(6 / 42 * 85%)"><span class="label">Gefitinib, daily</span><span class="track"><span class="fill"></span><span class="val">6 days</span></span></li>
+          <li class="bar" style="--w:calc(6 / 42 * 85%);--d:.07s"><span class="label">Gefitinib → osimertinib</span><span class="track"><span class="fill"></span><span class="val">6 days</span></span></li>
+          <li class="bar" style="--w:calc(8 / 42 * 85%);--d:.14s"><span class="label">Osimertinib, daily</span><span class="track"><span class="fill"></span><span class="val">8 days</span></span></li>
+          <li class="bar" style="--w:calc(8 / 42 * 85%);--d:.21s"><span class="label">Osimertinib → capmatinib</span><span class="track"><span class="fill"></span><span class="val">8 days</span></span></li>
+          <li class="bar" style="--w:calc(19 / 42 * 85%);--d:.28s"><span class="label">Adaptive gefitinib</span><span class="track"><span class="fill"></span><span class="val">19 days</span></span></li>
+          <li class="bar highlight" style="--w:85%;--d:.35s"><span class="label">Adaptive osimertinib</span><span class="track"><span class="fill"></span><span class="val">42 days</span></span></li>
         </ol>
         <p class="compare-foot">Adaptive: the drug pauses when the tumour halves and restarts when it regrows. Source: validation report, §7.</p>
       </figure>
@@ -570,46 +438,43 @@ footer a:hover { color: var(--on-dark); }
 </section>
 
 <!-- 4. Why trust it -->
-<section id="trust">
+<section id="trust" class="light">
   <div class="wrap trust-grid">
     <div>
       <p class="kicker reveal">Why trust it</p>
       <h2 class="reveal">Built on public lab data. Checked in the open.</h2>
       <p class="lead reveal">Cell growth rates, drug responses and the order mutations appear in all come from public cancer databases, not from guesses.</p>
-      <ul class="checks">
-        <li class="reveal"><div><b>Drug responses from <span data-count>969</span> lab cell lines</b><span>The GDSC2 drug-response dataset, matched to EGFR-mutant lung models.</span></div></li>
-        <li class="reveal" style="--d:.08s"><div><b><span data-count>20</span> runs per treatment</b><span>Seven treatment plans, each run 20 times over 120 simulated days, reported as medians with ranges.</span></div></li>
-        <li class="reveal" style="--d:.16s"><div><b>Checked solvers</b><span>The oxygen and drug calculations are tested against dense reference solutions.</span></div></li>
+      <ul class="checks reveal">
+        <li><div><b>Drug responses from 969 lab cell lines</b><span>The GDSC2 drug-response dataset, matched to EGFR-mutant lung models.</span></div></li>
+        <li><div><b>20 runs per treatment</b><span>Seven treatment plans, each run 20 times over 120 simulated days, reported as medians with ranges.</span></div></li>
+        <li><div><b>Checked solvers</b><span>The oxygen and drug calculations are tested against dense reference solutions.</span></div></li>
       </ul>
       <a class="text-link reveal" href="https://github.com/SborJ/Iressa/blob/main/docs/validation/VALIDATION_REPORT.md">Read the open validation report <span class="arrow" aria-hidden="true">→</span></a>
     </div>
-    <div class="sources" aria-label="Data sources">
-      <div class="source card reveal" style="--c:var(--accent)"><i aria-hidden="true"></i><b>GDSC</b><span>Genomics of Drug Sensitivity in Cancer: drug responses</span></div>
-      <div class="source card reveal" style="--c:var(--resist);--d:.08s"><i aria-hidden="true"></i><b>CIViC</b><span>Clinical evidence on resistance mutations</span></div>
-      <div class="source card reveal" style="--c:var(--t790m);--d:.16s"><i aria-hidden="true"></i><b>cBioPortal</b><span>How often mutations occur in patient tumours</span></div>
-      <div class="source card reveal" style="--c:var(--met);--d:.24s"><i aria-hidden="true"></i><b>Cell Model Passports</b><span>Growth rates of each cell line</span></div>
+    <div class="sources reveal" aria-label="Data sources">
+      <div class="source"><b>GDSC</b><span>Genomics of Drug Sensitivity in Cancer: drug responses</span></div>
+      <div class="source"><b>CIViC</b><span>Clinical evidence on resistance mutations</span></div>
+      <div class="source"><b>cBioPortal</b><span>How often mutations occur in patient tumours</span></div>
+      <div class="source"><b>Cell Model Passports</b><span>Growth rates of each cell line</span></div>
     </div>
   </div>
 </section>
 
 <!-- 5. Who it's for -->
-<section class="audience">
+<section class="audience light white">
   <div class="wrap">
     <p class="kicker reveal">Who it's for</p>
     <h2 class="reveal">One simulator, three uses.</h2>
     <div class="aud-grid">
-      <article class="aud card reveal" style="--c:var(--accent)">
-        <span class="glow" aria-hidden="true"></span>
+      <article class="aud reveal" style="--c:var(--accent)">
         <h3>Researchers</h3>
         <p>Test an idea about dosing or resistance, then change any number in a data file and run it again.</p>
       </article>
-      <article class="aud card reveal" style="--c:var(--resist);--d:.08s">
-        <span class="glow" aria-hidden="true"></span>
+      <article class="aud reveal" style="--c:var(--resist);--d:.07s">
         <h3>Biotech</h3>
         <p>Explore how a resistance mutation spreads under a given drug plan, and show it to a room instead of describing it.</p>
       </article>
-      <article class="aud card reveal" style="--c:var(--t790m);--d:.16s">
-        <span class="glow" aria-hidden="true"></span>
+      <article class="aud reveal" style="--c:var(--t790m);--d:.14s">
         <h3>Teaching</h3>
         <p>Let students watch evolution happen inside a tumour and ask any cell why it died.</p>
       </article>
@@ -618,16 +483,16 @@ footer a:hover { color: var(--on-dark); }
 </section>
 
 <!-- 6. Final call to action -->
-<section class="final">
+<section class="final dark">
   <div class="wrap">
     <h2 class="reveal">See it for yourself.</h2>
-    <p class="lead reveal" style="--d:.08s">It runs in your browser, with no install and no sign-up.</p>
-    <div class="cta reveal" style="--d:.16s">
+    <p class="lead reveal">It runs in your browser, with no install and no sign-up.</p>
+    <div class="cta reveal">
       <a class="btn btn-primary" href="simulation/">Open the simulator <span class="arrow" aria-hidden="true">→</span></a>
       <a class="btn btn-ghost" href="https://github.com/SborJ/Iressa">View on GitHub</a>
     </div>
 
-    <div class="team reveal">
+    <div class="team">
       <p class="kicker">The team</p>
       <div class="team-grid">
         <div class="member">Vasil Vasilev</div>
@@ -707,19 +572,10 @@ footer a:hover { color: var(--on-dark); }
     });
   });
 
-  const hoverable = window.matchMedia('(hover: hover) and (pointer: fine)');
-
-  /* ---- header: solid once the page moves, a progress line, the current section ---- */
+  /* ---- header: solid once the page moves; the current section is underlined ---- */
   const header = document.querySelector('.site-header');
-  const progress = document.querySelector('.progress');
-  function onScroll() {
-    const y = window.scrollY;
-    header.classList.toggle('scrolled', y > 12);
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    progress.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`;
-  }
+  const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 12);
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
   onScroll();
 
   const navLinks = [...document.querySelectorAll('.nav-links a')];
@@ -731,42 +587,15 @@ footer a:hover { color: var(--on-dark); }
   }, { rootMargin: '-45% 0px -50% 0px' });
   navLinks.forEach((a) => { const s = document.querySelector(a.getAttribute('href')); if (s) spy.observe(s); });
 
-  /* ---- things arrive as they are scrolled to; numbers count up once ---- */
-  function countUp(el) {
-    // Once only: a second pass would read a half-counted number as the target.
-    if (el.dataset.counted) return;
-    el.dataset.counted = '1';
-    const end = parseInt(el.textContent.replace(/\D/g, ''), 10);
-    if (!end || reduceMotion.matches) return;
-    const t0 = performance.now(), dur = 900 + Math.min(600, end * 2);
-    (function tick(now) {
-      const t = Math.min(1, (now - t0) / dur);
-      el.textContent = String(Math.round(end * (1 - Math.pow(1 - t, 3))));
-      if (t < 1) requestAnimationFrame(tick);
-    })(t0);
-  }
+  /* ---- things settle in as they are scrolled to; the chart draws itself once ---- */
   const seen = new IntersectionObserver((entries) => {
     for (const e of entries) {
       if (!e.isIntersecting) continue;
       e.target.classList.add('in');
-      e.target.querySelectorAll('[data-count]').forEach(countUp);
       seen.unobserve(e.target);
     }
   }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
   document.querySelectorAll('.reveal, .bars').forEach((el) => seen.observe(el));
-
-  /* ---- cards light up under the pointer; feature images zoom to it ---- */
-  document.querySelectorAll('.card').forEach((card) => {
-    card.addEventListener('pointermove', (e) => {
-      const r = card.getBoundingClientRect();
-      card.style.setProperty('--mx', `${e.clientX - r.left}px`);
-      card.style.setProperty('--my', `${e.clientY - r.top}px`);
-      if (card.classList.contains('zoom')) {
-        card.style.setProperty('--ox', `${((e.clientX - r.left) / r.width) * 100}%`);
-        card.style.setProperty('--oy', `${((e.clientY - r.top) / r.height) * 100}%`);
-      }
-    });
-  });
 
   /* ---- the hero recording: play, scrub, and read the simulated day ---- */
   const v = document.getElementById('hero-video');
@@ -776,8 +605,7 @@ footer a:hover { color: var(--on-dark); }
   const DAYS = 60;
   let scrubbing = false;
   function showTime() {
-    const d = v.duration || 7;
-    const f = Math.min(1, v.currentTime / d);
+    const f = Math.min(1, v.currentTime / (v.duration || 7));
     if (!scrubbing) scrub.value = String(Math.round(f * 1000));
     scrub.style.setProperty('--p', `${f * 100}%`);
     const day = Math.round(f * DAYS);
@@ -785,9 +613,7 @@ footer a:hover { color: var(--on-dark); }
     scrub.setAttribute('aria-valuetext', `Day ${day} of ${DAYS}`);
   }
   (function loop() { showTime(); requestAnimationFrame(loop); })();
-  function setPlaying(on) {
-    if (on) v.play().catch(() => {}); else v.pause();
-  }
+  const setPlaying = (on) => { if (on) v.play().catch(() => {}); else v.pause(); };
   function reflect() {
     const on = !v.paused;
     playBtn.setAttribute('aria-pressed', String(on));
@@ -814,34 +640,17 @@ footer a:hover { color: var(--on-dark); }
   applyMotion();
   reduceMotion.addEventListener?.('change', applyMotion);
 
-  // The frame leans a little toward the pointer.
-  const media = document.getElementById('hero-media');
-  const stage = media.parentElement;
-  stage.addEventListener('pointermove', (e) => {
-    if (!hoverable.matches || reduceMotion.matches) return;
-    const r = stage.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
-    media.classList.add('live');
-    media.style.setProperty('--ry', `${x * 3}deg`);
-    media.style.setProperty('--rx', `${-y * 2.4}deg`);
-  });
-  stage.addEventListener('pointerleave', () => {
-    media.classList.remove('live');
-    media.style.setProperty('--ry', '0deg');
-    media.style.setProperty('--rx', '0deg');
-  });
-
-  /* ---- how it happens: one stage, three steps; advances by itself until touched ---- */
+  /* ---- how it happens: one picture, three steps; turns itself until touched ---- */
   const stepsEl = document.getElementById('steps');
   const steps = [...stepsEl.querySelectorAll('.step')];
   const shots = [...stepsEl.querySelectorAll('.step-stage img')];
-  const dots = [...stepsEl.querySelectorAll('.step-dots i')];
+  const count = document.getElementById('step-count');
   let current = 0;
   function showStep(i) {
     current = (i + steps.length) % steps.length;
     steps.forEach((s, k) => s.setAttribute('aria-selected', String(k === current)));
     shots.forEach((s, k) => s.classList.toggle('on', k === current));
-    dots.forEach((d, k) => d.classList.toggle('on', k === current));
+    count.textContent = `${current + 1} / ${steps.length}`;
   }
   const stopAuto = () => stepsEl.classList.remove('auto');
   steps.forEach((s, i) => {
@@ -851,7 +660,7 @@ footer a:hover { color: var(--on-dark); }
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); stopAuto(); showStep(i); }
       else if (move) { e.preventDefault(); stopAuto(); showStep(current + move); steps[current].focus(); }
     });
-    // The selected step's progress line finishing is what turns the page.
+    // The selected step's edge finishing its fill is what turns the page.
     s.addEventListener('animationend', (e) => { if (e.target === s && stepsEl.classList.contains('auto')) showStep(current + 1); });
   });
   if (!reduceMotion.matches) {
@@ -859,70 +668,6 @@ footer a:hover { color: var(--on-dark); }
       if (e.isIntersecting) { stepsEl.classList.add('auto'); io.disconnect(); }
     }, { threshold: 0.5 }).observe(stepsEl);
   }
-
-  /* ---- hero backdrop: cells drifting on the lattice, parting for the pointer ---- */
-  (function cells() {
-    const canvas = document.getElementById('cells');
-    const hero = canvas.closest('.hero');
-    const ctx = canvas.getContext('2d');
-    const css = getComputedStyle(document.documentElement);
-    const colours = ['--sensitive', '--sensitive', '--sensitive', '--sensitive', '--t790m', '--t790m', '--c797s', '--met']
-      .map((n) => css.getPropertyValue(n).trim());
-    let w = 0, h = 0, dpr = 1, parts = [], running = false, px = -9999, py = -9999;
-    function size() {
-      dpr = Math.min(2, window.devicePixelRatio || 1);
-      w = hero.clientWidth; h = hero.clientHeight;
-      canvas.width = w * dpr; canvas.height = h * dpr;
-      const n = Math.round(Math.min(90, (w * h) / 16000));
-      parts = Array.from({ length: n }, (_, i) => ({
-        x: Math.random() * w, y: Math.random() * h,
-        r: 3 + Math.random() * 7,
-        vx: (Math.random() - 0.5) * 0.18, vy: (Math.random() - 0.5) * 0.18,
-        c: colours[i % colours.length], a: 0.10 + Math.random() * 0.22,
-      }));
-      draw();
-    }
-    function draw() {
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.clearRect(0, 0, w, h);
-      for (const p of parts) {
-        ctx.globalAlpha = p.a;
-        ctx.fillStyle = p.c;
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
-        ctx.globalAlpha = p.a * 0.9;
-        ctx.fillStyle = '#fff';
-        ctx.beginPath(); ctx.arc(p.x - p.r * 0.3, p.y - p.r * 0.3, p.r * 0.28, 0, Math.PI * 2); ctx.fill();
-      }
-      ctx.globalAlpha = 1;
-    }
-    function step() {
-      if (!running) return;
-      for (const p of parts) {
-        const dx = p.x - px, dy = p.y - py, d2 = dx * dx + dy * dy;
-        if (d2 < 150 * 150 && d2 > 1) { const d = Math.sqrt(d2), f = (1 - d / 150) * 0.6; p.vx += (dx / d) * f; p.vy += (dy / d) * f; }
-        p.vx *= 0.96; p.vy *= 0.96;
-        p.x += p.vx + Math.sign(p.vx || 1) * 0.06; p.y += p.vy - 0.05;
-        if (p.x < -20) p.x = w + 20; else if (p.x > w + 20) p.x = -20;
-        if (p.y < -20) p.y = h + 20; else if (p.y > h + 20) p.y = -20;
-      }
-      draw();
-      requestAnimationFrame(step);
-    }
-    function setRunning(on) {
-      on = on && !reduceMotion.matches && !document.hidden;
-      if (on === running) return;
-      running = on;
-      if (running) requestAnimationFrame(step);
-    }
-    let inView = true;
-    new IntersectionObserver(([e]) => { inView = e.isIntersecting; setRunning(inView); }).observe(hero);
-    document.addEventListener('visibilitychange', () => setRunning(inView));
-    hero.addEventListener('pointermove', (e) => { const r = hero.getBoundingClientRect(); px = e.clientX - r.left; py = e.clientY - r.top; });
-    hero.addEventListener('pointerleave', () => { px = py = -9999; });
-    let t; window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(size, 150); });
-    size();
-    setRunning(true);
-  })();
 </script>
 </body>
 </html>
