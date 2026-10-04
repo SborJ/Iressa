@@ -233,8 +233,32 @@ To work on the Python engine and run its tests:
 
 ## Deploying
 
-The hosted site at [iressa.quicx.dev](https://iressa.quicx.dev/) is this
-repository running `npm start` behind a Cloudflare Tunnel. To host your own:
+### How the live site is hosted
+
+[iressa.quicx.dev](https://iressa.quicx.dev/) is self-hosted. It runs on our
+own Ubuntu (Debian-based) server, published through a
+[Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/):
+
+```
+visitor ──HTTPS──▶ Cloudflare ──encrypted tunnel──▶ our server ──▶ npm start (localhost:5173)
+```
+
+That setup is what keeps it secure:
+
+- **No open ports.** The server makes an outbound connection to Cloudflare and
+  accepts no inbound traffic. The app listens on `localhost` only, so it cannot
+  be reached except through the tunnel.
+- **HTTPS everywhere.** Cloudflare terminates TLS for the domain and the tunnel
+  to the server is encrypted, so nothing travels in the clear.
+- **The server's address stays private.** Visitors only ever see Cloudflare,
+  which also absorbs denial-of-service traffic before it reaches the machine.
+- **No passwords on the server.** Sign-in is handled by Supabase Auth; the
+  server stores no credentials, and researcher profiles sit behind row level
+  security.
+- **Only the expected hostname is served.** Requests for any other host are
+  rejected (`server.allowedHosts`).
+
+### Hosting your own
 
 1. On the server: clone the repository, add `.env.local`, run `npm start`.
    On Debian or Ubuntu, install `python3-venv` first; the script names the
